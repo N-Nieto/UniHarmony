@@ -133,4 +133,4 @@ cython_debug/
 .DS_store
 
 
-<PKG_NAME>/_version.py
+src/uniharmony/_version.py
