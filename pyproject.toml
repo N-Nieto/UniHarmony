@@ -48,10 +48,10 @@ Source = "https://github.com/N-Nieto/UniHarmony"
 
 [project.optional-dependencies]
 dev = [
-    "tox",
     "pre-commit",
-    "ruff",
-    "towncrier",
+    "tox>=4.34.1",
+    "ruff>=0.14.14",
+    "towncrier>=25.8.0",
 ]
 
 ################
