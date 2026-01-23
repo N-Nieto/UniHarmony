@@ -53,6 +53,9 @@ dev = [
     "ruff>=0.14.14",
     "towncrier>=25.8.0",
 ]
+docs = [
+    "zensical>=0.0.18",
+]
 
 ################
 # Tool configs #
