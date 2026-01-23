@@ -29,7 +29,7 @@
 5. Make sure you install git pre-commit hooks like so:
 
    ```console
-   $ pre-commit install
+   $ prek install
    ```
 
 6. When making changes locally, it is helpful to `git commit` your work
