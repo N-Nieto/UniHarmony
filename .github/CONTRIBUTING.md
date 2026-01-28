@@ -2,37 +2,42 @@
 
 ## Setting up the local development environment
 
-1. Fork the https://github.com/N-Nieto/UniHarmony repository on GitHub. If you
+#. Fork the https://github.com/N-Nieto/UniHarmony repository on GitHub. If you
    have never done this before,
    [follow the official guide](https://guides.github.com/activities/forking/).
 
-2. Clone your fork locally as described in the same guide.
+#. Clone your fork locally as described in the same guide.
 
-3. Install your local copy into a Python virtual environment. You can
-   [read this guide to learn more](https://realpython.com/python-virtual-environments-a-primer/)
-   about them and how to create one.
+#. Install [uv](https://docs.astral.sh/uv/getting-started/installation/) and [just](https://just.systems/man/en/packages.html).
+   Then, in the project root, run:
 
    ```console
-   $ pip install -e ".[dev]"
+   $ just install-dev
+   $ just install-prek
+   $ just install-hooks
    ```
 
-4. Create a branch for local development using the `main` branch as a
-   starting point. Use `fix`, `refactor`, `chore`, or `feat` as a prefix.
+#. Create a branch for local development using the `main` branch as a
+   starting point.
 
    ```console
    $ git checkout main
    $ git checkout -b <prefix>/<name-of-your-branch>
    ```
 
+   `<prefix>` can be any of the following:
+
+   - `feat` : feature addition
+   - `update` : code update
+   - `fix` : bug fix
+   - `refactor` : code restructure
+   - `chore` : housekeeping changes not affecting functionality
+
    Now you can make your changes locally.
 
-5. Make sure you install git pre-commit hooks like so:
+## Best practices for making changes
 
-   ```console
-   $ prek install
-   ```
-
-6. When making changes locally, it is helpful to `git commit` your work
+#. When making changes locally, it is helpful to `git commit` your work
    regularly. On one hand to save your work and on the other hand, the smaller
    the steps, the easier it is to review your work later. Please use
    [semantic commit messages](http://karma-runner.github.io/2.0/dev/git-commit-msg.html).
@@ -50,41 +55,83 @@
    $ git commit --no-verify -m "WIP: <summary of changes>"
    ```
 
-7. When you're done making changes, check that your changes pass our linting.
-   This is all included with `tox`.
+#. When you're done making changes, check that your changes pass our linting by running:
 
    ```console
-   $ tox -e ruff
+   $ just lint
    ```
 
-8. Push your branch to GitHub.
+#. If you are updating the documentation, you can run:
+
+   ```console
+   $ just serve-docs
+   ```
+
+   to see the changes before pushing them.
+
+#. Check that the tests pass and coverage is good enough by running:
+
+   ```console
+   $ just coverage
+   ```
+
+## Submitting your changes
+
+#. Push your branch to GitHub.
 
    ```console
    $ git push origin <prefix>/<name-of-your-branch>
    ```
 
-9. Open the link displayed in the message when pushing your new branch in order
+#. Open the link displayed in the message when pushing your new branch in order
    to submit a pull request. Please follow the template presented to you in the
    web interface to complete your pull request.
 
+## Adding examples
+
+#. If you are adding examples, add Jupyter notebooks to the `examples/` directory in the project root.
+
+#. To check your changes, you can either run:
+
+   ```console
+   $ just serve-docs
+   ```
+
+   to start the docs server or run:
+
+   ```console
+   $ just convert-notebooks
+   ```
+
+   to convert the `.ipynb` files to respective `.md` files under `docs/examples`. "Serving" the docs
+   automatically converts the notebooks, but if you only want to check the generated `.md` files, running
+   the latter command will be easier.
+
+#. To make the docs generator aware of the `.md` example file, add it under `[project] > nav > "Examples"`
+   in `zensical.toml`.
 
 ## GitHub Pull Request guidelines
 
 Before you submit a pull request, check that it meets these guidelines:
 
-1. If the pull request adds functionality, the `README.md` should be
+#. If the pull request adds functionality, the documentation should be
    updated accordingly.
 
-2. Make sure to create a Draft Pull Request. If you are not sure how to do it,
-   check
-   [here](https://github.blog/2019-02-14-introducing-draft-pull-requests/).
+#. Note the pull request ID assigned after completing the previous step and
+   create a *newsfragment* by running:
 
-3. Note the pull request ID assigned after completing the previous step and
-   create a *newsfragment* for letting
-   [towncrier](https://towncrier.readthedocs.io/en/stable/index.html) know to update
-   the `CHANGELOG.md` on release. Check
-   [here](https://towncrier.readthedocs.io/en/stable/markdown.html) on how to go
-   about it.
+   ```console
+   $ just add-news '<change>' <pr-id> <type>
+   ```
 
-4. Someone from the core team will review your work and guide you to a successful
+   `<type>` can be any of the following:
+
+   - `security` : code security related changes
+   - `removed` : code or feature removal
+   - `deprecated` : feature deprecation
+   - `added` : code or feature addition
+   - `changed` : code or feature changes
+   - `fixed` : bug fix
+
+#. Someone from the core team will review your work and guide you to a successful
    contribution.
