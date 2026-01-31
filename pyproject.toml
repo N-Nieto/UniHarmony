@@ -12,12 +12,12 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "AGPL-3.0-only"}
 authors = [
-    { name = "Nicolás Nieto", email = "nnieto@sinc.unl.edu.ar" },
+    { name = "Nicolás Nieto", email = "n.nieto@fz-juelich.de" },
     { name = "Synchon Mandal", email = "synchon@protonmail.com" },
 ]
 maintainers = [
     { name = "Synchon Mandal", email = "synchon@protonmail.com" },
-    { name = "Nicolás Nieto", email = "nnieto@sinc.unl.edu.ar" },
+    { name = "Nicolás Nieto", email = "n.nieto@fz-juelich.de" },
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -38,7 +38,10 @@ classifiers = [
     "Topic :: Utilities",
 ]
 dependencies = [
+    "imblearn>=0.0",
     "lazy_loader==0.4",
+    "numpy>=2.2.6",
+    "pandas>=2.3.3",
     "structlog>=25.0.0,<26.0.0",
 ]
 dynamic = ["version"]
@@ -54,7 +57,9 @@ dev = [
     "towncrier>=25.8.0",
 ]
 docs = [
+    "ipykernel>=7.1.0",
     "jupyter>=1.1.1",
+    "seaborn>=0.13.2",
     "zensical>=0.0.18",
 ]
 
@@ -112,6 +117,9 @@ ignore = [
     "D107",
     # use specific rule codes when ignoring type issues
     "PGH003",
+    # Matrices capitalized following the math convention
+    "N806",
+    "N803",
 ]
 
 [tool.ruff.lint.isort]

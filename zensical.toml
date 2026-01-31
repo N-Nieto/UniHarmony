@@ -6,6 +6,7 @@ repo_name = "N-Nieto/UniHarmony"
 nav = [
   {"Home" = "index.md"},
   {"Getting Started" = "getting_started.md"},
+  {"Simulated Multisite Data" = "simulate_multisite_data.md"},
 ]
 
 [project.theme]
