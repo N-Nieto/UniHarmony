@@ -2,7 +2,9 @@
 
 import numpy as np
 import pytest
+from imblearn.over_sampling import SMOTE
 
+from uniharmony import make_multisite_classification
 from uniharmony.interpolation import ICIHarmonization
 
 
@@ -52,6 +54,46 @@ def test_invalid_site():
     y = np.random.permutation(y)
     sites = np.zeros(10)
 
+    ici = ICIHarmonization()
+    with pytest.raises(ValueError):
+        ici.fit_resample(x, y, sites=sites)
+
+
+def test_invalid_model_name():
+    """Test wrong model warning."""
+    with pytest.raises(ValueError):
+        _ = ICIHarmonization(interpolator="wrong_name")
+
+
+def test_shape_missmatch():
+    """Test data missmatch."""
+    _, y, sites = make_multisite_classification(2, 100)
+    X, y, _ = make_multisite_classification(2, 400)
+
+    ici = ICIHarmonization("smote")
+    with pytest.raises(ValueError):
+        _, _ = ici.fit_resample(X, y, sites=sites)
+
+
+def test_interpolator_as_instance():
+    """Test passing intepolator instance."""
+    interpolator = SMOTE()
+    _ = ICIHarmonization(interpolator=interpolator)
+
+
+def test_verbosity():
+    """Test verbosity."""
+    x, y, sites = generate_data()
+    y = np.random.permutation(y)
+    ici = ICIHarmonization("smote", verbose=True)
+    _, _ = ici.fit_resample(x, y, sites=sites)
+
+
+def test_single_class_in_a_site():
+    """Test site generation."""
+    x = np.random.randn(300, 10)
+    y = np.array([0] * 180 + [1] * 80 + [2] * 40)
+    sites = np.array([0] * 150 + [1] * 150)
     ici = ICIHarmonization()
     with pytest.raises(ValueError):
         ici.fit_resample(x, y, sites=sites)

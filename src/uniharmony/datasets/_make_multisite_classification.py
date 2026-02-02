@@ -4,8 +4,6 @@ __all__ = [
     "make_multisite_classification",
 ]
 
-import warnings
-
 import numpy as np
 
 
@@ -119,7 +117,7 @@ def make_multisite_classification(
         else:
             y_site = _generate_multiclass_labels(
                 n_site_samples,
-                balance_per_site[site_idx],
+                balance_per_site[site_idx],  # type: ignore
                 n_classes,  # type: ignore
             )
 
@@ -212,11 +210,9 @@ def _validate_parameters(
         )
 
     if n_samples < n_sites:
-        warnings.warn(
+        raise ValueError(
             f"n_samples ({n_samples}) is less than n_sites ({n_sites}). "
             f"Some sites will have 0 samples.",
-            UserWarning,
-            stacklevel=2,
         )
 
 

@@ -200,6 +200,28 @@ def test_edge_cases():
         make_multisite_classification(
             balance_per_site=[0.5, 0.5, 0.5]
         )  # Wrong length
+    with pytest.raises(ValueError):
+        make_multisite_classification(n_features=0)  # Wrong number of features
+    with pytest.raises(ValueError):
+        make_multisite_classification(
+            signal_strength=-1
+        )  # Wrong signal strength
+    with pytest.raises(ValueError):
+        make_multisite_classification(
+            noise_strength=-1
+        )  # Wrong noise strength
+    with pytest.raises(ValueError):
+        make_multisite_classification(
+            site_effect_strength=-1
+        )  # Wrong Effect of Site strength
+    with pytest.raises(ValueError):
+        make_multisite_classification(
+            n_samples=2, n_sites=4
+        )  # Wrong site-samples
+    with pytest.raises(ValueError):
+        make_multisite_classification(
+            n_classes=2, balance_per_site=[0.1, 0.1, 0.2]
+        )  # Wrong site-samples
 
 
 def test_verbose_mode():
@@ -210,6 +232,13 @@ def test_verbose_mode():
     )
     make_multisite_classification(
         n_features=2, n_samples=100, verbose=False, random_state=42
+    )
+    make_multisite_classification(
+        n_features=2,
+        n_samples=100,
+        verbose=False,
+        random_state=42,
+        balance_per_site=None,
     )
 
 

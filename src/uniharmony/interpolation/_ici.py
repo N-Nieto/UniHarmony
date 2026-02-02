@@ -9,7 +9,6 @@ from sklearn.utils.validation import check_array, check_X_y
 
 from uniharmony.interpolation._utils import (
     _class_representation_checks,
-    _clone_sampler,
     _create_interpolator,
     _sites_sanity_checks,
 )
@@ -52,6 +51,7 @@ class ICIHarmonization(BaseEstimator, SamplerMixin):
                 interpolator, random_state=random_state, **kwargs
             )
         else:
+            assert interpolator.sampling_strategy in ["auto", "not majority"]  # type: ignore
             self._base_sampler = interpolator
 
     def fit_resample(  # type: ignore
@@ -75,22 +75,16 @@ class ICIHarmonization(BaseEstimator, SamplerMixin):
 
         for site in np.unique(sites):
             mask = sites == site
-            x_site, y_site = x[mask], y[mask]
+            X_site, y_site = x[mask], y[mask]
 
             if self.verbose:
                 print(f"[ICI] Site {site}: {Counter(y_site)}")
 
-            strategy = self._build_sampling_strategy(y_site)
+            X_rs, y_rs = self._base_sampler.fit_resample(X_site, y_site)  # type: ignore
 
-            if strategy:
-                sampler = _clone_sampler(self._base_sampler, strategy)
-                x_rs, y_rs = sampler.fit_resample(x_site, y_site)  # type: ignore
-            else:
-                x_rs, y_rs = x_site, y_site
-
-            x_out.append(x_rs)
+            x_out.append(X_rs)
             y_out.append(y_rs)
-            sites_out.append(np.full(len(x_rs), site))
+            sites_out.append(np.full(len(X_rs), site))
 
         self.sites_resampled_ = np.concatenate(sites_out)
 
@@ -99,18 +93,7 @@ class ICIHarmonization(BaseEstimator, SamplerMixin):
     # ------------------------------------------------------------------ #
     # Helpers
     # ------------------------------------------------------------------ #
-
-    def _build_sampling_strategy(self, y: np.ndarray) -> dict[int, int] | None:
-        counts = Counter(y)
-        if len(counts) < 2:
-            return None
-
-        max_count = max(counts.values())
-        return {
-            cls: max_count for cls, c in counts.items() if c < max_count
-        } or None
-
-    def _fit_resample(self, X, y, **params):
-        raise NotImplementedError(
+    def _fit_resample(self, X, y, **params):  # pragma: no cover
+        raise NotImplementedError(  # pragma: no cover
             "_fit_resample is not used. Use fit_resample(x, y, sites=...) instead."  # noqa: E501
         )

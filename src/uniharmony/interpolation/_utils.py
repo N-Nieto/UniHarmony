@@ -26,13 +26,9 @@ def _create_interpolator(name: str, random_state: int = 23, **kwargs):
     if name not in mapping:
         raise ValueError(f"Unsupported interpolator: {name}")
 
-    return mapping[name](random_state=random_state, **kwargs)
-
-
-def _clone_sampler(sampler, sampling_strategy):
-    params = sampler.get_params()
-    params["sampling_strategy"] = sampling_strategy
-    return sampler.__class__(**params)
+    return mapping[name](
+        random_state=random_state, sampling_strategy="not majority", **kwargs
+    )
 
 
 def _sites_sanity_checks(x, sites):
