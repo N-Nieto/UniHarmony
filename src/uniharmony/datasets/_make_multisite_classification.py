@@ -84,13 +84,9 @@ def make_multisite_classification(
         n_classes=n_classes,
     )
 
-    # Set default class balance if not provided
-    if balance_per_site is None:
-        balance_per_site = _get_default_balance_per_site(n_sites, n_classes)  # type: ignore
-        if verbose:
-            print(f"Using balanced classes: {balance_per_site}")
-
-    _data_generation_parameter_checks(balance_per_site, n_sites, n_classes)
+    balance_per_site = _validate_balance_per_site(
+        balance_per_site, n_sites, n_classes, verbose=verbose
+    )
 
     # Allocate samples per site (even distribution)
     samples_per_site = np.full(n_sites, n_samples // n_sites, dtype=int)
@@ -364,36 +360,110 @@ def _generate_signal_component(
     return signal
 
 
-def _data_generation_parameter_checks(balance_per_site, n_sites, n_classes):
-    """Validate balance_per_site structure."""
-    # Validate balance_per_site structure
+def _validate_balance_per_site(
+    balance_per_site, n_sites: int, n_classes: int, verbose: bool = False
+) -> list:
+    """Validate balance_per_site parameter for multi-site data generation.
+
+    Parameters
+    ----------
+    balance_per_site : list or None
+        Class balance specification
+    n_sites : int
+        Number of sites
+    n_classes : int
+        Number of classes
+    verbose : bool
+        Control verbosity
+
+    Raises
+    ------
+    ValueError
+        If balance_per_site has invalid structure or values
+    TypeError
+        If balance_per_site has wrong types
+
+    """
+    if balance_per_site is None:
+        balance_per_site = _get_default_balance_per_site(n_sites, n_classes)  # type: ignore
+        if verbose:
+            print(f"Using balanced classes: {balance_per_site}")
+
+    # Check it's a list
+    if not isinstance(balance_per_site, list):
+        raise TypeError(
+            f"balance_per_site must be a list, got {type(balance_per_site)}"
+        )
+
+    # Check length matches n_sites
     if len(balance_per_site) != n_sites:
         raise ValueError(
             f"balance_per_site must have length n_sites ({n_sites}), "
             f"got {len(balance_per_site)}"
         )
 
-    # For multi-class, balance_per_site should be a list of lists
-    if n_classes > 2:
-        for i, site_balance in enumerate(balance_per_site):
-            if not isinstance(site_balance, (list, np.ndarray)):
-                raise TypeError(
-                    f"For n_classes > 2, balance_per_site[{i}] must be a list/array, "  # noqa: E501
-                    f"got {type(site_balance)}"
-                )
-            if len(site_balance) != n_classes:
-                raise ValueError(
-                    f"balance_per_site[{i}] must have length n_classes ({n_classes}), "  # noqa: E501
-                    f"got {len(site_balance)}"
-                )
-            if not np.isclose(sum(site_balance), 1.0, atol=1e-10):
-                raise ValueError(
-                    f"balance_per_site[{i}] must sum to 1.0, got {sum(site_balance):.6f}"  # noqa: E501
-                )
+    # Validate based on number of classes
+    if n_classes == 2:
+        _check_balance_for_binary_classification(balance_per_site)
     else:
-        # For binary classification, validate proportions
-        for i, p_class1 in enumerate(balance_per_site):
-            if not 0 <= p_class1 <= 1:
-                raise ValueError(
-                    f"balance_per_site[{i}] must be between 0 and 1, got {p_class1}"  # noqa: E501
+        _check_balance_for_multiclass(balance_per_site, n_classes)
+
+    return balance_per_site
+
+
+def _check_balance_for_binary_classification(balance_per_site) -> None:
+    # For binary: list of floats
+    for i, p_class1 in enumerate(balance_per_site):
+        # Check type
+        if not isinstance(p_class1, (float)):
+            raise TypeError(
+                f"balance_per_site[{i}] must be numeric class proportion (float), "  # noqa: E501
+                f"got {type(p_class1)}"
+            )
+
+        # Check range
+        if not 0 <= p_class1 <= 1:
+            raise ValueError(
+                f"balance_per_site[{i}] must be between 0 and 1, "
+                f"got {p_class1}"
+            )
+
+
+def _check_balance_for_multiclass(balance_per_site, n_classes) -> None:
+    # For multi-class: list of lists
+    for i, site_balance in enumerate(balance_per_site):
+        # Check it's a list
+        if not isinstance(site_balance, (list, np.ndarray)):
+            raise TypeError(
+                f"For n_classes > 2, balance_per_site[{i}] must be a list or array, "  # noqa: E501
+                f"got {type(site_balance)}"
+            )
+
+        # Check length matches n_classes
+        if len(site_balance) != n_classes:
+            raise ValueError(
+                f"balance_per_site[{i}] must have length n_classes ({n_classes}), "  # noqa: E501
+                f"got {len(site_balance)}"
+            )
+
+        # Check all elements are numeric
+        for j, class_prob in enumerate(site_balance):
+            if not isinstance(class_prob, (float)):
+                raise TypeError(
+                    f"balance_per_site[{i}][{j}] must be a class proprtion (int or float), "  # noqa: E501
+                    f"got {type(class_prob)}"
                 )
+            if not 0 <= class_prob <= 1:
+                raise ValueError(
+                    f"balance_per_site[{i}] must be between 0 and 1, "
+                    f"got {class_prob}"
+                )
+
+        # Convert to numpy array for sum check
+        site_balance_array = np.array(site_balance, dtype=float)
+
+        # Check sum is approximately 1
+        if not np.isclose(np.sum(site_balance_array), 1.0, atol=1e-10):
+            raise ValueError(
+                f"balance_per_site[{i}] must sum to 1.0, got {np.sum(site_balance_array):.6f}"  # noqa: E501
+            )

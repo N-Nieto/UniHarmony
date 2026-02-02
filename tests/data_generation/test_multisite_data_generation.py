@@ -218,9 +218,149 @@ def test_edge_cases():
         make_multisite_classification(
             n_samples=2, n_sites=4
         )  # Wrong site-samples
+
+
+def test_balance_combinations_multiclass():
+    """Test invalid parameter for multiclass classification combinations."""
+    # Wrong length
     with pytest.raises(ValueError):
         make_multisite_classification(
             n_classes=2, balance_per_site=[0.1, 0.1, 0.2]
+        )
+    # Wrong Type
+    with pytest.raises(TypeError):
+        make_multisite_classification(
+            n_classes=4,
+            n_sites=4,
+            balance_per_site=[None, None, None, None],  # type: ignore
+        )
+    # Wrong lenght
+    with pytest.raises(TypeError):
+        make_multisite_classification(
+            n_classes=4, n_sites=4, balance_per_site=[0.1, 0.1, 0.1, 0.1]
+        )
+    # Wrong combination,
+    # one list has one element more than the number of classes
+    with pytest.raises(ValueError):
+        balance_per_site = [
+            [
+                0.2,
+                0.3,
+                0.9,
+                0.2,
+            ],
+            [0.4, 0.4, 0.2],
+            [0.4, 0.4, 0.2],
+            [0.4, 0.4, 0.2],
+        ]
+        make_multisite_classification(
+            n_classes=3,
+            n_sites=4,
+            balance_per_site=balance_per_site,  # type: ignore
+        )  # Wrong site-samples
+
+    # Proportion do not sum 1
+    with pytest.raises(ValueError):
+        balance_per_site = [
+            [0.2, 0.3, 0.1],
+            [0.4, 0.4, 0.2],
+            [0.4, 0.4, 0.2],
+            [0.4, 0.4, 0.2],
+        ]
+        make_multisite_classification(
+            n_classes=3,
+            n_sites=4,
+            balance_per_site=balance_per_site,  # type: ignore
+        )
+    # Wrong type, string not accepted
+    with pytest.raises(TypeError):
+        balance_per_site = [
+            [0.2, 0.3, "0.1"],
+            [0.4, 0.4, 0.2],
+            [0.4, 0.4, 0.2],
+            [0.4, 0.4, 0.2],
+        ]
+        make_multisite_classification(
+            n_classes=3,
+            n_sites=4,
+            balance_per_site=balance_per_site,  # type: ignore
+        )
+    # All elements must be lower than 1
+    with pytest.raises(ValueError):
+        balance_per_site = [
+            [1.1, 0.3, 0.1],
+            [1.1, 0.4, 0.2],
+            [11.1, 0.4, 0.2],
+            [0.4, 0.4, 0.2],
+        ]
+        make_multisite_classification(
+            n_classes=3,
+            n_sites=4,
+            balance_per_site=balance_per_site,  # type: ignore
+        )
+    # No negative elements allowed
+    with pytest.raises(ValueError):
+        balance_per_site = [
+            [0.2, 0.3, -0.1],
+            [0.4, 0.4, 0.2],
+            [0.4, 0.4, 0.2],
+            [0.4, 0.4, 0.2],
+        ]
+        make_multisite_classification(
+            n_classes=3,
+            n_sites=4,
+            balance_per_site=balance_per_site,  # type: ignore
+        )
+
+    # n_samples should be stable, even with not exactly matched
+    # probabilities due to rounding problems.
+    n_samples = 100
+    _, y, _ = make_multisite_classification(
+        n_samples=100,
+        n_classes=9,
+        n_sites=4,
+    )
+    assert n_samples == len(y)
+
+
+def test_balance_combinations_binary():
+    """Test balance parameters for binary classification."""
+    # Wrong type of arguments
+    with pytest.raises(TypeError):
+        balance_per_site = "Wrong argument"
+        make_multisite_classification(
+            n_classes=2,
+            n_sites=4,
+            balance_per_site=balance_per_site,  # type: ignore
+        )  # Wrong site-samples
+    # Right number, wrong type of arguments
+    with pytest.raises(TypeError):
+        balance_per_site = ["Wrong", "argument", "1", "0"]
+        make_multisite_classification(
+            n_classes=2,
+            n_sites=4,
+            balance_per_site=balance_per_site,  # type: ignore
+        )
+    # Not passing proportions
+    with pytest.raises(ValueError):
+        balance_per_site = [11.11, 11.11, 0, 0]
+        make_multisite_classification(
+            n_classes=2,
+            n_sites=4,
+            balance_per_site=balance_per_site,  # type: ignore
+        )
+    # Wrong type (all should be float)
+    with pytest.raises(TypeError):
+        balance_per_site = [
+            [1, 1],  # Site 0: 20% class 0, 30% class 1, 50% class 2
+            [11, 0],  # Site 1: 40% class 0, 40% class 1, 20% class 2
+            [-1, 0.2],  # Site 1: 40% class 0, 40% class 1, 20% class 2
+            [0.4, 0.4],  # Site 1: 40% class 0, 40% class 1, 20% class 2
+        ]
+        make_multisite_classification(
+            n_classes=2,
+            n_sites=4,
+            balance_per_site=balance_per_site,
         )  # Wrong site-samples
 
 
