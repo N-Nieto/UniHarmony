@@ -26,6 +26,14 @@ You can also install via `uv`, like so:
 uv add uniharmony
 ```
 
+# Features
+## Data loading and simulation.
+- Simulate multisite classification problems.
+- Download and load MAREoS dataset
+
+## Harmonization via interpolation models.
+ - InterClassInterpolator (ICI)
+
 ## Contribution
 
 Contributions are welcome and greatly appreciated. Please read the [guidelines](https://github.com/N-Nieto/UniHarmony/blob/main/.github/CONTRIBUTING.md) to get started.

@@ -6,7 +6,7 @@
 ```python
 import matplotlib.pyplot as plt
 import pandas as pd
-import seaborn as sbn
+import seaborn as sns
 
 from uniharmony.datasets import make_multisite_classification
 from uniharmony.interpolation import ICIHarmonization
@@ -29,7 +29,7 @@ df = pd.DataFrame({"Target": y, "Site": sites})
 
 plt.figure(figsize=[10, 6])
 plt.title("Unbalanced classes by site")
-sbn.countplot(df, x="Target", hue="Site")
+sns.countplot(df, x="Target", hue="Site")
 plt.grid(axis="y", color="black", alpha=0.5, linestyle="--")
 
 ```
@@ -56,7 +56,7 @@ df = pd.DataFrame(
 )
 plt.figure(figsize=[10, 6])
 plt.title("Balanced classes by site")
-sbn.countplot(df, x="Target", hue="Site")
+sns.countplot(df, x="Target", hue="Site")
 plt.grid(axis="y", color="black", alpha=0.5, linestyle="--")
 
 ```

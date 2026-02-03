@@ -15,3 +15,11 @@ pip install uniharmony
 ```console
 uv add uniharmony
 ```
+
+## Library features:
+## Data loading and simulation.
+- Simulate multisite classification problems.
+- Download and load MAREoS dataset
+
+## Harmonization via interpolation models.
+ - InterClassInterpolator (ICI)
