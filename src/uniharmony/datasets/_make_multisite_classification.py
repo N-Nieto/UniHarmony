@@ -17,7 +17,7 @@ def make_multisite_classification(
     site_effect_strength: float = 3.0,
     site_effect_homogeneous: bool = True,
     n_classes: int = 2,
-    random_state: int | None = 23,
+    random_state: int | None = 42,
     verbose: bool = False,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """Simulate multi-site data with signal, noise, and site effect components.
@@ -46,7 +46,7 @@ def make_multisite_classification(
         Whether the site effect is homogeneous (same for all samples in a site)
     n_classes : int, default=2
         Number of classes to simulate (2 for binary, >2 for multi-class)
-    random_state : int or None, default=23
+    random_state : int or None, default=42
         Random seed for reproducibility
     verbose : bool, default=False
         Whether to print progress information
