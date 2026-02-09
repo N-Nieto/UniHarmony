@@ -355,10 +355,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#interclassinterpolation" class="md-nav__link">
+  <a href="#intraclassinterpolation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        InterClassInterpolation
+        IntraClassInterpolation
       
     </span>
   </a>
@@ -391,8 +391,8 @@ rather a <code>fit_resample</code> method, which is consistent with imblearn.Pip
 <p>Matched interpolation buils on the core assumtion that if you interpolate between two samples from different scanners with the same covariates,
 for example age and gender, the resulted sample will preserve the matched characteristics (or interpolate between the posibilities), but will
 remove effect of site.</p>
-<h2 id="interclassinterpolation">InterClassInterpolation<a class="headerlink" href="#interclassinterpolation" title="Permanent link">&para;</a></h2>
-<p>ICI interpolator balances the samples for all the presented classes in each site. At the end of the interpolation, all sites will have the
+<h2 id="intraclassinterpolation">IntraClassInterpolation<a class="headerlink" href="#intraclassinterpolation" title="Permanent link">&para;</a></h2>
+<p>IntraClassInterpolation (ICI) balances the samples for all the presented classes in each site. At the end of the interpolation, all sites will have the
 same proportions (balanced) of samples for all classes. This will break any correlation between site and target, make it invisible for the ML
 models to pick up that signal and give you a prediction fraudulently based on EoS and not on true biological signal.</p>
 <p>At for now, the method only supports classification problems and not regression ones.</p>
