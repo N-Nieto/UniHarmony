@@ -6,7 +6,10 @@ repo_name = "N-Nieto/UniHarmony"
 nav = [
   {"Home" = "index.md"},
   {"Getting Started" = "getting_started.md"},
-  {"Simulated Multisite Data" = "simulate_multisite_data.md"},
+  {"Utilities" = [
+      {"Simulate Multisite Data" = "simulate_multisite_data.md"},
+      {"Load MAREos Datasets" = "load_mareos_datasets.md"},
+  ]},
 ]
 
 [project.theme]
