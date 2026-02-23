@@ -1,3 +1,7 @@
+---
+icon: lucide/house
+---
+
 # Welcome to UniHarmony
 
 ![PyPI](https://img.shields.io/pypi/v/uniharmony?style=for-the-badge)<br>
