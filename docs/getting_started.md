@@ -1,3 +1,7 @@
+---
+icon: lucide/play
+---
+
 # Getting Started
 
 ## Installation
@@ -16,10 +20,15 @@ pip install uniharmony
 uv add uniharmony
 ```
 
-## Library features:
-## Data loading and simulation.
-- Simulate multisite classification problems.
-- Download and load MAREoS dataset
+## Usage
 
-## Harmonization via interpolation models.
- - InterClassInterpolator (ICI)
+### Data loading and simulation
+
+- [Simulate multisite classification problems](./simulate_multisite_data.md)
+- [Download and load MAREoS dataset](./load_mareos_datasets.md)
+
+### Harmonization
+
+#### Interpolation models
+
+- [InterClassInterpolator (ICI)](./interpolation.md)
