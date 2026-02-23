@@ -13,6 +13,13 @@ nav = [
   {"Methods" = [
       {"Interpolation" = "interpolation.md"},
   ]},
+  {"Examples" = [
+      {"Load MAREoS" = "examples/load_mareos_example.md"},
+      {"Generate mutlisite data" = "examples/generate_multisite_data_example.md"},
+      {"Multisite data characterization" = "examples/multisite_data_characterization_example.md"},
+      {"ICI binary" = "examples/ICI_binary_classification_example.md"},
+      {"ICI multiclass" = "examples/ICI_multiclass_classification_example.md"},
+  ]},
   {"API Reference" = "api_reference.md"},
 ]
 
