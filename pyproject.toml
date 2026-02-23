@@ -119,8 +119,9 @@ ignore = [
     "D107",
     # use specific rule codes when ignoring type issues
     "PGH003",
-    # Matrices capitalized following the math convention
+    # allow uppercase variable name in function
     "N806",
+    # allow uppercase function argument name
     "N803",
 ]
 
