@@ -10,6 +10,9 @@ nav = [
       {"Simulate Multisite Data" = "simulate_multisite_data.md"},
       {"Load MAREos Datasets" = "load_mareos_datasets.md"},
   ]},
+  {"Methods" = [
+      {"Interpolation" = "interpolation.md"},
+  ]},
 ]
 
 [project.theme]
