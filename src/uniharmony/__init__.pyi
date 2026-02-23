@@ -9,7 +9,4 @@ __all__ = [
 ]
 
 from . import combat, dl, interpolation, normative, prettyharmonize
-from .datasets._load_mareos import load_MAREoS
-from .datasets._make_multisite_classification import (
-    make_multisite_classification,
-)
+from .datasets import load_MAREoS, make_multisite_classification
