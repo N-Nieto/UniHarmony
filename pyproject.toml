@@ -61,6 +61,7 @@ dev = [
 docs = [
     "ipykernel>=7.1.0",
     "jupyter>=1.1.1",
+    "mkdocstrings-python>=2.0.1",
     "seaborn>=0.13.2",
     "zensical>=0.0.18",
 ]

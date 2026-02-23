@@ -13,6 +13,7 @@ nav = [
   {"Methods" = [
       {"Interpolation" = "interpolation.md"},
   ]},
+  {"API Reference" = "api_reference.md"},
 ]
 
 [project.theme]
@@ -36,3 +37,12 @@ media = "(prefers-color-scheme: dark)"
 scheme = "slate"
 toggle.icon = "lucide/moon"
 toggle.name = "Switch to system preference"
+
+[project.plugins.mkdocstrings.handlers.python]
+inventories = ["https://docs.python.org/3/objects.inv"]
+paths = ["src"]
+
+[project.plugins.mkdocstrings.handlers.python.options]
+docstring_style = "numpy"
+inherited_members = true
+show_source = true
