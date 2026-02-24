@@ -30,31 +30,25 @@ class ICIHarmonization(BaseEstimator, SamplerMixin):
 
     Parameters
     ----------
-    interpolator : str or SamplerMixin, default="smote"
-        Oversampling strategy to apply within each site.
+    interpolator : str or SamplerMixin instance, optional (default "smote")
+        The interpolator to use. Can be a str specifying a built-in method or
+        an instance of SamplerMixin.
+        Supported str methods are:
 
-        If a string is provided, one of the following built-in methods
-        is used:
+          - "smote": Synthetic Minority Over-sampling Technique
+          - "borderline-smote": Borderline-SMOTE
+          - "svm-smote": SVM-SMOTE
+          - "adasyn": Adaptive Synthetic Sampling
+          - "kmeans-smote": KMeans-SMOTE
+          - "random": Random Over-Sampling
 
-        - ``"smote"`` : Synthetic Minority Over-sampling Technique
-        - ``"borderline-smote"`` : Borderline-SMOTE
-        - ``"svm-smote"`` : SVM-SMOTE
-        - ``"adasyn"`` : Adaptive Synthetic Sampling
-        - ``"kmeans-smote"`` : KMeans-SMOTE
-        - ``"random"`` : Random Over-Sampling
-
-        If an instance is provided, it must implement
-        :class:`imblearn.base.SamplerMixin`.
-
-    random_state : int, default=42
-        Random seed used to initialize stochastic interpolators.
-
-    verbose : bool, default=False
-        If True, prints per-site class distributions before resampling.
-
+    random_state : int or RandomState instance or None, optional (default None)
+        The seed of the pseudo random number generator or RandomState for
+        reproducibility.
+    verbose : bool, optional (default True)
+        If True, prints progress information.
     **kwargs
-        Additional keyword arguments passed to the interpolator constructor
-        when ``interpolator`` is provided as a string.
+        Additional keyword arguments passed to `interpolator`.
 
     """
 
@@ -62,10 +56,10 @@ class ICIHarmonization(BaseEstimator, SamplerMixin):
         self,
         interpolator: str | SamplerMixin = "smote",
         *,
-        random_state: int = 42,
+        random_state: int | np.random.RandomState | None = None,
         verbose: bool = False,
         **kwargs,
-    ):
+    ) -> None:
         self.interpolator = interpolator
         self.random_state = random_state
         self.verbose = verbose
@@ -81,7 +75,7 @@ class ICIHarmonization(BaseEstimator, SamplerMixin):
             assert interpolator.sampling_strategy in ["auto", "not majority"]  # type: ignore
             self._base_sampler = interpolator
 
-    def fit_resample(  # type: ignore
+    def fit_resample(
         self,
         X: np.ndarray,
         y: np.ndarray,
@@ -94,10 +88,8 @@ class ICIHarmonization(BaseEstimator, SamplerMixin):
         ----------
         X : numpy.ndarray of shape (n_samples, n_features)
             Feature matrix containing the input samples.
-
         y : numpy.ndarray of shape (n_samples,)
             Target class labels associated with each sample in ``X``.
-
         sites : numpy.ndarray of shape (n_samples,)
             Site or domain identifiers indicating the origin of each sample.
             Resampling is performed independently within each site.
@@ -106,7 +98,6 @@ class ICIHarmonization(BaseEstimator, SamplerMixin):
         -------
         X_resampled : numpy.ndarray of shape (n_samples_new, n_features)
             The feature matrix after site-wise oversampling.
-
         y_resampled : numpy.ndarray of shape (n_samples_new,)
             The corresponding class labels after resampling.
 
