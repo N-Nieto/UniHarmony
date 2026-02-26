@@ -89,30 +89,22 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         self._categorical_covariates_used = False
         if categorical_covariates is not None:
             self._categorical_covariates_used = True
-            categorical_covariates = check_array(
-                categorical_covariates, dtype=None, estimator=self
-            )
+            categorical_covariates = check_array(categorical_covariates, dtype=None, estimator=self)
 
         self._continuous_covariates_used = False
         if continuous_covariates is not None:
             self._continuous_covariates_used = True
-            continuous_covariates = check_array(
-                continuous_covariates, dtype=FLOAT_DTYPES, estimator=self
-            )
+            continuous_covariates = check_array(continuous_covariates, dtype=FLOAT_DTYPES, estimator=self)
 
         # Transpose to conform to neuroCombat and original ComBat
         X = X.T
 
-        self._sites_names, n_samples_per_site = np.unique(
-            sites, return_counts=True
-        )
+        self._sites_names, n_samples_per_site = np.unique(sites, return_counts=True)
 
         self._n_sites = len(self._sites_names)
 
         n_samples = sites.shape[0]
-        idx_per_site = [
-            list(np.where(sites == idx)[0]) for idx in self._sites_names
-        ]
+        idx_per_site = [list(np.where(sites == idx)[0]) for idx in self._sites_names]
 
         design = self._make_design_matrix(
             sites,
@@ -195,14 +187,10 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         check_consistent_length(X, sites)
 
         if self._categorical_covariates_used:
-            categorical_covariates = check_array(
-                categorical_covariates, dtype=None, estimator=self
-            )
+            categorical_covariates = check_array(categorical_covariates, dtype=None, estimator=self)
 
         if self._continuous_covariates_used:
-            continuous_covariates = check_array(
-                continuous_covariates, dtype=FLOAT_DTYPES, estimator=self
-            )
+            continuous_covariates = check_array(continuous_covariates, dtype=FLOAT_DTYPES, estimator=self)
 
         # Transpose to conform to neuroCombat and original ComBat
         X = X.T
@@ -210,21 +198,12 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         new_data_sites_name = np.unique(sites)
 
         # Check all sites from new_data were seen
-        if not all(
-            site_name in self._sites_names for site_name in new_data_sites_name
-        ):
-            raise ValueError(
-                "There is a site unseen during the fit method in the data."
-            )
+        if not all(site_name in self._sites_names for site_name in new_data_sites_name):
+            raise ValueError("There is a site unseen during the fit method in the data.")
 
         n_samples = sites.shape[0]
-        n_samples_per_site = np.array(
-            [np.sum(sites == site_name) for site_name in self._sites_names]
-        )
-        idx_per_site = [
-            list(np.where(sites == site_name)[0])
-            for site_name in self._sites_names
-        ]
+        n_samples_per_site = np.array([np.sum(sites == site_name) for site_name in self._sites_names])
+        idx_per_site = [list(np.where(sites == site_name)[0]) for site_name in self._sites_names]
 
         design = self._make_design_matrix(
             sites,
@@ -233,14 +212,12 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             fitting=False,
         )
 
-        standardized_data, standardized_mean = (
-            self._standardize_across_features(
-                X,
-                design,
-                n_samples,
-                n_samples_per_site,
-                fitting=False,
-            )
+        standardized_data, standardized_mean = self._standardize_across_features(
+            X,
+            design,
+            n_samples,
+            n_samples_per_site,
+            fitting=False,
         )
 
         bayes_data = self._adjust_data_final(
@@ -281,9 +258,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             Transformed array.
 
         """
-        return self.fit(X, sites, **fit_params).transform(
-            X, sites, **fit_params
-        )
+        return self.fit(X, sites, **fit_params).transform(X, sites, **fit_params)
 
     def _make_design_matrix(
         self,
@@ -338,16 +313,12 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
 
                 for i in range(n_discrete_covariates):
                     cat_encoder = OneHotEncoder(sparse_output=False)
-                    cat_encoder.fit(
-                        categorical_covariates[:, i][:, np.newaxis]
-                    )
+                    cat_encoder.fit(categorical_covariates[:, i][:, np.newaxis])
                     self._categorical_encoders.append(cat_encoder)
 
             for i in range(n_discrete_covariates):
                 cat_encoder = self._categorical_encoders[i]
-                cat_covariate_one_hot = cat_encoder.transform(
-                    categorical_covariates[:, i][:, np.newaxis]
-                )
+                cat_covariate_one_hot = cat_encoder.transform(categorical_covariates[:, i][:, np.newaxis])
                 cat_covariate_design = cat_covariate_one_hot[:, 1:]
                 design_list.append(cat_covariate_design)
 
@@ -394,9 +365,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
 
         """
         if fitting:
-            self._beta_hat = np.dot(
-                np.dot(np.linalg.inv(np.dot(design.T, design)), design.T), X.T
-            )
+            self._beta_hat = np.dot(np.dot(np.linalg.inv(np.dot(design.T, design)), design.T), X.T)
 
             # Standardization Model
             self._grand_mean = np.dot(
@@ -408,17 +377,13 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
                 np.ones((n_samples, 1)) / float(n_samples),
             )
 
-        standardized_mean = np.dot(
-            self._grand_mean.T[:, np.newaxis], np.ones((1, n_samples))
-        )
+        standardized_mean = np.dot(self._grand_mean.T[:, np.newaxis], np.ones((1, n_samples)))
 
         tmp = np.array(design.copy())
         tmp[:, : self._n_sites] = 0
         standardized_mean += np.dot(tmp, self._beta_hat).T
 
-        standardized_data = (X - standardized_mean) / np.dot(
-            np.sqrt(self._var_pooled), np.ones((1, n_samples))
-        )
+        standardized_data = (X - standardized_mean) / np.dot(np.sqrt(self._var_pooled), np.ones((1, n_samples)))
 
         return standardized_data, standardized_mean
 
@@ -458,9 +423,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
 
         delta_hat = []
         for _i, site_idxs in enumerate(idx_per_site):
-            delta_hat.append(
-                np.var(standardized_data[:, site_idxs], axis=1, ddof=1)
-            )
+            delta_hat.append(np.var(standardized_data[:, site_idxs], axis=1, ddof=1))
 
         return gamma_hat, delta_hat
 
@@ -612,9 +575,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         delta_hat_old = delta_hat.copy()
 
         def postmean(gamma_hat, gamma_bar, n, delta_star, tau_2):
-            return (tau_2 * n * gamma_hat + delta_star * gamma_bar) / (
-                tau_2 * n + delta_star
-            )
+            return (tau_2 * n * gamma_hat + delta_star * gamma_bar) / (tau_2 * n + delta_star)
 
         def postvar(sum_2, n, a_prior, b_prior):
             return (0.5 * sum_2 + b_prior) / (n / 2.0 + a_prior - 1.0)
@@ -623,9 +584,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         count = 0
 
         while change > convergence:
-            gamma_hat_new = postmean(
-                gamma_hat, gamma_bar, n, delta_hat_old, tau_2
-            )
+            gamma_hat_new = postmean(gamma_hat, gamma_bar, n, delta_hat_old, tau_2)
             sum_2 = (
                 (
                     standardized_data
@@ -697,17 +656,11 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
                 np.sqrt(delta_star[j, :])[:, np.newaxis],
                 np.ones((1, n_samples_per_site[j])),
             )
-            numerator = (
-                bayes_data[:, site_idxs]
-                - np.dot(site_design[site_idxs, :], gamma_star).T
-            )
+            numerator = bayes_data[:, site_idxs] - np.dot(site_design[site_idxs, :], gamma_star).T
 
             bayes_data[:, site_idxs] = numerator / denominator
 
-        bayes_data = (
-            bayes_data * np.dot(np.sqrt(var_pooled), np.ones((1, n_samples)))
-            + standardized_mean
-        )
+        bayes_data = bayes_data * np.dot(np.sqrt(var_pooled), np.ones((1, n_samples))) + standardized_mean
 
         return bayes_data
 
