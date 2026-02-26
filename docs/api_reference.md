@@ -6,4 +6,6 @@ icon: lucide/book-marked
 
 ::: uniharmony
 
+::: uniharmony.combat
+
 ::: uniharmony.interpolation

@@ -11,6 +11,7 @@ nav = [
       {"Load MAREos Datasets" = "load_mareos_datasets.md"},
   ]},
   {"Methods" = [
+      {"ComBat" = "combat.md"},
       {"Interpolation" = "interpolation.md"},
   ]},
   {"Examples" = [
