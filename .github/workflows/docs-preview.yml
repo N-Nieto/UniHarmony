@@ -26,7 +26,7 @@ jobs:
       - name: Install zensical and build docs
         if: github.event.action != 'closed'
         run: |
-            pip install zensical
+            pip install zensical mkdocstrings-python
             zensical build --clean
       - name: Deploy preview
         uses: rossjrw/pr-preview-action@v1

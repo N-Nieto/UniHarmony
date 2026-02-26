@@ -76,7 +76,7 @@ local_scheme = "no-local-version"
 write_to = "src/uniharmony/_version.py"
 
 [tool.ruff]
-line-length = 79
+line-length = 130
 extend-exclude = [
     "__init__.py",
     "_version.py",
