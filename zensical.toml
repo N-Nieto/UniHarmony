@@ -28,6 +28,7 @@ nav = [
 features = [
     "content.code.copy",
     "navigation.top",
+    "content.footnote.tooltips",
 ]
 
 [[project.theme.palette]]
@@ -46,6 +47,11 @@ media = "(prefers-color-scheme: dark)"
 scheme = "slate"
 toggle.icon = "lucide/moon"
 toggle.name = "Switch to system preference"
+
+[project.markdown_extensions.footnotes]
+
+[project.markdown_extensions.toc]
+permalink = true
 
 [project.plugins.mkdocstrings.handlers.python]
 inventories = ["https://docs.python.org/3/objects.inv"]
