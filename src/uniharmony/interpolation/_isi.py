@@ -14,8 +14,8 @@ from uniharmony.interpolation._utils import (
 )
 
 
-class ICIHarmonization(BaseEstimator, SamplerMixin):
-    """Intra-Class Interpolation (ICI) Harmonization.
+class IntraSiteInterpolation(BaseEstimator, SamplerMixin):
+    """Intra-Site Interpolation (ISI) Harmonization.
 
     This sampler performs **site-wise class balancing** to reduce spurious
     correlations between site membership and class labels.
@@ -131,7 +131,7 @@ class ICIHarmonization(BaseEstimator, SamplerMixin):
             X_site, y_site = X[mask], y[mask]
 
             if self.verbose:
-                print(f"[ICI] Site {site}: {Counter(y_site)}")
+                print(f"[ISI] Site {site}: {Counter(y_site)}")
 
             X_rs, y_rs = self._base_sampler.fit_resample(X_site, y_site)  # type: ignore
 
@@ -153,6 +153,6 @@ class ICIHarmonization(BaseEstimator, SamplerMixin):
         requires the additional ``sites`` argument.
         """
         raise NotImplementedError(
-            "ICIHarmonization requires the `sites` argument. "
+            "IntraSiteInterpolation requires the `sites` argument. "
             "Call fit_resample(X, y, sites=...) instead."
         )

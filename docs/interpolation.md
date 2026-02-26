@@ -10,9 +10,9 @@ Matched interpolation buils on the core assumtion that if you interpolate betwee
 for example age and gender, the resulted sample will preserve the matched characteristics (or interpolate between the posibilities), but will
 remove effect of site.
 
-## IntraClassInterpolation
+## IntraSiteInterpolation
 
-IntraClassInterpolation (ICI) balances the samples for all the presented classes in each site. At the end of the interpolation, all sites will have the
+IntraSiteInterpolation (ISI) balances the samples for all the presented classes in each site. At the end of the interpolation, all sites will have the
 same proportions (balanced) of samples for all classes. This will break any correlation between site and target, make it invisible for the ML
 models to pick up that signal and give you a prediction fraudulently based on EoS and not on true biological signal.
 

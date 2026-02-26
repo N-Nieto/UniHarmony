@@ -1,5 +1,5 @@
 __all__ = [
-    "ICIHarmonization",
+    "IntraSiteInterpolation",
 ]
 
-from ._ici import ICIHarmonization
+from ._isi import IntraSiteInterpolation

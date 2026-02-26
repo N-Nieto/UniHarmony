@@ -1,11 +1,11 @@
-"""Test ICI harmonization resampling."""
+"""Test ISI harmonization resampling."""
 
 import numpy as np
 import pytest
 from imblearn.over_sampling import SMOTE
 
 from uniharmony import make_multisite_classification
-from uniharmony.interpolation import ICIHarmonization
+from uniharmony.interpolation import IntraSiteInterpolation
 
 
 def generate_data(multiclass=False):
@@ -28,7 +28,7 @@ def test_binary_runs():
     """Test matching sample length."""
     x, y, sites = generate_data()
     y = np.random.permutation(y)
-    ici = ICIHarmonization("smote")
+    ici = IntraSiteInterpolation("smote")
     xr, yr = ici.fit_resample(x, y, sites=sites)
     sr = ici.sites_resampled_
     assert len(xr) == len(yr) == len(sr)
@@ -38,7 +38,7 @@ def test_multiclass_balance():
     """Test multiclass balance."""
     x, y, sites = generate_data(multiclass=True)
     y = np.random.permutation(y)
-    ici = ICIHarmonization("random")
+    ici = IntraSiteInterpolation("random")
     _, yr = ici.fit_resample(x, y, sites=sites)
     sr = ici.sites_resampled_
 
@@ -54,7 +54,7 @@ def test_invalid_site():
     y = np.random.permutation(y)
     sites = np.zeros(10)
 
-    ici = ICIHarmonization()
+    ici = IntraSiteInterpolation()
     with pytest.raises(ValueError):
         ici.fit_resample(x, y, sites=sites)
 
@@ -62,7 +62,7 @@ def test_invalid_site():
 def test_invalid_model_name():
     """Test wrong model warning."""
     with pytest.raises(ValueError):
-        _ = ICIHarmonization(interpolator="wrong_name")
+        _ = IntraSiteInterpolation(interpolator="wrong_name")
 
 
 def test_shape_missmatch():
@@ -70,7 +70,7 @@ def test_shape_missmatch():
     _, y, sites = make_multisite_classification(2, 100)
     X, y, _ = make_multisite_classification(2, 400)
 
-    ici = ICIHarmonization("smote")
+    ici = IntraSiteInterpolation("smote")
     with pytest.raises(ValueError):
         _, _ = ici.fit_resample(X, y, sites=sites)
 
@@ -78,14 +78,14 @@ def test_shape_missmatch():
 def test_interpolator_as_instance():
     """Test passing intepolator instance."""
     interpolator = SMOTE()
-    _ = ICIHarmonization(interpolator=interpolator)
+    _ = IntraSiteInterpolation(interpolator=interpolator)
 
 
 def test_verbosity():
     """Test verbosity."""
     x, y, sites = generate_data()
     y = np.random.permutation(y)
-    ici = ICIHarmonization("smote", verbose=True)
+    ici = IntraSiteInterpolation("smote", verbose=True)
     _, _ = ici.fit_resample(x, y, sites=sites)
 
 
@@ -94,6 +94,6 @@ def test_single_class_in_a_site():
     x = np.random.randn(300, 10)
     y = np.array([0] * 180 + [1] * 80 + [2] * 40)
     sites = np.array([0] * 150 + [1] * 150)
-    ici = ICIHarmonization()
+    ici = IntraSiteInterpolation()
     with pytest.raises(ValueError):
         ici.fit_resample(x, y, sites=sites)

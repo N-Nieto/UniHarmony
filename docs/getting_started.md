@@ -31,4 +31,4 @@ uv add uniharmony
 
 #### Interpolation models
 
-- [InterClassInterpolator (ICI)](./interpolation.md)
+- [IntraSiteInterpolation (ISI)](./interpolation.md)
