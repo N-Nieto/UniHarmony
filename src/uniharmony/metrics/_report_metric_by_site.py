@@ -33,7 +33,7 @@ def report_metric_by_site(
 
     Returns
     -------
-    Dict[Union[str, int], float]
+    Results dict:
         Dictionary with sites as keys and computed metrics as values.
 
     Raises
