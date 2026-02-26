@@ -38,9 +38,7 @@ def _ex_failed_checks(_) -> dict[str, str]:
     ],
     expected_failed_checks=_ex_failed_checks,
 )
-def test_neuro_combat_compat_sklearn(
-    estimator: object, check: callable
-) -> None:
+def test_neuro_combat_compat_sklearn(estimator: object, check: callable) -> None:
     """Test NeuroComBat compatibility with sklearn.
 
     Parameters
@@ -56,9 +54,7 @@ def test_neuro_combat_compat_sklearn(
 
 def test_neuro_combat_ops_original() -> None:
     """Test operation of NeuroComBat with original."""
-    data = np.genfromtxt(
-        Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1
-    )
+    data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
     batches = np.array([1, 1, 1, 1, 1, 2, 2, 2, 2, 2]).reshape(-1, 1)
     genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2]).reshape(-1, 1)
     data_combat = NeuroComBat().fit_transform(
@@ -72,9 +68,7 @@ def test_neuro_combat_ops_original() -> None:
 def test_neuro_combat_ops_impl() -> None:
     """Test operation of NeuroComBat with reference sklearn implementaion."""
     data = np.load(Path(__file__).parent / "bladder-expr.npy")
-    covars = pd.read_csv(
-        Path(__file__).parent / "bladder-pheno.txt", delimiter="\t"
-    )
+    covars = pd.read_csv(Path(__file__).parent / "bladder-pheno.txt", delimiter="\t")
     data_combat = NeuroComBat().fit_transform(
         data,
         covars[["batch"]],
