@@ -13,6 +13,9 @@ run-hooks:
 install-dev:
     uv pip install -e ".[dev,docs]"
 
+format-lint:
+    uv run -- ruff format . && ruff check --fix .
+
 convert-notebooks:
     uv run -- jupyter nbconvert --to markdown --output-dir=docs/examples/ examples/*
 
