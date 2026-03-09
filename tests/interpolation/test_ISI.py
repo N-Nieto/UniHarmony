@@ -61,8 +61,13 @@ def test_invalid_site():
 
 def test_invalid_model_name():
     """Test wrong model warning."""
+    x = np.random.randn(10, 2)
+    y = np.zeros(10)
+    y = np.random.permutation(y)
+    sites = np.zeros(10)
     with pytest.raises(ValueError):
-        _ = IntraSiteInterpolation(interpolator="wrong_name")
+        ici = IntraSiteInterpolation(interpolator="wrong_name")
+        ici.fit_resample(x, y, sites=sites)
 
 
 def test_shape_missmatch():
