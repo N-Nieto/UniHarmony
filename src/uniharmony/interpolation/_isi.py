@@ -3,6 +3,7 @@
 from collections import Counter
 
 import numpy as np
+import structlog
 from imblearn.base import SamplerMixin
 from sklearn.base import BaseEstimator
 from sklearn.utils.validation import check_array, check_X_y
@@ -12,6 +13,9 @@ from uniharmony.interpolation._utils import (
     create_interpolator,
     sites_sanity_checks,
 )
+
+
+logger = structlog.get_logger()
 
 
 class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
@@ -141,7 +145,7 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
             X_site, y_site = X[mask], y[mask]
 
             if self.verbose:
-                print(f"[ISI] Site {site}: {Counter(y_site)}")
+                logger.info(f"[ISI] Site {site}: {Counter(y_site)}")
 
             X_rs, y_rs = self.interpolator.fit_resample(X_site, y_site)  # type: ignore
 
