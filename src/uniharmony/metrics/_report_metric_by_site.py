@@ -9,6 +9,9 @@ from collections.abc import Callable
 import numpy as np
 
 
+__all__ = ["report_metric_by_site"]
+
+
 def report_metric_by_site(
     y_true: np.ndarray,
     y_pred: np.ndarray,
