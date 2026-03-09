@@ -10,10 +10,13 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import pooch
+import structlog
 from pooch import HTTPDownloader, Unzip
 
 
 __all__ = ["_ensure_mareos_data", "load_MAREoS"]
+
+logger = structlog.get_logger()
 
 # Constants
 MAREOS_ZIP_URL = (
@@ -207,7 +210,7 @@ def _load_mareos_single_dataset(
         data_dir / "public_datasets" / f"{dataset_name}_response.csv"
     )
     if verbose:
-        print(f"Getting data file: {data_file}")
+        logger.info(f"Getting data file: {data_file}")
     # Verify files were found
     if not data_file.exists():
         raise FileNotFoundError(
@@ -291,7 +294,7 @@ def _ensure_mareos_data(
 
     if not force_download and files_exist:
         if verbose:
-            print(f"MAREoS datasets already exist at: {target_dir}")
+            logger.info(f"MAREoS datasets already exist at: {target_dir}")
         return target_dir
 
     # If files do not exist of force download
@@ -317,9 +320,9 @@ def _ensure_mareos_data(
         raise RuntimeError(f"No CSV files found in {check_dir}")
 
     if verbose:
-        print(
-            f"MAREoS datasets downloaded: {len(csv_files)}"
-            f" CSV files in {target_dir}"
+        logger.info(
+            f"MAREoS datasets downloaded: {len(csv_files)} CSV files in "
+            f"{target_dir}"
         )
 
     return target_dir
