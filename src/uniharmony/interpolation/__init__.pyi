@@ -2,4 +2,4 @@ __all__ = [
     "IntraSiteInterpolation",
 ]
 
-from ._isi import IntraSiteInterpolation
+from ._intra_site import IntraSiteInterpolation

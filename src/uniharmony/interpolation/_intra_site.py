@@ -50,9 +50,9 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         The seed of the pseudo random number generator or RandomState for
         reproducibility.
     verbose : bool, optional (default True)
-        If True, prints progress information.
-    **kwargs
-        Additional keyword arguments passed to `interpolator`.
+        If True, logs progress information.
+    **kwargs : dict
+        Additional keyword arguments passed to ``interpolator``.
 
     """
 

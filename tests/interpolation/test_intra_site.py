@@ -1,6 +1,7 @@
-"""Test ISI harmonization resampling."""
+"""Test IntraSiteInterpolation transformer."""
 
 import numpy as np
+import numpy.typing as npt
 import pytest
 from imblearn.over_sampling import SMOTE
 
@@ -8,10 +9,25 @@ from uniharmony import make_multisite_classification
 from uniharmony.interpolation import IntraSiteInterpolation
 
 
-def generate_data(multiclass=False):
+def generate_data(
+    multiclass: bool = False,
+) -> tuple[npt.NDArray, npt.NDArray, npt.NDArray]:
     """Generate synthetic data for testing.
 
-    :param multiclass: Description
+    Parameters
+    ----------
+    multiclass : bool, optional (default False)
+        Whether to generate multi-class data or not.
+
+    Returns
+    -------
+    array
+        Features.
+    array
+        Targets.
+    array
+        Sites.
+
     """
     x = np.random.randn(200, 4)
     sites = np.array([0] * 100 + [1] * 100)
@@ -24,7 +40,7 @@ def generate_data(multiclass=False):
     return x, y, sites
 
 
-def test_binary_runs():
+def test_binary_runs() -> None:
     """Test matching sample length."""
     x, y, sites = generate_data()
     y = np.random.permutation(y)
@@ -34,7 +50,7 @@ def test_binary_runs():
     assert len(xr) == len(yr) == len(sr)
 
 
-def test_multiclass_balance():
+def test_multiclass_balance() -> None:
     """Test multiclass balance."""
     x, y, sites = generate_data(multiclass=True)
     y = np.random.permutation(y)
@@ -47,7 +63,7 @@ def test_multiclass_balance():
         assert len(set(counts)) == 1
 
 
-def test_invalid_site():
+def test_invalid_site() -> None:
     """Test site generation."""
     x = np.random.randn(10, 2)
     y = np.zeros(10)
@@ -59,7 +75,7 @@ def test_invalid_site():
         ici.fit_resample(x, y, sites=sites)
 
 
-def test_invalid_model_name():
+def test_invalid_model_name() -> None:
     """Test wrong model warning."""
     x = np.random.randn(10, 2)
     y = np.zeros(10)
@@ -70,7 +86,7 @@ def test_invalid_model_name():
         ici.fit_resample(x, y, sites=sites)
 
 
-def test_shape_missmatch():
+def test_shape_missmatch() -> None:
     """Test data missmatch."""
     _, y, sites = make_multisite_classification(2, 100)
     X, y, _ = make_multisite_classification(2, 400)
@@ -80,13 +96,12 @@ def test_shape_missmatch():
         _, _ = ici.fit_resample(X, y, sites=sites)
 
 
-def test_interpolator_as_instance():
+def test_interpolator_as_instance() -> None:
     """Test passing intepolator instance."""
-    interpolator = SMOTE()
-    _ = IntraSiteInterpolation(interpolator=interpolator)
+    IntraSiteInterpolation(interpolator=SMOTE())
 
 
-def test_verbosity():
+def test_verbosity() -> None:
     """Test verbosity."""
     x, y, sites = generate_data()
     y = np.random.permutation(y)
@@ -94,7 +109,7 @@ def test_verbosity():
     _, _ = ici.fit_resample(x, y, sites=sites)
 
 
-def test_single_class_in_a_site():
+def test_single_class_in_a_site() -> None:
     """Test site generation."""
     x = np.random.randn(300, 10)
     y = np.array([0] * 180 + [1] * 80 + [2] * 40)
