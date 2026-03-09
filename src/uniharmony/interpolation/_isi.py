@@ -162,7 +162,4 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         This sampler overrides ``fit_resample`` directly because it
         requires the additional ``sites`` argument.
         """
-        raise NotImplementedError(
-            "IntraSiteInterpolation requires the `sites` argument. "
-            "Call fit_resample(X, y, sites=...) instead."
-        )
+        pass
