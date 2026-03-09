@@ -1,10 +1,13 @@
 """Data simulation module for multi-site data generation."""
 
+import numpy as np
+
+
 __all__ = [
     "make_multisite_classification",
 ]
 
-import numpy as np
+
 
 
 def make_multisite_classification(
