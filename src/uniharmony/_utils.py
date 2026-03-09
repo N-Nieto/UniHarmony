@@ -2,11 +2,15 @@
 
 import numpy as np
 import numpy.typing as npt
+import structlog
 
 
 __all__ = [
     "filter_site_by_size",
 ]
+
+
+logger = structlog.get_logger()
 
 
 def filter_site_by_size(
@@ -47,5 +51,5 @@ def filter_site_by_size(
         if n >= min_size and n < max_size:
             idx = np.logical_or(idx, idx_su)
         else:
-            print(f"excluding site: {su} #sub {n}")
+            logger.info(f"excluding site: {su} #sub {n}")
     return idx
