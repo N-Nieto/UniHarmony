@@ -14,7 +14,7 @@ from uniharmony.interpolation._utils import (
 )
 
 
-class IntraSiteInterpolation(BaseEstimator, SamplerMixin):
+class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
     """Intra-Site Interpolation (ISI) Harmonization.
 
     This sampler performs **site-wise class balancing** to reduce spurious
