@@ -1,4 +1,4 @@
-from __future__ import annotations
+"""Provide IntraSiteInterpolation transformer."""
 
 from collections import Counter
 
@@ -65,16 +65,6 @@ class IntraSiteInterpolation(BaseEstimator, SamplerMixin):
         self.verbose = verbose
         self.kwargs = kwargs
 
-        if isinstance(interpolator, str):
-            self._base_sampler = _create_interpolator(
-                interpolator, random_state=random_state, **kwargs
-            )
-        else:
-            # Make sure the provided interpolator
-            # has "not majority" as sampling_strategy
-            assert interpolator.sampling_strategy in ["auto", "not majority"]  # type: ignore
-            self._base_sampler = interpolator
-
     def fit_resample(
         self,
         X: np.ndarray,
@@ -124,6 +114,26 @@ class IntraSiteInterpolation(BaseEstimator, SamplerMixin):
         # This methods needs at least two classes per site
         _class_representation_checks(y, sites)
 
+        if isinstance(self.interpolator, str):
+            self.interpolator = _create_interpolator(
+                self.interpolator,
+                random_state=self.random_state,
+                **self.kwargs,
+            )
+        elif isinstance(self.interpolator, SamplerMixin):
+            # Make sure the provided interpolator
+            # has "not majority" as sampling_strategy
+            if self.interpolator.sampling_strategy in ["auto", "not majority"]:
+                raise ValueError(
+                    "IntraSiteInterpolation requires the interpolator to have "
+                    "`sampling_strategy='not majority'`."
+                )
+        else:
+            raise ValueError(
+                "interpolator must be either a string"
+                "or an instance of SamplerMixin."
+            )
+
         X_out, y_out, sites_out = [], [], []
 
         for site in np.unique(sites):
@@ -133,7 +143,7 @@ class IntraSiteInterpolation(BaseEstimator, SamplerMixin):
             if self.verbose:
                 print(f"[ISI] Site {site}: {Counter(y_site)}")
 
-            X_rs, y_rs = self._base_sampler.fit_resample(X_site, y_site)  # type: ignore
+            X_rs, y_rs = self.interpolator.fit_resample(X_site, y_site)  # type: ignore
 
             X_out.append(X_rs)
             y_out.append(y_rs)
