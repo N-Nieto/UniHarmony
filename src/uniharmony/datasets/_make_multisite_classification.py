@@ -1,6 +1,7 @@
 """Data simulation module for multi-site data generation."""
 
 import numpy as np
+import structlog
 
 
 __all__ = [
@@ -8,6 +9,7 @@ __all__ = [
 ]
 
 
+logger = structlog.get_logger()
 
 
 def make_multisite_classification(
@@ -105,7 +107,9 @@ def make_multisite_classification(
         n_site_samples = samples_per_site[site_idx]
 
         if verbose:
-            print(f"Generating {n_site_samples} samples for site {site_idx}")
+            logger.info(
+                f"Generating {n_site_samples} samples for site {site_idx}"
+            )
 
         # Generate labels for this site
         if n_classes == 2:
@@ -390,7 +394,7 @@ def _validate_balance_per_site(
     if balance_per_site is None:
         balance_per_site = _get_default_balance_per_site(n_sites, n_classes)  # type: ignore
         if verbose:
-            print(f"Using balanced classes: {balance_per_site}")
+            logger.info(f"Using balanced classes: {balance_per_site}")
 
     # Check it's a list
     if not isinstance(balance_per_site, list):
