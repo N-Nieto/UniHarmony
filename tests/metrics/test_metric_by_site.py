@@ -7,7 +7,7 @@ from sklearn.metrics import accuracy_score, mean_squared_error
 from uniharmony.metrics import report_metric_by_site
 
 
-def test_with_callable_metric():
+def test_with_callable_metric() -> None:
     """Test computation with callable metric."""
     y_true = np.array([0, 1, 0, 1, 0, 1])
     y_pred = np.array([0, 1, 0, 0, 0, 1])
@@ -19,7 +19,7 @@ def test_with_callable_metric():
     assert len(results) == 3
 
 
-def test_mismatched_array_lengths():
+def test_mismatched_array_lengths() -> None:
     """Test ValueError for mismatched array lengths."""
     y_true = np.array([0, 1, 0])
     y_pred = np.array([0, 1])
@@ -29,51 +29,51 @@ def test_mismatched_array_lengths():
         report_metric_by_site(y_true, y_pred, sites, accuracy_score)
 
 
-def test_non_array_y_pred():
+def test_non_array_y_pred() -> None:
     """Test TypeError for non-array y_pred."""
     with pytest.raises(TypeError):
         report_metric_by_site(
             np.array([0, 1]),
-            [0, 1],  # type: ignore
+            [0, 1],
             np.array([1, 1]),
             accuracy_score,
         )
 
 
-def test_non_array_y_true():
+def test_non_array_y_true() -> None:
     """Test TypeError for non-array y_true."""
     with pytest.raises(TypeError):
         report_metric_by_site(
-            [0, 1],  # type: ignore
+            [0, 1],
             np.array([0, 1]),
             np.array([1, 1]),
             accuracy_score,
         )
 
 
-def test_non_array_sites():
+def test_non_array_sites() -> None:
     """Test TypeError for non-array sites."""
     with pytest.raises(TypeError):
         report_metric_by_site(
             np.array([0, 1]),
             np.array([0, 1]),
-            [1, 1],  # type: ignore
+            [1, 1],
             accuracy_score,
         )
 
 
-def test_invalid_metric_type():
+def test_invalid_metric_type() -> None:
     """Test TypeError for invalid metric type."""
     with pytest.raises(TypeError, match="metric must be a callable"):
         report_metric_by_site(
             np.array([0, 1]),
             np.array([0, 1]),
             np.array([1, 1]),
-            123,  # type: ignore
+            123,
         )
 
 
-def test_regression_metric():
+def test_regression_metric() -> None:
     """Test with regression metric."""
     y_true = np.array([1.0, 2.0, 3.0, 4.0, 5.0, 6.0])
     y_pred = np.array([1.1, 2.1, 2.9, 4.0, 5.2, 5.8])
@@ -85,7 +85,7 @@ def test_regression_metric():
     assert all(v >= 0 for v in results.values())
 
 
-def test_string_site_identifiers():
+def test_string_site_identifiers() -> None:
     """Test with string site identifiers."""
     y_true = np.array([0, 1, 0, 1])
     y_pred = np.array([0, 1, 0, 1])
@@ -98,7 +98,7 @@ def test_string_site_identifiers():
     assert set(results.keys()) == {"A", "B"}
 
 
-def test_overall_performance_functionality():
+def test_overall_performance_functionality() -> None:
     """Test with string site identifiers."""
     y_true = np.array([0, 1, 0, 1])
     y_pred = np.array([0, 1, 0, 1])
