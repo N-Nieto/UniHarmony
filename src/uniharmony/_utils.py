@@ -1,6 +1,7 @@
 """General utilities."""
 
 import numpy as np
+import numpy.typing as npt
 
 
 __all__ = [
@@ -8,8 +9,31 @@ __all__ = [
 ]
 
 
-def filter_site_by_size(sites, min_size, max_size=np.inf, sites_ignore=None):
-    """Filter sites by size."""
+def filter_site_by_size(
+    sites: npt.ArrayLike,
+    min_size: float,
+    max_size: float = np.inf,
+    sites_ignore: npt.ArrayLike | None = None,
+) -> npt.NDArray:
+    """Filter sites by size.
+
+    Parameters
+    ----------
+    sites : array-like
+        Sites to filter.
+    min_size : float
+        Minimum site size.
+    max_size : float, optional (default np.inf)
+        Maximum size size.
+    sites_ignore : array-like or None, optional (default None)
+        Sites to ignore.
+
+    Returns
+    -------
+    array
+        Indices to filter using.
+
+    """
     idx = np.zeros(len(sites))
     if sites_ignore is None:
         sites_ignore = np.array([])
