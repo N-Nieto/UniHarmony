@@ -59,25 +59,26 @@ def load_MAREoS(  # noqa: N802
 
     Parameters
     ----------
-    effects : list of str, str or None. Optional
+    effects : list of str, str or None, optional (default None)
         List of effects to load. If None, loads all ["eos", "true"]
-    effect_types : list of str, str or None. Optional
+    effect_types : list of str, str or None, optional (default None)
         List of effect types to load.
         If None, loads all ["simple", "interaction"]
-    effect_examples : list of str, str or None. Optional
-        List of examples to load. If None, loads all ["1", "2"]
-    as_numpy : bool, default=True
-        If True, return numpy arrays. If False, return pandas DataFrames.
-    data_dir : Path, optional
+    effect_examples : list of str, str or None, optional (default None)
+        List of examples to load.
+        If None, loads all ["1", "2"].
+    as_numpy : bool, optional (default True)
+        If True, return ``numpy.ndarray``, else ``pandas.DataFrame``.
+    data_dir : Path | None, optional (default None)
         Directory containing MAREoS data files. If None, downloads to cache.
-    force_download: : bool = optional,
-        Force to download again the dataset in case of corrupt files
-    verbose : bool = optional,
+    force_download : bool, optional (default False)
+        Force to download again the dataset in case of corrupt files.
+    verbose : bool, optional (default False)
         Control verbosity.
 
     Returns
     -------
-    Dict[str, Dict[str, Any]]
+    dict of str and dict
         Nested dictionary where keys are dataset names
         containing:
         - "X": Feature matrix
@@ -89,7 +90,7 @@ def load_MAREoS(  # noqa: N802
     Raises
     ------
     ValueError
-        If any parameter contains invalid values
+        If any parameter contains invalid values.
 
     Examples
     --------
@@ -162,34 +163,32 @@ def _load_mareos_single_dataset(
         "interaction" (non-linear interactions)
     effect_example : str
         Which of the two simulated datasets to load. Options: "1" or "2"
-    as_numpy : bool, default=True
-        If True, return numpy arrays. If False, return pandas DataFrames.
-
-    force_download : bool, optional
-        Force re-download even if files exist (default: False)
-    verbose : bool = optional,
+    as_numpy : bool, optional (default True)
+        If True, return ``numpy.ndarray``, else ``pandas.DataFrame``.
+    verbose : bool, optional (default False).
         Control verbosity.
 
     Returns
     -------
-    X : Union[pd.DataFrame, np.ndarray]
+    X : pd.DataFrame or np.ndarray
         Feature matrix of shape (1000, 15)
-    y : Union[pd.DataFrame, np.ndarray]
+    y : pd.DataFrame or np.ndarray
         Target labels of shape (1000, 1)
-    sites : Union[pd.Series, np.ndarray]
+    sites : pd.Series or np.ndarray
         Site labels of shape (1000,)
-    covariates : Union[pd.DataFrame, np.ndarray]
+    covariates : pd.DataFrame or np.ndarray
         Covariates (cov1, cov2) of shape (1000, 2)
-    folds : Union[pd.Series, np.ndarray]
+    folds : pd.Series or np.ndarray
         Predefined cross-validation folds of shape (1000,)
 
     Raises
     ------
     ValueError
-        If any parameter has an invalid value
+        If any parameter has an invalid value.
+    RuntimeError
+        If ``data_dir`` is not found.
     FileNotFoundError
-        If the requested dataset files are not found
-
+        If the requested dataset files are not found.
 
     """
     # Ensure data is available
@@ -256,22 +255,22 @@ def _ensure_mareos_data(
 
     Parameters
     ----------
-    data_dir : Path, optional
+    data_dir : Path or str or None, optional (default None)
         Custom directory to store data. If None, uses default cache location.
-    force_download : bool, optional
-        Force re-download even if files exist (default: False)
-    verbose : bool = optional,
+    force_download : bool, optional (default False)
+        Force re-download even if files exist.
+    verbose : bool, optional (default False)
         Control verbosity.
 
     Returns
     -------
     Path
-        Path to the directory containing the extracted MAREoS data files
+        Path to the directory containing the extracted MAREoS data files.
 
     Raises
     ------
     ConnectionError
-        If unable to download or extract the ZIP file
+        If unable to download or extract the ZIP file.
 
     Examples
     --------
@@ -336,16 +335,16 @@ def _validate_mareos_parameters(
 
     Parameters
     ----------
-    effects : str, list of str, or None, optional
+    effects : str, list of str, or None, optional (default None)
         Type(s) of effect to load. Valid: "eos", "true".
-    effect_types : str, list of str, or None, optional
+    effect_types : str, list of str, or None, optional (default None)
         Type(s) of effect pattern. Valid: "simple", "interaction".
-    effect_examples : str, list of str, or None, optional
+    effect_examples : str, list of str, or None, optional (default None)
         Example number(s). Valid: "1", "2".
 
     Returns
     -------
-    Tuple[List[str], List[str], List[str]]
+    tuple
         Normalized lists of validated parameters.
 
     """
@@ -361,7 +360,20 @@ def _validate_mareos_parameters(
     return effects_list, types_list, examples_list
 
 
-def _create_target_dir(data_dir):
+def _create_target_dir(data_dir: Path | str | None) -> Path:
+    """Create target directory.
+
+    Parameters
+    ----------
+    data_dir : pathlib.Path or str or None
+        Base data directory.
+
+    Returns
+    -------
+    pathlib.Path
+        Target directory.
+
+    """
     if data_dir is None:
         # Use Pooch's cache directory
         target_dir = Path(mareos_pooch.path) / "MAREoS"
@@ -376,8 +388,35 @@ def _create_target_dir(data_dir):
 
 
 # Process each parameter using a helper function
-def _process_effect_param(param, default_values, param_name):
-    """Process and validate a single parameter."""
+def _process_effect_param(
+    param: str | list[str] | None,
+    default_values: list[str],
+    param_name: str,
+) -> list[str]:
+    """Process and validate a single parameter.
+
+    Parameters
+    ----------
+    param : str or list of str or None
+        Effect parameter.
+    default_values : list of str
+        Default values for ``param``.
+    param_name : str
+        Parameter name.
+
+    Returns
+    -------
+    list of str
+        Validated parameter.
+
+    Raises
+    ------
+    ValueError
+        If ``param`` has invalid values.
+    TypeError
+        If ``param`` has invalid type.
+
+    """
     # Set default if None
     if param is None:
         return default_values.copy()
