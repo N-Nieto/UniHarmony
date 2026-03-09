@@ -1,6 +1,7 @@
 """Utility functions for interpolation-based harmonization methods."""
 
 import numpy as np
+import numpy.typing as npt
 from imblearn.over_sampling import (
     ADASYN,
     SMOTE,
@@ -9,7 +10,6 @@ from imblearn.over_sampling import (
     KMeansSMOTE,
     RandomOverSampler,
 )
-from numpy.typing import npt
 from sklearn.utils import check_random_state
 
 
