@@ -1,18 +1,29 @@
 """Utility functions for interpolation-based harmonization methods."""
 
 import numpy as np
+from imblearn.over_sampling import (
+    ADASYN,
+    SMOTE,
+    SVMSMOTE,
+    BorderlineSMOTE,
+    KMeansSMOTE,
+    RandomOverSampler,
+)
+from sklearn.utils import check_random_state
 
 
-def _create_interpolator(name: str, random_state: int = 23, **kwargs):
-    from imblearn.over_sampling import (
-        ADASYN,
-        SMOTE,
-        SVMSMOTE,
-        BorderlineSMOTE,
-        KMeansSMOTE,
-        RandomOverSampler,
-    )
+__all__ = [
+    "class_representation_checks",
+    "create_interpolator",
+    "sites_sanity_checks",
+]
 
+
+def create_interpolator(
+    name: str, random_state: int | np.random.RandomState = 23, **kwargs
+):
+    """Create an imblearn interpolator based on a string name."""
+    random_state = check_random_state(random_state)
     mapping = {
         "smote": SMOTE,
         "borderline-smote": BorderlineSMOTE,
@@ -31,7 +42,8 @@ def _create_interpolator(name: str, random_state: int = 23, **kwargs):
     )
 
 
-def _sites_sanity_checks(x, sites):
+def sites_sanity_checks(x, sites):
+    """Sanity checks for site array."""
     if x.shape[0] != sites.shape[0]:
         raise ValueError("X and sites must have same length")
 
@@ -39,7 +51,8 @@ def _sites_sanity_checks(x, sites):
         raise ValueError("At least two sites required")
 
 
-def _class_representation_checks(y, sites):
+def class_representation_checks(y, sites):
+    """Check that each site has at least two classes."""
     for site in np.unique(sites):
         if len(np.unique(y[sites == site])) < 2:
             raise ValueError(

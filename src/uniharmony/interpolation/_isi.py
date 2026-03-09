@@ -8,9 +8,9 @@ from sklearn.base import BaseEstimator
 from sklearn.utils.validation import check_array, check_X_y
 
 from uniharmony.interpolation._utils import (
-    _class_representation_checks,
-    _create_interpolator,
-    _sites_sanity_checks,
+    class_representation_checks,
+    create_interpolator,
+    sites_sanity_checks,
 )
 
 
@@ -109,13 +109,13 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         sites = check_array(sites, ensure_2d=False)
 
         # Sanity checks for site length and number of sites
-        _sites_sanity_checks(X, sites)
+        sites_sanity_checks(X, sites)
 
         # This methods needs at least two classes per site
-        _class_representation_checks(y, sites)
+        class_representation_checks(y, sites)
 
         if isinstance(self.interpolator, str):
-            self.interpolator = _create_interpolator(
+            self.interpolator = create_interpolator(
                 self.interpolator,
                 random_state=self.random_state,
                 **self.kwargs,
