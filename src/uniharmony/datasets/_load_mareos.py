@@ -5,7 +5,6 @@ standardized benchmarks for evaluating data harmonization
 methods with known ground truth.
 """
 
-__all__ = ["_ensure_mareos_data", "load_MAREoS"]
 from pathlib import Path
 
 import numpy as np
@@ -13,6 +12,8 @@ import pandas as pd
 import pooch
 from pooch import HTTPDownloader, Unzip
 
+
+__all__ = ["_ensure_mareos_data", "load_MAREoS"]
 
 # Constants
 MAREOS_ZIP_URL = (
@@ -433,8 +434,8 @@ def _process_effect_param(
     invalid = [v for v in param if v not in default_values]
     if invalid:
         raise ValueError(
-            f"{param_name} contains invalid value(s): {invalid}. "
-            f"Must be one of {default_values}"
+            f"{param_name} contains invalid value(s): {invalid}. Must be one "
+            f"of {default_values}"
         )
 
     return param
