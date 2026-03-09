@@ -36,15 +36,8 @@ def report_metric_by_site(
 
     Returns
     -------
-    Results dict:
+    dict
         Dictionary with sites as keys and computed metrics as values.
-
-    Raises
-    ------
-    TypeError
-        If input arrays are not numpy arrays or metric is not str/callable.
-    ValueError
-        If arrays have mismatched lengths.
 
     """
     # Validate inputs
@@ -73,7 +66,29 @@ def _input_checks(
     metric: Callable,
     overall_performance: bool,
 ) -> None:
-    """Validate input types and shapes for site-wise performance evaluation."""
+    """Validate input types and shapes for site-wise performance evaluation.
+
+    Parameters
+    ----------
+    y_true : np.ndarray
+        True labels.
+    y_pred : np.ndarray
+        Predicted values.
+    sites : np.ndarray
+        Site identifiers for stratification.
+    metric : Callable
+        Metric to compute from sklean.metrics.
+    overall_performance: bool
+        Add an aditional dictionary entry with the overall performance.
+
+    Raises
+    ------
+    TypeError
+        If input arrays are not numpy arrays or metric is not str/callable.
+    ValueError
+        If arrays have mismatched lengths.
+
+    """
     if not isinstance(y_true, np.ndarray):
         raise TypeError(
             "y_true must be a numpy.ndarray, "
