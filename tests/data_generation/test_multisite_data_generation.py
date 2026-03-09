@@ -6,7 +6,7 @@ import pytest
 from uniharmony import make_multisite_classification
 
 
-def test_basic_functionality():
+def test_basic_functionality() -> None:
     """Test basic functionality with default parameters."""
     X, y, sites = make_multisite_classification(
         n_sites=2, n_samples=100, n_features=10, random_state=42
@@ -27,7 +27,7 @@ def test_basic_functionality():
     )
 
 
-def test_sample_distribution():
+def test_sample_distribution() -> None:
     """Test that samples are properly distributed across sites."""
     n_sites = 3
     n_samples = 100
@@ -48,7 +48,7 @@ def test_sample_distribution():
     )
 
 
-def test_class_balance():
+def test_class_balance() -> None:
     """Test custom class balance."""
     balance_per_site = [0.3, 0.7]  # 30% class 1 in site 0, 70% in site 1
     _, y, sites = make_multisite_classification(
@@ -70,7 +70,7 @@ def test_class_balance():
             )
 
 
-def test_multiclass_functionality():
+def test_multiclass_functionality() -> None:
     """Test multi-class functionality."""
     n_classes = 3
     _, y, _ = make_multisite_classification(
@@ -87,7 +87,7 @@ def test_multiclass_functionality():
     )
 
 
-def test_multiclass_balance():
+def test_multiclass_balance() -> None:
     """Test multi-class with custom balance."""
     balance_per_site = [
         [0.2, 0.3, 0.5],  # Site 0: 20% class 0, 30% class 1, 50% class 2
@@ -98,7 +98,7 @@ def test_multiclass_balance():
         n_sites=2,
         n_samples=200,
         n_classes=3,
-        balance_per_site=balance_per_site,  # type: ignore
+        balance_per_site=balance_per_site,
         random_state=42,
     )
 
@@ -112,11 +112,12 @@ def test_multiclass_balance():
                 expected_prob = expected_probs[class_idx]
                 # Allow 5% tolerance
                 assert abs(actual_prob - expected_prob) < 0.05, (
-                    f"Site {site_idx}, class {class_idx}: expected {expected_prob}, got {actual_prob}"  # noqa: E501
+                    f"Site {site_idx}, class {class_idx}: "
+                    f"expected {expected_prob}, got {actual_prob}"
                 )
 
 
-def test_signal_strength():
+def test_signal_strength() -> None:
     """Test that signal strength affects class separation."""
     # Generate data with different signal strengths
     X_weak, y_weak, _ = make_multisite_classification(
@@ -141,7 +142,7 @@ def test_signal_strength():
     )
 
 
-def test_site_effect():
+def test_site_effect() -> None:
     """Test that site effect creates differences between sites."""
     X, _, sites = make_multisite_classification(
         n_sites=2, n_samples=100, site_effect_strength=5.0, random_state=42
@@ -158,7 +159,7 @@ def test_site_effect():
     )
 
 
-def test_reproducibility():
+def test_reproducibility() -> None:
     """Test that random_state ensures reproducible results."""
     X1, y1, sites1 = make_multisite_classification(random_state=42)
     X2, y2, sites2 = make_multisite_classification(random_state=42)
@@ -177,7 +178,7 @@ def test_reproducibility():
     )
 
 
-def test_edge_cases():
+def test_edge_cases() -> None:
     """Test edge cases and error handling."""
     # Test with very few samples
     X, _, _ = make_multisite_classification(
@@ -220,7 +221,7 @@ def test_edge_cases():
         )  # Wrong site-samples
 
 
-def test_balance_combinations_multiclass():
+def test_balance_combinations_multiclass() -> None:
     """Test invalid parameter for multiclass classification combinations."""
     # Wrong length
     with pytest.raises(ValueError):
@@ -232,9 +233,9 @@ def test_balance_combinations_multiclass():
         make_multisite_classification(
             n_classes=4,
             n_sites=4,
-            balance_per_site=[None, None, None, None],  # type: ignore
+            balance_per_site=[None, None, None, None],
         )
-    # Wrong lenght
+    # Wrong length
     with pytest.raises(TypeError):
         make_multisite_classification(
             n_classes=4, n_sites=4, balance_per_site=[0.1, 0.1, 0.1, 0.1]
@@ -256,7 +257,7 @@ def test_balance_combinations_multiclass():
         make_multisite_classification(
             n_classes=3,
             n_sites=4,
-            balance_per_site=balance_per_site,  # type: ignore
+            balance_per_site=balance_per_site,
         )  # Wrong site-samples
 
     # Proportion do not sum 1
@@ -270,7 +271,7 @@ def test_balance_combinations_multiclass():
         make_multisite_classification(
             n_classes=3,
             n_sites=4,
-            balance_per_site=balance_per_site,  # type: ignore
+            balance_per_site=balance_per_site,
         )
     # Wrong type, string not accepted
     with pytest.raises(TypeError):
@@ -283,7 +284,7 @@ def test_balance_combinations_multiclass():
         make_multisite_classification(
             n_classes=3,
             n_sites=4,
-            balance_per_site=balance_per_site,  # type: ignore
+            balance_per_site=balance_per_site,
         )
     # All elements must be lower than 1
     with pytest.raises(ValueError):
@@ -296,7 +297,7 @@ def test_balance_combinations_multiclass():
         make_multisite_classification(
             n_classes=3,
             n_sites=4,
-            balance_per_site=balance_per_site,  # type: ignore
+            balance_per_site=balance_per_site,
         )
     # No negative elements allowed
     with pytest.raises(ValueError):
@@ -309,7 +310,7 @@ def test_balance_combinations_multiclass():
         make_multisite_classification(
             n_classes=3,
             n_sites=4,
-            balance_per_site=balance_per_site,  # type: ignore
+            balance_per_site=balance_per_site,
         )
 
     # n_samples should be stable, even with not exactly matched
@@ -323,7 +324,7 @@ def test_balance_combinations_multiclass():
     assert n_samples == len(y)
 
 
-def test_balance_combinations_binary():
+def test_balance_combinations_binary() -> None:
     """Test balance parameters for binary classification."""
     # Wrong type of arguments
     with pytest.raises(TypeError):
@@ -331,7 +332,7 @@ def test_balance_combinations_binary():
         make_multisite_classification(
             n_classes=2,
             n_sites=4,
-            balance_per_site=balance_per_site,  # type: ignore
+            balance_per_site=balance_per_site,
         )  # Wrong site-samples
     # Right number, wrong type of arguments
     with pytest.raises(TypeError):
@@ -339,7 +340,7 @@ def test_balance_combinations_binary():
         make_multisite_classification(
             n_classes=2,
             n_sites=4,
-            balance_per_site=balance_per_site,  # type: ignore
+            balance_per_site=balance_per_site,
         )
     # Not passing proportions
     with pytest.raises(ValueError):
@@ -347,7 +348,7 @@ def test_balance_combinations_binary():
         make_multisite_classification(
             n_classes=2,
             n_sites=4,
-            balance_per_site=balance_per_site,  # type: ignore
+            balance_per_site=balance_per_site,
         )
     # Wrong type (all should be float)
     with pytest.raises(TypeError):
@@ -364,7 +365,7 @@ def test_balance_combinations_binary():
         )  # Wrong site-samples
 
 
-def test_verbose_mode():
+def test_verbose_mode() -> None:
     """Test that verbose mode doesn't crash."""
     # Just ensure it runs without errors
     make_multisite_classification(
@@ -382,7 +383,7 @@ def test_verbose_mode():
     )
 
 
-def test_heterogeneous_site_effect():
+def test_heterogeneous_site_effect() -> None:
     """Test the heterogeneous site effect functionality."""
     # Just ensure it runs without errors
     make_multisite_classification(
