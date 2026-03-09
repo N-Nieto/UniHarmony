@@ -1,14 +1,15 @@
 """General utilities."""
 
+import numpy as np
+
+
 __all__ = [
     "filter_site_by_size",
 ]
 
 
-import numpy as np
-
-
 def filter_site_by_size(sites, min_size, max_size=np.inf, sites_ignore=None):
+    """Filter sites by size."""
     idx = np.zeros(len(sites))
     if sites_ignore is None:
         sites_ignore = np.array([])
