@@ -4,6 +4,10 @@ import warnings
 from typing import Any
 
 import numpy as np
+import structlog
+
+
+logger = structlog.get_logger()
 
 
 def get_site_data_statistics(
@@ -33,7 +37,7 @@ def get_site_data_statistics(
         Whether to compute comprehensive statistics including correlations
         and distribution metrics. Set to False for faster computation.
     verbose : bool, default=False
-        Whether to print progress information
+        Whether to log progress information.
 
     Returns
     -------
@@ -89,9 +93,9 @@ def get_site_data_statistics(
 
     # Overall statistics
     if verbose:
-        print(
-            f"Computing statistics for {n_samples} samples, {n_features} features, "  # noqa: E501
-            f"{n_sites} sites, {n_classes} classes"
+        logger.info(
+            f"Computing statistics for {n_samples} samples, "
+            f"{n_features} features, {n_sites} sites, {n_classes} classes"
         )
 
     stats["overall"] = _compute_overall_statistics(
@@ -319,7 +323,7 @@ def _compute_site_statistics(
     feature_names : list or None
         Names of features.
     verbose : bool
-        Whether to print progress
+        Whether to log progress.
 
     Returns
     -------
@@ -335,7 +339,7 @@ def _compute_site_statistics(
 
     for site in unique_sites:
         if verbose:
-            print(f"  Processing site {int(site)}...")
+            logger.info(f"  Processing site {int(site)}...")
 
         site_mask = site_labels == site
         x_site = x[site_mask]
@@ -415,7 +419,7 @@ def _compute_class_statistics(
     feature_names : list or None
         Names of features.
     verbose : bool
-        Whether to print progress
+        Whether to log progress.
 
     Returns
     -------
