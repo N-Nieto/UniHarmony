@@ -129,7 +129,11 @@ def make_multisite_classification(
 
         # Generate signal component based on class labels
         signal = _generate_signal_component(
-            y_site, n_features, signal_strength, n_classes
+            y_site,
+            n_features,
+            signal_strength,
+            n_classes,
+            random_state,
         )
 
         # Generate noise component
