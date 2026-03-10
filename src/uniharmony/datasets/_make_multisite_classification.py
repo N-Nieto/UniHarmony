@@ -33,29 +33,31 @@ def make_multisite_classification(
 
     Parameters
     ----------
-    n_sites : int, default=2
-        Number of sites to simulate
-    n_samples : int, default=1000
-        Total number of samples across all sites
-    balance_per_site : list[float] or None, default=None
+    n_sites : int, optional (default 2)
+        Number of sites to simulate.
+    n_samples : int, optional (default 1000)
+        Total number of samples across all sites.
+    balance_per_site : list of float or None, optional (default None)
         Class balance for each site. If None, uses balanced classes (0.5 for
-        binary, equal distribution for multi-class)
-    n_features : int, default=10
-        Number of features per sample
-    signal_strength : float, default=1.0
-        Strength of the signal component separating classes
-    noise_strength : float, default=1.0
-        Strength of the noise component
-    site_effect_strength : float, default=3.0
-        Strength of site-specific effects
-    site_effect_homogeneous : bool, default=True
-        Whether the site effect is homogeneous (same for all samples in a site)
-    n_classes : int, default=2
-        Number of classes to simulate (2 for binary, >2 for multi-class)
-    random_state : int or None, default=42
-        Random seed for reproducibility
-    verbose : bool, default=False
-        Whether to print progress information
+        binary, equal distribution for multi-class).
+    n_features : int, optional (default 10)
+        Number of features per sample.
+    signal_strength : float, optional (default 1.0)
+        Strength of the signal component separating classes.
+    noise_strength : float, optional (default 1.0)
+        Strength of the noise component.
+    site_effect_strength : float, optional (default 3.0)
+        Strength of site-specific effects.
+    site_effect_homogeneous : bool, optional (default True)
+        Whether the site effect is homogeneous (same for all samples in a
+        site).
+    n_classes : int, optional (default 2)
+        Number of classes to simulate (2 for binary, >2 for multi-class).
+    random_state : int or RandomState instance, (default 42)
+        The seed of the pseudo random number generator or RandomState for
+        reproducibility.
+    verbose : bool, optional (default False)
+        Whether to print progress information.
 
     Returns
     -------
@@ -64,11 +66,11 @@ def make_multisite_classification(
     y : np.ndarray of shape (n_samples,)
         Class labels (0 to n_classes-1)
     site_labels : np.ndarray of shape (n_samples,)
-        Site labels (0 to n_sites-1)
+        Site labels (0 to ``n_sites``-1)
 
     Examples
     --------
-    >>> X, y, site_labels = simulate_multi_site_data(
+    >>> X, y, site_labels = make_multisite_classification(
     ...     n_sites=3, n_samples=300, n_features=20, n_classes=3
     ... )
     >>> X.shape, y.shape, site_labels.shape
@@ -188,7 +190,37 @@ def _validate_parameters(
     site_effect_strength: float,
     n_classes: int,
 ) -> None:
-    """Validate all input parameters for data simulation."""
+    """Validate all input parameters for data simulation.
+
+    Parameters
+    ----------
+    n_sites : int
+        Number of sites to simulate.
+    n_samples : int
+        Total number of samples across all sites.
+    n_features : int
+        Number of features per sample.
+    signal_strength : float
+        Strength of the signal component separating classes.
+    noise_strength : float
+        Strength of the noise component.
+    site_effect_strength : float
+        Strength of site-specific effects.
+    n_classes : int
+        Number of classes to simulate (2 for binary, >2 for multi-class).
+
+    Raises
+    ------
+    ValueError
+        If ``n_sites`` is less than 2 or
+        if ``n_features`` is negative or
+        if ``n_classes`` is less than 2 or
+        if ``signal_strength`` is negative or
+        if ``noise_strength`` is negative or
+        if ``site_effect_strength`` is negative or
+        if ``n_samples`` is less than ``n_sites``.
+
+    """
     if n_sites < 2:
         raise ValueError(f"n_sites must be at least 2, got {n_sites}")
 
@@ -241,7 +273,7 @@ def _generate_binary_labels(
     Parameters
     ----------
     n_samples : int
-        Number of samples to generate
+        Number of samples to generate.
     p_class_1 : float
         Probability of class 1.
     random_state : RandomState instance
@@ -250,7 +282,7 @@ def _generate_binary_labels(
     Returns
     -------
     np.ndarray
-        Binary labels
+        Binary labels.
 
     """
     n_class_1 = int(np.round(n_samples * p_class_1))
@@ -273,18 +305,18 @@ def _generate_multiclass_labels(
     Parameters
     ----------
     n_samples : int
-        Number of samples to generate
-    class_probs : list[float]
-        Probability for each class (must sum to 1.0)
+        Number of samples to generate.
+    class_probs : list of float
+        Probability for each class (must sum to 1.0).
     n_classes : int
-        Number of classes
+        Number of classes.
     random_state : RandomState instance
         The RandomState for reproducibility.
 
     Returns
     -------
     np.ndarray
-        Multi-class labels (0 to n_classes-1)
+        Multi-class labels (0 to ``n_classes``-1).
 
     """
     # Calculate number of samples per class
@@ -323,20 +355,20 @@ def _generate_signal_component(
     Parameters
     ----------
     y : np.ndarray
-        Class labels
+        Class labels.
     n_features : int
-        Number of features
+        Number of features.
     signal_strength : float
-        Strength of signal separation
+        Strength of signal separation.
     n_classes : int
-        Number of classes
+        Number of classes.
     random_state : RandomState instance
         The RandomState for reproducibility.
 
     Returns
     -------
     np.ndarray
-        Signal component matrix
+        Signal component matrix.
 
     """
     n_samples = len(y)
@@ -390,20 +422,20 @@ def _validate_balance_per_site(
     Parameters
     ----------
     balance_per_site : list or None
-        Class balance specification
+        Class balance specification.
     n_sites : int
-        Number of sites
+        Number of sites.
     n_classes : int
-        Number of classes
+        Number of classes.
     verbose : bool
-        Control verbosity
+        Control verbosity.
 
     Raises
     ------
     ValueError
-        If balance_per_site has invalid structure or values
+        If ``balance_per_site`` has invalid structure or values.
     TypeError
-        If balance_per_site has wrong types
+        If ``balance_per_site`` has wrong types.
 
     """
     if balance_per_site is None:
@@ -433,7 +465,24 @@ def _validate_balance_per_site(
     return balance_per_site
 
 
-def _check_balance_for_binary_classification(balance_per_site) -> None:
+def _check_balance_for_binary_classification(
+    balance_per_site: list | None,
+) -> None:
+    """Check balance for binary classification.
+
+    Parameters
+    ----------
+    balance_per_site : list or None
+        Class balance specification.
+
+    Raises
+    ------
+    ValueError
+        If ``balance_per_site`` has invalid structure or values.
+    TypeError
+        If ``balance_per_site`` has wrong types.
+
+    """
     # For binary: list of floats
     for i, p_class1 in enumerate(balance_per_site):
         # Check type
@@ -451,7 +500,26 @@ def _check_balance_for_binary_classification(balance_per_site) -> None:
             )
 
 
-def _check_balance_for_multiclass(balance_per_site, n_classes) -> None:
+def _check_balance_for_multiclass(
+    balance_per_site: list | None, n_classes: int
+) -> None:
+    """Check balance for multi-class classification.
+
+    Parameters
+    ----------
+    balance_per_site : list or None
+        Class balance specification.
+    n_classes : int
+        Number of classes.
+
+    Raises
+    ------
+    ValueError
+        If ``balance_per_site`` has invalid structure or values.
+    TypeError
+        If ``balance_per_site`` has wrong types.
+
+    """
     # For multi-class: list of lists
     for i, site_balance in enumerate(balance_per_site):
         # Check it's a list
