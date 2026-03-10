@@ -91,9 +91,7 @@ def test_string_site_identifiers() -> None:
     y_pred = np.array([0, 1, 0, 1])
     sites = np.array(["A", "A", "B", "B"])
 
-    results = report_metric_by_site(
-        y_true, y_pred, sites, accuracy_score, overall_performance=False
-    )
+    results = report_metric_by_site(y_true, y_pred, sites, accuracy_score, overall_performance=False)
 
     assert set(results.keys()) == {"A", "B"}
 
@@ -104,15 +102,9 @@ def test_overall_performance_functionality() -> None:
     y_pred = np.array([0, 1, 0, 1])
     sites = np.array(["A", "A", "B", "B"])
 
-    results = report_metric_by_site(
-        y_true, y_pred, sites, accuracy_score, overall_performance=False
-    )
+    results = report_metric_by_site(y_true, y_pred, sites, accuracy_score, overall_performance=False)
     assert set(results.keys()) == {"A", "B"}
-    results = report_metric_by_site(
-        y_true, y_pred, sites, accuracy_score, overall_performance=True
-    )
+    results = report_metric_by_site(y_true, y_pred, sites, accuracy_score, overall_performance=True)
     assert set(results.keys()) == {"overall", "A", "B"}
     with pytest.raises(TypeError):
-        results = report_metric_by_site(
-            y_true, y_pred, sites, accuracy_score, overall_performance=1
-        )
+        results = report_metric_by_site(y_true, y_pred, sites, accuracy_score, overall_performance=1)

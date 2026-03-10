@@ -97,37 +97,24 @@ def get_site_data_statistics(
 
     # Overall statistics
     if verbose:
-        logger.info(
-            f"Computing statistics for {n_samples} samples, "
-            f"{n_features} features, {n_sites} sites, {n_classes} classes"
-        )
+        logger.info(f"Computing statistics for {n_samples} samples, {n_features} features, {n_sites} sites, {n_classes} classes")
 
-    stats["overall"] = _compute_overall_statistics(
-        x, y, site_labels, feature_names
-    )
+    stats["overall"] = _compute_overall_statistics(x, y, site_labels, feature_names)
 
     # Site-specific statistics
-    stats["site_statistics"] = _compute_site_statistics(
-        x, y, site_labels, unique_sites, feature_names, verbose
-    )
+    stats["site_statistics"] = _compute_site_statistics(x, y, site_labels, unique_sites, feature_names, verbose)
 
     # Class-specific statistics
-    stats["class_statistics"] = _compute_class_statistics(
-        x, y, unique_classes, feature_names, verbose
-    )
+    stats["class_statistics"] = _compute_class_statistics(x, y, unique_classes, feature_names, verbose)
 
     # Correlation and relationship statistics
     if compute_comprehensive:
-        stats["correlations"] = _compute_correlation_statistics(
-            x, y, site_labels, unique_sites, unique_classes
-        )
+        stats["correlations"] = _compute_correlation_statistics(x, y, site_labels, unique_sites, unique_classes)
 
     return stats
 
 
-def _validate_inputs(
-    x: np.ndarray, y: np.ndarray, site_labels: np.ndarray
-) -> None:
+def _validate_inputs(x: np.ndarray, y: np.ndarray, site_labels: np.ndarray) -> None:
     """Validate input arrays for get_site_data_statistics.
 
     Parameters
@@ -153,42 +140,30 @@ def _validate_inputs(
     _validate_array_values(x, y, site_labels)
 
 
-def _validate_array_types(
-    x: np.ndarray, y: np.ndarray, site_labels: np.ndarray
-) -> None:
+def _validate_array_types(x: np.ndarray, y: np.ndarray, site_labels: np.ndarray) -> None:
     """Validate that all inputs are numpy arrays."""
     if not isinstance(x, np.ndarray):
         raise TypeError(f"x must be a numpy array, got {type(x)}")
     if not isinstance(y, np.ndarray):
         raise TypeError(f"y must be a numpy array, got {type(y)}")
     if not isinstance(site_labels, np.ndarray):
-        raise TypeError(
-            f"site_labels must be a numpy array, got {type(site_labels)}"
-        )
+        raise TypeError(f"site_labels must be a numpy array, got {type(site_labels)}")
 
 
-def _validate_array_shapes(
-    x: np.ndarray, y: np.ndarray, site_labels: np.ndarray
-) -> None:
+def _validate_array_shapes(x: np.ndarray, y: np.ndarray, site_labels: np.ndarray) -> None:
     """Validate that all inputs have compatible shapes."""
     n_samples = x.shape[0]
 
     if y.shape[0] != n_samples:
-        raise ValueError(
-            "y must have same number of samples as x. x has "
-            f"{n_samples}, y has {y.shape[0]}"
-        )
+        raise ValueError(f"y must have same number of samples as x. x has {n_samples}, y has {y.shape[0]}")
 
     if site_labels.shape[0] != n_samples:
         raise ValueError(
-            "site_labels must have same number of samples as x. x has "
-            f"{n_samples}, site_labels has {site_labels.shape[0]}"
+            f"site_labels must have same number of samples as x. x has {n_samples}, site_labels has {site_labels.shape[0]}"
         )
 
 
-def _validate_array_dimensions(
-    x: np.ndarray, y: np.ndarray, site_labels: np.ndarray
-) -> None:
+def _validate_array_dimensions(x: np.ndarray, y: np.ndarray, site_labels: np.ndarray) -> None:
     """Validate the dimensionality of input arrays."""
     if x.ndim != 2:
         raise ValueError(f"x must be 2D array, got {x.ndim}D")
@@ -197,24 +172,16 @@ def _validate_array_dimensions(
         raise ValueError(f"y must be 1D array, got {y.ndim}D")
 
     if site_labels.ndim != 1:
-        raise ValueError(
-            f"site_labels must be 1D array, got {site_labels.ndim}D"
-        )
+        raise ValueError(f"site_labels must be 1D array, got {site_labels.ndim}D")
 
 
-def _validate_array_values(
-    x: np.ndarray, y: np.ndarray, site_labels: np.ndarray
-) -> None:
+def _validate_array_values(x: np.ndarray, y: np.ndarray, site_labels: np.ndarray) -> None:
     """Check for problematic values in input arrays."""
     if np.any(np.isnan(x)):
-        warnings.warn(
-            "x contains NaN values, statistics may be affected", stacklevel=2
-        )
+        warnings.warn("x contains NaN values, statistics may be affected", stacklevel=2)
 
     if np.any(np.isnan(y)):
-        warnings.warn(
-            "y contains NaN values, statistics may be affected", stacklevel=2
-        )
+        warnings.warn("y contains NaN values, statistics may be affected", stacklevel=2)
 
     if np.any(np.isnan(site_labels)):
         warnings.warn(
@@ -254,32 +221,19 @@ def _compute_overall_statistics(
 
     # Class distribution
     class_counts = np.bincount(y)
-    class_distribution = {
-        f"class_{i}": count for i, count in enumerate(class_counts)
-    }
+    class_distribution = {f"class_{i}": count for i, count in enumerate(class_counts)}
 
     # Site distribution
     site_counts = np.bincount(site_labels.astype(int))
-    site_distribution = {
-        f"site_{i}": count for i, count in enumerate(site_counts)
-    }
+    site_distribution = {f"site_{i}": count for i, count in enumerate(site_counts)}
 
     # Feature statistics
     if feature_names is None:
         feature_names = [f"feature_{i}" for i in range(n_features)]
 
-    feature_means = {
-        name: float(val)
-        for name, val in zip(feature_names, x.mean(axis=0), strict=True)
-    }
-    feature_stds = {
-        name: float(val)
-        for name, val in zip(feature_names, x.std(axis=0), strict=True)
-    }
-    feature_ranges = {
-        name: {"min": float(x[:, i].min()), "max": float(x[:, i].max())}
-        for i, name in enumerate(feature_names)
-    }
+    feature_means = {name: float(val) for name, val in zip(feature_names, x.mean(axis=0), strict=True)}
+    feature_stds = {name: float(val) for name, val in zip(feature_names, x.std(axis=0), strict=True)}
+    feature_ranges = {name: {"min": float(x[:, i].min()), "max": float(x[:, i].max())} for i, name in enumerate(feature_names)}
 
     return {
         "n_samples": int(n_samples),
@@ -290,10 +244,7 @@ def _compute_overall_statistics(
         "unique_classes": unique_classes.tolist(),
         "class_distribution": class_distribution,
         "site_distribution": site_distribution,
-        "overall_class_balance": {
-            f"class_{i}": float(count / n_samples)
-            for i, count in enumerate(class_counts)
-        },
+        "overall_class_balance": {f"class_{i}": float(count / n_samples) for i, count in enumerate(class_counts)},
         "feature_statistics": {
             "means": feature_means,
             "stds": feature_stds,
@@ -354,40 +305,23 @@ def _compute_site_statistics(
 
         # Class distribution in this site
         class_counts = np.bincount(y_site.astype(int))
-        class_distribution = {
-            f"class_{i}": int(count) for i, count in enumerate(class_counts)
-        }
+        class_distribution = {f"class_{i}": int(count) for i, count in enumerate(class_counts)}
 
         # Class balance percentages
         class_balance = {
-            f"class_{i}": float(count / n_site_samples)
-            if n_site_samples > 0
-            else 0.0
-            for i, count in enumerate(class_counts)
+            f"class_{i}": float(count / n_site_samples) if n_site_samples > 0 else 0.0 for i, count in enumerate(class_counts)
         }
 
         # Feature statistics for this site
-        feature_means = {
-            name: float(val)
-            for name, val in zip(
-                feature_names, x_site.mean(axis=0), strict=True
-            )
-        }
-        feature_stds = {
-            name: float(val)
-            for name, val in zip(
-                feature_names, x_site.std(axis=0), strict=True
-            )
-        }
+        feature_means = {name: float(val) for name, val in zip(feature_names, x_site.mean(axis=0), strict=True)}
+        feature_stds = {name: float(val) for name, val in zip(feature_names, x_site.std(axis=0), strict=True)}
 
         # Distance from global means
         global_means = x.mean(axis=0)
         site_means = x_site.mean(axis=0)
         feature_distance_from_global = {
             name: float(abs(site_mean - global_mean))
-            for name, site_mean, global_mean in zip(
-                feature_names, site_means, global_means, strict=True
-            )
+            for name, site_mean, global_mean in zip(feature_names, site_means, global_means, strict=True)
         }
 
         site_stats[f"site_{int(site)}"] = {
@@ -448,18 +382,8 @@ def _compute_class_statistics(
         n_class_samples = int(np.sum(class_mask))
 
         # Feature statistics for this class
-        feature_means = {
-            name: float(val)
-            for name, val in zip(
-                feature_names, x_class.mean(axis=0), strict=True
-            )
-        }
-        feature_stds = {
-            name: float(val)
-            for name, val in zip(
-                feature_names, x_class.std(axis=0), strict=True
-            )
-        }
+        feature_means = {name: float(val) for name, val in zip(feature_names, x_class.mean(axis=0), strict=True)}
+        feature_stds = {name: float(val) for name, val in zip(feature_names, x_class.std(axis=0), strict=True)}
 
         class_stats[f"class_{int(class_label)}"] = {
             "n_samples": n_class_samples,
@@ -517,22 +441,16 @@ def _compute_correlation_statistics(
                 feature_target_correlations.append(float(corr))
             except (ValueError, RuntimeWarning):
                 feature_target_correlations.append(None)
-        correlations["feature_target_correlations"] = (
-            feature_target_correlations
-        )
+        correlations["feature_target_correlations"] = feature_target_correlations
 
     # Inter-site feature mean correlations
     n_sites = len(unique_sites)
     if n_sites > 1:
-        site_means = np.array(
-            [x[site_labels == site].mean(axis=0) for site in unique_sites]
-        )
+        site_means = np.array([x[site_labels == site].mean(axis=0) for site in unique_sites])
 
         # Correlation matrix between site means
         site_mean_corr_matrix = np.corrcoef(site_means)
-        correlations["inter_site_feature_correlation_matrix"] = (
-            site_mean_corr_matrix.tolist()
-        )
+        correlations["inter_site_feature_correlation_matrix"] = site_mean_corr_matrix.tolist()
 
         # Average inter-site correlation
         mask = ~np.eye(n_sites, dtype=bool)
@@ -547,10 +465,7 @@ def _compute_correlation_statistics(
                 mean_i = x[y == unique_classes[i]].mean(axis=0)
                 mean_j = x[y == unique_classes[j]].mean(axis=0)
                 distance = np.linalg.norm(mean_i - mean_j)
-                key = (
-                    f"class_{int(unique_classes[i])}_vs_"
-                    f"class_{int(unique_classes[j])}"
-                )
+                key = f"class_{int(unique_classes[i])}_vs_class_{int(unique_classes[j])}"
                 class_separation[key] = float(distance)
         correlations["class_separation_distances"] = class_separation
 
@@ -583,9 +498,7 @@ def _compute_dataset_entropy(labels: np.ndarray) -> float:
     return entropy
 
 
-def print_statistics_summary(
-    stats: dict[str, Any], max_features: int = 5
-) -> None:
+def print_statistics_summary(stats: dict[str, Any], max_features: int = 5) -> None:
     """Print a human-readable summary of statistics.
 
     Parameters
@@ -630,9 +543,7 @@ def print_statistics_summary(
     # Show first few feature statistics
     if "feature_statistics" in overall:
         print(f"\nFEATURE STATISTICS (first {max_features} features):")
-        feature_names = list(overall["feature_statistics"]["means"].keys())[
-            :max_features
-        ]
+        feature_names = list(overall["feature_statistics"]["means"].keys())[:max_features]
         for name in feature_names:
             mean = overall["feature_statistics"]["means"][name]
             std = overall["feature_statistics"]["stds"][name]

@@ -8,32 +8,24 @@ from uniharmony import make_multisite_classification
 
 def test_basic_functionality() -> None:
     """Test basic functionality with default parameters."""
-    X, y, sites = make_multisite_classification(
-        n_sites=2, n_samples=100, n_features=10, random_state=42
-    )
+    X, y, sites = make_multisite_classification(n_sites=2, n_samples=100, n_features=10, random_state=42)
 
     assert X.shape == (100, 10), f"Expected X shape (100, 10), got {X.shape}"
     assert y.shape == (100,), f"Expected y shape (100,), got {y.shape}"
-    assert sites.shape == (100,), (
-        f"Expected sites shape (100,), got {sites.shape}"
-    )
+    assert sites.shape == (100,), f"Expected sites shape (100,), got {sites.shape}"
 
     # Check labels are binary
     assert set(y) == {0, 1}, f"Expected binary labels, got {np.unique(y)}"
 
     # Check site labels
-    assert set(sites) == {0, 1}, (
-        f"Expected sites {0, 1}, got {np.unique(sites)}"
-    )
+    assert set(sites) == {0, 1}, f"Expected sites {0, 1}, got {np.unique(sites)}"
 
 
 def test_sample_distribution() -> None:
     """Test that samples are properly distributed across sites."""
     n_sites = 3
     n_samples = 100
-    X, _, sites = make_multisite_classification(
-        n_sites=n_sites, n_samples=n_samples, random_state=42
-    )
+    X, _, sites = make_multisite_classification(n_sites=n_sites, n_samples=n_samples, random_state=42)
 
     # Check total samples
     assert len(X) == n_samples, f"Expected {n_samples} samples, got {len(X)}"
@@ -43,9 +35,7 @@ def test_sample_distribution() -> None:
     expected_per_site = n_samples // n_sites
 
     # Allow for rounding differences
-    assert all(abs(count - expected_per_site) <= 1 for count in site_counts), (
-        f"Uneven site distribution: {site_counts}"
-    )
+    assert all(abs(count - expected_per_site) <= 1 for count in site_counts), f"Uneven site distribution: {site_counts}"
 
 
 def test_class_balance() -> None:
@@ -65,26 +55,18 @@ def test_class_balance() -> None:
             p_class1 = np.mean(y_site == 1)
             expected = balance_per_site[site_idx]
             # Allow 5% tolerance due to random sampling
-            assert abs(p_class1 - expected) < 0.05, (
-                f"Site {site_idx}: expected {expected}, got {p_class1}"
-            )
+            assert abs(p_class1 - expected) < 0.05, f"Site {site_idx}: expected {expected}, got {p_class1}"
 
 
 def test_multiclass_functionality() -> None:
     """Test multi-class functionality."""
     n_classes = 3
-    _, y, _ = make_multisite_classification(
-        n_sites=2, n_samples=150, n_classes=n_classes, random_state=42
-    )
+    _, y, _ = make_multisite_classification(n_sites=2, n_samples=150, n_classes=n_classes, random_state=42)
 
     # Check all classes are present
     unique_classes = np.unique(y)
-    assert len(unique_classes) == n_classes, (
-        f"Expected {n_classes} classes, got {len(unique_classes)}"
-    )
-    assert set(unique_classes) == set(range(n_classes)), (
-        f"Expected classes {set(range(n_classes))}, got {set(unique_classes)}"
-    )
+    assert len(unique_classes) == n_classes, f"Expected {n_classes} classes, got {len(unique_classes)}"
+    assert set(unique_classes) == set(range(n_classes)), f"Expected classes {set(range(n_classes))}, got {set(unique_classes)}"
 
 
 def test_multiclass_balance() -> None:
@@ -112,20 +94,15 @@ def test_multiclass_balance() -> None:
                 expected_prob = expected_probs[class_idx]
                 # Allow 5% tolerance
                 assert abs(actual_prob - expected_prob) < 0.05, (
-                    f"Site {site_idx}, class {class_idx}: "
-                    f"expected {expected_prob}, got {actual_prob}"
+                    f"Site {site_idx}, class {class_idx}: expected {expected_prob}, got {actual_prob}"
                 )
 
 
 def test_signal_strength() -> None:
     """Test that signal strength affects class separation."""
     # Generate data with different signal strengths
-    X_weak, y_weak, _ = make_multisite_classification(
-        n_sites=2, n_samples=100, signal_strength=0.5, random_state=42
-    )
-    X_strong, y_strong, _ = make_multisite_classification(
-        n_sites=2, n_samples=100, signal_strength=2.0, random_state=42
-    )
+    X_weak, y_weak, _ = make_multisite_classification(n_sites=2, n_samples=100, signal_strength=0.5, random_state=42)
+    X_strong, y_strong, _ = make_multisite_classification(n_sites=2, n_samples=100, signal_strength=2.0, random_state=42)
 
     # Calculate mean difference between classes for each feature
     def class_separation(X, y):
@@ -137,16 +114,12 @@ def test_signal_strength() -> None:
     sep_strong = class_separation(X_strong, y_strong)
 
     # Strong signal should have larger separation
-    assert sep_strong > sep_weak, (
-        "Expected stronger separation with larger signal_strength"
-    )
+    assert sep_strong > sep_weak, "Expected stronger separation with larger signal_strength"
 
 
 def test_site_effect() -> None:
     """Test that site effect creates differences between sites."""
-    X, _, sites = make_multisite_classification(
-        n_sites=2, n_samples=100, site_effect_strength=5.0, random_state=42
-    )
+    X, _, sites = make_multisite_classification(n_sites=2, n_samples=100, site_effect_strength=5.0, random_state=42)
 
     # Calculate mean difference between sites for each feature
     mean_site0 = X[sites == 0].mean(axis=0)
@@ -154,9 +127,7 @@ def test_site_effect() -> None:
     site_difference = np.abs(mean_site1 - mean_site0).mean()
 
     # Site effect should create noticeable differences
-    assert site_difference > 1.0, (
-        "Expected larger site differences with site_effect_strength=5.0"
-    )
+    assert site_difference > 1.0, "Expected larger site differences with site_effect_strength=5.0"
 
 
 def test_reproducibility() -> None:
@@ -168,22 +139,16 @@ def test_reproducibility() -> None:
     # Same seed should give identical results
     assert np.array_equal(X1, X2), "Results with same seed should be identical"
     assert np.array_equal(y1, y2), "Results with same seed should be identical"
-    assert np.array_equal(sites1, sites2), (
-        "Results with same seed should be identical"
-    )
+    assert np.array_equal(sites1, sites2), "Results with same seed should be identical"
 
     # Different seed should give different results (very high probability)
-    assert not np.array_equal(X1, X3), (
-        "Results with different seeds should differ"
-    )
+    assert not np.array_equal(X1, X3), "Results with different seeds should differ"
 
 
 def test_edge_cases() -> None:
     """Test edge cases and error handling."""
     # Test with very few samples
-    X, _, _ = make_multisite_classification(
-        n_samples=10, n_sites=3, random_state=42
-    )
+    X, _, _ = make_multisite_classification(n_samples=10, n_sites=3, random_state=42)
     assert len(X) == 10, f"Expected 10 samples, got {len(X)}"
 
     # Test single feature
@@ -198,36 +163,24 @@ def test_edge_cases() -> None:
         make_multisite_classification(n_classes=1)
 
     with pytest.raises(ValueError):
-        make_multisite_classification(
-            balance_per_site=[0.5, 0.5, 0.5]
-        )  # Wrong length
+        make_multisite_classification(balance_per_site=[0.5, 0.5, 0.5])  # Wrong length
     with pytest.raises(ValueError):
         make_multisite_classification(n_features=0)  # Wrong number of features
     with pytest.raises(ValueError):
-        make_multisite_classification(
-            signal_strength=-1
-        )  # Wrong signal strength
+        make_multisite_classification(signal_strength=-1)  # Wrong signal strength
     with pytest.raises(ValueError):
-        make_multisite_classification(
-            noise_strength=-1
-        )  # Wrong noise strength
+        make_multisite_classification(noise_strength=-1)  # Wrong noise strength
     with pytest.raises(ValueError):
-        make_multisite_classification(
-            site_effect_strength=-1
-        )  # Wrong Effect of Site strength
+        make_multisite_classification(site_effect_strength=-1)  # Wrong Effect of Site strength
     with pytest.raises(ValueError):
-        make_multisite_classification(
-            n_samples=2, n_sites=4
-        )  # Wrong site-samples
+        make_multisite_classification(n_samples=2, n_sites=4)  # Wrong site-samples
 
 
 def test_balance_combinations_multiclass() -> None:
     """Test invalid parameter for multiclass classification combinations."""
     # Wrong length
     with pytest.raises(ValueError):
-        make_multisite_classification(
-            n_classes=2, balance_per_site=[0.1, 0.1, 0.2]
-        )
+        make_multisite_classification(n_classes=2, balance_per_site=[0.1, 0.1, 0.2])
     # Wrong Type
     with pytest.raises(TypeError):
         make_multisite_classification(
@@ -237,9 +190,7 @@ def test_balance_combinations_multiclass() -> None:
         )
     # Wrong length
     with pytest.raises(TypeError):
-        make_multisite_classification(
-            n_classes=4, n_sites=4, balance_per_site=[0.1, 0.1, 0.1, 0.1]
-        )
+        make_multisite_classification(n_classes=4, n_sites=4, balance_per_site=[0.1, 0.1, 0.1, 0.1])
     # Wrong combination,
     # one list has one element more than the number of classes
     with pytest.raises(ValueError):
@@ -368,12 +319,8 @@ def test_balance_combinations_binary() -> None:
 def test_verbose_mode() -> None:
     """Test that verbose mode doesn't crash."""
     # Just ensure it runs without errors
-    make_multisite_classification(
-        n_features=2, n_samples=100, verbose=True, random_state=42
-    )
-    make_multisite_classification(
-        n_features=2, n_samples=100, verbose=False, random_state=42
-    )
+    make_multisite_classification(n_features=2, n_samples=100, verbose=True, random_state=42)
+    make_multisite_classification(n_features=2, n_samples=100, verbose=False, random_state=42)
     make_multisite_classification(
         n_features=2,
         n_samples=100,

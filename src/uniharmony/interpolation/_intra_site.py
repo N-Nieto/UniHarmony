@@ -130,15 +130,9 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
             # Make sure the provided interpolator
             # has "not majority" as sampling_strategy
             if self.interpolator.sampling_strategy in ["auto", "not majority"]:
-                raise ValueError(
-                    "IntraSiteInterpolation requires the interpolator to have "
-                    "`sampling_strategy='not majority'`."
-                )
+                raise ValueError("IntraSiteInterpolation requires the interpolator to have `sampling_strategy='not majority'`.")
         else:
-            raise ValueError(
-                "interpolator must be either a string"
-                "or an instance of SamplerMixin."
-            )
+            raise ValueError("interpolator must be either a stringor an instance of SamplerMixin.")
 
         X_out, y_out, sites_out = [], [], []
 
