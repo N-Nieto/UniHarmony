@@ -2,6 +2,7 @@
 
 import numpy as np
 import structlog
+from sklearn.utils import check_random_state
 
 
 __all__ = [
@@ -22,7 +23,7 @@ def make_multisite_classification(
     site_effect_strength: float = 3.0,
     site_effect_homogeneous: bool = True,
     n_classes: int = 2,
-    random_state: int | None = 42,
+    random_state: int | np.random.RandomState = 42,
     verbose: bool = False,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """Simulate multi-site data with signal, noise, and site effect components.
@@ -74,9 +75,7 @@ def make_multisite_classification(
     ((300, 20), (300,), (300,))
 
     """
-    # Set random seed for reproducibility
-    if random_state is not None:
-        np.random.seed(random_state)
+    random_state = check_random_state(random_state)
 
     # Validate input parameters
     _validate_parameters(
@@ -115,13 +114,15 @@ def make_multisite_classification(
         if n_classes == 2:
             y_site = _generate_binary_labels(
                 n_site_samples,
-                balance_per_site[site_idx],  # type: ignore
+                balance_per_site[site_idx],
+                random_state,
             )
         else:
             y_site = _generate_multiclass_labels(
                 n_site_samples,
-                balance_per_site[site_idx],  # type: ignore
-                n_classes,  # type: ignore
+                balance_per_site[site_idx],
+                n_classes,
+                random_state,
             )
 
         # Generate signal component based on class labels
@@ -130,13 +131,13 @@ def make_multisite_classification(
         )
 
         # Generate noise component
-        noise = np.random.normal(
+        noise = random_state.normal(
             loc=0.0, scale=noise_strength, size=(n_site_samples, n_features)
         )
 
         if site_effect_homogeneous:
             # Generate site effect (same for all samples in this site)
-            site_effect = np.random.normal(
+            site_effect = random_state.normal(
                 loc=0.0,
                 scale=site_effect_strength,
                 size=(
@@ -146,7 +147,7 @@ def make_multisite_classification(
             )
         else:
             # Generate site effect (different for each sample in this site)
-            site_effect = np.random.normal(
+            site_effect = random_state.normal(
                 loc=0.0,
                 scale=site_effect_strength,
                 size=(n_site_samples, n_features),
@@ -165,7 +166,7 @@ def make_multisite_classification(
     site_labels = np.array(site_labels_list, dtype=int)
 
     # Shuffle samples across sites (optional but recommended)
-    indices = np.random.permutation(len(X))
+    indices = random_state.permutation(len(X))
     X = X[indices]
     y = y[indices]
     site_labels = site_labels[indices]
@@ -230,15 +231,21 @@ def _get_default_balance_per_site(n_sites: int, n_classes: int):
         return [[equal_prob] * n_classes] * n_sites
 
 
-def _generate_binary_labels(n_samples: int, p_class1: float) -> np.ndarray:
+def _generate_binary_labels(
+    n_samples: int,
+    p_class_1: float,
+    random_state: np.random.RandomState,
+) -> np.ndarray:
     """Generate binary labels (0 or 1) for given number of samples.
 
     Parameters
     ----------
     n_samples : int
         Number of samples to generate
-    p_class1 : float
-        Probability of class 1
+    p_class_1 : float
+        Probability of class 1.
+    random_state : RandomState instance
+        The RandomState for reproducibility.
 
     Returns
     -------
@@ -246,17 +253,20 @@ def _generate_binary_labels(n_samples: int, p_class1: float) -> np.ndarray:
         Binary labels
 
     """
-    n_class1 = int(np.round(n_samples * p_class1))
+    n_class_1 = int(np.round(n_samples * p_class_1))
 
     y = np.zeros(n_samples, dtype=int)
-    y[:n_class1] = 1  # First n_class1 samples are class 1
-    np.random.shuffle(y)  # Shuffle to randomize order
+    y[:n_class_1] = 1  # First n_class_1 samples are class 1
+    random_state.shuffle(y)  # Shuffle to randomize order
 
     return y
 
 
 def _generate_multiclass_labels(
-    n_samples: int, class_probs: list[float], n_classes: int
+    n_samples: int,
+    class_probs: list[float],
+    n_classes: int,
+    random_state: np.random.RandomState,
 ) -> np.ndarray:
     """Generate multi-class labels based on class probabilities.
 
@@ -268,6 +278,8 @@ def _generate_multiclass_labels(
         Probability for each class (must sum to 1.0)
     n_classes : int
         Number of classes
+    random_state : RandomState instance
+        The RandomState for reproducibility.
 
     Returns
     -------
@@ -289,7 +301,7 @@ def _generate_multiclass_labels(
         y.extend([class_idx] * samples_per_class[class_idx])
 
     y = np.array(y, dtype=int)
-    np.random.shuffle(y)
+    random_state.shuffle(y)
 
     return y
 
@@ -299,6 +311,7 @@ def _generate_signal_component(
     n_features: int,
     signal_strength: float,
     n_classes: int,
+    random_state: np.random.RandomState,
 ) -> np.ndarray:
     """Generate signal component that separates classes.
 
@@ -317,6 +330,8 @@ def _generate_signal_component(
         Strength of signal separation
     n_classes : int
         Number of classes
+    random_state : RandomState instance
+        The RandomState for reproducibility.
 
     Returns
     -------
@@ -336,14 +351,14 @@ def _generate_signal_component(
         mask_class1 = y == 1
 
         if np.any(mask_class0):
-            signal[mask_class0] = np.random.normal(
+            signal[mask_class0] = random_state.normal(
                 loc=mean_class0,
                 scale=1.0,
                 size=(np.sum(mask_class0), n_features),
             )
 
         if np.any(mask_class1):
-            signal[mask_class1] = np.random.normal(
+            signal[mask_class1] = random_state.normal(
                 loc=mean_class1,
                 scale=1.0,
                 size=(np.sum(mask_class1), n_features),
@@ -358,7 +373,7 @@ def _generate_signal_component(
         for class_idx in range(n_classes):
             mask = y == class_idx
             if np.any(mask):
-                signal[mask] = np.random.normal(
+                signal[mask] = random_state.normal(
                     loc=class_means[class_idx],
                     scale=1.0,
                     size=(np.sum(mask), n_features),
