@@ -1,7 +1,4 @@
-"""Multisite Characterization provides statistics
-and basic information about multisite data.
-
-"""  # noqa: D205
+"""Provide statistics and basic information about multisite data."""
 
 import warnings
 from typing import Any
@@ -57,7 +54,7 @@ def get_site_data_statistics(
 
     Examples
     --------
-    >>> X, y, sites = simulate_multi_site_data(n_sites=3, n_samples=100)
+    >>> X, y, sites = make_multisite_classification(n_sites=3, n_samples=100)
     >>> stats = get_site_data_statistics(X, y, sites)
     >>> print(stats['overall']['n_samples'])
     100
@@ -312,22 +309,22 @@ def _compute_site_statistics(
     Parameters
     ----------
     x : np.ndarray
-        Feature matrix
+        Feature matrix.
     y : np.ndarray
-        Target labels
+        Target labels.
     site_labels : np.ndarray
-        Site labels
+        Site labels.
     unique_sites : np.ndarray
-        Unique site identifiers
+        Unique site identifiers.
     feature_names : list or None
-        Names of features
+        Names of features.
     verbose : bool
         Whether to print progress
 
     Returns
     -------
     dict
-        Site statistics
+        Site statistics.
 
     """
     n_features = x.shape[1]
@@ -410,20 +407,20 @@ def _compute_class_statistics(
     Parameters
     ----------
     x : np.ndarray
-        Feature matrix
+        Feature matrix.
     y : np.ndarray
-        Target labels
+        Target labels.
     unique_classes : np.ndarray
-        Unique class identifiers
+        Unique class identifiers.
     feature_names : list or None
-        Names of features
+        Names of features.
     verbose : bool
         Whether to print progress
 
     Returns
     -------
     dict
-        Class statistics
+        Class statistics.
 
     """
     n_features = x.shape[1]
