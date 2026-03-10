@@ -63,8 +63,8 @@ def test_invalid_load_params(tmp_path: Path) -> None:
         load_MAREoS(data_dir=data_dir, effect_examples=1)
     with pytest.raises(ValueError):
         load_MAREoS(data_dir=data_dir, effect_examples="wrong")
-    # Should be a list
-    assert isinstance(load_MAREoS(data_dir=data_dir, effects="eos"), list)
+
+    assert isinstance(load_MAREoS(data_dir=data_dir, effects="eos"), dict)
 
 
 def test_ensure_mareos_data_custom_dir(tmp_path: Path) -> None:
