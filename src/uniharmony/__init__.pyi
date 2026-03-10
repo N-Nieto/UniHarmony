@@ -3,6 +3,7 @@ __all__ = [
     "dl",
     "interpolation",
     "normative",
+    "prettyharmonize",
 ]
 
-from . import combat, dl, interpolation, normative
+from . import combat, dl, interpolation, normative, prettyharmonize
