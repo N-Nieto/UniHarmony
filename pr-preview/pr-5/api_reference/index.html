@@ -11,7 +11,7 @@
         <link rel="canonical" href="https://github.com/N-Nieto/UniHarmony/api_reference/">
       
       
-        <link rel="prev" href="../examples/ICI_multiclass_classification_example.md">
+        <link rel="prev" href="../examples/ICI_multiclass_classification_example/">
       
       
       
@@ -681,7 +681,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../examples/ICI_multiclass_classification_example.md" class="md-nav__link">
+      <a href="../examples/ICI_multiclass_classification_example/" class="md-nav__link">
         
   
   
@@ -897,19 +897,19 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#uniharmony.interpolation.ICIHarmonization" class="md-nav__link">
+  <a href="#uniharmony.interpolation.IntraSiteInterpolation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ICIHarmonization
+        IntraSiteInterpolation
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="ICIHarmonization">
+    <nav class="md-nav" aria-label="IntraSiteInterpolation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#uniharmony.interpolation.ICIHarmonization.fit_resample" class="md-nav__link">
+  <a href="#uniharmony.interpolation.IntraSiteInterpolation.fit_resample" class="md-nav__link">
     <span class="md-ellipsis">
       
         fit_resample
@@ -1076,19 +1076,19 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#uniharmony.interpolation.ICIHarmonization" class="md-nav__link">
+  <a href="#uniharmony.interpolation.IntraSiteInterpolation" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ICIHarmonization
+        IntraSiteInterpolation
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="ICIHarmonization">
+    <nav class="md-nav" aria-label="IntraSiteInterpolation">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#uniharmony.interpolation.ICIHarmonization.fit_resample" class="md-nav__link">
+  <a href="#uniharmony.interpolation.IntraSiteInterpolation.fit_resample" class="md-nav__link">
     <span class="md-ellipsis">
       
         fit_resample
@@ -1183,7 +1183,7 @@
                 <code>effects</code>
             </td>
             <td>
-                  <code>list of str, str or None. Optional</code>
+                  <code>list of str, str or None, optional (default None)</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1199,7 +1199,7 @@
                 <code>effect_types</code>
             </td>
             <td>
-                  <code>list of str, str or None. Optional</code>
+                  <code>list of str, str or None, optional (default None)</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1216,11 +1216,12 @@ If None, loads all ["simple", "interaction"]</p>
                 <code>effect_examples</code>
             </td>
             <td>
-                  <code>list of str, str or None. Optional</code>
+                  <code>list of str, str or None, optional (default None)</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>List of examples to load. If None, loads all ["1", "2"]</p>
+                <p>List of examples to load.
+If None, loads all ["1", "2"].</p>
               </div>
             </td>
             <td>
@@ -1232,11 +1233,11 @@ If None, loads all ["simple", "interaction"]</p>
                 <code>as_numpy</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>
+                  <code>bool, optional (default True)</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>If True, return numpy arrays. If False, return pandas DataFrames.</p>
+                <p>If True, return <code>numpy.ndarray</code>, else <code>pandas.DataFrame</code>.</p>
               </div>
             </td>
             <td>
@@ -1248,7 +1249,7 @@ If None, loads all ["simple", "interaction"]</p>
                 <code>data_dir</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-external" title="pathlib.Path" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path">Path</a></code>
+                  <code>Path | None, optional (default None)</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1264,11 +1265,11 @@ If None, loads all ["simple", "interaction"]</p>
                 <code>force_download</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>
+                  <code>bool, optional (default False)</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Force to download again the dataset in case of corrupt files</p>
+                <p>Force to download again the dataset in case of corrupt files.</p>
               </div>
             </td>
             <td>
@@ -1280,7 +1281,7 @@ If None, loads all ["simple", "interaction"]</p>
                 <code>verbose</code>
             </td>
             <td>
-                  <code>bool = optional,</code>
+                  <code>bool, optional (default False)</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1306,17 +1307,19 @@ If None, loads all ["simple", "interaction"]</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><span title="Dict">Dict</span>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>, <span title="Dict">Dict</span>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#str">str</a>, <span title="Any">Any</span>]]</code>
+                  <code>dict of str and dict</code>
             </td>
             <td>
               <div class="doc-md-description">
                 <p>Nested dictionary where keys are dataset names
-containing:
-- "X": Feature matrix
-- "y": Target labels
-- "sites": Site labels
-- "covs": Covariates
-- "folds": Cross-validation folds</p>
+containing:</p>
+<ul>
+<li>"X": Feature matrix</li>
+<li>"y": Target labels</li>
+<li>"sites": Site labels</li>
+<li>"covs": Covariates</li>
+<li>"folds": Cross-validation folds</li>
+</ul>
               </div>
             </td>
           </tr>
@@ -1339,7 +1342,7 @@ containing:
             </td>
             <td>
               <div class="doc-md-description">
-                <p>If any parameter contains invalid values</p>
+                <p>If any parameter contains invalid values.</p>
               </div>
             </td>
           </tr>
@@ -1361,11 +1364,7 @@ containing:
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/uniharmony/datasets/_load_mareos.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 49</span>
-<span class="normal"> 50</span>
-<span class="normal"> 51</span>
-<span class="normal"> 52</span>
-<span class="normal"> 53</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 53</span>
 <span class="normal"> 54</span>
 <span class="normal"> 55</span>
 <span class="normal"> 56</span>
@@ -1450,7 +1449,13 @@ containing:
 <span class="normal">135</span>
 <span class="normal">136</span>
 <span class="normal">137</span>
-<span class="normal">138</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">load_MAREoS</span><span class="p">(</span>  <span class="c1"># noqa: N802</span>
+<span class="normal">138</span>
+<span class="normal">139</span>
+<span class="normal">140</span>
+<span class="normal">141</span>
+<span class="normal">142</span>
+<span class="normal">143</span>
+<span class="normal">144</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">load_MAREoS</span><span class="p">(</span>  <span class="c1"># noqa: N802</span>
     <span class="n">effects</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">effect_types</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
     <span class="n">effect_examples</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1463,27 +1468,29 @@ containing:
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    effects : list of str, str or None. Optional</span>
+<span class="sd">    effects : list of str, str or None, optional (default None)</span>
 <span class="sd">        List of effects to load. If None, loads all [&quot;eos&quot;, &quot;true&quot;]</span>
-<span class="sd">    effect_types : list of str, str or None. Optional</span>
+<span class="sd">    effect_types : list of str, str or None, optional (default None)</span>
 <span class="sd">        List of effect types to load.</span>
 <span class="sd">        If None, loads all [&quot;simple&quot;, &quot;interaction&quot;]</span>
-<span class="sd">    effect_examples : list of str, str or None. Optional</span>
-<span class="sd">        List of examples to load. If None, loads all [&quot;1&quot;, &quot;2&quot;]</span>
-<span class="sd">    as_numpy : bool, default=True</span>
-<span class="sd">        If True, return numpy arrays. If False, return pandas DataFrames.</span>
-<span class="sd">    data_dir : Path, optional</span>
+<span class="sd">    effect_examples : list of str, str or None, optional (default None)</span>
+<span class="sd">        List of examples to load.</span>
+<span class="sd">        If None, loads all [&quot;1&quot;, &quot;2&quot;].</span>
+<span class="sd">    as_numpy : bool, optional (default True)</span>
+<span class="sd">        If True, return ``numpy.ndarray``, else ``pandas.DataFrame``.</span>
+<span class="sd">    data_dir : Path | None, optional (default None)</span>
 <span class="sd">        Directory containing MAREoS data files. If None, downloads to cache.</span>
-<span class="sd">    force_download: : bool = optional,</span>
-<span class="sd">        Force to download again the dataset in case of corrupt files</span>
-<span class="sd">    verbose : bool = optional,</span>
+<span class="sd">    force_download : bool, optional (default False)</span>
+<span class="sd">        Force to download again the dataset in case of corrupt files.</span>
+<span class="sd">    verbose : bool, optional (default False)</span>
 <span class="sd">        Control verbosity.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    Dict[str, Dict[str, Any]]</span>
+<span class="sd">    dict of str and dict</span>
 <span class="sd">        Nested dictionary where keys are dataset names</span>
 <span class="sd">        containing:</span>
+
 <span class="sd">        - &quot;X&quot;: Feature matrix</span>
 <span class="sd">        - &quot;y&quot;: Target labels</span>
 <span class="sd">        - &quot;sites&quot;: Site labels</span>
@@ -1493,7 +1500,7 @@ containing:
 <span class="sd">    Raises</span>
 <span class="sd">    ------</span>
 <span class="sd">    ValueError</span>
-<span class="sd">        If any parameter contains invalid values</span>
+<span class="sd">        If any parameter contains invalid values.</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
@@ -1578,11 +1585,11 @@ All components are sampled from Gaussian distributions.</p>
                 <code>n_sites</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
+                  <code>int, optional (default 2)</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Number of sites to simulate</p>
+                <p>Number of sites to simulate.</p>
               </div>
             </td>
             <td>
@@ -1594,11 +1601,11 @@ All components are sampled from Gaussian distributions.</p>
                 <code>n_samples</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
+                  <code>int, optional (default 1000)</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Total number of samples across all sites</p>
+                <p>Total number of samples across all sites.</p>
               </div>
             </td>
             <td>
@@ -1610,12 +1617,12 @@ All components are sampled from Gaussian distributions.</p>
                 <code>balance_per_site</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#list">list</a>[<a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a>] or None</code>
+                  <code>list of float or None, optional (default None)</code>
             </td>
             <td>
               <div class="doc-md-description">
                 <p>Class balance for each site. If None, uses balanced classes (0.5 for
-binary, equal distribution for multi-class)</p>
+binary, equal distribution for multi-class).</p>
               </div>
             </td>
             <td>
@@ -1627,11 +1634,11 @@ binary, equal distribution for multi-class)</p>
                 <code>n_features</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
+                  <code>int, optional (default 10)</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Number of features per sample</p>
+                <p>Number of features per sample.</p>
               </div>
             </td>
             <td>
@@ -1643,11 +1650,11 @@ binary, equal distribution for multi-class)</p>
                 <code>signal_strength</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></code>
+                  <code>float, optional (default 1.0)</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Strength of the signal component separating classes</p>
+                <p>Strength of the signal component separating classes.</p>
               </div>
             </td>
             <td>
@@ -1659,11 +1666,11 @@ binary, equal distribution for multi-class)</p>
                 <code>noise_strength</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></code>
+                  <code>float, optional (default 1.0)</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Strength of the noise component</p>
+                <p>Strength of the noise component.</p>
               </div>
             </td>
             <td>
@@ -1675,11 +1682,11 @@ binary, equal distribution for multi-class)</p>
                 <code>site_effect_strength</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#float">float</a></code>
+                  <code>float, optional (default 3.0)</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Strength of site-specific effects</p>
+                <p>Strength of site-specific effects.</p>
               </div>
             </td>
             <td>
@@ -1691,11 +1698,12 @@ binary, equal distribution for multi-class)</p>
                 <code>site_effect_homogeneous</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>
+                  <code>bool, optional (default True)</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Whether the site effect is homogeneous (same for all samples in a site)</p>
+                <p>Whether the site effect is homogeneous (same for all samples in a
+site).</p>
               </div>
             </td>
             <td>
@@ -1707,11 +1715,11 @@ binary, equal distribution for multi-class)</p>
                 <code>n_classes</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a></code>
+                  <code>int, optional (default 2)</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Number of classes to simulate (2 for binary, &gt;2 for multi-class)</p>
+                <p>Number of classes to simulate (2 for binary, &gt;2 for multi-class).</p>
               </div>
             </td>
             <td>
@@ -1723,11 +1731,12 @@ binary, equal distribution for multi-class)</p>
                 <code>random_state</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#int">int</a> or None</code>
+                  <code>int or RandomState instance, (default 42)</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Random seed for reproducibility</p>
+                <p>The seed of the pseudo random number generator or RandomState for
+reproducibility.</p>
               </div>
             </td>
             <td>
@@ -1739,11 +1748,11 @@ binary, equal distribution for multi-class)</p>
                 <code>verbose</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/functions.html#bool">bool</a></code>
+                  <code>bool, optional (default False)</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Whether to print progress information</p>
+                <p>Whether to print progress information.</p>
               </div>
             </td>
             <td>
@@ -1789,7 +1798,7 @@ binary, equal distribution for multi-class)</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Site labels (0 to n_sites-1)</p>
+                <p>Site labels (0 to <code>n_sites</code>-1)</p>
               </div>
             </td>
           </tr>
@@ -1798,7 +1807,7 @@ binary, equal distribution for multi-class)</p>
 
 
 <p><span class="doc-section-title">Examples:</span></p>
-    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">site_labels</span> <span class="o">=</span> <span class="n">simulate_multi_site_data</span><span class="p">(</span>
+    <div class="highlight"><pre><span></span><code><span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">site_labels</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">n_sites</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_samples</span><span class="o">=</span><span class="mi">300</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">n_classes</span><span class="o">=</span><span class="mi">3</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">site_labels</span><span class="o">.</span><span class="n">shape</span>
@@ -1808,13 +1817,7 @@ binary, equal distribution for multi-class)</p>
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/uniharmony/datasets/_make_multisite_classification.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 10</span>
-<span class="normal"> 11</span>
-<span class="normal"> 12</span>
-<span class="normal"> 13</span>
-<span class="normal"> 14</span>
-<span class="normal"> 15</span>
-<span class="normal"> 16</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 16</span>
 <span class="normal"> 17</span>
 <span class="normal"> 18</span>
 <span class="normal"> 19</span>
@@ -1969,7 +1972,21 @@ binary, equal distribution for multi-class)</p>
 <span class="normal">168</span>
 <span class="normal">169</span>
 <span class="normal">170</span>
-<span class="normal">171</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">make_multisite_classification</span><span class="p">(</span>
+<span class="normal">171</span>
+<span class="normal">172</span>
+<span class="normal">173</span>
+<span class="normal">174</span>
+<span class="normal">175</span>
+<span class="normal">176</span>
+<span class="normal">177</span>
+<span class="normal">178</span>
+<span class="normal">179</span>
+<span class="normal">180</span>
+<span class="normal">181</span>
+<span class="normal">182</span>
+<span class="normal">183</span>
+<span class="normal">184</span>
+<span class="normal">185</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">make_multisite_classification</span><span class="p">(</span>
     <span class="n">n_sites</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
     <span class="n">n_samples</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span>
     <span class="n">balance_per_site</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -1979,7 +1996,7 @@ binary, equal distribution for multi-class)</p>
     <span class="n">site_effect_strength</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">3.0</span><span class="p">,</span>
     <span class="n">site_effect_homogeneous</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
     <span class="n">n_classes</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
-    <span class="n">random_state</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="mi">42</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">RandomState</span> <span class="o">=</span> <span class="mi">42</span><span class="p">,</span>
     <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Simulate multi-site data with signal, noise, and site effect components.</span>
@@ -1989,29 +2006,31 @@ binary, equal distribution for multi-class)</p>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    n_sites : int, default=2</span>
-<span class="sd">        Number of sites to simulate</span>
-<span class="sd">    n_samples : int, default=1000</span>
-<span class="sd">        Total number of samples across all sites</span>
-<span class="sd">    balance_per_site : list[float] or None, default=None</span>
+<span class="sd">    n_sites : int, optional (default 2)</span>
+<span class="sd">        Number of sites to simulate.</span>
+<span class="sd">    n_samples : int, optional (default 1000)</span>
+<span class="sd">        Total number of samples across all sites.</span>
+<span class="sd">    balance_per_site : list of float or None, optional (default None)</span>
 <span class="sd">        Class balance for each site. If None, uses balanced classes (0.5 for</span>
-<span class="sd">        binary, equal distribution for multi-class)</span>
-<span class="sd">    n_features : int, default=10</span>
-<span class="sd">        Number of features per sample</span>
-<span class="sd">    signal_strength : float, default=1.0</span>
-<span class="sd">        Strength of the signal component separating classes</span>
-<span class="sd">    noise_strength : float, default=1.0</span>
-<span class="sd">        Strength of the noise component</span>
-<span class="sd">    site_effect_strength : float, default=3.0</span>
-<span class="sd">        Strength of site-specific effects</span>
-<span class="sd">    site_effect_homogeneous : bool, default=True</span>
-<span class="sd">        Whether the site effect is homogeneous (same for all samples in a site)</span>
-<span class="sd">    n_classes : int, default=2</span>
-<span class="sd">        Number of classes to simulate (2 for binary, &gt;2 for multi-class)</span>
-<span class="sd">    random_state : int or None, default=42</span>
-<span class="sd">        Random seed for reproducibility</span>
-<span class="sd">    verbose : bool, default=False</span>
-<span class="sd">        Whether to print progress information</span>
+<span class="sd">        binary, equal distribution for multi-class).</span>
+<span class="sd">    n_features : int, optional (default 10)</span>
+<span class="sd">        Number of features per sample.</span>
+<span class="sd">    signal_strength : float, optional (default 1.0)</span>
+<span class="sd">        Strength of the signal component separating classes.</span>
+<span class="sd">    noise_strength : float, optional (default 1.0)</span>
+<span class="sd">        Strength of the noise component.</span>
+<span class="sd">    site_effect_strength : float, optional (default 3.0)</span>
+<span class="sd">        Strength of site-specific effects.</span>
+<span class="sd">    site_effect_homogeneous : bool, optional (default True)</span>
+<span class="sd">        Whether the site effect is homogeneous (same for all samples in a</span>
+<span class="sd">        site).</span>
+<span class="sd">    n_classes : int, optional (default 2)</span>
+<span class="sd">        Number of classes to simulate (2 for binary, &gt;2 for multi-class).</span>
+<span class="sd">    random_state : int or RandomState instance, (default 42)</span>
+<span class="sd">        The seed of the pseudo random number generator or RandomState for</span>
+<span class="sd">        reproducibility.</span>
+<span class="sd">    verbose : bool, optional (default False)</span>
+<span class="sd">        Whether to print progress information.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -2020,20 +2039,18 @@ binary, equal distribution for multi-class)</p>
 <span class="sd">    y : np.ndarray of shape (n_samples,)</span>
 <span class="sd">        Class labels (0 to n_classes-1)</span>
 <span class="sd">    site_labels : np.ndarray of shape (n_samples,)</span>
-<span class="sd">        Site labels (0 to n_sites-1)</span>
+<span class="sd">        Site labels (0 to ``n_sites``-1)</span>
 
 <span class="sd">    Examples</span>
 <span class="sd">    --------</span>
-<span class="sd">    &gt;&gt;&gt; X, y, site_labels = simulate_multi_site_data(</span>
+<span class="sd">    &gt;&gt;&gt; X, y, site_labels = make_multisite_classification(</span>
 <span class="sd">    ...     n_sites=3, n_samples=300, n_features=20, n_classes=3</span>
 <span class="sd">    ... )</span>
 <span class="sd">    &gt;&gt;&gt; X.shape, y.shape, site_labels.shape</span>
 <span class="sd">    ((300, 20), (300,), (300,))</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Set random seed for reproducibility</span>
-    <span class="k">if</span> <span class="n">random_state</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
+    <span class="n">random_state</span> <span class="o">=</span> <span class="n">check_random_state</span><span class="p">(</span><span class="n">random_state</span><span class="p">)</span>
 
     <span class="c1"># Validate input parameters</span>
     <span class="n">_validate_parameters</span><span class="p">(</span>
@@ -2064,34 +2081,42 @@ binary, equal distribution for multi-class)</p>
         <span class="n">n_site_samples</span> <span class="o">=</span> <span class="n">samples_per_site</span><span class="p">[</span><span class="n">site_idx</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Generating </span><span class="si">{</span><span class="n">n_site_samples</span><span class="si">}</span><span class="s2"> samples for site </span><span class="si">{</span><span class="n">site_idx</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;Generating </span><span class="si">{</span><span class="n">n_site_samples</span><span class="si">}</span><span class="s2"> samples for site </span><span class="si">{</span><span class="n">site_idx</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
 
         <span class="c1"># Generate labels for this site</span>
         <span class="k">if</span> <span class="n">n_classes</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
             <span class="n">y_site</span> <span class="o">=</span> <span class="n">_generate_binary_labels</span><span class="p">(</span>
                 <span class="n">n_site_samples</span><span class="p">,</span>
-                <span class="n">balance_per_site</span><span class="p">[</span><span class="n">site_idx</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
+                <span class="n">balance_per_site</span><span class="p">[</span><span class="n">site_idx</span><span class="p">],</span>
+                <span class="n">random_state</span><span class="p">,</span>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">y_site</span> <span class="o">=</span> <span class="n">_generate_multiclass_labels</span><span class="p">(</span>
                 <span class="n">n_site_samples</span><span class="p">,</span>
-                <span class="n">balance_per_site</span><span class="p">[</span><span class="n">site_idx</span><span class="p">],</span>  <span class="c1"># type: ignore</span>
-                <span class="n">n_classes</span><span class="p">,</span>  <span class="c1"># type: ignore</span>
+                <span class="n">balance_per_site</span><span class="p">[</span><span class="n">site_idx</span><span class="p">],</span>
+                <span class="n">n_classes</span><span class="p">,</span>
+                <span class="n">random_state</span><span class="p">,</span>
             <span class="p">)</span>
 
         <span class="c1"># Generate signal component based on class labels</span>
         <span class="n">signal</span> <span class="o">=</span> <span class="n">_generate_signal_component</span><span class="p">(</span>
-            <span class="n">y_site</span><span class="p">,</span> <span class="n">n_features</span><span class="p">,</span> <span class="n">signal_strength</span><span class="p">,</span> <span class="n">n_classes</span>
+            <span class="n">y_site</span><span class="p">,</span>
+            <span class="n">n_features</span><span class="p">,</span>
+            <span class="n">signal_strength</span><span class="p">,</span>
+            <span class="n">n_classes</span><span class="p">,</span>
+            <span class="n">random_state</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="c1"># Generate noise component</span>
-        <span class="n">noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span>
+        <span class="n">noise</span> <span class="o">=</span> <span class="n">random_state</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span>
             <span class="n">loc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">noise_strength</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_site_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">)</span>
         <span class="p">)</span>
 
         <span class="k">if</span> <span class="n">site_effect_homogeneous</span><span class="p">:</span>
             <span class="c1"># Generate site effect (same for all samples in this site)</span>
-            <span class="n">site_effect</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span>
+            <span class="n">site_effect</span> <span class="o">=</span> <span class="n">random_state</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span>
                 <span class="n">loc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
                 <span class="n">scale</span><span class="o">=</span><span class="n">site_effect_strength</span><span class="p">,</span>
                 <span class="n">size</span><span class="o">=</span><span class="p">(</span>
@@ -2101,7 +2126,7 @@ binary, equal distribution for multi-class)</p>
             <span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="c1"># Generate site effect (different for each sample in this site)</span>
-            <span class="n">site_effect</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span>
+            <span class="n">site_effect</span> <span class="o">=</span> <span class="n">random_state</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span>
                 <span class="n">loc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
                 <span class="n">scale</span><span class="o">=</span><span class="n">site_effect_strength</span><span class="p">,</span>
                 <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">n_site_samples</span><span class="p">,</span> <span class="n">n_features</span><span class="p">),</span>
@@ -2120,7 +2145,7 @@ binary, equal distribution for multi-class)</p>
     <span class="n">site_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">site_labels_list</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
 
     <span class="c1"># Shuffle samples across sites (optional but recommended)</span>
-    <span class="n">indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+    <span class="n">indices</span> <span class="o">=</span> <span class="n">random_state</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
     <span class="n">X</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
     <span class="n">site_labels</span> <span class="o">=</span> <span class="n">site_labels</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
@@ -4416,20 +4441,20 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
 
 
 
-<h2 id="uniharmony.interpolation.ICIHarmonization" class="doc doc-heading">
-            <code>ICIHarmonization</code>
+<h2 id="uniharmony.interpolation.IntraSiteInterpolation" class="doc doc-heading">
+            <code>IntraSiteInterpolation</code>
 
 
-<a href="#uniharmony.interpolation.ICIHarmonization" class="headerlink" title="Permanent link">&para;</a></h2>
+<a href="#uniharmony.interpolation.IntraSiteInterpolation" class="headerlink" title="Permanent link">&para;</a></h2>
 
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><span title="sklearn.base.BaseEstimator">BaseEstimator</span></code>, <code><span title="imblearn.base.SamplerMixin">SamplerMixin</span></code></p>
+              Bases: <code><span title="imblearn.base.SamplerMixin">SamplerMixin</span></code>, <code><span title="sklearn.base.BaseEstimator">BaseEstimator</span></code></p>
 
 
 
-        <p>Intra-Class Interpolation (ICI) Harmonization.</p>
+        <p>Intra-Site Interpolation (ISI) Harmonization.</p>
 <p>This sampler performs <strong>site-wise class balancing</strong> to reduce spurious
 correlations between site membership and class labels.</p>
 <p>For each site independently:
@@ -4503,7 +4528,7 @@ reproducibility.</p>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>If True, prints progress information.</p>
+                <p>If True, logs progress information.</p>
               </div>
             </td>
             <td>
@@ -4515,6 +4540,7 @@ reproducibility.</p>
                 <code>**kwargs</code>
             </td>
             <td>
+                  <code><a class="autorefs autorefs-external" href="https://docs.python.org/3/library/stdtypes.html#dict">dict</a></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -4536,13 +4562,8 @@ reproducibility.</p>
 
 
               <details class="mkdocstrings-source">
-                <summary>Source code in <code>src/uniharmony/interpolation/_ici.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 17</span>
-<span class="normal"> 18</span>
-<span class="normal"> 19</span>
-<span class="normal"> 20</span>
-<span class="normal"> 21</span>
-<span class="normal"> 22</span>
+                <summary>Source code in <code>src/uniharmony/interpolation/_intra_site.py</code></summary>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 22</span>
 <span class="normal"> 23</span>
 <span class="normal"> 24</span>
 <span class="normal"> 25</span>
@@ -4678,8 +4699,21 @@ reproducibility.</p>
 <span class="normal">155</span>
 <span class="normal">156</span>
 <span class="normal">157</span>
-<span class="normal">158</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">ICIHarmonization</span><span class="p">(</span><span class="n">BaseEstimator</span><span class="p">,</span> <span class="n">SamplerMixin</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Intra-Class Interpolation (ICI) Harmonization.</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span>
+<span class="normal">161</span>
+<span class="normal">162</span>
+<span class="normal">163</span>
+<span class="normal">164</span>
+<span class="normal">165</span>
+<span class="normal">166</span>
+<span class="normal">167</span>
+<span class="normal">168</span>
+<span class="normal">169</span>
+<span class="normal">170</span>
+<span class="normal">171</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">IntraSiteInterpolation</span><span class="p">(</span><span class="n">SamplerMixin</span><span class="p">,</span> <span class="n">BaseEstimator</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Intra-Site Interpolation (ISI) Harmonization.</span>
 
 <span class="sd">    This sampler performs **site-wise class balancing** to reduce spurious</span>
 <span class="sd">    correlations between site membership and class labels.</span>
@@ -4710,9 +4744,9 @@ reproducibility.</p>
 <span class="sd">        The seed of the pseudo random number generator or RandomState for</span>
 <span class="sd">        reproducibility.</span>
 <span class="sd">    verbose : bool, optional (default True)</span>
-<span class="sd">        If True, prints progress information.</span>
-<span class="sd">    **kwargs</span>
-<span class="sd">        Additional keyword arguments passed to `interpolator`.</span>
+<span class="sd">        If True, logs progress information.</span>
+<span class="sd">    **kwargs : dict</span>
+<span class="sd">        Additional keyword arguments passed to ``interpolator``.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -4728,16 +4762,6 @@ reproducibility.</p>
         <span class="bp">self</span><span class="o">.</span><span class="n">random_state</span> <span class="o">=</span> <span class="n">random_state</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span> <span class="o">=</span> <span class="n">kwargs</span>
-
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">interpolator</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_base_sampler</span> <span class="o">=</span> <span class="n">_create_interpolator</span><span class="p">(</span>
-                <span class="n">interpolator</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-            <span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="c1"># Make sure the provided interpolator</span>
-            <span class="c1"># has &quot;not majority&quot; as sampling_strategy</span>
-            <span class="k">assert</span> <span class="n">interpolator</span><span class="o">.</span><span class="n">sampling_strategy</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="s2">&quot;not majority&quot;</span><span class="p">]</span>  <span class="c1"># type: ignore</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_base_sampler</span> <span class="o">=</span> <span class="n">interpolator</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">fit_resample</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
@@ -4783,10 +4807,31 @@ reproducibility.</p>
         <span class="n">sites</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">sites</span><span class="p">,</span> <span class="n">ensure_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="c1"># Sanity checks for site length and number of sites</span>
-        <span class="n">_sites_sanity_checks</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">sites</span><span class="p">)</span>
+        <span class="n">sites_sanity_checks</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">sites</span><span class="p">)</span>
 
         <span class="c1"># This methods needs at least two classes per site</span>
-        <span class="n">_class_representation_checks</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">sites</span><span class="p">)</span>
+        <span class="n">class_representation_checks</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">sites</span><span class="p">)</span>
+
+        <span class="n">random_state</span> <span class="o">=</span> <span class="n">check_random_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolator</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">interpolator</span> <span class="o">=</span> <span class="n">create_interpolator</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">interpolator</span><span class="p">,</span>
+                <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+                <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolator</span><span class="p">,</span> <span class="n">SamplerMixin</span><span class="p">):</span>
+            <span class="c1"># Make sure the provided interpolator</span>
+            <span class="c1"># has &quot;not majority&quot; as sampling_strategy</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpolator</span><span class="o">.</span><span class="n">sampling_strategy</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="s2">&quot;not majority&quot;</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;IntraSiteInterpolation requires the interpolator to have &quot;</span>
+                    <span class="s2">&quot;`sampling_strategy=&#39;not majority&#39;`.&quot;</span>
+                <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;interpolator must be either a string&quot;</span>
+                <span class="s2">&quot;or an instance of SamplerMixin.&quot;</span>
+            <span class="p">)</span>
 
         <span class="n">X_out</span><span class="p">,</span> <span class="n">y_out</span><span class="p">,</span> <span class="n">sites_out</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
 
@@ -4795,9 +4840,9 @@ reproducibility.</p>
             <span class="n">X_site</span><span class="p">,</span> <span class="n">y_site</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
-                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ICI] Site </span><span class="si">{</span><span class="n">site</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">Counter</span><span class="p">(</span><span class="n">y_site</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ISI] Site </span><span class="si">{</span><span class="n">site</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">Counter</span><span class="p">(</span><span class="n">y_site</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-            <span class="n">X_rs</span><span class="p">,</span> <span class="n">y_rs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_base_sampler</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X_site</span><span class="p">,</span> <span class="n">y_site</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+            <span class="n">X_rs</span><span class="p">,</span> <span class="n">y_rs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpolator</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X_site</span><span class="p">,</span> <span class="n">y_site</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
             <span class="n">X_out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">X_rs</span><span class="p">)</span>
             <span class="n">y_out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y_rs</span><span class="p">)</span>
@@ -4816,10 +4861,7 @@ reproducibility.</p>
 <span class="sd">        This sampler overrides ``fit_resample`` directly because it</span>
 <span class="sd">        requires the additional ``sites`` argument.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
-            <span class="s2">&quot;ICIHarmonization requires the `sites` argument. &quot;</span>
-            <span class="s2">&quot;Call fit_resample(X, y, sites=...) instead.&quot;</span>
-        <span class="p">)</span>
+        <span class="k">pass</span>
 </code></pre></div></td></tr></table></div>
               </details>
 
@@ -4839,10 +4881,10 @@ reproducibility.</p>
 <div class="doc doc-object doc-function">
 
 
-<h3 id="uniharmony.interpolation.ICIHarmonization.fit_resample" class="doc doc-heading">
+<h3 id="uniharmony.interpolation.IntraSiteInterpolation.fit_resample" class="doc doc-heading">
             <code class="highlight language-python"><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">sites</span><span class="p">)</span></code>
 
-<a href="#uniharmony.interpolation.ICIHarmonization.fit_resample" class="headerlink" title="Permanent link">&para;</a></h3>
+<a href="#uniharmony.interpolation.IntraSiteInterpolation.fit_resample" class="headerlink" title="Permanent link">&para;</a></h3>
 
 
     <div class="doc doc-contents ">
@@ -4980,8 +5022,13 @@ this count using the configured interpolator.</p>
 </details>
 
             <details class="mkdocstrings-source">
-              <summary>Source code in <code>src/uniharmony/interpolation/_ici.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 78</span>
+              <summary>Source code in <code>src/uniharmony/interpolation/_intra_site.py</code></summary>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 73</span>
+<span class="normal"> 74</span>
+<span class="normal"> 75</span>
+<span class="normal"> 76</span>
+<span class="normal"> 77</span>
+<span class="normal"> 78</span>
 <span class="normal"> 79</span>
 <span class="normal"> 80</span>
 <span class="normal"> 81</span>
@@ -5047,7 +5094,23 @@ this count using the configured interpolator.</p>
 <span class="normal">141</span>
 <span class="normal">142</span>
 <span class="normal">143</span>
-<span class="normal">144</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">fit_resample</span><span class="p">(</span>
+<span class="normal">144</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span>
+<span class="normal">152</span>
+<span class="normal">153</span>
+<span class="normal">154</span>
+<span class="normal">155</span>
+<span class="normal">156</span>
+<span class="normal">157</span>
+<span class="normal">158</span>
+<span class="normal">159</span>
+<span class="normal">160</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">fit_resample</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">X</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
     <span class="n">y</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
@@ -5091,10 +5154,31 @@ this count using the configured interpolator.</p>
     <span class="n">sites</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">sites</span><span class="p">,</span> <span class="n">ensure_2d</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
     <span class="c1"># Sanity checks for site length and number of sites</span>
-    <span class="n">_sites_sanity_checks</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">sites</span><span class="p">)</span>
+    <span class="n">sites_sanity_checks</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">sites</span><span class="p">)</span>
 
     <span class="c1"># This methods needs at least two classes per site</span>
-    <span class="n">_class_representation_checks</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">sites</span><span class="p">)</span>
+    <span class="n">class_representation_checks</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">sites</span><span class="p">)</span>
+
+    <span class="n">random_state</span> <span class="o">=</span> <span class="n">check_random_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">random_state</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolator</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">interpolator</span> <span class="o">=</span> <span class="n">create_interpolator</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">interpolator</span><span class="p">,</span>
+            <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
+            <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interpolator</span><span class="p">,</span> <span class="n">SamplerMixin</span><span class="p">):</span>
+        <span class="c1"># Make sure the provided interpolator</span>
+        <span class="c1"># has &quot;not majority&quot; as sampling_strategy</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpolator</span><span class="o">.</span><span class="n">sampling_strategy</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">,</span> <span class="s2">&quot;not majority&quot;</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;IntraSiteInterpolation requires the interpolator to have &quot;</span>
+                <span class="s2">&quot;`sampling_strategy=&#39;not majority&#39;`.&quot;</span>
+            <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;interpolator must be either a string&quot;</span>
+            <span class="s2">&quot;or an instance of SamplerMixin.&quot;</span>
+        <span class="p">)</span>
 
     <span class="n">X_out</span><span class="p">,</span> <span class="n">y_out</span><span class="p">,</span> <span class="n">sites_out</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
 
@@ -5103,9 +5187,9 @@ this count using the configured interpolator.</p>
         <span class="n">X_site</span><span class="p">,</span> <span class="n">y_site</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ICI] Site </span><span class="si">{</span><span class="n">site</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">Counter</span><span class="p">(</span><span class="n">y_site</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[ISI] Site </span><span class="si">{</span><span class="n">site</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">Counter</span><span class="p">(</span><span class="n">y_site</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-        <span class="n">X_rs</span><span class="p">,</span> <span class="n">y_rs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_base_sampler</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X_site</span><span class="p">,</span> <span class="n">y_site</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
+        <span class="n">X_rs</span><span class="p">,</span> <span class="n">y_rs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">interpolator</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X_site</span><span class="p">,</span> <span class="n">y_site</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
 
         <span class="n">X_out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">X_rs</span><span class="p">)</span>
         <span class="n">y_out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">y_rs</span><span class="p">)</span>
