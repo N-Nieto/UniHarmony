@@ -85,6 +85,7 @@ def load_MAREoS(  # noqa: N802
     dict of str and dict
         Nested dictionary where keys are dataset names
         containing:
+
         - "X": Feature matrix
         - "y": Target labels
         - "sites": Site labels
