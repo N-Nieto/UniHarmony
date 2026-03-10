@@ -7,6 +7,10 @@ import numpy as np
 import structlog
 
 
+__all__ = [
+    "get_site_data_statistics",
+]
+
 logger = structlog.get_logger()
 
 
@@ -171,14 +175,14 @@ def _validate_array_shapes(
 
     if y.shape[0] != n_samples:
         raise ValueError(
-            f"y must have same number of samples as x. "
-            f"x has {n_samples}, y has {y.shape[0]}"
+            "y must have same number of samples as x. x has "
+            f"{n_samples}, y has {y.shape[0]}"
         )
 
     if site_labels.shape[0] != n_samples:
         raise ValueError(
-            f"site_labels must have same number of samples as x. "
-            f"x has {n_samples}, site_labels has {site_labels.shape[0]}"
+            "site_labels must have same number of samples as x. x has "
+            f"{n_samples}, site_labels has {site_labels.shape[0]}"
         )
 
 
@@ -543,7 +547,10 @@ def _compute_correlation_statistics(
                 mean_i = x[y == unique_classes[i]].mean(axis=0)
                 mean_j = x[y == unique_classes[j]].mean(axis=0)
                 distance = np.linalg.norm(mean_i - mean_j)
-                key = f"class_{int(unique_classes[i])}_vs_class_{int(unique_classes[j])}"  # noqa: E501
+                key = (
+                    f"class_{int(unique_classes[i])}_vs_"
+                    f"class_{int(unique_classes[j])}"
+                )
                 class_separation[key] = float(distance)
         correlations["class_separation_distances"] = class_separation
 
