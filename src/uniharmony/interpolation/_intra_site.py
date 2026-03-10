@@ -6,6 +6,7 @@ import numpy as np
 import structlog
 from imblearn.base import SamplerMixin
 from sklearn.base import BaseEstimator
+from sklearn.utils import check_random_state
 from sklearn.utils.validation import check_array, check_X_y
 
 from uniharmony.interpolation._utils import (
@@ -118,10 +119,11 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         # This methods needs at least two classes per site
         class_representation_checks(y, sites)
 
+        random_state = check_random_state(self.random_state)
         if isinstance(self.interpolator, str):
             self.interpolator = create_interpolator(
                 self.interpolator,
-                random_state=self.random_state,
+                random_state=random_state,
                 **self.kwargs,
             )
         elif isinstance(self.interpolator, SamplerMixin):
