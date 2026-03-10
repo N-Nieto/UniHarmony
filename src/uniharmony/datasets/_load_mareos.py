@@ -19,9 +19,7 @@ __all__ = ["_ensure_mareos_data", "load_MAREoS"]
 logger = structlog.get_logger()
 
 # Constants
-MAREOS_ZIP_URL = (
-    "https://www.imardgroup.com/mareos-benchmark/public_datasets.zip"
-)
+MAREOS_ZIP_URL = "https://www.imardgroup.com/mareos-benchmark/public_datasets.zip"
 
 VALID_EFFECTS = ["eos", "true"]
 VALID_EFFECT_TYPES = ["simple", "interaction"]
@@ -109,9 +107,7 @@ def load_MAREoS(  # noqa: N802
     ['eos_simple1', 'eos_simple2']
 
     """
-    effects, effect_types, effect_examples = _validate_mareos_parameters(
-        effects, effect_types, effect_examples
-    )
+    effects, effect_types, effect_examples = _validate_mareos_parameters(effects, effect_types, effect_examples)
 
     # Ensure all requested data is available
     data_dir = _ensure_mareos_data(data_dir, force_download, verbose)
@@ -207,23 +203,15 @@ def _load_mareos_single_dataset(
     dataset_name = f"{effect}_{effect_type}{effect_example}"
 
     data_file = data_dir / "public_datasets" / f"{dataset_name}_data.csv"
-    response_file = (
-        data_dir / "public_datasets" / f"{dataset_name}_response.csv"
-    )
+    response_file = data_dir / "public_datasets" / f"{dataset_name}_response.csv"
     if verbose:
         logger.info(f"Getting data file: {data_file}")
     # Verify files were found
     if not data_file.exists():
-        raise FileNotFoundError(
-            f"Data file not found for dataset {dataset_name}. "
-            f"Searched in: {data_dir}"
-        )
+        raise FileNotFoundError(f"Data file not found for dataset {dataset_name}. Searched in: {data_dir}")
 
     if not response_file.exists():
-        raise FileNotFoundError(
-            f"Response file not found for dataset {dataset_name}. "
-            f"Searched in: {data_dir}"
-        )
+        raise FileNotFoundError(f"Response file not found for dataset {dataset_name}. Searched in: {data_dir}")
 
     X_df = pd.read_csv(data_file, index_col=0)
     y_df = pd.read_csv(response_file, index_col=0)
@@ -321,10 +309,7 @@ def _ensure_mareos_data(
         raise RuntimeError(f"No CSV files found in {check_dir}")
 
     if verbose:
-        logger.info(
-            f"MAREoS datasets downloaded: {len(csv_files)} CSV files in "
-            f"{target_dir}"
-        )
+        logger.info(f"MAREoS datasets downloaded: {len(csv_files)} CSV files in {target_dir}")
 
     return target_dir
 
@@ -355,12 +340,8 @@ def _validate_mareos_parameters(
     """
     # Process all parameters
     effects_list = _process_effect_param(effects, VALID_EFFECTS, "effects")
-    types_list = _process_effect_param(
-        effect_types, VALID_EFFECT_TYPES, "effect_types"
-    )
-    examples_list = _process_effect_param(
-        effect_examples, VALID_EFFECT_EXAMPLES, "effect_examples"
-    )
+    types_list = _process_effect_param(effect_types, VALID_EFFECT_TYPES, "effect_types")
+    examples_list = _process_effect_param(effect_examples, VALID_EFFECT_EXAMPLES, "effect_examples")
 
     return effects_list, types_list, examples_list
 
@@ -437,9 +418,6 @@ def _process_effect_param(
     # Validate values
     invalid = [v for v in param if v not in default_values]
     if invalid:
-        raise ValueError(
-            f"{param_name} contains invalid value(s): {invalid}. Must be one "
-            f"of {default_values}"
-        )
+        raise ValueError(f"{param_name} contains invalid value(s): {invalid}. Must be one of {default_values}")
 
     return param

@@ -90,9 +90,7 @@ def make_multisite_classification(
         n_classes=n_classes,
     )
 
-    balance_per_site = _validate_balance_per_site(
-        balance_per_site, n_sites, n_classes, verbose=verbose
-    )
+    balance_per_site = _validate_balance_per_site(balance_per_site, n_sites, n_classes, verbose=verbose)
 
     # Allocate samples per site (even distribution)
     samples_per_site = np.full(n_sites, n_samples // n_sites, dtype=int)
@@ -108,9 +106,7 @@ def make_multisite_classification(
         n_site_samples = samples_per_site[site_idx]
 
         if verbose:
-            logger.info(
-                f"Generating {n_site_samples} samples for site {site_idx}"
-            )
+            logger.info(f"Generating {n_site_samples} samples for site {site_idx}")
 
         # Generate labels for this site
         if n_classes == 2:
@@ -137,9 +133,7 @@ def make_multisite_classification(
         )
 
         # Generate noise component
-        noise = random_state.normal(
-            loc=0.0, scale=noise_strength, size=(n_site_samples, n_features)
-        )
+        noise = random_state.normal(loc=0.0, scale=noise_strength, size=(n_site_samples, n_features))
 
         if site_effect_homogeneous:
             # Generate site effect (same for all samples in this site)
@@ -235,25 +229,17 @@ def _validate_parameters(
         raise ValueError(f"n_classes must be at least 2, got {n_classes}")
 
     if signal_strength < 0:
-        raise ValueError(
-            f"signal_strength must be non-negative, got {signal_strength}"
-        )
+        raise ValueError(f"signal_strength must be non-negative, got {signal_strength}")
 
     if noise_strength < 0:
-        raise ValueError(
-            f"noise_strength must be non-negative, got {noise_strength}"
-        )
+        raise ValueError(f"noise_strength must be non-negative, got {noise_strength}")
 
     if site_effect_strength < 0:
-        raise ValueError(
-            "site_effect_strength must be non-negative, got "
-            f"{site_effect_strength}"
-        )
+        raise ValueError(f"site_effect_strength must be non-negative, got {site_effect_strength}")
 
     if n_samples < n_sites:
         raise ValueError(
-            f"n_samples ({n_samples}) is less than n_sites ({n_sites}). "
-            "Some sites will have 0 samples.",
+            f"n_samples ({n_samples}) is less than n_sites ({n_sites}). Some sites will have 0 samples.",
         )
 
 
@@ -403,9 +389,7 @@ def _generate_signal_component(
     else:
         # Multi-class classification
         # Create equally spaced class means
-        class_means = np.linspace(
-            -signal_strength / 2, signal_strength / 2, n_classes
-        )
+        class_means = np.linspace(-signal_strength / 2, signal_strength / 2, n_classes)
 
         for class_idx in range(n_classes):
             mask = y == class_idx
@@ -453,16 +437,11 @@ def _validate_balance_per_site(
 
     # Check it's a list
     if not isinstance(balance_per_site, list):
-        raise TypeError(
-            f"balance_per_site must be a list, got {type(balance_per_site)}"
-        )
+        raise TypeError(f"balance_per_site must be a list, got {type(balance_per_site)}")
 
     # Check length matches n_sites
     if len(balance_per_site) != n_sites:
-        raise ValueError(
-            f"balance_per_site must have length n_sites "
-            f"({n_sites}), got {len(balance_per_site)}"
-        )
+        raise ValueError(f"balance_per_site must have length n_sites ({n_sites}), got {len(balance_per_site)}")
 
     # Validate based on number of classes
     if n_classes == 2:
@@ -495,22 +474,14 @@ def _check_balance_for_binary_classification(
     for i, p_class1 in enumerate(balance_per_site):
         # Check type
         if not isinstance(p_class1, (float)):
-            raise TypeError(
-                f"balance_per_site[{i}] must be numeric class proportion "
-                f"(float), got {type(p_class1)}"
-            )
+            raise TypeError(f"balance_per_site[{i}] must be numeric class proportion (float), got {type(p_class1)}")
 
         # Check range
         if not 0 <= p_class1 <= 1:
-            raise ValueError(
-                f"balance_per_site[{i}] must be between "
-                f"0 and 1, got {p_class1}"
-            )
+            raise ValueError(f"balance_per_site[{i}] must be between 0 and 1, got {p_class1}")
 
 
-def _check_balance_for_multiclass(
-    balance_per_site: list | None, n_classes: int
-) -> None:
+def _check_balance_for_multiclass(balance_per_site: list | None, n_classes: int) -> None:
     """Check balance for multi-class classification.
 
     Parameters
@@ -532,37 +503,22 @@ def _check_balance_for_multiclass(
     for i, site_balance in enumerate(balance_per_site):
         # Check it's a list
         if not isinstance(site_balance, (list, np.ndarray)):
-            raise TypeError(
-                f"For n_classes > 2, balance_per_site[{i}] must be a "
-                f"list or array, got {type(site_balance)}"
-            )
+            raise TypeError(f"For n_classes > 2, balance_per_site[{i}] must be a list or array, got {type(site_balance)}")
 
         # Check length matches n_classes
         if len(site_balance) != n_classes:
-            raise ValueError(
-                f"balance_per_site[{i}] must have length n_classes "
-                f"({n_classes}), got {len(site_balance)}"
-            )
+            raise ValueError(f"balance_per_site[{i}] must have length n_classes ({n_classes}), got {len(site_balance)}")
 
         # Check all elements are numeric
         for j, class_prob in enumerate(site_balance):
             if not isinstance(class_prob, (float)):
-                raise TypeError(
-                    f"balance_per_site[{i}][{j}] must be a class proprtion "
-                    f"(int or float), got {type(class_prob)}"
-                )
+                raise TypeError(f"balance_per_site[{i}][{j}] must be a class proprtion (int or float), got {type(class_prob)}")
             if not 0 <= class_prob <= 1:
-                raise ValueError(
-                    f"balance_per_site[{i}] must be between 0 and 1, got "
-                    f"{class_prob}"
-                )
+                raise ValueError(f"balance_per_site[{i}] must be between 0 and 1, got {class_prob}")
 
         # Convert to numpy array for sum check
         site_balance_array = np.array(site_balance, dtype=float)
 
         # Check sum is approximately 1
         if not np.isclose(np.sum(site_balance_array), 1.0, atol=1e-10):
-            raise ValueError(
-                f"balance_per_site[{i}] must sum to 1.0, got "
-                f"{np.sum(site_balance_array):.6f}"
-            )
+            raise ValueError(f"balance_per_site[{i}] must sum to 1.0, got {np.sum(site_balance_array):.6f}")
