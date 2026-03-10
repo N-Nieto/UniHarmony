@@ -1,3 +1,7 @@
+---
+icon: lucide/play
+---
+
 # Getting Started
 
 ## Installation
@@ -15,3 +19,16 @@ pip install uniharmony
 ```console
 uv add uniharmony
 ```
+
+## Usage
+
+### Data loading and simulation
+
+- [Simulate multisite classification problems](./simulate_multisite_data.md)
+- [Download and load MAREoS dataset](./load_mareos_datasets.md)
+
+### Harmonization
+
+#### Interpolation models
+
+- [IntraSiteInterpolation (ISI)](./interpolation.md)
