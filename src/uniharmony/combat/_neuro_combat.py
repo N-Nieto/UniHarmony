@@ -272,9 +272,9 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         It contains:
 
           * One-hot encoding of the sites [n_samples, n_sites]
-          * One-hot encoding of each discrete covariates (removing
+          * One-hot encoding of each categorical covariates (removing
             the first column) [n_samples,
-            (n_discrete_covivariate_names-1) * n_discrete_covariates]
+            (n_categorical_covivariate_names-1) * n_categorical_covariates]
           * Each continuous covariates
 
         Parameters
@@ -304,19 +304,19 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         sites_design = self._site_encoder.transform(sites)
         design_list.append(sites_design)
 
-        # Discrete covariates
+        # Categorical covariates
         if categorical_covariates is not None:
-            n_discrete_covariates = categorical_covariates.shape[1]
+            n_categorical_covariates = categorical_covariates.shape[1]
 
             if fitting:
                 self._categorical_encoders = []
 
-                for i in range(n_discrete_covariates):
+                for i in range(n_categorical_covariates):
                     cat_encoder = OneHotEncoder(sparse_output=False)
                     cat_encoder.fit(categorical_covariates[:, i][:, np.newaxis])
                     self._categorical_encoders.append(cat_encoder)
 
-            for i in range(n_discrete_covariates):
+            for i in range(n_categorical_covariates):
                 cat_encoder = self._categorical_encoders[i]
                 cat_covariate_one_hot = cat_encoder.transform(categorical_covariates[:, i][:, np.newaxis])
                 cat_covariate_design = cat_covariate_one_hot[:, 1:]
