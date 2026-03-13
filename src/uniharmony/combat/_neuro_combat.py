@@ -24,7 +24,7 @@ from sklearn.utils.validation import (
 
 
 class NeuroComBat(TransformerMixin, BaseEstimator):
-    """Harmonize (normalize) scanner effects in multi-site imaging data.
+    """Harmonize scanner effects in multi-site imaging data.
 
     This transformer performs harmonization using a parametric empirical Bayes
     framework proposed in ComBat[^1] and adapted to neuroimaging data
@@ -70,7 +70,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         X : array-like, shape (n_samples, n_features)
             The training input samples.
         sites : array-like, shape (n_samples, 1)
-            The target variable (sites, scanners or batches).
+            Sites.
         categorical_covariates : array-like, shape (n_samples, n_categorical_covariates) or None, optional (default None)
             The categorical covariates to be preserved during harmonization.
             (e.g., sex, disease).
@@ -158,7 +158,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         X : array-like, shape (n_samples, n_features)
             The data to be harmonized.
         sites : array-like, shape (n_samples, 1)
-            The target variable (sites, scanners or batches).
+            Sites.
         categorical_covariates : array-like, shape (n_samples, n_categorical_covariates) or None, optional (default None)
             The categorical covariates to be preserved during harmonization.
             (e.g., sex, disease).
@@ -248,7 +248,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         X : array-like, shape (n_samples, n_features)
             Input samples.
         sites : array-like, shape (n_samples, 1)
-            Target values.
+            Sites.
         **fit_params : dict
             Additional fit parameters.
 
@@ -619,7 +619,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         n_samples: int,
         idx_per_site: list[list[int]],
     ):
-        """Compute the harmonized/normalized data.
+        """Compute the harmonized data.
 
         Parameters
         ----------
