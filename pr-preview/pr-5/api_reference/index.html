@@ -19,7 +19,7 @@
       
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="zensical-0.0.24">
+      <meta name="generator" content="zensical-0.0.26">
     
     
       
@@ -30,7 +30,7 @@
       
         
       
-      <link rel="stylesheet" href="../assets/stylesheets/modern/main.28978c9b.min.css">
+      <link rel="stylesheet" href="../assets/stylesheets/modern/main.50057488.min.css">
       
         
           
@@ -75,7 +75,7 @@
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
-    <label class="md-overlay" for="__drawer"></label>
+    <label class="md-overlay" for="__drawer" aria-label="Navigation"></label>
     <div data-md-component="skip">
       
         
@@ -101,7 +101,7 @@
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
 
     </a>
-    <label class="md-header__button md-icon" for="__drawer">
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
       
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
     </label>
@@ -165,7 +165,7 @@
     
       
       
-        <label class="md-header__button md-icon" for="__search">
+        <label class="md-header__button md-icon" for="__search" aria-label="Search">
           
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
         </label>
@@ -2199,7 +2199,7 @@ reproducibility.</p>
 
 
 
-        <p>Harmonize (normalize) scanner effects in multi-site imaging data.</p>
+        <p>Harmonize scanner effects in multi-site imaging data.</p>
 <p>This transformer performs harmonization using a parametric empirical Bayes
 framework proposed in ComBat[^1] and adapted to neuroimaging data
 here[^2].</p>
@@ -2267,11 +2267,7 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
 
               <details class="mkdocstrings-source">
                 <summary>Source code in <code>src/uniharmony/combat/_neuro_combat.py</code></summary>
-                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 26</span>
-<span class="normal"> 27</span>
-<span class="normal"> 28</span>
-<span class="normal"> 29</span>
-<span class="normal"> 30</span>
+                <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 30</span>
 <span class="normal"> 31</span>
 <span class="normal"> 32</span>
 <span class="normal"> 33</span>
@@ -2920,8 +2916,16 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
 <span class="normal">676</span>
 <span class="normal">677</span>
 <span class="normal">678</span>
-<span class="normal">679</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">NeuroComBat</span><span class="p">(</span><span class="n">TransformerMixin</span><span class="p">,</span> <span class="n">BaseEstimator</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Harmonize (normalize) scanner effects in multi-site imaging data.</span>
+<span class="normal">679</span>
+<span class="normal">680</span>
+<span class="normal">681</span>
+<span class="normal">682</span>
+<span class="normal">683</span>
+<span class="normal">684</span>
+<span class="normal">685</span>
+<span class="normal">686</span>
+<span class="normal">687</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">NeuroComBat</span><span class="p">(</span><span class="n">TransformerMixin</span><span class="p">,</span> <span class="n">BaseEstimator</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Harmonize scanner effects in multi-site imaging data.</span>
 
 <span class="sd">    This transformer performs harmonization using a parametric empirical Bayes</span>
 <span class="sd">    framework proposed in ComBat[^1] and adapted to neuroimaging data</span>
@@ -2967,7 +2971,7 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
 <span class="sd">        X : array-like, shape (n_samples, n_features)</span>
 <span class="sd">            The training input samples.</span>
 <span class="sd">        sites : array-like, shape (n_samples, 1)</span>
-<span class="sd">            The target variable (sites, scanners or batches).</span>
+<span class="sd">            Sites.</span>
 <span class="sd">        categorical_covariates : array-like, shape (n_samples, n_categorical_covariates) or None, optional (default None)</span>
 <span class="sd">            The categorical covariates to be preserved during harmonization.</span>
 <span class="sd">            (e.g., sex, disease).</span>
@@ -2976,6 +2980,8 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
 <span class="sd">            (e.g., age, clinical scores).</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Fitting&quot;</span><span class="p">)</span>
+
         <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">FLOAT_DTYPES</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sites</span><span class="p">)</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">sites</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sites</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -3002,14 +3008,14 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
 
         <span class="n">n_samples</span> <span class="o">=</span> <span class="n">sites</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">idx_per_site</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">sites</span> <span class="o">==</span> <span class="n">idx</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sites_names</span><span class="p">]</span>
-
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Making design matrix&quot;</span><span class="p">)</span>
         <span class="n">design</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_design_matrix</span><span class="p">(</span>
             <span class="n">sites</span><span class="p">,</span>
             <span class="n">categorical_covariates</span><span class="p">,</span>
             <span class="n">continuous_covariates</span><span class="p">,</span>
             <span class="n">fitting</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
-
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Standardizing data across features&quot;</span><span class="p">)</span>
         <span class="n">standardized_data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_standardize_across_features</span><span class="p">(</span>
             <span class="n">X</span><span class="p">,</span>
             <span class="n">design</span><span class="p">,</span>
@@ -3017,18 +3023,18 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
             <span class="n">n_samples_per_site</span><span class="p">,</span>
             <span class="n">fitting</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="p">)</span>
-
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Fitting L/S model&quot;</span><span class="p">)</span>
         <span class="n">gamma_hat</span><span class="p">,</span> <span class="n">delta_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit_ls_model</span><span class="p">(</span>
             <span class="n">standardized_data</span><span class="p">,</span>
             <span class="n">design</span><span class="p">,</span>
             <span class="n">idx_per_site</span><span class="p">,</span>
         <span class="p">)</span>
-
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Finding priors&quot;</span><span class="p">)</span>
         <span class="n">gamma_bar</span><span class="p">,</span> <span class="n">tau_2</span><span class="p">,</span> <span class="n">a_prior</span><span class="p">,</span> <span class="n">b_prior</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_priors</span><span class="p">(</span>
             <span class="n">gamma_hat</span><span class="p">,</span>
             <span class="n">delta_hat</span><span class="p">,</span>
         <span class="p">)</span>
-
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Finding parametric adjustments&quot;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_gamma_star</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delta_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_parametric_adjustments</span><span class="p">(</span>
             <span class="n">standardized_data</span><span class="p">,</span>
             <span class="n">idx_per_site</span><span class="p">,</span>
@@ -3055,7 +3061,7 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
 <span class="sd">        X : array-like, shape (n_samples, n_features)</span>
 <span class="sd">            The data to be harmonized.</span>
 <span class="sd">        sites : array-like, shape (n_samples, 1)</span>
-<span class="sd">            The target variable (sites, scanners or batches).</span>
+<span class="sd">            Sites.</span>
 <span class="sd">        categorical_covariates : array-like, shape (n_samples, n_categorical_covariates) or None, optional (default None)</span>
 <span class="sd">            The categorical covariates to be preserved during harmonization.</span>
 <span class="sd">            (e.g., sex, disease).</span>
@@ -3074,6 +3080,8 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
 <span class="sd">            If one or more site or sites is or are unseen.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Transforming&quot;</span><span class="p">)</span>
+
         <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
         <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">FLOAT_DTYPES</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
@@ -3101,14 +3109,14 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
         <span class="n">n_samples</span> <span class="o">=</span> <span class="n">sites</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
         <span class="n">n_samples_per_site</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sites</span> <span class="o">==</span> <span class="n">site_name</span><span class="p">)</span> <span class="k">for</span> <span class="n">site_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sites_names</span><span class="p">])</span>
         <span class="n">idx_per_site</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">sites</span> <span class="o">==</span> <span class="n">site_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">site_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sites_names</span><span class="p">]</span>
-
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Making design matrix&quot;</span><span class="p">)</span>
         <span class="n">design</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_design_matrix</span><span class="p">(</span>
             <span class="n">sites</span><span class="p">,</span>
             <span class="n">categorical_covariates</span><span class="p">,</span>
             <span class="n">continuous_covariates</span><span class="p">,</span>
             <span class="n">fitting</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="p">)</span>
-
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Standardizing data across features&quot;</span><span class="p">)</span>
         <span class="n">standardized_data</span><span class="p">,</span> <span class="n">standardized_mean</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_standardize_across_features</span><span class="p">(</span>
             <span class="n">X</span><span class="p">,</span>
             <span class="n">design</span><span class="p">,</span>
@@ -3116,7 +3124,7 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
             <span class="n">n_samples_per_site</span><span class="p">,</span>
             <span class="n">fitting</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="p">)</span>
-
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Harmonizing data&quot;</span><span class="p">)</span>
         <span class="n">bayes_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_adjust_data_final</span><span class="p">(</span>
             <span class="n">standardized_data</span><span class="p">,</span>
             <span class="n">design</span><span class="p">,</span>
@@ -3145,7 +3153,7 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
 <span class="sd">        X : array-like, shape (n_samples, n_features)</span>
 <span class="sd">            Input samples.</span>
 <span class="sd">        sites : array-like, shape (n_samples, 1)</span>
-<span class="sd">            Target values.</span>
+<span class="sd">            Sites.</span>
 <span class="sd">        **fit_params : dict</span>
 <span class="sd">            Additional fit parameters.</span>
 
@@ -3169,9 +3177,9 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
 <span class="sd">        It contains:</span>
 
 <span class="sd">          * One-hot encoding of the sites [n_samples, n_sites]</span>
-<span class="sd">          * One-hot encoding of each discrete covariates (removing</span>
+<span class="sd">          * One-hot encoding of each categorical covariates (removing</span>
 <span class="sd">            the first column) [n_samples,</span>
-<span class="sd">            (n_discrete_covivariate_names-1) * n_discrete_covariates]</span>
+<span class="sd">            (n_categorical_covivariate_names-1) * n_categorical_covariates]</span>
 <span class="sd">          * Each continuous covariates</span>
 
 <span class="sd">        Parameters</span>
@@ -3201,19 +3209,19 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
         <span class="n">sites_design</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_site_encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">sites</span><span class="p">)</span>
         <span class="n">design_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">sites_design</span><span class="p">)</span>
 
-        <span class="c1"># Discrete covariates</span>
+        <span class="c1"># Categorical covariates</span>
         <span class="k">if</span> <span class="n">categorical_covariates</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">n_discrete_covariates</span> <span class="o">=</span> <span class="n">categorical_covariates</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="n">n_categorical_covariates</span> <span class="o">=</span> <span class="n">categorical_covariates</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">fitting</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_categorical_encoders</span> <span class="o">=</span> <span class="p">[]</span>
 
-                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_discrete_covariates</span><span class="p">):</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_categorical_covariates</span><span class="p">):</span>
                     <span class="n">cat_encoder</span> <span class="o">=</span> <span class="n">OneHotEncoder</span><span class="p">(</span><span class="n">sparse_output</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
                     <span class="n">cat_encoder</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">categorical_covariates</span><span class="p">[:,</span> <span class="n">i</span><span class="p">][:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">_categorical_encoders</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cat_encoder</span><span class="p">)</span>
 
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_discrete_covariates</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_categorical_covariates</span><span class="p">):</span>
                 <span class="n">cat_encoder</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_categorical_encoders</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
                 <span class="n">cat_covariate_one_hot</span> <span class="o">=</span> <span class="n">cat_encoder</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">categorical_covariates</span><span class="p">[:,</span> <span class="n">i</span><span class="p">][:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
                 <span class="n">cat_covariate_design</span> <span class="o">=</span> <span class="n">cat_covariate_one_hot</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span>
@@ -3516,7 +3524,7 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
         <span class="n">n_samples</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">idx_per_site</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]],</span>
     <span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the harmonized/normalized data.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the harmonized data.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -3606,9 +3614,9 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/uniharmony/combat/_neuro_combat.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">668</span>
-<span class="normal">669</span>
-<span class="normal">670</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">__sklearn_is_fitted__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">676</span>
+<span class="normal">677</span>
+<span class="normal">678</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">__sklearn_is_fitted__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Check fitted status.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;_n_sites&quot;</span><span class="p">)</span>
 </code></pre></div></td></tr></table></div>
@@ -3667,7 +3675,7 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
             </td>
             <td>
               <div class="doc-md-description">
-                <p>The target variable (sites, scanners or batches).</p>
+                <p>Sites.</p>
               </div>
             </td>
             <td>
@@ -3714,11 +3722,7 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/uniharmony/combat/_neuro_combat.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 59</span>
-<span class="normal"> 60</span>
-<span class="normal"> 61</span>
-<span class="normal"> 62</span>
-<span class="normal"> 63</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"> 63</span>
 <span class="normal"> 64</span>
 <span class="normal"> 65</span>
 <span class="normal"> 66</span>
@@ -3800,7 +3804,13 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
 <span class="normal">142</span>
 <span class="normal">143</span>
 <span class="normal">144</span>
-<span class="normal">145</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span>
+<span class="normal">145</span>
+<span class="normal">146</span>
+<span class="normal">147</span>
+<span class="normal">148</span>
+<span class="normal">149</span>
+<span class="normal">150</span>
+<span class="normal">151</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">X</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span>
     <span class="n">sites</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span>
@@ -3814,7 +3824,7 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
 <span class="sd">    X : array-like, shape (n_samples, n_features)</span>
 <span class="sd">        The training input samples.</span>
 <span class="sd">    sites : array-like, shape (n_samples, 1)</span>
-<span class="sd">        The target variable (sites, scanners or batches).</span>
+<span class="sd">        Sites.</span>
 <span class="sd">    categorical_covariates : array-like, shape (n_samples, n_categorical_covariates) or None, optional (default None)</span>
 <span class="sd">        The categorical covariates to be preserved during harmonization.</span>
 <span class="sd">        (e.g., sex, disease).</span>
@@ -3823,6 +3833,8 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
 <span class="sd">        (e.g., age, clinical scores).</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Fitting&quot;</span><span class="p">)</span>
+
     <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">FLOAT_DTYPES</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sites</span><span class="p">)</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
         <span class="n">sites</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">sites</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -3849,14 +3861,14 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
 
     <span class="n">n_samples</span> <span class="o">=</span> <span class="n">sites</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">idx_per_site</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">sites</span> <span class="o">==</span> <span class="n">idx</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sites_names</span><span class="p">]</span>
-
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Making design matrix&quot;</span><span class="p">)</span>
     <span class="n">design</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_design_matrix</span><span class="p">(</span>
         <span class="n">sites</span><span class="p">,</span>
         <span class="n">categorical_covariates</span><span class="p">,</span>
         <span class="n">continuous_covariates</span><span class="p">,</span>
         <span class="n">fitting</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
-
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Standardizing data across features&quot;</span><span class="p">)</span>
     <span class="n">standardized_data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_standardize_across_features</span><span class="p">(</span>
         <span class="n">X</span><span class="p">,</span>
         <span class="n">design</span><span class="p">,</span>
@@ -3864,18 +3876,18 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
         <span class="n">n_samples_per_site</span><span class="p">,</span>
         <span class="n">fitting</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
-
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Fitting L/S model&quot;</span><span class="p">)</span>
     <span class="n">gamma_hat</span><span class="p">,</span> <span class="n">delta_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit_ls_model</span><span class="p">(</span>
         <span class="n">standardized_data</span><span class="p">,</span>
         <span class="n">design</span><span class="p">,</span>
         <span class="n">idx_per_site</span><span class="p">,</span>
     <span class="p">)</span>
-
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Finding priors&quot;</span><span class="p">)</span>
     <span class="n">gamma_bar</span><span class="p">,</span> <span class="n">tau_2</span><span class="p">,</span> <span class="n">a_prior</span><span class="p">,</span> <span class="n">b_prior</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_priors</span><span class="p">(</span>
         <span class="n">gamma_hat</span><span class="p">,</span>
         <span class="n">delta_hat</span><span class="p">,</span>
     <span class="p">)</span>
-
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Finding parametric adjustments&quot;</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">_gamma_star</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_delta_star</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_parametric_adjustments</span><span class="p">(</span>
         <span class="n">standardized_data</span><span class="p">,</span>
         <span class="n">idx_per_site</span><span class="p">,</span>
@@ -3945,7 +3957,7 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
             </td>
             <td>
               <div class="doc-md-description">
-                <p>Target values.</p>
+                <p>Sites.</p>
               </div>
             </td>
             <td>
@@ -3997,15 +4009,7 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/uniharmony/combat/_neuro_combat.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">235</span>
-<span class="normal">236</span>
-<span class="normal">237</span>
-<span class="normal">238</span>
-<span class="normal">239</span>
-<span class="normal">240</span>
-<span class="normal">241</span>
-<span class="normal">242</span>
-<span class="normal">243</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">243</span>
 <span class="normal">244</span>
 <span class="normal">245</span>
 <span class="normal">246</span>
@@ -4023,7 +4027,15 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
 <span class="normal">258</span>
 <span class="normal">259</span>
 <span class="normal">260</span>
-<span class="normal">261</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">fit_transform</span><span class="p">(</span>
+<span class="normal">261</span>
+<span class="normal">262</span>
+<span class="normal">263</span>
+<span class="normal">264</span>
+<span class="normal">265</span>
+<span class="normal">266</span>
+<span class="normal">267</span>
+<span class="normal">268</span>
+<span class="normal">269</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">fit_transform</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">X</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span>
     <span class="n">sites</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span>
@@ -4039,7 +4051,7 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
 <span class="sd">    X : array-like, shape (n_samples, n_features)</span>
 <span class="sd">        Input samples.</span>
 <span class="sd">    sites : array-like, shape (n_samples, 1)</span>
-<span class="sd">        Target values.</span>
+<span class="sd">        Sites.</span>
 <span class="sd">    **fit_params : dict</span>
 <span class="sd">        Additional fit parameters.</span>
 
@@ -4106,7 +4118,7 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
             </td>
             <td>
               <div class="doc-md-description">
-                <p>The target variable (sites, scanners or batches).</p>
+                <p>Sites.</p>
               </div>
             </td>
             <td>
@@ -4199,13 +4211,7 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
 
             <details class="mkdocstrings-source">
               <summary>Source code in <code>src/uniharmony/combat/_neuro_combat.py</code></summary>
-              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">147</span>
-<span class="normal">148</span>
-<span class="normal">149</span>
-<span class="normal">150</span>
-<span class="normal">151</span>
-<span class="normal">152</span>
-<span class="normal">153</span>
+              <div class="highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal">153</span>
 <span class="normal">154</span>
 <span class="normal">155</span>
 <span class="normal">156</span>
@@ -4284,7 +4290,15 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
 <span class="normal">229</span>
 <span class="normal">230</span>
 <span class="normal">231</span>
-<span class="normal">232</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span>
+<span class="normal">232</span>
+<span class="normal">233</span>
+<span class="normal">234</span>
+<span class="normal">235</span>
+<span class="normal">236</span>
+<span class="normal">237</span>
+<span class="normal">238</span>
+<span class="normal">239</span>
+<span class="normal">240</span></pre></div></td><td class="code"><div><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">transform</span><span class="p">(</span>
     <span class="bp">self</span><span class="p">,</span>
     <span class="n">X</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span>
     <span class="n">sites</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span>
@@ -4298,7 +4312,7 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
 <span class="sd">    X : array-like, shape (n_samples, n_features)</span>
 <span class="sd">        The data to be harmonized.</span>
 <span class="sd">    sites : array-like, shape (n_samples, 1)</span>
-<span class="sd">        The target variable (sites, scanners or batches).</span>
+<span class="sd">        Sites.</span>
 <span class="sd">    categorical_covariates : array-like, shape (n_samples, n_categorical_covariates) or None, optional (default None)</span>
 <span class="sd">        The categorical covariates to be preserved during harmonization.</span>
 <span class="sd">        (e.g., sex, disease).</span>
@@ -4317,6 +4331,8 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
 <span class="sd">        If one or more site or sites is or are unseen.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Transforming&quot;</span><span class="p">)</span>
+
     <span class="n">check_is_fitted</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
     <span class="n">X</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">copy</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">FLOAT_DTYPES</span><span class="p">,</span> <span class="n">estimator</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
@@ -4344,14 +4360,14 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
     <span class="n">n_samples</span> <span class="o">=</span> <span class="n">sites</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="n">n_samples_per_site</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">sites</span> <span class="o">==</span> <span class="n">site_name</span><span class="p">)</span> <span class="k">for</span> <span class="n">site_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sites_names</span><span class="p">])</span>
     <span class="n">idx_per_site</span> <span class="o">=</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">sites</span> <span class="o">==</span> <span class="n">site_name</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">site_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sites_names</span><span class="p">]</span>
-
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Making design matrix&quot;</span><span class="p">)</span>
     <span class="n">design</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_design_matrix</span><span class="p">(</span>
         <span class="n">sites</span><span class="p">,</span>
         <span class="n">categorical_covariates</span><span class="p">,</span>
         <span class="n">continuous_covariates</span><span class="p">,</span>
         <span class="n">fitting</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span>
-
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Standardizing data across features&quot;</span><span class="p">)</span>
     <span class="n">standardized_data</span><span class="p">,</span> <span class="n">standardized_mean</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_standardize_across_features</span><span class="p">(</span>
         <span class="n">X</span><span class="p">,</span>
         <span class="n">design</span><span class="p">,</span>
@@ -4359,7 +4375,7 @@ https://doi.org/10.1016/j.neuroimage.2017.11.024&#160;<a class="footnote-backref
         <span class="n">n_samples_per_site</span><span class="p">,</span>
         <span class="n">fitting</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span>
-
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Harmonizing data&quot;</span><span class="p">)</span>
     <span class="n">bayes_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_adjust_data_final</span><span class="p">(</span>
         <span class="n">standardized_data</span><span class="p">,</span>
         <span class="n">design</span><span class="p">,</span>
@@ -5244,7 +5260,7 @@ this count using the configured interpolator.</p>
       <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["content.code.copy","navigation.top","content.footnote.tooltips"],"search":"../assets/javascripts/workers/search.e2d2d235.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
     
     
-      <script src="../assets/javascripts/bundle.16f8adc2.min.js"></script>
+      <script src="../assets/javascripts/bundle.5fd3284f.min.js"></script>
       
     
   </body>
