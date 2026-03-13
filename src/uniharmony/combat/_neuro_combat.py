@@ -12,6 +12,7 @@
 
 import numpy as np
 import numpy.typing as npt
+import structlog
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.utils import Tags
@@ -21,6 +22,9 @@ from sklearn.utils.validation import (
     check_consistent_length,
     check_is_fitted,
 )
+
+
+logger = structlog.get_logger()
 
 
 class NeuroComBat(TransformerMixin, BaseEstimator):
@@ -79,6 +83,8 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             (e.g., age, clinical scores).
 
         """
+        logger.debug("Fitting")
+
         X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
         if np.asarray(sites).ndim == 1:
             sites = np.asarray(sites).reshape(-1, 1)
@@ -105,14 +111,14 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
 
         n_samples = sites.shape[0]
         idx_per_site = [list(np.where(sites == idx)[0]) for idx in self._sites_names]
-
+        logger.debug("Making design matrix")
         design = self._make_design_matrix(
             sites,
             categorical_covariates,
             continuous_covariates,
             fitting=True,
         )
-
+        logger.debug("Standardizing data across features")
         standardized_data, _ = self._standardize_across_features(
             X,
             design,
@@ -120,18 +126,18 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             n_samples_per_site,
             fitting=True,
         )
-
+        logger.debug("Fitting L/S model")
         gamma_hat, delta_hat = self._fit_ls_model(
             standardized_data,
             design,
             idx_per_site,
         )
-
+        logger.debug("Finding priors")
         gamma_bar, tau_2, a_prior, b_prior = self._find_priors(
             gamma_hat,
             delta_hat,
         )
-
+        logger.debug("Finding parametric adjustments")
         self._gamma_star, self._delta_star = self._find_parametric_adjustments(
             standardized_data,
             idx_per_site,
@@ -177,6 +183,8 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             If one or more site or sites is or are unseen.
 
         """
+        logger.debug("Transforming")
+
         check_is_fitted(self)
 
         X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
@@ -204,14 +212,14 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         n_samples = sites.shape[0]
         n_samples_per_site = np.array([np.sum(sites == site_name) for site_name in self._sites_names])
         idx_per_site = [list(np.where(sites == site_name)[0]) for site_name in self._sites_names]
-
+        logger.debug("Making design matrix")
         design = self._make_design_matrix(
             sites,
             categorical_covariates,
             continuous_covariates,
             fitting=False,
         )
-
+        logger.debug("Standardizing data across features")
         standardized_data, standardized_mean = self._standardize_across_features(
             X,
             design,
@@ -219,7 +227,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             n_samples_per_site,
             fitting=False,
         )
-
+        logger.debug("Harmonizing data")
         bayes_data = self._adjust_data_final(
             standardized_data,
             design,
