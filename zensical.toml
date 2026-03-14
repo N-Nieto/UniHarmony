@@ -11,15 +11,31 @@ nav = [
       {"Load MAREos Datasets" = "load_mareos_datasets.md"},
   ]},
   {"Methods" = [
-      {"ComBat" = "combat.md"},
-      {"Interpolation" = "interpolation.md"},
+      {"ComBat-based harmonization" = [
+          {"Overview" = "combat_based_harmonization.md"},
+          {"ComBat / neuroComBat" = "combat_based/combat.md"},
+          {"ComBat-GAM (neuroHarmonize)" = "combat_based/combat_gam.md"},
+          {"CovBat" = "combat_based/covbat.md"},
+          {"Longitudinal ComBat" = "combat_based/longcombat.md"},
+          {"Neuroharmony" = "combat_based/neuroharmony.md"},
+          {"DeepComBat" = "combat_based/deepcombat.md"},
+          {"BARTharmonization" = "combat_based/bartharmonize.md"},
+          {"PrettYharmonize" = "combat_based/prettyharmony.md"}
+      ]},
+
+      {"Interpolation" = [
+        {"Overview" = "interpolation.md"},
+        {"Inter Site Matched Interpolation" = "interpolation_based/inter_site_matched_interpolation.md"},
+        {"Intra Site Interpolation" = "interpolation_based/intra_site_interpolation.md"}
+                    ]}
+
   ]},
   {"Examples" = [
       {"Load MAREoS" = "examples/load_mareos_example.md"},
       {"Generate mutlisite data" = "examples/generate_multisite_data_example.md"},
       {"Multisite data characterization" = "examples/multisite_data_characterization_example.md"},
-      {"ICI binary" = "examples/ICI_binary_classification_example.md"},
-      {"ICI multiclass" = "examples/ICI_multiclass_classification_example.md"},
+      {"Intra Site Interpolation for binary classification" = "examples/ISI_binary_classification_example.md"},
+      {"Intra Site Interpolation for multiclass classification" = "examples/ISI_multiclass_classification_example.md"},
   ]},
   {"API Reference" = "api_reference.md"},
 ]
