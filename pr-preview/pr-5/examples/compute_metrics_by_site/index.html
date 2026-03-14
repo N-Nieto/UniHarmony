@@ -8,36 +8,32 @@
       
       
       
-        <link rel="canonical" href="https://github.com/N-Nieto/UniHarmony/combat/">
+        <link rel="canonical" href="https://github.com/N-Nieto/UniHarmony/examples/compute_metrics_by_site/">
       
       
-        <link rel="prev" href="../load_mareos_datasets/">
-      
-      
-        <link rel="next" href="../interpolation/">
       
       
         
       
       
-      <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="zensical-0.0.26">
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.0.27">
     
     
       
-        <title>ComBat - UniHarmony</title>
+        <title>Compute metrics by site to detect biased performance. - UniHarmony</title>
       
     
     
       
         
       
-      <link rel="stylesheet" href="../assets/stylesheets/modern/main.50057488.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/modern/main.50057488.min.css">
       
         
           
         
-        <link rel="stylesheet" href="../assets/stylesheets/modern/palette.dfe2e883.min.css">
+        <link rel="stylesheet" href="../../assets/stylesheets/modern/palette.dfe2e883.min.css">
       
       
 
@@ -56,7 +52,7 @@
       
     
     
-    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,a=__md_scope)=>JSON.parse(t.getItem(a.pathname+"."+e)),__md_set=(e,t,a=localStorage,_=__md_scope)=>{try{a.setItem(_.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,a=__md_scope)=>JSON.parse(t.getItem(a.pathname+"."+e)),__md_set=(e,t,a=localStorage,_=__md_scope)=>{try{a.setItem(_.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
     
       
 
@@ -81,7 +77,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#combat" class="md-skip">
+        <a href="#compute-metrics-by-site-to-detect-biased-performance" class="md-skip">
           Skip to content
         </a>
       
@@ -97,7 +93,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="./.." title="UniHarmony" class="md-header__button md-logo" aria-label="UniHarmony" data-md-component="logo">
+    <a href="../.." title="UniHarmony" class="md-header__button md-logo" aria-label="UniHarmony" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
@@ -117,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              ComBat
+              Compute metrics by site to detect biased performance.
             
           </span>
         </div>
@@ -216,7 +212,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="./.." title="UniHarmony" class="md-nav__button md-logo" aria-label="UniHarmony" data-md-component="logo">
+    <a href="../.." title="UniHarmony" class="md-nav__button md-logo" aria-label="UniHarmony" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-book-open" viewBox="0 0 24 24"><path d="M12 7v14M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
@@ -246,7 +242,7 @@
   
   
     <li class="md-nav__item">
-      <a href="./.." class="md-nav__link">
+      <a href="../.." class="md-nav__link">
         
   
   
@@ -275,7 +271,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../getting_started/" class="md-nav__link">
+      <a href="../../getting_started/" class="md-nav__link">
         
   
   
@@ -351,7 +347,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../simulate_multisite_data/" class="md-nav__link">
+      <a href="../../simulate_multisite_data/" class="md-nav__link">
         
   
   
@@ -379,7 +375,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../load_mareos_datasets/" class="md-nav__link">
+      <a href="../../load_mareos_datasets/" class="md-nav__link">
         
   
   
@@ -411,20 +407,18 @@
       
   
   
-    
   
   
-  
     
     
     
     
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
         
           
           <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
@@ -445,7 +439,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
           <label class="md-nav__title" for="__nav_4">
             <span class="md-nav__icon md-icon"></span>
             
@@ -460,26 +454,28 @@
                 
   
   
+  
+  
     
-  
-  
-  
-    <li class="md-nav__item md-nav__item--active">
-      
-      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
-      
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
       
         
-      
-      
-        <label class="md-nav__link md-nav__link--active" for="__toc">
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_1" >
+        
           
+          <label class="md-nav__link" for="__nav_4_1" id="__nav_4_1_label" tabindex="0">
+            
   
   
   <span class="md-ellipsis">
     
   
-    ComBat
+    ComBat-based harmonization
   
 
     
@@ -487,17 +483,35 @@
   
   
 
-          <span class="md-nav__icon md-icon"></span>
-        </label>
-      
-      <a href="././" class="md-nav__link md-nav__link--active">
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    ComBat-based harmonization
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../combat_based_harmonization/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    ComBat
+    Overview
   
 
     
@@ -506,38 +520,6 @@
   
 
       </a>
-      
-        
-
-
-<nav class="md-nav md-nav--secondary" aria-label="On this page">
-  
-  
-  
-    
-  
-  
-    <label class="md-nav__title" for="__toc">
-      <span class="md-nav__icon md-icon"></span>
-      On this page
-    </label>
-    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
-      
-        <li class="md-nav__item">
-  <a href="#neurocombat" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        NeuroComBat
-      
-    </span>
-  </a>
-  
-</li>
-      
-    </ul>
-  
-</nav>
-      
     </li>
   
 
@@ -550,8 +532,251 @@
   
   
     <li class="md-nav__item">
-      <a href="../interpolation/" class="md-nav__link">
+      <a href="../../combat_based/combat/" class="md-nav__link">
         
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ComBat / neuroComBat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../combat_based/combat_gam/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    ComBat-GAM (neuroHarmonize)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../combat_based/covbat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CovBat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../combat_based/longcombat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Longitudinal ComBat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../combat_based/neuroharmony/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Neuroharmony
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../combat_based/deepcombat/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    DeepComBat
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../combat_based/bartharmonize/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    BARTharmonization
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../combat_based/prettyharmony/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PrettYharmonize
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
   
   
   <span class="md-ellipsis">
@@ -565,7 +790,107 @@
   
   
 
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Interpolation
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../interpolation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Overview
+  
+
+    
+  </span>
+  
+  
+
       </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../interpolation_based/inter_site_matched_interpolation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inter Site Matched Interpolation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../interpolation_based/intra_site_interpolation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Intra Site Interpolation
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
     </li>
   
 
@@ -632,7 +957,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../examples/load_mareos_example/" class="md-nav__link">
+      <a href="../load_mareos_example/" class="md-nav__link">
         
   
   
@@ -660,7 +985,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../examples/generate_multisite_data_example/" class="md-nav__link">
+      <a href="../generate_multisite_data_example/" class="md-nav__link">
         
   
   
@@ -688,7 +1013,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../examples/multisite_data_characterization_example.md" class="md-nav__link">
+      <a href="../multisite_data_characterization_example/" class="md-nav__link">
         
   
   
@@ -716,14 +1041,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../examples/ICI_binary_classification_example/" class="md-nav__link">
+      <a href="../ISI_binary_classification_example/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    ICI binary
+    Intra Site Interpolation for binary classification
   
 
     
@@ -744,14 +1069,14 @@
   
   
     <li class="md-nav__item">
-      <a href="../examples/ICI_multiclass_classification_example/" class="md-nav__link">
+      <a href="../ISI_multiclass_classification_example/" class="md-nav__link">
         
   
   
   <span class="md-ellipsis">
     
   
-    ICI multiclass
+    Intra Site Interpolation for multiclass classification
   
 
     
@@ -779,7 +1104,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../api_reference/" class="md-nav__link">
+      <a href="../../api_reference/" class="md-nav__link">
         
   
   
@@ -829,10 +1154,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#neurocombat" class="md-nav__link">
+  <a href="#uniharmony-allows-you-to-stratify-the-performance-metrics-by-site-unreveling-hidden-patterns" class="md-nav__link">
     <span class="md-ellipsis">
       
-        NeuroComBat
+        uniharmony allows you to stratify the performance metrics by site, unreveling hidden patterns.
       
     </span>
   </a>
@@ -857,8 +1182,120 @@
   
 
 
-<h1 id="combat">ComBat<a class="headerlink" href="#combat" title="Permanent link">&para;</a></h1>
-<h2 id="neurocombat">NeuroComBat<a class="headerlink" href="#neurocombat" title="Permanent link">&para;</a></h2>
+<h1 id="compute-metrics-by-site-to-detect-biased-performance">Compute metrics by site to detect biased performance.<a class="headerlink" href="#compute-metrics-by-site-to-detect-biased-performance" title="Permanent link">&para;</a></h1>
+<h2 id="uniharmony-allows-you-to-stratify-the-performance-metrics-by-site-unreveling-hidden-patterns"><code>uniharmony</code> allows you to stratify the performance metrics by site, unreveling hidden patterns.<a class="headerlink" href="#uniharmony-allows-you-to-stratify-the-performance-metrics-by-site-unreveling-hidden-patterns" title="Permanent link">&para;</a></h2>
+<p>```python</p>
+<h1 id="imports">Imports<a class="headerlink" href="#imports" title="Permanent link">&para;</a></h1>
+<p>import matplotlib.pyplot as plt
+import numpy as np
+from sklearn.metrics import accuracy_score</p>
+<p>from uniharmony.metrics import report_metric_by_site</p>
+<p>```</p>
+<p>```python</p>
+<h1 id="generate-site-assignments-and-labels">Generate site assignments and labels<a class="headerlink" href="#generate-site-assignments-and-labels" title="Permanent link">&para;</a></h1>
+<p>rng = np.random.default_rng(23)
+n_sites = 4
+n_samples = 1200</p>
+<p>site_probs = rng.dirichlet(np.ones(n_sites))
+sites = rng.choice(np.arange(n_sites), size=n_samples, p=site_probs)
+y_true = rng.integers(0, 2, size=n_samples)</p>
+<p>sites_unique = np.unique(sites)
+site_counts = np.bincount(sites, minlength=n_sites)
+smallest_site = int(np.argmin(site_counts))</p>
+<p>def _make_predictions_with_site_accuracy(y_true, sites, site_accuracy, rng):
+    y_pred = y_true.copy()</p>
+<pre><code>for site in np.unique(sites):
+    mask = sites == site
+    n_site = mask.sum()
+    # Flip labels to reach the desired accuracy for this site
+    flip = rng.random(n_site) &lt; (1.0 - site_accuracy[site])
+    site_preds = y_pred[mask]
+    site_preds[flip] = 1 - site_preds[flip]
+    y_pred[mask] = site_preds
+
+return y_pred
+</code></pre>
+<h1 id="scenario-1-overall-bad-performance-but-one-site-excels">Scenario 1: Overall bad performance, but one site excels<a class="headerlink" href="#scenario-1-overall-bad-performance-but-one-site-excels" title="Permanent link">&para;</a></h1>
+<p>print("Scenario 1: Overall bad performance, one site excels")
+strong_site = smallest_site  # keep the strong site small so overall stays poor
+base_acc_s1 = rng.uniform(0.25, 0.40)
+strong_acc_s1 = rng.uniform(0.95, 0.99)
+site_acc_s1 = dict.fromkeys(sites_unique, base_acc_s1)
+site_acc_s1[strong_site] = strong_acc_s1</p>
+<p>y_pred_s1 = _make_predictions_with_site_accuracy(
+    y_true, sites, site_acc_s1, rng
+)
+metric_global_s1 = accuracy_score(y_true, y_pred_s1)
+metric_s1 = report_metric_by_site(
+    y_true, y_pred_s1, sites, accuracy_score, overall_performance=True
+)
+metric_global_s1 = metric_s1.pop("overall")</p>
+<p>print(f"Strong site: {strong_site}")
+print(f"Global accuracy: {metric_global_s1:.3f}")
+print(f"Per-site accuracy: {metric_s1}")
+print()</p>
+<h1 id="scenario-2-overall-good-performance-but-one-site-fails-badly">Scenario 2: Overall good performance, but one site fails badly<a class="headerlink" href="#scenario-2-overall-good-performance-but-one-site-fails-badly" title="Permanent link">&para;</a></h1>
+<p>print("Scenario 2: Overall good performance, but one site fails")
+weak_site = smallest_site  # keep the weak site small so overall stays strong
+base_acc_s2 = rng.uniform(0.90, 0.97)
+weak_acc_s2 = rng.uniform(0.05, 0.15)
+site_acc_s2 = dict.fromkeys(sites_unique, base_acc_s2)
+site_acc_s2[weak_site] = weak_acc_s2</p>
+<p>y_pred_s2 = _make_predictions_with_site_accuracy(
+    y_true, sites, site_acc_s2, rng
+)
+metric_s2 = report_metric_by_site(
+    y_true, y_pred_s2, sites, accuracy_score, overall_performance=True
+)
+metric_global_s2 = metric_s2.pop("overall")
+print(f"Weak site: {weak_site}")
+print(f"Global accuracy: {metric_global_s2:.3f}")
+print(f"Per-site accuracy: {metric_s2}")
+print()</p>
+<h1 id="visualize-both-scenarios">Visualize both scenarios<a class="headerlink" href="#visualize-both-scenarios" title="Permanent link">&para;</a></h1>
+<p>fig, axes = plt.subplots(1, 2, figsize=(12, 5))</p>
+<h1 id="scenario-1">Scenario 1<a class="headerlink" href="#scenario-1" title="Permanent link">&para;</a></h1>
+<p>site_scores_s1 = [metric_s1[s] for s in sites_unique]
+axes[0].bar(sites_unique, site_scores_s1, alpha=0.7, color="steelblue")
+axes[0].axhline(
+    metric_global_s1,
+    color="red",
+    linestyle="--",
+    label=f"Global: {metric_global_s1:.3f}",
+)
+axes[0].set_xlabel("Site")
+axes[0].set_ylabel("Accuracy")
+axes[0].set_title("Scenario 1: Bad Overall, One Site Excels")
+axes[0].legend()
+axes[0].set_ylim([0, 1])</p>
+<h1 id="scenario-2">Scenario 2<a class="headerlink" href="#scenario-2" title="Permanent link">&para;</a></h1>
+<p>site_scores_s2 = [metric_s2[s] for s in sites_unique]
+axes[1].bar(sites_unique, site_scores_s2, alpha=0.7, color="coral")
+axes[1].axhline(
+    metric_global_s2,
+    color="red",
+    linestyle="--",
+    label=f"Global: {metric_global_s2:.3f}",
+)
+axes[1].set_xlabel("Site")
+axes[1].set_ylabel("Accuracy")
+axes[1].set_title("Scenario 2: Good Overall, One Site Fails")
+axes[1].legend()
+axes[1].set_ylim([0, 1])</p>
+<p>plt.tight_layout()
+plt.show()</p>
+<p>```</p>
+<pre><code>Scenario 1: Overall bad performance, one site excels
+Strong site: 2
+Global accuracy: 0.460
+Per-site accuracy: {0: 0.45384615384615384, 1: 0.41729323308270677, 2: 0.97, 3: 0.40482954545454547}
+
+Scenario 2: Overall good performance, but one site fails
+Weak site: 2
+Global accuracy: 0.846
+Per-site accuracy: {0: 0.9153846153846154, 1: 0.9285714285714286, 2: 0.11, 3: 0.90625}
+</code></pre>
+<p><img alt="png" src="../compute_metrics_by_site_files/compute_metrics_by_site_2_1.png" /></p>
 
 
 
@@ -917,10 +1354,10 @@
       
       
       
-      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["content.code.copy","navigation.top","content.footnote.tooltips"],"search":"../assets/javascripts/workers/search.e2d2d235.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
+      <script id="__config" type="application/json">{"annotate":null,"base":"../..","features":["content.code.copy","navigation.top","content.footnote.tooltips"],"search":"../../assets/javascripts/workers/search.e2d2d235.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
     
     
-      <script src="../assets/javascripts/bundle.5fd3284f.min.js"></script>
+      <script src="../../assets/javascripts/bundle.5fd3284f.min.js"></script>
       
     
   </body>

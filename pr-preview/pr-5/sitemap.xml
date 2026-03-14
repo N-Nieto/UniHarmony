@@ -13,10 +13,40 @@
         <loc>https://github.com/N-Nieto/UniHarmony/load_mareos_datasets/</loc>
       </url>
       <url>
-        <loc>https://github.com/N-Nieto/UniHarmony/combat/</loc>
+        <loc>https://github.com/N-Nieto/UniHarmony/combat_based_harmonization/</loc>
+      </url>
+      <url>
+        <loc>https://github.com/N-Nieto/UniHarmony/combat_based/combat/</loc>
+      </url>
+      <url>
+        <loc>https://github.com/N-Nieto/UniHarmony/combat_based/combat_gam/</loc>
+      </url>
+      <url>
+        <loc>https://github.com/N-Nieto/UniHarmony/combat_based/covbat/</loc>
+      </url>
+      <url>
+        <loc>https://github.com/N-Nieto/UniHarmony/combat_based/longcombat/</loc>
+      </url>
+      <url>
+        <loc>https://github.com/N-Nieto/UniHarmony/combat_based/neuroharmony/</loc>
+      </url>
+      <url>
+        <loc>https://github.com/N-Nieto/UniHarmony/combat_based/deepcombat/</loc>
+      </url>
+      <url>
+        <loc>https://github.com/N-Nieto/UniHarmony/combat_based/bartharmonize/</loc>
+      </url>
+      <url>
+        <loc>https://github.com/N-Nieto/UniHarmony/combat_based/prettyharmony/</loc>
       </url>
       <url>
         <loc>https://github.com/N-Nieto/UniHarmony/interpolation/</loc>
+      </url>
+      <url>
+        <loc>https://github.com/N-Nieto/UniHarmony/interpolation_based/inter_site_matched_interpolation/</loc>
+      </url>
+      <url>
+        <loc>https://github.com/N-Nieto/UniHarmony/interpolation_based/intra_site_interpolation/</loc>
       </url>
       <url>
         <loc>https://github.com/N-Nieto/UniHarmony/examples/load_mareos_example/</loc>
@@ -25,10 +55,13 @@
         <loc>https://github.com/N-Nieto/UniHarmony/examples/generate_multisite_data_example/</loc>
       </url>
       <url>
-        <loc>https://github.com/N-Nieto/UniHarmony/examples/ICI_binary_classification_example/</loc>
+        <loc>https://github.com/N-Nieto/UniHarmony/examples/multisite_data_characterization_example/</loc>
       </url>
       <url>
-        <loc>https://github.com/N-Nieto/UniHarmony/examples/ICI_multiclass_classification_example/</loc>
+        <loc>https://github.com/N-Nieto/UniHarmony/examples/ISI_binary_classification_example/</loc>
+      </url>
+      <url>
+        <loc>https://github.com/N-Nieto/UniHarmony/examples/ISI_multiclass_classification_example/</loc>
       </url>
       <url>
         <loc>https://github.com/N-Nieto/UniHarmony/api_reference/</loc>
