@@ -36,6 +36,8 @@ nav = [
       {"Multisite data characterization" = "examples/multisite_data_characterization_example.md"},
       {"Intra Site Interpolation for binary classification" = "examples/ISI_binary_classification_example.md"},
       {"Intra Site Interpolation for multiclass classification" = "examples/ISI_multiclass_classification_example.md"},
+      {"neuroComBat for binary classification" = "examples/neuroComBat_binary_classification_example.md"},
+      {"neuroComBat with MAREoS" = "examples/neuroComBat_in_MAREoS.md"},
   ]},
   {"API Reference" = "api_reference.md"},
 ]
