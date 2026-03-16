@@ -77,6 +77,13 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         self.mean_only = mean_only
         self.copy = copy
 
+    def _convert_sites(self, s: list[str]) -> list[int]:
+        """Convert sites to proper format."""
+        ks = set(s)
+        vs = list(range(1, len(ks) + 1))
+        kvs = dict(zip(ks, vs, strict=True))
+        return [kvs[k] for k in s]
+
     def fit(
         self,
         X: npt.ArrayLike,
@@ -103,6 +110,8 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         logger.debug("Fitting")
 
         X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
+        if isinstance(next(iter(sites)), str):
+            sites = self._convert_sites(sites)
         if np.asarray(sites).ndim == 1:
             sites = np.asarray(sites).reshape(-1, 1)
         sites = check_array(sites, copy=self.copy, estimator=self)
@@ -228,6 +237,8 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         check_is_fitted(self)
 
         X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
+        if isinstance(next(iter(sites)), str):
+            sites = self._convert_sites(sites)
         if np.asarray(sites).ndim == 1:
             sites = np.asarray(sites).reshape(-1, 1)
         sites = check_array(sites, copy=self.copy, estimator=self)
