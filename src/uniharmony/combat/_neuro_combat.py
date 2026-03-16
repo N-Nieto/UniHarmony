@@ -10,6 +10,8 @@
 # machine_learning_example.py
 # licensed under MIT license.
 
+import math
+
 import numpy as np
 import numpy.typing as npt
 import structlog
@@ -36,6 +38,12 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
 
     Parameters
     ----------
+    empirical_bayes : bool, optional (default True)
+        Whether to perform empirical Bayes.
+    parametric_adjustments : bool, optional (default True)
+        Whether to perform parametric adjustments.
+    mean_only : bool, optional (default False)
+        Whether to only adjust mean (no scaling).
     copy : bool, optional (default True)
         Whether to copy objects when doing `check_array`.
 
@@ -57,7 +65,16 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
 
     """
 
-    def __init__(self, copy: bool = True) -> None:
+    def __init__(
+        self,
+        empirical_bayes: bool = True,
+        parametric_adjustments: bool = True,
+        mean_only: bool = False,
+        copy: bool = True,
+    ) -> None:
+        self.empirical_bayes = empirical_bayes
+        self.parametric_adjustments = parametric_adjustments
+        self.mean_only = mean_only
         self.copy = copy
 
     def fit(
@@ -145,17 +162,32 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             gamma_hat,
             delta_hat,
         )
-        logger.debug("Finding parametric adjustments")
-        self._gamma_star, self._delta_star = self._find_parametric_adjustments(
-            standardized_data,
-            idx_per_site,
-            gamma_hat,
-            delta_hat,
-            gamma_bar,
-            tau_2,
-            a_prior,
-            b_prior,
-        )
+        if self.empirical_bayes:
+            if self.parametric_adjustments:
+                logger.debug("Finding parametric adjustments")
+                self._gamma_star, self._delta_star = self._find_parametric_adjustments(
+                    standardized_data,
+                    idx_per_site,
+                    gamma_hat,
+                    delta_hat,
+                    gamma_bar,
+                    tau_2,
+                    a_prior,
+                    b_prior,
+                )
+            else:
+                logger.debug("Finding non-parametric adjustments")
+                self._gamma_star, self._delta_star = self._find_non_parametric_adjustments(
+                    standardized_data,
+                    idx_per_site,
+                    gamma_hat,
+                    delta_hat,
+                )
+        else:
+            logger.debug("Finding L/S adjustments without empirical Bayes")
+            self._gamma_star = np.asarray(gamma_hat)
+            self._delta_star = np.asarray(delta_hat)
+
         return self
 
     def transform(
@@ -218,7 +250,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             raise ValueError("There is a site unseen during the fit method in the data.")
 
         n_samples = sites.shape[0]
-        n_samples_per_site = np.array([np.sum(sites == site_name) for site_name in self._sites_names])
+        n_samples_per_site = np.asarray([np.sum(sites == site_name) for site_name in self._sites_names])
         idx_per_site = [list(np.where(sites == site_name)[0]) for site_name in self._sites_names]
         logger.debug("Making design matrix")
         design = self._make_design_matrix(
@@ -395,7 +427,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
 
         standardized_mean = np.dot(self._grand_mean.T[:, np.newaxis], np.ones((1, n_samples)))
 
-        tmp = np.array(design.copy())
+        tmp = np.asarray(design.copy())
         tmp[:, : self._n_sites] = 0
         standardized_mean += np.dot(tmp, self._beta_hat).T
 
@@ -438,8 +470,11 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         )
 
         delta_hat = []
-        for _i, site_idxs in enumerate(idx_per_site):
-            delta_hat.append(np.var(standardized_data[:, site_idxs], axis=1, ddof=1))
+        for site_idxs in idx_per_site:
+            if self.mean_only:
+                delta_hat.append(np.repeat(1, standardized_data.shape[0]))
+            else:
+                delta_hat.append(np.var(standardized_data[:, site_idxs], axis=1, ddof=1))
 
         return gamma_hat, delta_hat
 
@@ -469,22 +504,15 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             b prior.
 
         """
+        delta_hat = list(map(_convert_zeroes, delta_hat))
         gamma_bar = np.mean(gamma_hat, axis=1)
         tau_2 = np.var(gamma_hat, axis=1, ddof=1)
-
-        def aprior_fn(gamma_hat):
-            m = np.mean(gamma_hat)
-            s2 = np.var(gamma_hat, ddof=1, dtype=np.float32)
-            return (2 * s2 + m**2) / s2
-
-        a_prior = list(map(aprior_fn, delta_hat))
-
-        def bprior_fn(gamma_hat):
-            m = np.mean(gamma_hat)
-            s2 = np.var(gamma_hat, ddof=1, dtype=np.float32)
-            return (m * s2 + m**3) / s2
-
-        b_prior = list(map(bprior_fn, delta_hat))
+        if self.mean_only:
+            a_prior = None
+            b_prior = None
+        else:
+            a_prior = list(map(_aprior_fn, delta_hat))
+            b_prior = list(map(_bprior_fn, delta_hat))
 
         return gamma_bar, tau_2, a_prior, b_prior
 
@@ -499,7 +527,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         a_prior: list,
         b_prior: list,
     ) -> tuple[npt.NDArray, npt.NDArray]:
-        """Compute empirical Bayes site/batch effect parameter estimates.
+        """Compute parametric empirical Bayes site/batch effect parameter estimates.
 
         Parameters
         ----------
@@ -529,27 +557,29 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
 
         """
         gamma_star, delta_star = [], []
-
         for i, site_idxs in enumerate(idx_per_site):
-            gamma_hat_adjust, delta_hat_adjust = self._iteration_solver(
-                standardized_data[:, site_idxs],
-                gamma_hat[i],
-                delta_hat[i],
-                gamma_bar[i],
-                tau_2[i],
-                a_prior[i],
-                b_prior[i],
-            )
+            if self.mean_only:
+                gamma_star.append(_postmean(gamma_hat[i], gamma_bar[i], 1, 1, tau_2[i]))
+                delta_star.append(np.repeat(1, standardized_data.shape[0]))
+            else:
+                gamma_hat_adjust, delta_hat_adjust = self._iteration_solver(
+                    standardized_data[:, site_idxs],
+                    gamma_hat[i],
+                    delta_hat[i],
+                    gamma_bar[i],
+                    tau_2[i],
+                    a_prior[i],
+                    b_prior[i],
+                )
+                gamma_star.append(gamma_hat_adjust)
+                delta_star.append(delta_hat_adjust)
 
-            gamma_star.append(gamma_hat_adjust)
-            delta_star.append(delta_hat_adjust)
-
-        return np.array(gamma_star), np.array(delta_star)
+        return np.asarray(gamma_star), np.asarray(delta_star)
 
     def _iteration_solver(
         self,
         standardized_data: npt.NDArray,
-        gamma_hat: npt.NDArray,
+        gamma_hat: npt.ArrayLike,
         delta_hat: npt.ArrayLike,
         gamma_bar: npt.ArrayLike,
         tau_2: npt.ArrayLike,
@@ -563,7 +593,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         ----------
         standardized_data : array
             Standardized data.
-        gamma_hat : array
+        gamma_hat : array-like
             Gamma hat.
         delta_hat : array-like
             Delta hat.
@@ -590,17 +620,11 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         gamma_hat_old = gamma_hat.copy()
         delta_hat_old = delta_hat.copy()
 
-        def postmean(gamma_hat, gamma_bar, n, delta_star, tau_2):
-            return (tau_2 * n * gamma_hat + delta_star * gamma_bar) / (tau_2 * n + delta_star)
-
-        def postvar(sum_2, n, a_prior, b_prior):
-            return (0.5 * sum_2 + b_prior) / (n / 2.0 + a_prior - 1.0)
-
         change = 1
         count = 0
 
         while change > convergence:
-            gamma_hat_new = postmean(gamma_hat, gamma_bar, n, delta_hat_old, tau_2)
+            gamma_hat_new = _postmean(gamma_hat, gamma_bar, n, delta_hat_old, tau_2)
             sum_2 = (
                 (
                     standardized_data
@@ -611,8 +635,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
                 )
                 ** 2
             ).sum(axis=1)
-
-            delta_hat_new = postvar(sum_2, n, a_prior, b_prior)
+            delta_hat_new = _postvar(sum_2, n, a_prior, b_prior)
 
             change = max(
                 (abs(gamma_hat_new - gamma_hat_old) / gamma_hat_old).max(),
@@ -622,9 +645,99 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             gamma_hat_old = gamma_hat_new
             delta_hat_old = delta_hat_new
 
-            count = count + 1
+            count += 1
 
         return gamma_hat_new, delta_hat_new
+
+    def _find_non_parametric_adjustments(
+        self,
+        standardized_data: npt.NDArray,
+        idx_per_site: list[list[int]],
+        gamma_hat: npt.NDArray,
+        delta_hat: npt.ArrayLike,
+    ) -> tuple[npt.NDArray, npt.NDArray]:
+        """Compute non-parametric empirical Bayes site/batch effect parameter estimates.
+
+        Parameters
+        ----------
+        standardized_data : array
+            Standardized data.
+        idx_per_site : list of list of int
+            Index per site.
+        gamma_hat : array
+            Gamma hat.
+        delta_hat : array-like
+            Delta hat.
+
+        Returns
+        -------
+        array
+            Gamma star.
+        array
+            Delta star.
+
+        """
+        gamma_star, delta_star = [], []
+        for i, site_idxs in enumerate(idx_per_site):
+            if self.mean_only:
+                delta_hat[i] = np.repeat(1, standardized_data.shape[0])
+            gamma_hat_adjust, delta_hat_adjust = self._int_eprior(
+                standardized_data[:, site_idxs],
+                gamma_hat[i],
+                delta_hat[i],
+            )
+
+            gamma_star.append(gamma_hat_adjust)
+            delta_star.append(delta_hat_adjust)
+
+        return np.asarray(gamma_star), np.asarray(delta_star)
+
+    def _int_eprior(
+        self,
+        standardized_data: npt.NDArray,
+        gamma_hat: npt.ArrayLike,
+        delta_hat: npt.ArrayLike,
+    ) -> tuple[npt.NDArray, npt.NDArray]:
+        """Find the non-parametric site/batch effect adjustments.
+
+        Parameters
+        ----------
+        standardized_data : array
+            Standardized data.
+        gamma_hat : array-like
+            Gamma hat.
+        delta_hat : array-like
+            Delta hat.
+
+        Returns
+        -------
+        array
+            Gamma hat adjusted.
+        array
+            Delta hat adjusted.
+
+        """
+        r = standardized_data.shape[0]
+        gamma_star, delta_star = [], []
+        for i in range(0, r, 1):
+            g = np.delete(gamma_hat, i)
+            d = np.delete(delta_hat, i)
+            x = standardized_data[i, :]
+            n = x.shape[0]
+            j = np.repeat(1, n)
+            a = np.repeat(x, g.shape[0])
+            a = a.reshape(n, g.shape[0])
+            a = np.transpose(a)
+            b = np.repeat(g, n)
+            b = b.reshape(g.shape[0], n)
+            resid2 = np.square(a - b)
+            sum2 = resid2.dot(j)
+            lh = 1 / (2 * math.pi * d) ** (n / 2) * np.exp(-sum2 / (2 * d))
+            lh = np.nan_to_num(lh)
+            gamma_star.append(sum(g * lh) / sum(lh))
+            delta_star.append(sum(d * lh) / sum(lh))
+
+        return gamma_star, delta_star
 
     def _adjust_data_final(
         self,
@@ -693,3 +806,113 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         tags.target_tags.positive_only = True
         tags.input_tags.two_d_array = True
         return tags
+
+
+def _convert_zeroes(x: npt.NDArray) -> npt.NDArray:
+    """Convert zeroes.
+
+    Parameters
+    ----------
+    x : array
+        Input array.
+
+    Returns
+    -------
+    array
+        Output array.
+
+    """
+    x[x == 0] = 1
+    return x
+
+
+def _aprior_fn(delta_hat: npt.NDArray) -> float:
+    """Calculate a prior.
+
+    Parameters
+    ----------
+    delta_hat : array-like
+        Delta hat.
+
+    Returns
+    -------
+    array
+        a prior.
+
+    """
+    m = np.mean(delta_hat)
+    s2 = np.var(delta_hat, ddof=1, dtype=np.float32)
+    return (2 * s2 + m**2) / s2
+
+
+def _bprior_fn(delta_hat: npt.NDArray) -> float:
+    """Calculate b prior.
+
+    Parameters
+    ----------
+    delta_hat : array-like
+        Delta hat.
+
+    Returns
+    -------
+    array
+        b prior.
+
+    """
+    m = np.mean(delta_hat)
+    s2 = np.var(delta_hat, ddof=1, dtype=np.float32)
+    return (m * s2 + m**3) / s2
+
+
+def _postmean(
+    gamma_hat: npt.ArrayLike,
+    gamma_bar: npt.ArrayLike,
+    n: int,
+    delta_star: int,
+    tau_2: npt.ArrayLike,
+):
+    """Postmean.
+
+    Parameters
+    ----------
+    gamma_hat : array
+        Gamma hat.
+    gamma_bar : array-like
+        Gamma bar.
+    n : int
+        Count.
+    delta_star : list
+        Delta star.
+    tau_2 : array-like
+        Tau 2.
+
+    Returns
+    -------
+    float
+        Postmean.
+
+    """
+    return (tau_2 * n * gamma_hat + delta_star * gamma_bar) / (tau_2 * n + delta_star)
+
+
+def _postvar(sum_2: float, n: int, a_prior: list, b_prior: list) -> float:
+    """Postvar.
+
+    Parameters
+    ----------
+    sum_2 : float
+        Sum squared.
+    n : int
+        Count.
+    a_prior : list
+        a prior.
+    b_prior : list
+        b prior.
+
+    Returns
+    -------
+    float
+        Postvar.
+
+    """
+    return (0.5 * sum_2 + b_prior) / (n / 2.0 + a_prior - 1.0)
