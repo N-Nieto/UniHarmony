@@ -90,34 +90,19 @@ def _input_checks(
 
     """
     if not isinstance(y_true, np.ndarray):
-        raise TypeError(
-            "y_true must be a numpy.ndarray, "
-            f"got {type(y_true).__name__!r} instead."
-        )
+        raise TypeError(f"y_true must be a numpy.ndarray, got {type(y_true).__name__!r} instead.")
 
     if not isinstance(y_pred, np.ndarray):
-        raise TypeError(
-            "y_pred must be a numpy.ndarray, "
-            f"got {type(y_pred).__name__!r} instead."
-        )
+        raise TypeError(f"y_pred must be a numpy.ndarray, got {type(y_pred).__name__!r} instead.")
 
     if not isinstance(sites, np.ndarray):
-        raise TypeError(
-            "sites must be a numpy.ndarray, "
-            f"got {type(sites).__name__!r} instead."
-        )
+        raise TypeError(f"sites must be a numpy.ndarray, got {type(sites).__name__!r} instead.")
 
     if not callable(metric):
-        raise TypeError(
-            "metric must be a callable, "
-            f"got {type(metric).__name__!r} instead."
-        )
+        raise TypeError(f"metric must be a callable, got {type(metric).__name__!r} instead.")
 
     if not isinstance(overall_performance, bool):
-        raise TypeError(
-            "overall_performance must be a bool, "
-            f"got {type(overall_performance).__name__!r} instead."
-        )
+        raise TypeError(f"overall_performance must be a bool, got {type(overall_performance).__name__!r} instead.")
 
     if not (len(y_true) == len(y_pred) == len(sites)):
         raise ValueError(

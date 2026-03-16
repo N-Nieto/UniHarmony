@@ -145,14 +145,12 @@ def test_load_mareos_single_dataset_dataframe_funtionality() -> None:
     # Create mock data
     data_dir = _ensure_mareos_data()
     # Test with pandas output
-    X_df, y_series, sites_series, covs_df, folds_series = (
-        _load_mareos_single_dataset(
-            data_dir=data_dir,
-            effect="eos",
-            effect_type="simple",
-            effect_example="1",
-            as_numpy=False,
-        )
+    X_df, y_series, sites_series, covs_df, folds_series = _load_mareos_single_dataset(
+        data_dir=data_dir,
+        effect="eos",
+        effect_type="simple",
+        effect_example="1",
+        as_numpy=False,
     )
 
     assert isinstance(X_df, pd.DataFrame)
