@@ -576,7 +576,7 @@
   <a href="#combat-neurocombat" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ComBat / neuroComBat
+        ComBat - neuroComBat
       
     </span>
   </a>
@@ -617,10 +617,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#bartharmonization-harmonization-based-on-iqms-and-bayesian-trees" class="md-nav__link">
+  <a href="#bartharm-harmonization-based-on-iqms-using-bayesian-additive-regression-trees" class="md-nav__link">
     <span class="md-ellipsis">
       
-        BARTharmonization: Harmonization based on IQMs and bayesian trees.
+        BARTharm: Harmonization based on IQMs using Bayesian Additive Regression Trees.
       
     </span>
   </a>
@@ -844,7 +844,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../combat_based/bartharmonize/" class="md-nav__link">
+      <a href="../combat_based/bartharmonize.md" class="md-nav__link">
         
   
   
@@ -1301,7 +1301,7 @@
   <a href="#combat-neurocombat" class="md-nav__link">
     <span class="md-ellipsis">
       
-        ComBat / neuroComBat
+        ComBat - neuroComBat
       
     </span>
   </a>
@@ -1342,10 +1342,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#bartharmonization-harmonization-based-on-iqms-and-bayesian-trees" class="md-nav__link">
+  <a href="#bartharm-harmonization-based-on-iqms-using-bayesian-additive-regression-trees" class="md-nav__link">
     <span class="md-ellipsis">
       
-        BARTharmonization: Harmonization based on IQMs and bayesian trees.
+        BARTharm: Harmonization based on IQMs using Bayesian Additive Regression Trees.
       
     </span>
   </a>
@@ -1404,7 +1404,7 @@
 
 
 <h1 id="combat-based-harmonization">ComBat-based harmonization<a class="headerlink" href="#combat-based-harmonization" title="Permanent link">&para;</a></h1>
-<h2 id="combat-neurocombat"><a href=".././combat_based/combat/">ComBat</a> / <a href=".././combat_based/combat/">neuroComBat</a><a class="headerlink" href="#combat-neurocombat" title="Permanent link">&para;</a></h2>
+<h2 id="combat-neurocombat"><a href=".././combat_based/combat/">ComBat</a> - <a href=".././combat_based/combat/">neuroComBat</a><a class="headerlink" href="#combat-neurocombat" title="Permanent link">&para;</a></h2>
 <p><a href=".././combat_based/combat/">ComBat</a> is one of the most widely used statistical harmonization methods ${^1}$. It was originally proposed for genomics to correct <strong>batch effects</strong> in microarray gene-expression data. In these datasets, samples are processed in batches (e.g., laboratory runs), and systematic technical differences between batches introduce unwanted variability that can obscure biological signals.</p>
 <p>The method was later adapted to <strong>multi-site neuroimaging datasets</strong>, as <a href=".././combat_based/combat/">neuroComBat</a>, where similar sources of variability arise from differences in scanner hardware, acquisition protocols, and preprocessing pipelines ${^2}$.</p>
 <p>For each feature and each site, ComBat estimates:</p>
@@ -1465,12 +1465,12 @@
 <ul>
 <li>https://github.com/garciadias/Neuroharmony</li>
 </ul>
-<h2 id="bartharmonization-harmonization-based-on-iqms-and-bayesian-trees"><a href=".././combat_based/neuroharmony/"><strong>BARTharmonization</strong></a>: Harmonization based on IQMs and bayesian trees.<a class="headerlink" href="#bartharmonization-harmonization-based-on-iqms-and-bayesian-trees" title="Permanent link">&para;</a></h2>
+<h2 id="bartharm-harmonization-based-on-iqms-using-bayesian-additive-regression-trees"><a href=".././combat_based/bartharm/"><strong>BARTharm</strong></a>: Harmonization based on IQMs using Bayesian Additive Regression Trees.<a class="headerlink" href="#bartharm-harmonization-based-on-iqms-using-bayesian-additive-regression-trees" title="Permanent link">&para;</a></h2>
 <p><strong>Paper</strong></p>
-<p>Emma's paper</p>
+<p>Prevot E, et al., (2025). BARTharm: MRI Harmonization Using Image Quality Metrics and Bayesian Non-parametric. bioRxiv. Published online 2025. doi:10.1101/2025.06.04.657792 https://www.biorxiv.org/content/10.1101/2025.06.04.657792v1</p>
 <p><strong>Source code</strong></p>
 <ul>
-<li>https://github.com/</li>
+<li>https://github.com/NeuroSML/BARTharm</li>
 </ul>
 <hr />
 <h2 id="longitudinal-combat-longcombat-adapted-combat-for-repeated-scaners"><a href=".././combat_based/longcombat/"><strong>Longitudinal ComBat (LongComBat)</strong></a>: Adapted ComBat for repeated scaners.<a class="headerlink" href="#longitudinal-combat-longcombat-adapted-combat-for-repeated-scaners" title="Permanent link">&para;</a></h2>
@@ -1484,7 +1484,7 @@
 <li>https://github.com/jcbeer/longCombat</li>
 </ul>
 <hr />
-<h2 id="deepcombat-hybrid-approach-of-deep-learning-and-combat"><a href=".././combat_based/deepcombat/">DeepComBat</a>: Hybrid approach of deep learning and ComBat.<a class="headerlink" href="#deepcombat-hybrid-approach-of-deep-learning-and-combat" title="Permanent link">&para;</a></h2>
+<h2 id="deepcombat-hybrid-approach-of-deep-learning-and-combat"><a href=".././combat_based/deepcombat/"><strong>DeepComBat</strong></a>: Hybrid approach of deep learning and ComBat.<a class="headerlink" href="#deepcombat-hybrid-approach-of-deep-learning-and-combat" title="Permanent link">&para;</a></h2>
 <p><strong>DeepComBat</strong> integrates ComBat with <strong>deep learning-based feature modeling</strong>.</p>
 <p>The method uses neural networks to capture complex non-linear structure in the data while preserving the statistical harmonization principles of ComBat.</p>
 <p>This hybrid approach allows the modeling of <strong>complex scanner effects and feature interactions</strong> that cannot be captured by linear models.</p>
@@ -1495,7 +1495,7 @@
 <li>https://github.com/hufengling/DeepComBat</li>
 </ul>
 <hr />
-<h2 id="prettyharmony-a-framework-to-integrate-combat-based-harmonization-methods-into-machine-learning-pipelines"><a href=".././combat_based/prettyharmony/">PrettYharmony</a>: A framework to integrate ComBat-based harmonization methods into Machine learning pipelines.<a class="headerlink" href="#prettyharmony-a-framework-to-integrate-combat-based-harmonization-methods-into-machine-learning-pipelines" title="Permanent link">&para;</a></h2>
+<h2 id="prettyharmony-a-framework-to-integrate-combat-based-harmonization-methods-into-machine-learning-pipelines"><a href=".././combat_based/prettyharmony/"><strong>PrettYharmony</strong></a>: A framework to integrate ComBat-based harmonization methods into Machine learning pipelines.<a class="headerlink" href="#prettyharmony-a-framework-to-integrate-combat-based-harmonization-methods-into-machine-learning-pipelines" title="Permanent link">&para;</a></h2>
 <p>A common challenge in multi-site datasets occurs when <strong>class distributions differ across sites</strong>. For example:</p>
 <ul>
 <li>Site A contains mostly control subjects  </li>
@@ -1508,7 +1508,13 @@
 <p>If the covariate being preserved is also the <strong>target variable of the ML model</strong>, then the target must be known during harmonization. In real-world prediction scenarios this information is unavailable, creating a new form of <strong>data leakage</strong> ${^6}$.</p>
 <p>Even if harmonization parameters are estimated using only the training set, the transformation of test data still requires the target variable.</p>
 <p>A suitable alternative in these scenarios is <strong>PrettYharmonize</strong>, which allows ComBat-based harmonization to be integrated into ML pipelines <strong>without requiring the target variable during inference</strong>.</p>
-<p>Nieto, N., Eickhoff, S. B., Jung, C., Reuter, M., Diers, K., Kelm, M., ... &amp; Patil, K. R. (2024). Impact of leakage on data harmonization in machine learning pipelines in class imbalance across sites. arXiv preprint arXiv:2410.19643.</p>
+<p><strong>Paper</strong>
+Nieto, N., Eickhoff, S. B., Jung, C., Reuter, M., Diers, K., Kelm, M., ... &amp; Patil, K. R. (2026). Impact of leakage on data harmonization in machine learning pipelines in class imbalance across sites. Neurocomputing, 133146. https://doi.org/10.1016/j.neucom.2026.133146</p>
+<p><strong>Source Code</strong></p>
+<ul>
+<li>https://github.com/juaml/PrettYharmonize</li>
+<li>https://github.com/juaml/harmonize_project</li>
+</ul>
 <hr />
 
 
