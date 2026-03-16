@@ -1235,52 +1235,97 @@ def _compute_inverse_gamma_priors(delta_hat: npt.NDArray) -> tuple[npt.NDArray, 
 def _postmean(
     gamma_hat: npt.ArrayLike,
     gamma_bar: npt.ArrayLike,
-    n: int,
-    delta_star: int,
+    n: int | npt.NDArray,
+    delta_star: float | npt.ArrayLike,
     tau_2: npt.ArrayLike,
-):
-    """Postmean.
+) -> npt.NDArray:
+    """Compute posterior mean (shrunken estimate) for location parameters.
+
+    Formula: gamma_star = (tau_2 * n * gamma_hat + delta * gamma_bar) / (tau_2 * n + delta)
 
     Parameters
     ----------
-    gamma_hat : array
-        Gamma hat.
-    gamma_bar : array-like
-        Gamma bar.
-    n : int
-        Count.
-    delta_star : list
-        Delta star.
-    tau_2 : array-like
-        Tau 2.
+    gamma_hat : array-like, shape (n_features,)
+        Observed site means from L/S model.
+    gamma_bar : array-like, shape (n_features,)
+        Prior mean (expected batch effect across features).
+    n : int or array-like
+        Sample size for the site.
+    delta_star : float or array-like
+        Estimated variance (sampling precision).
+    tau_2 : array-like, shape (n_features,)
+        Prior variance (how much batch effects vary across features).
 
     Returns
     -------
-    float
-        Postmean.
+    gamma_star : ndarray, shape (n_features,)
+        Posterior mean (shrunken estimate) for each feature.
 
     """
-    return (tau_2 * n * gamma_hat + delta_star * gamma_bar) / (tau_2 * n + delta_star)
+    # Convert to arrays for broadcasting
+    gamma_hat = np.asarray(gamma_hat)
+    gamma_bar = np.asarray(gamma_bar)
+    tau_2 = np.asarray(tau_2)
+    n = np.asarray(n)
+    delta_star = np.asarray(delta_star)
+
+    # Compute posterior mean using precision-weighted average
+    prior_precision = tau_2 * n
+
+    # Handle numerical issues
+    denominator = prior_precision + delta_star
+    if np.any(denominator <= 0):
+        logger.warning("_postmean: Non-positive denominator, clipping")
+        denominator = np.clip(denominator, 1e-10, None)
+
+    return (prior_precision * gamma_hat + delta_star * gamma_bar) / denominator
 
 
-def _postvar(sum_2: float, n: int, a_prior: list, b_prior: list) -> float:
-    """Postvar.
+def _postvar(
+    sum_2: float | npt.ArrayLike,
+    n: int | npt.ArrayLike,
+    a_prior: npt.ArrayLike,
+    b_prior: npt.ArrayLike,
+) -> npt.NDArray:
+    """Compute posterior variance estimate for scale parameters.
+
+    Formula: delta_star = (0.5 * sum_2 + b_prior) / (n/2 + a_prior - 1)
 
     Parameters
     ----------
-    sum_2 : float
-        Sum squared.
-    n : int
-        Count.
-    a_prior : list
-        a prior.
-    b_prior : list
-        b prior.
+    sum_2 : float or array-like, shape (n_features,)
+        Sum of squared deviations: sum((x - gamma_star)^2)
+    n : int or array-like
+        Sample size.
+    a_prior : array-like, shape (n_features,)
+        Shape parameter of inverse-gamma prior.
+    b_prior : array-like, shape (n_features,)
+        Scale parameter of inverse-gamma prior.
 
     Returns
     -------
-    float
-        Postvar.
+    delta_star : ndarray, shape (n_features,)
+        Posterior variance estimate for each feature.
 
     """
-    return (0.5 * sum_2 + b_prior) / (n / 2.0 + a_prior - 1.0)
+    # Convert to arrays for broadcasting
+    sum_2 = np.asarray(sum_2)
+    a_prior = np.asarray(a_prior)
+    b_prior = np.asarray(b_prior)
+    n = np.asarray(n)
+
+    # Posterior update for inverse-gamma
+    numerator = 0.5 * sum_2 + b_prior
+    denominator = n / 2.0 + a_prior - 1.0
+
+    # Handle numerical issues
+    if np.any(denominator <= 0):
+        logger.warning("_postvar: Non-positive denominator, using prior estimate only")
+        with np.errstate(divide="ignore", invalid="ignore"):
+            prior_mean = np.where(a_prior > 1, b_prior / (a_prior - 1), b_prior)
+        return prior_mean
+
+    result = numerator / denominator
+
+    # Ensure positive variance
+    return np.clip(result, 1e-8, None)
