@@ -907,40 +907,66 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
     ) -> tuple[npt.NDArray, npt.NDArray]:
         """Compute parametric empirical Bayes site/batch effect parameter estimates.
 
+        This method applies parametric empirical Bayes shrinkage to the L/S model
+        parameters (gamma_hat, delta_hat) to obtain adjusted parameters (gamma_star, delta_star).
+
+        The shrinkage uses the prior distributions estimated in _find_priors:
+        - Normal prior for gamma: shrinks site means toward gamma_bar
+        - Inverse-Gamma prior for delta: shrinks site variances toward common variance
+
+        For mean_only mode, only location (gamma) is adjusted, variance (delta) is fixed at 1.
+        For full mode, both location and variance are adjusted via iterative solver.
+
         Parameters
         ----------
-        standardized_data : array
-            Standardized data.
+        standardized_data : array, shape (n_features, n_samples)
+            Standardized data from _standardize_across_features.
         idx_per_site : list of list of int
-            Index per site.
-        gamma_hat : array
-            Gamma hat.
-        delta_hat : array-like
-            Delta hat.
-        gamma_bar : array-like
-            Gamma bar.
-        tau_2 : array-like
-            Tau 2.
-        a_prior : list
-            a prior.
-        b_prior : list
-            b prior.
+            List of sample indices for each site.
+        gamma_hat : array, shape (n_sites, n_features)
+            Estimated location parameters from _fit_ls_model.
+        delta_hat : array-like, list of arrays
+            Estimated scale parameters from _fit_ls_model.
+        gamma_bar : array-like, shape (n_sites,)
+            Mean of normal prior for each site.
+        tau_2 : array-like, shape (n_sites,)
+            Variance of normal prior for each site.
+        a_prior : list of arrays
+            Shape parameters of inverse-gamma prior for each site.
+        b_prior : list of arrays
+            Scale parameters of inverse-gamma prior for each site.
 
         Returns
         -------
-        array
-            Gamma star.
-        array
-            Delta star.
+        gamma_star : array, shape (n_sites, n_features)
+            Adjusted (shrunken) location parameters for each site and feature.
+        delta_star : array, shape (n_sites, n_features)
+            Adjusted (shrunken) scale parameters for each site and feature.
 
         """
         gamma_star, delta_star = [], []
         for i, site_idxs in enumerate(idx_per_site):
             if self.mean_only:
-                gamma_star.append(_postmean(gamma_hat[i], gamma_bar[i], 1, 1, tau_2[i]))
-                delta_star.append(np.repeat(1, standardized_data.shape[0]))
+                # Fix incorrect parameter passing!
+                # Original passes n=1, delta_star=1 which is wrong
+                # Should use actual sample count and delta_hat[i]
+                n_samples = len(site_idxs)
+
+                # Shrink gamma_hat toward gamma_bar using prior precision
+                gamma_adj = _postmean(
+                    gamma_hat[i],  # Observed site means
+                    gamma_bar[i],  # Prior mean
+                    n_samples,  # Number of samples in site
+                    1.0,  # Fixed variance (standardized)
+                    tau_2[i],  # Prior variance
+                )
+                gamma_star.append(gamma_adj)
+
+                # Fixed variance = 1 (standardized scale)
+                delta_star.append(np.ones(standardized_data.shape[0]))
             else:
-                gamma_hat_adjust, delta_hat_adjust = self._iteration_solver(
+                # [FULL MODE] Adjust both location and variance iteratively
+                gamma_adj, delta_adj = self._iteration_solver(
                     standardized_data[:, site_idxs],
                     gamma_hat[i],
                     delta_hat[i],
@@ -949,10 +975,18 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
                     a_prior[i],
                     b_prior[i],
                 )
-                gamma_star.append(gamma_hat_adjust)
-                delta_star.append(delta_hat_adjust)
+                gamma_star.append(gamma_adj)
+                delta_star.append(delta_adj)
+        # [IMPROVEMENT 2] Stack lists into arrays with proper shape checking
+        gamma_star_arr = np.asarray(gamma_star)
+        delta_star_arr = np.asarray(delta_star)
 
-        return np.asarray(gamma_star), np.asarray(delta_star)
+        expected_shape = (self._n_sites, standardized_data.shape[0])
+        if gamma_star_arr.shape != expected_shape:
+            raise ValueError(f"gamma_star shape {gamma_star_arr.shape} != expected {expected_shape}")
+        if delta_star_arr.shape != expected_shape:
+            raise ValueError(f"delta_star shape {delta_star_arr.shape} != expected {expected_shape}")
+        return gamma_star_arr, delta_star_arr
 
     def _iteration_solver(
         self,
@@ -964,67 +998,95 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         a_prior: list,
         b_prior: list,
         convergence: float = 0.0001,
+        max_iter: int = 1000,
     ) -> tuple[npt.NDArray, npt.NDArray]:
-        """Find the parametric site/batch effect adjustments.
+        """Solve iteratively the posterior mean and variance via Empirical Bayes.
 
         Parameters
         ----------
-        standardized_data : array
-            Standardized data.
-        gamma_hat : array-like
-            Gamma hat.
-        delta_hat : array-like
-            Delta hat.
-        gamma_bar : array-like
-            Gamma bar.
-        tau_2 : array-like
-            Tau 2.
-        a_prior : list
-            a prior.
-        b_prior : list
-            b prior.
+        standardized_data : array, shape (n_features, n_samples_site)
+            Standardized data for a single site.
+        gamma_hat : array-like, shape (n_features,)
+            Initial location estimates.
+        delta_hat : array-like, shape (n_features,)
+            Initial scale estimates.
+        gamma_bar : array-like, shape (n_features,)
+            Prior mean for location.
+        tau_2 : array-like, shape (n_features,)
+            Prior variance for location.
+        a_prior : array-like, shape (n_features,)
+            Prior shape for scale.
+        b_prior : array-like, shape (n_features,)
+            Prior scale for scale.
         convergence : float, optional (default 0.0001)
-            Convergence threshold.
+            Relative change threshold for convergence.
+        max_iter : int, optional (default 1000)
+            Maximum number of iterations.
 
         Returns
         -------
-        array
-            Gamma hat adjusted.
-        array
-            Delta hat adjusted.
+        gamma_star : ndarray, shape (n_features,)
+            Converged posterior location estimates.
+        delta_star : ndarray, shape (n_features,)
+            Converged posterior scale estimates.
 
         """
-        n = (1 - np.isnan(standardized_data)).sum(axis=1)
-        gamma_hat_old = gamma_hat.copy()
-        delta_hat_old = delta_hat.copy()
+        # Handle missing data (NaN) by counting non-NaN samples per feature
+        n = np.sum(~np.isnan(standardized_data), axis=1)
 
-        change = 1
+        if np.any(n == 0):
+            raise ValueError("Some features have all NaN values for this site")
+
+        gamma_hat_old = np.asarray(gamma_hat, dtype=np.float64).copy()
+        delta_hat_old = np.asarray(delta_hat, dtype=np.float64).copy()
+
+        # Validate inputs
+        if np.any(delta_hat_old <= 0):
+            logger.warning("_iteration_solver: Initial delta_hat <= 0, clipping")
+            delta_hat_old = np.clip(delta_hat_old, 1e-8, None)
+
+        change = 1.0
         count = 0
 
         while change > convergence:
-            gamma_hat_new = _postmean(gamma_hat, gamma_bar, n, delta_hat_old, tau_2)
-            sum_2 = (
-                (
-                    standardized_data
-                    - np.dot(
-                        gamma_hat_new[:, np.newaxis],
-                        np.ones((1, standardized_data.shape[1])),
-                    )
+            # Add iteration limit
+            if count >= max_iter:
+                logger.warning(
+                    f"_iteration_solver: Did not converge after {max_iter} iterations. "
+                    f"Final change: {change:.6f}. Using current estimates."
                 )
-                ** 2
-            ).sum(axis=1)
+                break
+
+            # E-step: Update gamma given current delta
+            gamma_hat_new = _postmean(gamma_hat, gamma_bar, n, delta_hat_old, tau_2)
+
+            # M-step: Update delta given new gamma
+            # Use broadcasting instead of explicit ones matrix
+            gamma_expanded = gamma_hat_new[:, np.newaxis]
+
+            with np.errstate(invalid="ignore"):
+                residuals = standardized_data - gamma_expanded
+                resid2 = np.square(residuals)
+                sum_2 = np.nansum(resid2, axis=1)
+
             delta_hat_new = _postvar(sum_2, n, a_prior, b_prior)
+            delta_hat_new = np.clip(delta_hat_new, 1e-8, None)
 
-            change = max(
-                (abs(gamma_hat_new - gamma_hat_old) / gamma_hat_old).max(),
-                (abs(delta_hat_new - delta_hat_old) / delta_hat_old).max(),
-            )
+            # Convergence check
+            with np.errstate(divide="ignore", invalid="ignore"):
+                gamma_change = np.abs(gamma_hat_new - gamma_hat_old)
+                gamma_rel_change = np.where(np.abs(gamma_hat_old) > 1e-10, gamma_change / np.abs(gamma_hat_old), gamma_change)
 
-            gamma_hat_old = gamma_hat_new
-            delta_hat_old = delta_hat_new
+                delta_change = np.abs(delta_hat_new - delta_hat_old)
+                delta_rel_change = np.where(np.abs(delta_hat_old) > 1e-10, delta_change / np.abs(delta_hat_old), delta_change)
 
+                change = max(np.max(gamma_rel_change), np.max(delta_rel_change))
+
+            gamma_hat_old = gamma_hat_new.copy()
+            delta_hat_old = delta_hat_new.copy()
             count += 1
 
+        logger.debug(f"_iteration_solver converged in {count} iterations (change={change:.6f})")
         return gamma_hat_new, delta_hat_new
 
     def _find_non_parametric_adjustments(
@@ -1038,37 +1100,52 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
 
         Parameters
         ----------
-        standardized_data : array
+        standardized_data : array, shape (n_features, n_samples)
             Standardized data.
         idx_per_site : list of list of int
-            Index per site.
-        gamma_hat : array
-            Gamma hat.
-        delta_hat : array-like
-            Delta hat.
+            List of sample indices for each site.
+        gamma_hat : array, shape (n_sites, n_features)
+            Estimated location parameters.
+        delta_hat : array-like, list of arrays
+            Estimated scale parameters.
 
         Returns
         -------
-        array
-            Gamma star.
-        array
-            Delta star.
+        gamma_star : array, shape (n_sites, n_features)
+            Adjusted location parameters via non-parametric EB.
+        delta_star : array, shape (n_sites, n_features)
+            Adjusted scale parameters via non-parametric EB.
 
         """
         gamma_star, delta_star = [], []
+
         for i, site_idxs in enumerate(idx_per_site):
+            # [IMPROVEMENT 1] Don't modify delta_hat in place
             if self.mean_only:
-                delta_hat[i] = np.repeat(1, standardized_data.shape[0])
-            gamma_hat_adjust, delta_hat_adjust = self._int_eprior(
+                site_delta = np.ones(standardized_data.shape[0])
+            else:
+                site_delta = np.asarray(delta_hat[i])
+
+            gamma_adj, delta_adj = self._int_eprior(
                 standardized_data[:, site_idxs],
                 gamma_hat[i],
-                delta_hat[i],
+                site_delta,
             )
 
-            gamma_star.append(gamma_hat_adjust)
-            delta_star.append(delta_hat_adjust)
+            gamma_star.append(gamma_adj)
+            delta_star.append(delta_adj)
 
-        return np.asarray(gamma_star), np.asarray(delta_star)
+        # [IMPROVEMENT 2] Convert to arrays with validation
+        gamma_star_arr = np.asarray(gamma_star)
+        delta_star_arr = np.asarray(delta_star)
+
+        expected_shape = (self._n_sites, standardized_data.shape[0])
+        if gamma_star_arr.shape != expected_shape:
+            raise ValueError(f"gamma_star shape mismatch: {gamma_star_arr.shape} vs {expected_shape}")
+        if delta_star_arr.shape != expected_shape:
+            raise ValueError(f"delta_star shape mismatch: {delta_star_arr.shape} vs {expected_shape}")
+
+        return gamma_star_arr, delta_star_arr
 
     def _int_eprior(
         self,
@@ -1076,44 +1153,73 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         gamma_hat: npt.ArrayLike,
         delta_hat: npt.ArrayLike,
     ) -> tuple[npt.NDArray, npt.NDArray]:
-        """Find the non-parametric site/batch effect adjustments.
+        """Compute non-parametric empirical Bayes adjustments via kernel weighting.
 
         Parameters
         ----------
-        standardized_data : array
-            Standardized data.
-        gamma_hat : array-like
-            Gamma hat.
-        delta_hat : array-like
-            Delta hat.
+        standardized_data : array, shape (n_features, n_samples_site)
+            Standardized data for a single site.
+        gamma_hat : array-like, shape (n_features,)
+            Location parameters for each feature.
+        delta_hat : array-like, shape (n_features,)
+            Scale parameters for each feature.
 
         Returns
         -------
-        array
-            Gamma hat adjusted.
-        array
-            Delta hat adjusted.
+        gamma_star : ndarray, shape (n_features,)
+            Weighted location estimates.
+        delta_star : ndarray, shape (n_features,)
+            Weighted scale estimates.
 
         """
-        r = standardized_data.shape[0]
-        gamma_star, delta_star = [], []
-        for i in range(0, r, 1):
-            g = np.delete(gamma_hat, i)
-            d = np.delete(delta_hat, i)
+        n_features = standardized_data.shape[0]
+
+        gamma_hat = np.asarray(gamma_hat, dtype=np.float64)
+        delta_hat = np.asarray(delta_hat, dtype=np.float64)
+
+        # Pre-allocate output arrays
+        gamma_star = np.empty(n_features, dtype=np.float64)
+        delta_star = np.empty(n_features, dtype=np.float64)
+
+        # Precompute constants
+        two_pi = 2.0 * math.pi
+
+        for i in range(n_features):
             x = standardized_data[i, :]
             n = x.shape[0]
-            j = np.repeat(1, n)
-            a = np.repeat(x, g.shape[0])
-            a = a.reshape(n, g.shape[0])
-            a = np.transpose(a)
-            b = np.repeat(g, n)
-            b = b.reshape(g.shape[0], n)
-            resid2 = np.square(a - b)
-            sum2 = resid2.dot(j)
-            lh = 1 / (2 * math.pi * d) ** (n / 2) * np.exp(-sum2 / (2 * d))
-            lh = np.nan_to_num(lh)
-            gamma_star.append(sum(g * lh) / sum(lh))
-            delta_star.append(sum(d * lh) / sum(lh))
+
+            # Leave-one-out: use all OTHER features' parameters
+            g_other = np.delete(gamma_hat, i)
+            d_other = np.delete(delta_hat, i)
+
+            # Vectorized likelihood computation with broadcasting
+            x_expanded = x[np.newaxis, :]
+            g_expanded = g_other[:, np.newaxis]
+
+            residuals = x_expanded - g_expanded
+            resid2 = np.square(residuals)
+            sum2 = np.sum(resid2, axis=1)
+
+            # Use log-space for numerical stability
+            with np.errstate(divide="ignore", invalid="ignore"):
+                log_lh = -0.5 * n * np.log(two_pi * d_other) - sum2 / (2.0 * d_other)
+                log_lh_max = np.max(log_lh)
+                lh = np.exp(log_lh - log_lh_max)
+
+            # Handle numerical issues
+            lh = np.nan_to_num(lh, nan=0.0, posinf=0.0, neginf=0.0)
+
+            lh_sum = np.sum(lh)
+            if lh_sum < 1e-300:
+                logger.warning(f"Feature {i}: All likelihoods near zero, using original estimate")
+                gamma_star[i] = gamma_hat[i]
+                delta_star[i] = delta_hat[i]
+                continue
+
+            weights = lh / lh_sum
+
+            gamma_star[i] = np.sum(g_other * weights)
+            delta_star[i] = np.sum(d_other * weights)
 
         return gamma_star, delta_star
 
