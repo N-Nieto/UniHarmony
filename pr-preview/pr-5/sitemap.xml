@@ -61,6 +61,12 @@
         <loc>https://github.com/N-Nieto/UniHarmony/examples/ISI_multiclass_classification_example/</loc>
       </url>
       <url>
+        <loc>https://github.com/N-Nieto/UniHarmony/examples/neuroComBat_binary_classification_example/</loc>
+      </url>
+      <url>
+        <loc>https://github.com/N-Nieto/UniHarmony/examples/neuroComBat_in_MAREoS/</loc>
+      </url>
+      <url>
         <loc>https://github.com/N-Nieto/UniHarmony/api_reference/</loc>
       </url>
 </urlset>
