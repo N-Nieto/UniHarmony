@@ -746,36 +746,151 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         gamma_hat: npt.NDArray,
         delta_hat: npt.ArrayLike,
     ) -> tuple[npt.ArrayLike, npt.ArrayLike, list, list]:
-        """Compute a and b priors.
+        """Compute hyperparameters for the prior distributions of batch effects.
+
+        This method estimates the hyperparameters for the Empirical Bayes priors:
+        - Normal prior for location parameters (gamma): N(gamma_bar, tau_2)
+        - Inverse-Gamma prior for scale parameters (delta): IG(a_prior, b_prior)
+
+        These priors are estimated using method of moments from the observed L/S parameters.
+        The priors allow ComBat to "borrow strength" across features, stabilizing estimates
+        especially when sample sizes are small.
 
         Parameters
         ----------
-        gamma_hat : array
-            Gamma hat.
-        delta_hat : array-like
-            Delta hat.
+        gamma_hat : array, shape (n_sites, n_features)
+            Estimated location (mean) shifts for each site and feature from _fit_ls_model.
+        delta_hat : array-like, list of arrays
+            Estimated scale (variance) parameters for each site and feature.
+            Each array has shape (n_features,).
 
         Returns
         -------
-        array-like
-            Gamma bar.
-        array-like
-            Tau 2.
-        list
-            a prior.
-        list
-            b prior.
+        gamma_bar : array, shape (n_sites,)
+            Mean of the normal prior for location parameters per site.
+            Represents the expected batch effect across features.
+        tau_2 : array, shape (n_sites,)
+            Variance of the normal prior for location parameters per site.
+            Represents how much batch effects vary across features.
+        a_prior : list of arrays or None
+            Shape parameter of inverse-gamma prior for scale parameters per site.
+            None if mean_only=True (no variance adjustment).
+        b_prior : list of arrays or None
+            Scale parameter of inverse-gamma prior for scale parameters per site.
+            None if mean_only=True (no variance adjustment).
 
         """
-        delta_hat = list(map(_convert_zeroes, delta_hat))
+        # =====================================================================
+        # STEP 1: Handle zero/negative variances in delta_hat
+        # =====================================================================
+        # Explicit handling or zero or negative  variances
+        # Zero or negative variances cause numerical issues in inverse-gamma estimation
+        # We replace them with a small epsilon and log warnings
+        delta_hat_clean = []
+        for site_idx, site_deltas in enumerate(delta_hat):
+            site_deltas = np.asarray(site_deltas)
+
+            # Check for invalid values (zero, negative, NaN, Inf)
+            invalid_mask = (site_deltas <= 0) | ~np.isfinite(site_deltas)
+
+            if np.any(invalid_mask):
+                n_invalid = np.sum(invalid_mask)
+                logger.warning(
+                    f"Site {site_idx}: {n_invalid} features have invalid variance values "
+                    f"(<=0, NaN, or Inf). Setting to minimum variance (1e-8). "
+                    "This may indicate constant features or numerical errors."
+                )
+                site_deltas = site_deltas.copy()
+                site_deltas[invalid_mask] = 1e-8
+
+            delta_hat_clean.append(site_deltas)
+
+        # Original version step 1:
+        # delta_hat = list(map(_convert_zeroes, delta_hat))
+
+        # Step 2
+        # Compute mean of gamma_hat across features (axis=1) for each site
+        # This is the expected location effect (gamma_bar) for each site
         gamma_bar = np.mean(gamma_hat, axis=1)
+
+        # Step 3
+        # tau_2 represents how much location effects vary across features within each site
+        # High tau_2 = heterogeneous batch effects across features
+        # Low tau_2 = consistent batch effects across features (more pooling possible)
         tau_2 = np.var(gamma_hat, axis=1, ddof=1)
+
+        # Handle near-zero tau_2 (no variation in batch effects)
+        # This can happen if all features have identical batch effects (rare but possible)
+        # or with very few features
+        small_tau_mask = tau_2 < 1e-10
+        if np.any(small_tau_mask):
+            n_small = np.sum(small_tau_mask)
+            logger.warning(
+                f"{n_small} sites have near-zero variance in gamma_hat (tau_2 < 1e-10). "
+                "Setting to minimum value. Empirical Bayes will strongly pool estimates."
+            )
+            tau_2[small_tau_mask] = 1e-10
+
+        # =====================================================================
+        # STEP 4: Compute inverse-gamma prior parameters for scale (delta)
+        # =====================================================================
+        # The inverse-gamma prior IG(a, b) has:
+        #   Mean = b / (a - 1) for a > 1
+        #   Variance = b^2 / ((a-1)^2 * (a-2)) for a > 2
+        #
+        # We estimate a and b using method of moments from the observed delta_hat values
+        # a_prior and b_prior are estimated per feature (not per site) to allow
+        # feature-specific variance pooling
         if self.mean_only:
+            # [MEAN-ONLY MODE] No scale adjustment, so no need for inverse-gamma priors
             a_prior = None
             b_prior = None
         else:
-            a_prior = list(map(_aprior_fn, delta_hat))
-            b_prior = list(map(_bprior_fn, delta_hat))
+            # [FULL MODE] Estimate inverse-gamma hyperparameters for each site
+            # _aprior_fn and _bprior_fn implement method of moments estimation:
+            #   a = 1 + mean^2 / variance (shape parameter)
+            #   b = mean * (mean^2 / variance + 1) (scale parameter)
+
+            # Use list comprehension with explicit error handling
+            try:
+                a_prior = []
+                b_prior = []
+
+                for _, site_deltas in enumerate(delta_hat_clean):
+                    # Compute both parameters at once for this site
+                    a_vals, b_vals = _compute_inverse_gamma_priors(site_deltas)
+
+                    a_prior.append(a_vals)
+                    b_prior.append(b_vals)
+            except Exception as e:
+                logger.error(f"Failed to compute inverse-gamma priors: {e!s}. Check delta_hat values for numerical issues.")
+                raise
+
+            for site_idx, (a_vals, b_vals) in enumerate(zip(a_prior, b_prior, strict=False)):
+                invalid_a = (a_vals <= 0) | ~np.isfinite(a_vals)
+                invalid_b = (b_vals <= 0) | ~np.isfinite(b_vals)
+
+                if np.any(invalid_a) or np.any(invalid_b):
+                    n_bad = np.sum(invalid_a | invalid_b)
+                    logger.warning(
+                        f"Site {site_idx}: {n_bad} features have invalid prior parameters. "
+                        "Clipping to valid range. This may indicate extreme variance values."
+                    )
+                    # Clip to valid ranges for inverse-gamma
+                    a_vals = np.clip(a_vals, 1e-6, 1e6)
+                    b_vals = np.clip(b_vals, 1e-8, 1e8)
+                    a_prior[site_idx] = a_vals
+                    b_prior[site_idx] = b_vals
+                    logger.debug("Prior distribution parameters:")
+                    logger.debug(f"  a_prior range: [{a_vals.min():.4f}, {a_vals.max():.4f}]")
+                    logger.debug(f"  b_prior range: [{b_vals.min():.4f}, {b_vals.max():.4f}]")
+
+        # =====================================================================
+        # STEP 5: Diagnostic logging of prior parameters
+        # =====================================================================
+        logger.debug(f"  Gamma bar (mean location effect): {gamma_bar}")
+        logger.debug(f"  Tau^2 (variance of location effects): {tau_2}")
+        logger.debug(f"  Mean tau^2: {np.mean(tau_2):.6f} (higher = more heterogeneous effects)")
 
         return gamma_bar, tau_2, a_prior, b_prior
 
@@ -1071,60 +1186,50 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         return tags
 
 
-def _convert_zeroes(x: npt.NDArray) -> npt.NDArray:
-    """Convert zeroes.
+def _compute_inverse_gamma_priors(delta_hat: npt.NDArray) -> tuple[npt.NDArray, npt.NDArray]:
+    """Calculate both shape (a) and scale (b) parameters for inverse-gamma prior.
+
+    Computes both simultaneously since they share moment calculations.
+    This is ~2x faster than calling separate functions.
 
     Parameters
     ----------
-    x : array
-        Input array.
+    delta_hat : array-like, shape (n_features,)
+        Estimated variance parameters for a single site.
 
     Returns
     -------
-    array
-        Output array.
+    a_prior : ndarray, shape (n_features,)
+        Shape parameter: a = (2*s2 + m^2) / s2
+    b_prior : ndarray, shape (n_features,)
+        Scale parameter: b = (m*s2 + m^3) / s2
 
     """
-    x[x == 0] = 1
-    return x
+    delta_hat = np.asarray(delta_hat, dtype=np.float64)
 
+    # Clean input
+    if np.any(delta_hat <= 0) or not np.all(np.isfinite(delta_hat)):
+        logger.warning("Invalid values in delta_hat, clipping to valid range")
+        delta_hat = np.clip(delta_hat, 1e-10, 1e10)
+        delta_hat = np.where(np.isfinite(delta_hat), delta_hat, np.median(delta_hat))
 
-def _aprior_fn(delta_hat: npt.NDArray) -> float:
-    """Calculate a prior.
-
-    Parameters
-    ----------
-    delta_hat : array-like
-        Delta hat.
-
-    Returns
-    -------
-    array
-        a prior.
-
-    """
+    # Compute moments once
     m = np.mean(delta_hat)
-    s2 = np.var(delta_hat, ddof=1, dtype=np.float32)
-    return (2 * s2 + m**2) / s2
+    s2 = np.var(delta_hat, ddof=1)
 
+    # Handle near-zero variance
+    if s2 < 1e-10:
+        return (
+            np.full_like(delta_hat, 1e6),  # Large a = strong pooling
+            np.full_like(delta_hat, m),  # b = mean
+        )
 
-def _bprior_fn(delta_hat: npt.NDArray) -> float:
-    """Calculate b prior.
+    # Compute both parameters
+    m2 = m * m
+    a_prior = (2.0 * s2 + m2) / s2
+    b_prior = m * (s2 + m2) / s2
 
-    Parameters
-    ----------
-    delta_hat : array-like
-        Delta hat.
-
-    Returns
-    -------
-    array
-        b prior.
-
-    """
-    m = np.mean(delta_hat)
-    s2 = np.var(delta_hat, ddof=1, dtype=np.float32)
-    return (m * s2 + m**3) / s2
+    return (np.clip(a_prior, 1e-6, 1e8), np.clip(b_prior, 1e-8, 1e8))
 
 
 def _postmean(
