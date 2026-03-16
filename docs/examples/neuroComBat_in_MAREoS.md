@@ -16,7 +16,6 @@ from uniharmony.datasets import load_MAREoS
 
 
 structlog.configure(wrapper_class=structlog.make_filtering_bound_logger(logging.INFO))
-
 ```
 
 
@@ -29,7 +28,6 @@ clf_name = "LG"
 random_state = 23
 
 clf = LogisticRegression(random_state=random_state)
-
 
 warnings.filterwarnings(action="ignore", category=ConvergenceWarning)
 results = {}
@@ -222,7 +220,6 @@ ax.axhline(0.5, lw=2, color="k", ls="--", alpha=0.7, label="Chance level")
 plt.grid(axis="y")
 plt.show()
 # %%
-
 ```
 
     Experiment name: true_simple1
