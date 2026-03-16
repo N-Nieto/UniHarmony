@@ -1034,6 +1034,45 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#we-have-now-all-the-datasets-in-a-dictionary-there-is-a-total-of-8-datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        We have now all the datasets in a dictionary. There is a total of 8 datasets.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load-datasets-by-condition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Load datasets by condition
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Load datasets by condition">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#returning-the-dataset-as-dataframe-allows-to-see-the-simulated-areas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Returning the dataset as DataFrame allows to see the simulated areas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1229,6 +1268,45 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#we-have-now-all-the-datasets-in-a-dictionary-there-is-a-total-of-8-datasets" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        We have now all the datasets in a dictionary. There is a total of 8 datasets.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#load-datasets-by-condition" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Load datasets by condition
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Load datasets by condition">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#returning-the-dataset-as-dataframe-allows-to-see-the-simulated-areas" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Returning the dataset as DataFrame allows to see the simulated areas
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1249,69 +1327,65 @@
 
 <h1 id="this-tutorial-shows-how-to-download-the-mareos-dataset-from-the-web">This tutorial shows how to download the MAREoS dataset from the web<a class="headerlink" href="#this-tutorial-shows-how-to-download-the-mareos-dataset-from-the-web" title="Permanent link">&para;</a></h1>
 <h3 id="lets-start-with-the-imports">Let's start with the imports<a class="headerlink" href="#lets-start-with-the-imports" title="Permanent link">&para;</a></h3>
-<p>```python</p>
-<h1 id="imports">Imports<a class="headerlink" href="#imports" title="Permanent link">&para;</a></h1>
-<p>from pathlib import Path</p>
-<p>from uniharmony import load_MAREoS</p>
-<p>```</p>
-<p>```python</p>
-<h1 id="we-can-call-the-helper-funtion-to-load-all-the-dataset-aprox-3mb">We can call the helper funtion to load all the dataset (aprox 3MB).<a class="headerlink" href="#we-can-call-the-helper-funtion-to-load-all-the-dataset-aprox-3mb" title="Permanent link">&para;</a></h1>
-<h1 id="the-files-will-be-stored-in-the-cache-so-we-dont-have-to-worry-about-them">The files will be stored in the cache, so we don't have to worry about them<a class="headerlink" href="#the-files-will-be-stored-in-the-cache-so-we-dont-have-to-worry-about-them" title="Permanent link">&para;</a></h1>
-<p>datasets = load_MAREoS()</p>
-<p>```</p>
-<p>```python</p>
-<h1 id="lets-explore-now-how-the-datasets-looks-like">Let's explore now how the datasets looks like<a class="headerlink" href="#lets-explore-now-how-the-datasets-looks-like" title="Permanent link">&para;</a></h1>
-<p>print(datasets.keys())
-```</p>
-<pre><code>dict_keys(['eos_simple1', 'eos_simple2', 'eos_interaction1', 'eos_interaction2', 'true_simple1', 'true_simple2', 'true_interaction1', 'true_interaction2'])
-</code></pre>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Imports</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_MAREoS</span>
+</span></code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># We can call the helper funtion to load all the dataset (aprox 3MB).</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="c1"># The files will be stored in the cache, so we don&#39;t have to worry about them</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="n">datasets</span> <span class="o">=</span> <span class="n">load_MAREoS</span><span class="p">()</span>
+</span></code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Let&#39;s explore now how the datasets looks like</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="nb">print</span><span class="p">(</span><span class="n">datasets</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code>dict_keys([&#39;eos_simple1&#39;, &#39;eos_simple2&#39;, &#39;eos_interaction1&#39;, &#39;eos_interaction2&#39;, &#39;true_simple1&#39;, &#39;true_simple2&#39;, &#39;true_interaction1&#39;, &#39;true_interaction2&#39;])
+</code></pre></div>
 <h2 id="we-have-now-all-the-datasets-in-a-dictionary-there-is-a-total-of-8-datasets">We have now all the datasets in a dictionary. There is a total of 8 datasets.<a class="headerlink" href="#we-have-now-all-the-datasets-in-a-dictionary-there-is-a-total-of-8-datasets" title="Permanent link">&para;</a></h2>
-<p>```python</p>
-<h1 id="select-one-dataset-and-explore-what-is-inside-the-dictionary">Select one dataset and explore what is inside the dictionary<a class="headerlink" href="#select-one-dataset-and-explore-what-is-inside-the-dictionary" title="Permanent link">&para;</a></h1>
-<p>dataset = datasets["eos_simple1"]
-print(dataset.keys())
-```</p>
-<pre><code>dict_keys(['X', 'y', 'sites', 'covs', 'folds'])
-</code></pre>
-<p>```python</p>
-<h1 id="lets-unpack-what-is-inside-the-keys-this-is-the-typical-way-you-can-use">Let's unpack what is inside the keys. This is the typical way you can use<a class="headerlink" href="#lets-unpack-what-is-inside-the-keys-this-is-the-typical-way-you-can-use" title="Permanent link">&para;</a></h1>
-<h1 id="the-dataset-for-further-downstream-analysis">the dataset for further downstream analysis.<a class="headerlink" href="#the-dataset-for-further-downstream-analysis" title="Permanent link">&para;</a></h1>
-<p>X = dataset["X"]
-y = dataset["y"]</p>
-<p>print(f"Load X with shape:{X.shape} and y:{y.shape}")
-```</p>
-<pre><code>Load X with shape:(1001, 14) and y:(1001,)
-</code></pre>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Select one dataset and explore what is inside the dictionary</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="p">[</span><span class="s2">&quot;eos_simple1&quot;</span><span class="p">]</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">dataset</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code>dict_keys([&#39;X&#39;, &#39;y&#39;, &#39;sites&#39;, &#39;covs&#39;, &#39;folds&#39;])
+</code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-4-1"><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1"># Let&#39;s unpack what is inside the keys. This is the typical way you can use</span>
+</span><span id="__span-4-2"><a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="c1"># the dataset for further downstream analysis.</span>
+</span><span id="__span-4-3"><a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="n">X</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;X&quot;</span><span class="p">]</span>
+</span><span id="__span-4-4"><a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="n">y</span> <span class="o">=</span> <span class="n">dataset</span><span class="p">[</span><span class="s2">&quot;y&quot;</span><span class="p">]</span>
+</span><span id="__span-4-5"><a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>
+</span><span id="__span-4-6"><a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Load X with shape:</span><span class="si">{</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> and y:</span><span class="si">{</span><span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code>Load X with shape:(1001, 14) and y:(1001,)
+</code></pre></div>
 <h2 id="load-datasets-by-condition">Load datasets by condition<a class="headerlink" href="#load-datasets-by-condition" title="Permanent link">&para;</a></h2>
-<p>```python</p>
-<h1 id="you-can-use-the-helper-function-to-only-return-a-part-of-the-datasets">You can use the helper function to only return a part of the datasets<a class="headerlink" href="#you-can-use-the-helper-function-to-only-return-a-part-of-the-datasets" title="Permanent link">&para;</a></h1>
-<p>datasets = load_MAREoS(effects="eos")
-print(datasets.keys())
-```</p>
-<pre><code>dict_keys(['eos_simple1', 'eos_simple2', 'eos_interaction1', 'eos_interaction2'])
-</code></pre>
-<p><code>python
-datasets = load_MAREoS(
-    effects="eos", effect_types="simple"
-)
-print(datasets.keys())</code></p>
-<pre><code>dict_keys(['eos_simple1', 'eos_simple2'])
-</code></pre>
-<p><code>python
-datasets = load_MAREoS(
-    effects="eos", effect_types="simple", effect_examples="1"
-)
-print(datasets.keys())</code></p>
-<pre><code>dict_keys(['eos_simple1'])
-</code></pre>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-5-1"><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># You can use the helper function to only return a part of the datasets</span>
+</span><span id="__span-5-2"><a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">datasets</span> <span class="o">=</span> <span class="n">load_MAREoS</span><span class="p">(</span><span class="n">effects</span><span class="o">=</span><span class="s2">&quot;eos&quot;</span><span class="p">)</span>
+</span><span id="__span-5-3"><a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="nb">print</span><span class="p">(</span><span class="n">datasets</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code>dict_keys([&#39;eos_simple1&#39;, &#39;eos_simple2&#39;, &#39;eos_interaction1&#39;, &#39;eos_interaction2&#39;])
+</code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-6-1"><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="n">datasets</span> <span class="o">=</span> <span class="n">load_MAREoS</span><span class="p">(</span>
+</span><span id="__span-6-2"><a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">effects</span><span class="o">=</span><span class="s2">&quot;eos&quot;</span><span class="p">,</span> <span class="n">effect_types</span><span class="o">=</span><span class="s2">&quot;simple&quot;</span>
+</span><span id="__span-6-3"><a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="p">)</span>
+</span><span id="__span-6-4"><a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">datasets</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code>dict_keys([&#39;eos_simple1&#39;, &#39;eos_simple2&#39;])
+</code></pre></div>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-7-1"><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="n">datasets</span> <span class="o">=</span> <span class="n">load_MAREoS</span><span class="p">(</span>
+</span><span id="__span-7-2"><a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="n">effects</span><span class="o">=</span><span class="s2">&quot;eos&quot;</span><span class="p">,</span> <span class="n">effect_types</span><span class="o">=</span><span class="s2">&quot;simple&quot;</span><span class="p">,</span> <span class="n">effect_examples</span><span class="o">=</span><span class="s2">&quot;1&quot;</span>
+</span><span id="__span-7-3"><a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="p">)</span>
+</span><span id="__span-7-4"><a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="nb">print</span><span class="p">(</span><span class="n">datasets</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+</span></code></pre></div>
+<div class="language-text highlight"><pre><span></span><code>dict_keys([&#39;eos_simple1&#39;])
+</code></pre></div>
 <h3 id="returning-the-dataset-as-dataframe-allows-to-see-the-simulated-areas">Returning the dataset as DataFrame allows to see the simulated areas<a class="headerlink" href="#returning-the-dataset-as-dataframe-allows-to-see-the-simulated-areas" title="Permanent link">&para;</a></h3>
 <p>You can chose to load the dataset as pandas.DataFrame, with has the simulated areas of the brain.</p>
-<p><code>python
-datasets = load_MAREoS(
-    effects="eos", effect_types="simple", effect_examples="1", as_numpy=False
-)
-dataset = datasets["eos_simple1"]["X"]
-dataset.head()</code></p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-8-1"><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="n">datasets</span> <span class="o">=</span> <span class="n">load_MAREoS</span><span class="p">(</span>
+</span><span id="__span-8-2"><a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a>    <span class="n">effects</span><span class="o">=</span><span class="s2">&quot;eos&quot;</span><span class="p">,</span> <span class="n">effect_types</span><span class="o">=</span><span class="s2">&quot;simple&quot;</span><span class="p">,</span> <span class="n">effect_examples</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="n">as_numpy</span><span class="o">=</span><span class="kc">False</span>
+</span><span id="__span-8-3"><a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="p">)</span>
+</span><span id="__span-8-4"><a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="n">dataset</span> <span class="o">=</span> <span class="n">datasets</span><span class="p">[</span><span class="s2">&quot;eos_simple1&quot;</span><span class="p">][</span><span class="s2">&quot;X&quot;</span><span class="p">]</span>
+</span><span id="__span-8-5"><a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="n">dataset</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</span></code></pre></div>
 <div>
 <style scoped>
     .dataframe tbody tr th:only-of-type {
@@ -1455,12 +1529,11 @@ dataset.head()</code></p>
 
 <h1 id="load-the-dataset-in-a-user-determine-folder">Load the dataset in a user determine folder<a class="headerlink" href="#load-the-dataset-in-a-user-determine-folder" title="Permanent link">&para;</a></h1>
 <h2 id="we-could-also-want-to-see-the-csv-files-in-a-folder-we-could-pass-a-directory-for-the-function-to-save-the-data">We could also want to see the csv files in a folder, we could pass a directory for the function to save the data<a class="headerlink" href="#we-could-also-want-to-see-the-csv-files-in-a-folder-we-could-pass-a-directory-for-the-function-to-save-the-data" title="Permanent link">&para;</a></h2>
-<p>```python</p>
-<h1 id="lets-pass-a-directory-inside-the-repository">Let's pass a directory inside the repository.<a class="headerlink" href="#lets-pass-a-directory-inside-the-repository" title="Permanent link">&para;</a></h1>
-<h1 id="we-will-use-a-relative-path-from-this-example-to-look-for-appropiated-path">We will use a relative path from this example to look for appropiated path<a class="headerlink" href="#we-will-use-a-relative-path-from-this-example-to-look-for-appropiated-path" title="Permanent link">&para;</a></h1>
-<p>data_dir = Path().resolve().parent / "src" / "uniharmony" / "datasets" / "data"
-datasets = load_MAREoS(data_dir=data_dir)</p>
-<p>```</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="c1"># Let&#39;s pass a directory inside the repository.</span>
+</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="c1"># We will use a relative path from this example to look for appropiated path</span>
+</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="n">data_dir</span> <span class="o">=</span> <span class="n">Path</span><span class="p">()</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;src&quot;</span> <span class="o">/</span> <span class="s2">&quot;uniharmony&quot;</span> <span class="o">/</span> <span class="s2">&quot;datasets&quot;</span> <span class="o">/</span> <span class="s2">&quot;data&quot;</span>
+</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="n">datasets</span> <span class="o">=</span> <span class="n">load_MAREoS</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="n">data_dir</span><span class="p">)</span>
+</span></code></pre></div>
 
 
 
@@ -1519,7 +1592,7 @@ datasets = load_MAREoS(data_dir=data_dir)</p>
       
       
       
-      <script id="__config" type="application/json">{"annotate":null,"base":"../..","features":["content.code.copy","navigation.top","content.footnote.tooltips"],"search":"../../assets/javascripts/workers/search.e2d2d235.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
+      <script id="__config" type="application/json">{"annotate":null,"base":"../..","features":["content.code.copy","content.code.select","navigation.top","content.footnote.tooltips"],"search":"../../assets/javascripts/workers/search.e2d2d235.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
     
     
       <script src="../../assets/javascripts/bundle.5fd3284f.min.js"></script>

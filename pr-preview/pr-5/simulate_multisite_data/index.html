@@ -435,6 +435,28 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#behind-the-scenes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔍 Behind the Scenes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flexible-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flexible Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1251,6 +1273,28 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#behind-the-scenes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔍 Behind the Scenes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#flexible-configuration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flexible Configuration
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1275,20 +1319,20 @@
 Whether you're testing machine learning algorithms, developing statistical methods, or teaching data science concepts,
 this simulator creates realistic data with built-in complexities that mirror actual research scenarios.</p>
 <h2 id="quick-start">🚀 Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
-<p>```python</p>
-<h1 id="import-the-simulator">Import the simulator<a class="headerlink" href="#import-the-simulator" title="Permanent link">&para;</a></h1>
-<p>from uniharmony import make_multisite_classification</p>
-<h1 id="generate-data-with-3-sites-500-samples-total">Generate data with 3 sites, 500 samples total<a class="headerlink" href="#generate-data-with-3-sites-500-samples-total" title="Permanent link">&para;</a></h1>
-<p>X, y, sites = make_multisite_classification(
-    n_sites=3,
-    n_samples=500,
-    n_features=20,
-    random_state=42  # For reproducibility
-)</p>
-<h1 id="x-contains-your-features">X contains your features<a class="headerlink" href="#x-contains-your-features" title="Permanent link">&para;</a></h1>
-<h1 id="y-has-labels">y has labels<a class="headerlink" href="#y-has-labels" title="Permanent link">&para;</a></h1>
-<h1 id="sites-tells-you-which-site-each-sample-came-from">sites tells you which site each sample came from<a class="headerlink" href="#sites-tells-you-which-site-each-sample-came-from" title="Permanent link">&para;</a></h1>
-<p>```</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Import the simulator</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_multisite_classification</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Generate data with 3 sites, 500 samples total</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="n">n_sites</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="n">n_samples</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">n_features</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>  <span class="c1"># For reproducibility</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="p">)</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="c1"># X contains your features</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="c1"># y has labels</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1"># sites tells you which site each sample came from</span>
+</span></code></pre></div>
 <h2 id="behind-the-scenes">🔍 Behind the Scenes<a class="headerlink" href="#behind-the-scenes" title="Permanent link">&para;</a></h2>
 <p>Each sample's features combine three components that can be adapted:</p>
 <p>Feature = Signal + Noise + Site Effect</p>
@@ -1353,7 +1397,7 @@ Work with binary classification (yes/no) or multi-class problems.</p>
       
       
       
-      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["content.code.copy","navigation.top","content.footnote.tooltips"],"search":"../assets/javascripts/workers/search.e2d2d235.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
+      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["content.code.copy","content.code.select","navigation.top","content.footnote.tooltips"],"search":"../assets/javascripts/workers/search.e2d2d235.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
     
     
       <script src="../assets/javascripts/bundle.5fd3284f.min.js"></script>

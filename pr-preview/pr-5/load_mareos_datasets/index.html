@@ -463,6 +463,89 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#dataset-structure-and-experimental-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dataset Structure and Experimental Design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dataset Structure and Experimental Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#effect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Effect
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#effect-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Effect Type
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replication-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Replication Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dataset-specifications" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dataset Specifications
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scientific-rationale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scientific Rationale
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Citation
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1251,6 +1334,89 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#dataset-structure-and-experimental-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dataset Structure and Experimental Design
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Dataset Structure and Experimental Design">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#effect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Effect
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#effect-type" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Effect Type
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#replication-examples" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Replication Examples
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#dataset-specifications" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Dataset Specifications
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#scientific-rationale" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scientific Rationale
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#citation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Citation
+      
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -1278,13 +1444,12 @@ Developed by
 synthetic datasets provide controlled experimental conditions that enable systematic comparision of
 harmonization algorithm performance.</p>
 <h2 id="quick-start">🚀 Quick Start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
-<p>``` python</p>
-<h1 id="import-the-helper-function">Import the helper function<a class="headerlink" href="#import-the-helper-function" title="Permanent link">&para;</a></h1>
-<p>from uniharmony import load_MAREoS</p>
-<h1 id="load-the-8-datasets-as-a-dictionary-use-the-dictionary-keys-to-access-each-dataset">Load the 8 datasets as a dictionary. Use the dictionary <code>keys</code> to access each dataset<a class="headerlink" href="#load-the-8-datasets-as-a-dictionary-use-the-dictionary-keys-to-access-each-dataset" title="Permanent link">&para;</a></h1>
-<p>datasets = load_MAREoS()</p>
-<h1 id="each-dataset-contains-x-y-sites-covs-folds">Each dataset contains X, y, sites, covs, folds<a class="headerlink" href="#each-dataset-contains-x-y-sites-covs-folds" title="Permanent link">&para;</a></h1>
-<p>```</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Import the helper function</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_MAREoS</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># Load the 8 datasets as a dictionary. Use the dictionary `keys` to access each dataset</span>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">datasets</span> <span class="o">=</span> <span class="n">load_MAREoS</span><span class="p">()</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="c1"># Each dataset contains X, y, sites, covs, folds</span>
+</span></code></pre></div>
 <h2 id="dataset-structure-and-experimental-design">Dataset Structure and Experimental Design<a class="headerlink" href="#dataset-structure-and-experimental-design" title="Permanent link">&para;</a></h2>
 <p>The benchmark implements three controlled variables:</p>
 <h3 id="effect">Effect<a class="headerlink" href="#effect" title="Permanent link">&para;</a></h3>
@@ -1312,16 +1477,16 @@ harmonization algorithm performance.</p>
 The harmonization methods should remove this relationship, thus an ML model should give a chance performance. In the datasets with True signal, the harmonization method should not remove the True signal while aiming to remove the Effect of Site (which in these cases are not present).</p>
 <h2 id="citation">Citation<a class="headerlink" href="#citation" title="Permanent link">&para;</a></h2>
 <p>If you are using these datasets in your research, please cite the original publication:</p>
-<p><code>biblatex
-@article{solanes2023removing,
-  title={Removing the effects of the site in brain imaging machine-learning--Measurement and extendable benchmark},
-  author={Solanes, Aleix and Gosling, Corentin J and Fortea, Lydia and Ortu{\~n}o, Mar{\'\i}a and Lopez-Soley, Elisabet and Llufriu, Sara and Madero, Santiago and Martinez-Heras, Eloy and Pomarol-Clotet, Edith and Solana, Elisabeth and others},
-  journal={NeuroImage},
-  volume={265},
-  pages={119800},
-  year={2023},
-  publisher={Elsevier}
-}</code></p>
+<div class="language-text highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>@article{solanes2023removing,
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>  title={Removing the effects of the site in brain imaging machine-learning--Measurement and extendable benchmark},
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>  author={Solanes, Aleix and Gosling, Corentin J and Fortea, Lydia and Ortu{\~n}o, Mar{\&#39;\i}a and Lopez-Soley, Elisabet and Llufriu, Sara and Madero, Santiago and Martinez-Heras, Eloy and Pomarol-Clotet, Edith and Solana, Elisabeth and others},
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>  journal={NeuroImage},
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>  volume={265},
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>  pages={119800},
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>  year={2023},
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>  publisher={Elsevier}
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>}
+</span></code></pre></div>
 
 
 
@@ -1380,7 +1545,7 @@ The harmonization methods should remove this relationship, thus an ML model shou
       
       
       
-      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["content.code.copy","navigation.top","content.footnote.tooltips"],"search":"../assets/javascripts/workers/search.e2d2d235.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
+      <script id="__config" type="application/json">{"annotate":null,"base":"..","features":["content.code.copy","content.code.select","navigation.top","content.footnote.tooltips"],"search":"../assets/javascripts/workers/search.e2d2d235.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":null}</script>
     
     
       <script src="../assets/javascripts/bundle.5fd3284f.min.js"></script>
