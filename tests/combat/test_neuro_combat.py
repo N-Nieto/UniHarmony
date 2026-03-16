@@ -74,8 +74,8 @@ def test_neuro_combat_ops_impl() -> None:
     covars = pd.read_csv(Path(__file__).parent / "bladder-pheno.txt", delimiter="\t")
     data_combat = NeuroComBat().fit_transform(
         data,
-        covars[["batch"]],
-        categorical_covariates=covars[["cancer"]],
-        continuous_covariates=covars[["age"]],
+        covars[["batch"]].to_numpy(),
+        categorical_covariates=covars[["cancer"]].to_numpy(),
+        continuous_covariates=covars[["age"]].to_numpy(),
     )
     assert data_combat.shape == data.shape
