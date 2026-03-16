@@ -3,8 +3,7 @@ description: Request to enhance or modify the documentation
 title: "[DOC]: "
 labels: ["documentation", "triage"]
 assignees:
-  - fraimondo
-  - synchon
+  - nnieto
 body:
   - type: markdown
     attributes:
@@ -15,8 +14,8 @@ body:
     attributes:
       label: Which element of the documentation do you want to modify and why?
       description: |
-        Please include a complete description, including the motivation, description, and why we should include it in julearn.
-      placeholder: Convince us!
+        Please include a brief description, including the motivation, and why we should change or add this in uniharmony's documentation.
+      placeholder: If a relevant citation or acknowledgment is needed, please include it as well.
     validations:
       required: true
   - type: textarea

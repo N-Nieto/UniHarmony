@@ -1,0 +1,29 @@
+name: Model implementation request
+description: Request to include a new harmonization model implementation
+title: "[ENH]: "
+labels: ["enhancement", "triage"]
+assignees:
+  - nnieto
+  - synchon
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Fill in this form if you want that uniharmony includes a new harmonization model implementation.
+  - type: textarea
+    id: description
+    attributes:
+      label: Which model do you want to include?
+      description: |
+        Please include a paper and a source code. Please provide a brief description of the model.
+      placeholder: We need a paper and source code to start with!
+    validations:
+      required: true
+  - type: textarea
+    id: behaviour
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else to say?
+      description:
+      placeholder: ...
