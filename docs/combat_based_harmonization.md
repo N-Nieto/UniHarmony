@@ -1,6 +1,6 @@
 # ComBat-based harmonization
 
-## [ComBat](./combat_based/combat.md) / [neuroComBat](./combat_based/combat.md)
+## [ComBat](./combat_based/combat.md) - [neuroComBat](./combat_based/combat.md)
 
 [ComBat](./combat_based/combat.md) is one of the most widely used statistical harmonization methods ${^1}$. It was originally proposed for genomics to correct **batch effects** in microarray gene-expression data. In these datasets, samples are processed in batches (e.g., laboratory runs), and systematic technical differences between batches introduce unwanted variability that can obscure biological signals.
 
@@ -90,15 +90,15 @@ Garcia-Dias, R., Scarpazza, C., Baecker, L., et al. (2020). Neuroharmony: A new 
 - https://github.com/garciadias/Neuroharmony
 
 
-## [**BARTharmonization**](./combat_based/neuroharmony.md): Harmonization based on IQMs and bayesian trees.
+## [**BARTharm**](./combat_based/bartharm.md): Harmonization based on IQMs using Bayesian Additive Regression Trees.
 
 **Paper**
 
-Emma's paper
+Prevot E, et al., (2025). BARTharm: MRI Harmonization Using Image Quality Metrics and Bayesian Non-parametric. bioRxiv. Published online 2025. doi:10.1101/2025.06.04.657792 https://www.biorxiv.org/content/10.1101/2025.06.04.657792v1
 
 **Source code**
 
-- https://github.com/
+- https://github.com/NeuroSML/BARTharm
 
 ---
 
@@ -121,7 +121,7 @@ Beer, J. C., Tustison, N. J., Cook, P. A., et al. (2020). Longitudinal ComBat: A
 
 ---
 
-## [DeepComBat](./combat_based/deepcombat.md): Hybrid approach of deep learning and ComBat.
+## [**DeepComBat**](./combat_based/deepcombat.md): Hybrid approach of deep learning and ComBat.
 
 **DeepComBat** integrates ComBat with **deep learning-based feature modeling**.
 
@@ -140,7 +140,7 @@ Hu, F., Lucas, A., Chen, A. A., Coleman, K., Horng, H., Ng, R. W., ... & Alzheim
 
 ---
 
-## [PrettYharmony](./combat_based/prettyharmony.md): A framework to integrate ComBat-based harmonization methods into Machine learning pipelines.
+## [**PrettYharmony**](./combat_based/prettyharmony.md): A framework to integrate ComBat-based harmonization methods into Machine learning pipelines.
 
 A common challenge in multi-site datasets occurs when **class distributions differ across sites**. For example:
 
@@ -161,7 +161,12 @@ Even if harmonization parameters are estimated using only the training set, the 
 
 A suitable alternative in these scenarios is **PrettYharmonize**, which allows ComBat-based harmonization to be integrated into ML pipelines **without requiring the target variable during inference**.
 
-Nieto, N., Eickhoff, S. B., Jung, C., Reuter, M., Diers, K., Kelm, M., ... & Patil, K. R. (2024). Impact of leakage on data harmonization in machine learning pipelines in class imbalance across sites. arXiv preprint arXiv:2410.19643.
 
+**Paper**
+Nieto, N., Eickhoff, S. B., Jung, C., Reuter, M., Diers, K., Kelm, M., ... & Patil, K. R. (2026). Impact of leakage on data harmonization in machine learning pipelines in class imbalance across sites. Neurocomputing, 133146. https://doi.org/10.1016/j.neucom.2026.133146
 
+**Source Code**
+
+- https://github.com/juaml/PrettYharmonize
+- https://github.com/juaml/harmonize_project
 ---
