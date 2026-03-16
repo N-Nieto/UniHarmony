@@ -109,6 +109,8 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         """
         logger.debug("Fitting")
 
+        # ######## Set up and check data ########
+        # Check that X and sites have correct shape and type, and convert sites if they are strings
         X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
         if isinstance(next(iter(sites)), str):
             sites = self._convert_sites(sites)
@@ -118,6 +120,8 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
 
         check_consistent_length(X, sites)
 
+        # Check that categorical_covariates and continuous_covariates have correct shape and type if they are not None.
+        # Track of whether they were used during fit to check during transform
         self._categorical_covariates_used = False
         if categorical_covariates is not None:
             self._categorical_covariates_used = True
@@ -131,9 +135,9 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         if self._categorical_covariates_used or self._continuous_covariates_used:
             logger.warning(
                 "You specified categorical and / or continuous covariates to be preserved. "
-                "If you intend to build a machine learning model, then make sure that you DO NOT preserve the covariates acting "
-                "as the model's target, as this would be data leakage. "
-                "Those should be passed in .transform() and not in .fit() ."
+                "If you intend to build a machine learning (ML) model,"
+                "then make sure that you DO NOT preserve the ML model's target as covariate. "
+                "ComBat will require the covariate to be provided also at transform time, and this will produce data leakage. "
             )
 
         # Transpose to conform to neuroCombat and original ComBat
@@ -331,9 +335,8 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         It contains:
 
           * One-hot encoding of the sites [n_samples, n_sites]
-          * One-hot encoding of each categorical covariates (removing
-            the first column) [n_samples,
-            (n_categorical_covivariate_names-1) * n_categorical_covariates]
+          * One-hot encoding of each categorical covariates (removing the first column)
+          [n_samples, (n_categorical_covariate_names-1) * n_categorical_covariates]
           * Each continuous covariates
 
         Parameters
@@ -424,26 +427,154 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
 
         """
         if fitting:
-            self._beta_hat = np.dot(np.dot(np.linalg.inv(np.dot(design.T, design)), design.T), X.T)
+            # =====================================================================
+            # STEP 1: Fit OLS model to estimate site and covariate effects (fitting only)
+            # =====================================================================
+            # SOLVES: beta_hat = (X_design^T * X_design)^(-1) * X_design^T * X_data
+            # This is Ordinary Least Squares (OLS) - finds coefficients that minimize residuals
+            #
+            # beta_hat structure: [site_intercepts | covariate_effects] per feature
+            #   - Rows 0 to _n_sites-1: intercept for each site (location effect)
+            #   - Rows _n_sites+: effects of categorical/continuous covariates
+            # Solve OLS is the same as fitting a linear model: X = design @ beta_hat + error
+            # The step preservs the biological signal by modeling it as part of the residuals (error term)
 
-            # Standardization Model
-            self._grand_mean = np.dot(
-                (n_samples_per_site / float(n_samples)).T,
-                self._beta_hat[: self._n_sites, :],
+            gram_matrix = design.T @ design
+            try:
+                # Quick check: try Cholesky decomposition (only works for well-conditioned SPD matrices)
+                # This is faster than computing full condition number
+                np.linalg.cholesky(gram_matrix)
+                # If Cholesky succeeds, matrix is well-conditioned, use fast inv
+                self._beta_hat = np.linalg.inv(gram_matrix) @ design.T @ X.T
+            except np.linalg.LinAlgError:
+                # Cholesky failed - matrix is singular or ill-conditioned
+                # Fall to pseudo-inverse for numerical stability and reise a warning
+                cond_num = np.linalg.cond(gram_matrix)
+                logger.warning(
+                    f"Design matrix is ill-conditioned (condition number: {cond_num:.2e}). "
+                    "Using pseudo-inverse for numerical stability. "
+                    "Consider removing redundant covariates or checking for perfect "
+                    "correlation between covariates and sites."
+                )
+                self._beta_hat = np.linalg.pinv(design) @ X.T
+
+            # Original version Step 1:
+            # self._beta_hat = np.dot(np.dot(np.linalg.inv(np.dot(design.T, design)), design.T), X.T)
+
+            # =====================================================================
+            # STEP 2: Compute weighted grand mean across sites
+            # =====================================================================
+            # PURPOSE: Create a reference mean representing the "average site"
+            # This becomes our harmonization target - all sites will be aligned to this
+            min_samples = np.min(n_samples_per_site)
+            if min_samples < 16:
+                logger.warning(
+                    f"Site with only {min_samples} samples detected. "
+                    "ComBat requires 16-32+ subjects per site for reliable harmonization. "
+                    "Results may be unstable or overfit."
+                )
+
+            # Weighted average: each site's intercept weighted by sample proportion
+            site_weights = np.array(n_samples_per_site) / float(n_samples)
+            self._grand_mean = site_weights.T @ self._beta_hat[: self._n_sites, :]
+
+            # Original version step 2:
+            # self._grand_mean = np.dot(
+            #     site_weights.T,
+            #     self._beta_hat[: self._n_sites, :],
+            # )
+            # =====================================================================
+            # STEP 3: Compute pooled residual variance
+            # =====================================================================
+            # PURPOSE: Estimate variance after removing site/covariate effects
+            # This captures biological + noise variance, excluding batch effects
+            X_predicted = (design @ self._beta_hat).T  # Shape: (n_features, n_samples)
+            residuals = X - X_predicted
+            if n_samples < 30:
+                # Use sample variance for small datasets
+                self._var_pooled = np.sum(residuals**2, axis=1, keepdims=True) / (n_samples - 1)
+            else:
+                # Population variance for larger datasets (matches original behavior)
+                self._var_pooled = np.mean(residuals**2, axis=1, keepdims=True)
+
+            # Handle near-zero variance features
+            # Features with ~0 variance cause division by zero in standardization
+            # This can happen with constant features or features with very small range
+            zero_var_mask = self._var_pooled < 1e-8
+            if np.any(zero_var_mask):
+                n_zero_var = np.sum(zero_var_mask)
+                logger.warning(
+                    f"{n_zero_var} features have near-zero variance. "
+                    "These will be set to small epsilon to avoid division by zero. "
+                    "Consider removing constant features before ComBat."
+                )
+                self._var_pooled[zero_var_mask] = 1e-8  # Small epsilon
+        # End Fitting
+
+        # Original version step 3:
+        # self._var_pooled = np.dot(
+        #     ((X - np.dot(design, self._beta_hat).T) ** 2),
+        #     np.ones((n_samples, 1)) / float(n_samples),
+        # )
+
+        # =====================================================================
+        # STEP 4: Construct target mean for each sample (harmonization target)
+        # =====================================================================
+        # The standardized_mean represents what each sample's mean SHOULD be
+        # after harmonization: grand_mean + covariate_effects (site effects REMOVED)
+        # STRUCTURE: standardized_mean = grand_mean (site-harmonized) + covariate_adjustment
+        # Component A: Grand mean replicated for all samples
+        # Shape: (n_features, n_samples) - same target mean for all samples
+        standardized_mean = self._grand_mean.T[:, np.newaxis] @ np.ones((1, n_samples))
+
+        # Component B: Add covariate effects (preserved biological variation)
+        # We create a modified design matrix with site columns zeroed out
+        # This removes site-specific intercepts but keeps covariate columns
+        design_covariates_only = design.copy()
+        design_covariates_only[:, : self._n_sites] = 0  # Zero out site effect columns
+
+        # Add covariate contributions: design_no_site @ beta_hat
+        # Only covariate rows of beta_hat contribute since site columns are zeroed
+        covariate_adjustment = (design_covariates_only @ self._beta_hat).T
+        standardized_mean += covariate_adjustment
+
+        # Original version step 4:
+        # standardized_mean = np.dot(self._grand_mean.T[:, np.newaxis], np.ones((1, n_samples)))
+        # tmp = np.asarray(design.copy())
+        # tmp[:, : self._n_sites] = 0
+        # standardized_mean += np.dot(tmp, self._beta_hat).T
+
+        # =====================================================================
+        # STEP 5: Standardize data to common scale
+        # =====================================================================
+        # FORMULA: Z = (X - target_mean) / pooled_std
+        #
+        # RESULT:
+        #   - Mean is centered relative to grand_mean + covariates (site effects removed)
+        #   - Variance normalized to ~1 across all features
+        #   - Features now on comparable scale for Empirical Bayes estimation
+        if np.any(self._var_pooled < 0):
+            n_neg = np.sum(self._var_pooled < 0)
+            logger.error(
+                f"{n_neg} features have negative pooled variance due to numerical errors. "
+                "Setting to absolute value, but check your data for issues."
             )
-            self._var_pooled = np.dot(
-                ((X - np.dot(design, self._beta_hat).T) ** 2),
-                np.ones((n_samples, 1)) / float(n_samples),
-            )
+            self._var_pooled = np.abs(self._var_pooled)
 
-        standardized_mean = np.dot(self._grand_mean.T[:, np.newaxis], np.ones((1, n_samples)))
+        pooled_std = np.sqrt(self._var_pooled)
+        standardized_data = (X - standardized_mean) / (pooled_std @ np.ones((1, n_samples)))
 
-        tmp = np.asarray(design.copy())
-        tmp[:, : self._n_sites] = 0
-        standardized_mean += np.dot(tmp, self._beta_hat).T
+        # Original version step 5:
+        # standardized_data = (X - standardized_mean) / np.dot(np.sqrt(self._var_pooled), np.ones((1, n_samples)))
 
-        standardized_data = (X - standardized_mean) / np.dot(np.sqrt(self._var_pooled), np.ones((1, n_samples)))
-
+        # =====================================================================
+        # STEP 6: Standardization stats for debugging
+        # =====================================================================
+        logger.debug("Standardization stats:")
+        logger.debug(f"  Grand mean range: [{self._grand_mean.min():.4f}, {self._grand_mean.max():.4f}]")
+        logger.debug(f"  Pooled std range: [{pooled_std.min():.4f}, {pooled_std.max():.4f}]")
+        logger.debug(f"  Standardized data mean: {standardized_data.mean():.6f} (should be ~0)")
+        logger.debug(f"  Standardized data std: {standardized_data.std():.4f} (should be ~1)")
         return standardized_data, standardized_mean
 
     def _fit_ls_model(
