@@ -583,41 +583,162 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         design: npt.NDArray,
         idx_per_site: list[list[int]],
     ) -> tuple[npt.NDArray, list]:
-        """Location and scale (L/S) adjustments.
+        """Fit Location and Scale (L/S) model to estimate site-specific batch effects.
+
+        This method estimates the location (mean) and scale (variance) adjustments
+        needed for each site. These are the "batch effects" that ComBat will remove.
 
         Parameters
         ----------
-        standardized_data : array
-            Standardized data.
-        design : array
-            Design matrix.
+        standardized_data : array, shape (n_features, n_samples)
+            Standardized data from _standardize_across_features.
+            Note: Transposed shape (features x samples) compared to input X.
+        design : array, shape (n_samples, n_effects)
+            Design matrix containing site indicators and covariates.
         idx_per_site : list of list of int
-            Index per site.
+            List where each element contains sample indices for that site.
+            e.g., idx_per_site[0] = [0, 5, 10, 15] means samples 0,5,10,15 are from site 0.
 
         Returns
         -------
-        array
-            Gamma hat.
-        list
-            Delta hat.
+        gamma_hat : array, shape (n_sites, n_features)
+            Estimated location (mean) shift for each site and each feature.
+            This is how much each site's mean differs from the grand mean.
+        delta_hat : list of arrays, length n_sites
+            Each array has shape (n_features,) containing estimated scale (variance)
+            for each site and each feature. This is each site's variance.
 
         """
+        # =====================================================================
+        # STEP 1: Extract site-only design matrix (remove covariate columns)
+        # =====================================================================
+        # The first _n_sites columns of design are site indicator variables (one-hot encoded)
+        # We only want site effects here, not covariate effects
+        # site_design is n_samples x n_sites, where site_design[i,j] = 1 if sample i is from site j
         site_design = design[:, : self._n_sites]
-        gamma_hat = np.dot(
-            np.dot(
-                np.linalg.inv(np.dot(site_design.T, site_design)),
-                site_design.T,
-            ),
-            standardized_data.T,
-        )
+
+        # =====================================================================
+        # STEP 2: Estimate location parameters (gamma_hat) via OLS
+        # =====================================================================
+        # PURPOSE: Estimate how much each site's mean differs from the grand mean
+        #
+        # MODEL: standardized_data = site_design @ gamma_hat + error
+        #
+        # Since data is standardized, we expect gamma_hat to be close to 0
+        # Non-zero values indicate site-specific location shifts (batch effects)
+        #
+        # SOLUTION: gamma_hat = (X_site^T @ X_site)^(-1) @ X_site^T @ standardized_data
+        # This gives the OLS estimate of site means on the standardized scale
+        gram_site = site_design.T @ site_design
+        try:
+            # Fast path: try Cholesky decomposition (only works for well-conditioned SPD matrices)
+            np.linalg.cholesky(gram_site)
+            # Well-conditioned: use fast inverse
+            gamma_hat = np.linalg.inv(gram_site) @ site_design.T @ standardized_data.T
+        except np.linalg.LinAlgError:
+            # Ill-conditioned: fall back to pseudo-inverse with warning
+            cond_num = np.linalg.cond(gram_site)
+            logger.warning(
+                f"Site design matrix is ill-conditioned (condition number: {cond_num:.2e}). "
+                "Using pseudo-inverse for gamma estimation. Check for collinear site effects."
+            )
+            gamma_hat = np.linalg.pinv(site_design) @ standardized_data.T
+
+        # Result shape: (n_sites, n_features)
+        # gamma_hat[j, k] = mean offset of site j for feature k
+
+        # Original version step 2:
+        # gamma_hat = np.dot(
+        #     np.dot(
+        #         np.linalg.inv(np.dot(site_design.T, site_design)),
+        #         site_design.T,
+        #     ),
+        #     standardized_data.T,
+        # )
+        # =====================================================================
+        # STEP 3: Estimate scale parameters (delta_hat) per site
+        # =====================================================================
+        # PURPOSE: Estimate each site's variance for each feature
+        #
+        # If sites have different variances (heteroscedasticity), this captures it
+        # delta_hat[j][k] = variance of feature k in site j
+        #
+        # NOTE: We compute this per-site using sample indices, not via OLS
+        # This is because variance is a second-order moment estimated directly
 
         delta_hat = []
-        for site_idxs in idx_per_site:
+        for site_idx, site_idxs in enumerate(idx_per_site):
             if self.mean_only:
+                # [MEAN-ONLY MODE] Assume equal variance across sites
+                # Set all variances to 1 (already standardized)
+                # This assumes batch effect is only in location, not scale
                 delta_hat.append(np.repeat(1, standardized_data.shape[0]))
             else:
-                delta_hat.append(np.var(standardized_data[:, site_idxs], axis=1, ddof=1))
+                # [FULL MODE] Estimate site-specific variances
+                # Check minimum samples for variance estimation
+                # With ddof=1, we need at least 2 samples, but more is better
+                n_site_samples = len(site_idxs)
+                if n_site_samples < 2:
+                    logger.error(
+                        f"Site {site_idx} has only {n_site_samples} sample(s). "
+                        "Cannot estimate variance with ddof=1. Setting variance to 1."
+                    )
+                    delta_hat.append(np.ones(standardized_data.shape[0]))
+                    continue
+                elif n_site_samples < 16:
+                    # [IMPROVEMENT 4] Warn about small sample sizes for variance estimation
+                    # Research shows ComBat becomes unstable with <16-32 samples per site [^16^]
+                    logger.warning(
+                        f"Site {site_idx} has only {n_site_samples} samples. "
+                        "Variance estimates may be unstable. Consider using mean_only=True "
+                        "or collecting more data."
+                    )
 
+                # standardized_data[:, site_idxs] = all samples from this site
+                # Shape: (n_features, n_samples_in_site)
+                site_data = standardized_data[:, site_idxs]
+
+                # axis=1 = compute variance across samples for each feature
+                # ddof=1 for sample variance (unbiased estimator)
+                site_var = np.var(site_data, axis=1, ddof=1)
+
+                # Handle near-zero or negative variances
+                # Numerical errors or constant features can cause this
+                zero_var_mask = site_var < 1e-8
+                if np.any(zero_var_mask):
+                    n_zero = np.sum(zero_var_mask)
+                    logger.warning(
+                        f"Site {site_idx}: {n_zero} features have near-zero variance. "
+                        "Setting to minimum variance to avoid numerical issues."
+                    )
+                    site_var[zero_var_mask] = 1e-8
+
+                # delta_hat[site_idx][feature_idx] = variance of that feature in that site
+                delta_hat.append(site_var)
+
+        # Validate that we have the expected number of sites
+        if len(delta_hat) != self._n_sites:
+            raise ValueError(
+                f"Mismatch in site count: expected {self._n_sites} sites, but delta_hat has {len(delta_hat)} entries."
+            )
+
+        # Original version step 3:
+        # delta_hat = []
+        # for site_idxs in idx_per_site:
+        #     if self.mean_only:
+        #         delta_hat.append(np.repeat(1, standardized_data.shape[0]))
+        #     else:
+        #         delta_hat.append(np.var(standardized_data[:, site_idxs], axis=1, ddof=1))
+
+        # =====================================================================
+        # STEP 4: Diagnostic logging of L/S estimates
+        # =====================================================================
+        # Add diagnostic logging in debug mode
+        logger.debug("L/S Model estimates:")
+        logger.debug(f"  Gamma hat shape: {gamma_hat.shape}")
+        logger.debug(f"  Gamma hat range: [{gamma_hat.min():.4f}, {gamma_hat.max():.4f}]")
+        for i, d in enumerate(delta_hat):
+            logger.debug(f"  Site {i} delta range: [{d.min():.4f}, {d.max():.4f}]")
         return gamma_hat, delta_hat
 
     def _find_priors(
