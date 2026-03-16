@@ -102,6 +102,14 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             self._continuous_covariates_used = True
             continuous_covariates = check_array(continuous_covariates, dtype=FLOAT_DTYPES, estimator=self)
 
+        if self._categorical_covariates_used or self._continuous_covariates_used:
+            logger.warning(
+                "You specified categorical and / or continuous covariates to be preserved. "
+                "If you intend to build a machine learning model, then make sure that you DO NOT preserve the covariates acting "
+                "as the model's target, as this would be data leakage. "
+                "Those should be passed in .transform() and not in .fit() ."
+            )
+
         # Transpose to conform to neuroCombat and original ComBat
         X = X.T
 
