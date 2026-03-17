@@ -25,6 +25,17 @@ from sklearn.utils.validation import (
     check_is_fitted,
 )
 
+from uniharmony._utils import (
+    handle_near_zero_values,
+    handle_negative_variance,
+    minimum_samples_warning,
+    solve_ordinary_least_squares,
+    validate_covariates,
+    validate_sites,
+)
+
+
+__all__ = ["NeuroComBat"]
 
 logger = structlog.get_logger()
 
@@ -77,19 +88,16 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         self.mean_only = mean_only
         self.copy = copy
 
-    def _convert_sites(self, s: list[str]) -> list[int]:
-        """Convert sites to proper format."""
-        ks = set(s)
-        vs = list(range(1, len(ks) + 1))
-        kvs = dict(zip(ks, vs, strict=True))
-        return [kvs[k] for k in s]
-
     def fit(
         self,
         X: npt.ArrayLike,
         sites: npt.ArrayLike,
         categorical_covariates: npt.ArrayLike | None = None,
         continuous_covariates: npt.ArrayLike | None = None,
+        var_epsilon: float = 1e-8,
+        delta_epsilon: float = 1e-8,
+        tau_2_epsilon: float = 1e-10,
+        max_iter: int = 1000,
     ) -> "NeuroComBat":
         """Compute per-feature statistics to perform harmonization.
 
@@ -105,6 +113,17 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         continuous_covariates : array-like, shape (n_samples, n_continuous_covariates) or None, optional (default None)
             The continuous covariates to be preserved during harmonization.
             (e.g., age, clinical scores).
+        var_epsilon : float, optional (default 1e-8)
+            Small constant to add to variance to avoid division by zero.
+        delta_epsilon : float, optional (default 1e-8)
+            Small constant to add to delta variance to avoid division by zero in full mode.
+            This is only used if empirical_bayes=True and parametric_adjustments=True.
+        tau_2_epsilon : float, optional (default 1e-10)
+            Small constant to add to tau_2 variance to avoid division by zero in full mode.
+            This is only used if empirical_bayes=True and parametric_adjustments=True.
+        max_iter : int, optional (default 1000)
+            Maximum number of iterations for the solver in full mode.
+            This is only used if empirical_bayes=True and parametric_adjustments=True.
 
         """
         logger.debug("Fitting")
@@ -134,21 +153,22 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
 
         if self._categorical_covariates_used or self._continuous_covariates_used:
             logger.warning(
-                "You specified categorical and / or continuous covariates to be preserved. "
+                "You specified categorical and/or continuous covariates to be preserved. "
                 "If you intend to build a machine learning (ML) model,"
-                "then make sure that you DO NOT preserve the ML model's target as covariate. "
+                "then make sure that you DO *NOT* preserve the ML model's target as covariate. "
                 "ComBat will require the covariate to be provided also at transform time, and this will produce data leakage. "
+                "If you are performing a statistical analysis and want to preserve a variable of interest,"
+                "then it is correct to specify it as covariate."
             )
 
         # Transpose to conform to neuroCombat and original ComBat
         X = X.T
 
         self._sites_names, n_samples_per_site = np.unique(sites, return_counts=True)
-
         self._n_sites = len(self._sites_names)
-
         n_samples = sites.shape[0]
         idx_per_site = [list(np.where(sites == idx)[0]) for idx in self._sites_names]
+
         logger.debug("Making design matrix")
         design = self._make_design_matrix(
             sites,
@@ -163,6 +183,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             n_samples,
             n_samples_per_site,
             fitting=True,
+            epsilon=var_epsilon,
         )
         logger.debug("Fitting L/S model")
         gamma_hat, delta_hat = self._fit_ls_model(
@@ -170,23 +191,15 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             design,
             idx_per_site,
         )
-        logger.debug("Finding priors")
-        gamma_bar, tau_2, a_prior, b_prior = self._find_priors(
-            gamma_hat,
-            delta_hat,
-        )
+
+        # Get the gamma_star and delta_star adjustments to be applied to the data
         if self.empirical_bayes:
             if self.parametric_adjustments:
+                logger.debug("Finding priors")
+                gamma_bar, tau_2, a_prior, b_prior = self._find_priors(gamma_hat, delta_hat, delta_epsilon, tau_2_epsilon)
                 logger.debug("Finding parametric adjustments")
                 self._gamma_star, self._delta_star = self._find_parametric_adjustments(
-                    standardized_data,
-                    idx_per_site,
-                    gamma_hat,
-                    delta_hat,
-                    gamma_bar,
-                    tau_2,
-                    a_prior,
-                    b_prior,
+                    standardized_data, idx_per_site, gamma_hat, delta_hat, gamma_bar, tau_2, a_prior, b_prior, max_iter
                 )
             else:
                 logger.debug("Finding non-parametric adjustments")
@@ -285,10 +298,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         logger.debug("Harmonizing data")
         bayes_data = self._adjust_data_final(
             standardized_data,
-            design,
             standardized_mean,
-            n_samples_per_site,
-            n_samples,
             idx_per_site,
         )
 
@@ -330,65 +340,146 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         continuous_covariates: npt.ArrayLike | None,
         fitting: bool = False,
     ) -> npt.NDArray:
-        """Create a design matrix.
+        """Create a design matrix for the linear model.
 
-        It contains:
+        The design matrix combines:
+        1. One-hot encoded sites (full encoding, all columns kept)
+        2. One-hot encoded categorical covariates (first category dropped per covariate)
+        3. Continuous covariates (used as-is)
 
-          * One-hot encoding of the sites [n_samples, n_sites]
-          * One-hot encoding of each categorical covariates (removing the first column)
-          [n_samples, (n_categorical_covariate_names-1) * n_categorical_covariates]
-          * Each continuous covariates
+        This follows standard ANOVA coding where the design matrix is used to
+        estimate site effects while controlling for covariates.
 
         Parameters
         ----------
-        sites : array-like, shape (n_samples, 1)
-            Sites.
-        categorical_covariates : array-like, shape (n_samples, n_categorical_covariates) or None
-            Categorical covariates.
-        continuous_covariates : array-like, shape (n_samples, n_continuous_covariates) or None
-            Continuous covariates.
+        sites : array-like, shape (n_samples,) or (n_samples, 1)
+            Site labels for each sample. Can be integers or strings.
+        categorical_covariates : array-like, shape (n_samples, n_categorical) or None
+            Categorical covariates to preserve (e.g., sex, disease status).
+            Each column is treated as a separate categorical variable.
+        continuous_covariates : array-like, shape (n_samples, n_continuous) or None
+            Continuous covariates to preserve (e.g., age, clinical scores).
         fitting : bool, optional (default False)
-            Whether fitting or not.
+            If True, fit encoders on the data and store them as attributes.
+            If False, use previously fitted encoders (must call with fitting=True first).
 
         Returns
         -------
-        array
-            The design matrix.
+        design : ndarray, shape (n_samples, n_effects)
+            The design matrix where:
+            - First n_sites columns are site indicators
+            - Next columns are categorical covariates (drop-first encoded)
+            - Final columns are continuous covariates
+
+        Raises
+        ------
+        ValueError
+            If fitting=False but encoders haven't been fitted yet.
+            If categorical_covariates shape changes between fit and transform.
+        RuntimeError
+            If encoder classes differ between fit and transform.
+
+        Notes
+        -----
+        The drop-first encoding for categorical covariates avoids collinearity
+        with the intercept (which is implicit in the site effects). This is
+        standard practice in regression analysis.
+
+        Examples
+        --------
+        >>> sites = np.array([[1], [1], [2], [2]])
+        >>> sex = np.array([['M'], ['F'], ['M'], ['F']])
+        >>> age = np.array([[25], [30], [35], [40]])
+        >>> design = self._make_design_matrix(sites, sex, age, fitting=True)
+        >>> design.shape
+        (4, 4)  # 2 sites + 1 sex (drop-first) + 1 age
 
         """
-        design_list = []
+        # =====================================================================
+        # STEP 1: Validate inputs
+        # =====================================================================
+        sites = np.asarray(sites)
+        sites = validate_sites(sites)
+        n_samples = sites.shape[0]
 
-        # Sites
+        categorical_covariates = validate_covariates(categorical_covariates, n_samples, "categorical_covariates")
+        continuous_covariates = validate_covariates(continuous_covariates, n_samples, "continuous_covariates")
+        # Validate fitting state
+        if not fitting and not hasattr(self, "_site_encoder"):
+            raise ValueError("Must call _make_design_matrix with fitting=True before using fitting=False")
+
+        # =====================================================================
+        # STEP 2: Fit encoders (if fitting=True)
+        # =====================================================================
         if fitting:
-            self._site_encoder = OneHotEncoder(sparse_output=False)
+            # Fit site encoder
+            self._site_encoder = OneHotEncoder(
+                sparse_output=False,
+                dtype=np.float64,
+                handle_unknown="error",
+            )
             self._site_encoder.fit(sites)
+            logger.debug(f"Fitted site encoder: {len(self._site_encoder.categories_[0])} sites")
 
-        sites_design = self._site_encoder.transform(sites)
-        design_list.append(sites_design)
-
-        # Categorical covariates
-        if categorical_covariates is not None:
-            n_categorical_covariates = categorical_covariates.shape[1]
-
-            if fitting:
+            # Fit categorical encoders if provided
+            if categorical_covariates is not None:
+                n_cat_covs = categorical_covariates.shape[1]
                 self._categorical_encoders = []
 
-                for i in range(n_categorical_covariates):
-                    cat_encoder = OneHotEncoder(sparse_output=False)
-                    cat_encoder.fit(categorical_covariates[:, i][:, np.newaxis])
+                for i in range(n_cat_covs):
+                    cat_encoder = OneHotEncoder(
+                        sparse_output=False,
+                        dtype=np.float64,
+                        drop="first",
+                        handle_unknown="error",
+                    )
+                    cat_col = categorical_covariates[:, i].reshape(-1, 1)
+                    cat_encoder.fit(cat_col)
                     self._categorical_encoders.append(cat_encoder)
 
-            for i in range(n_categorical_covariates):
-                cat_encoder = self._categorical_encoders[i]
-                cat_covariate_one_hot = cat_encoder.transform(categorical_covariates[:, i][:, np.newaxis])
-                cat_covariate_design = cat_covariate_one_hot[:, 1:]
-                design_list.append(cat_covariate_design)
+                    logger.debug(
+                        f"Fitted categorical encoder {i}: "
+                        f"{len(cat_encoder.categories_[0])} categories "
+                        f"(dropped: {cat_encoder.categories_[0][0]})"
+                    )
 
-        # Continuous covariates
+        # =====================================================================
+        # STEP 3: Transform all features
+        # =====================================================================
+        design_parts = []
+
+        # Transform sites
+        sites_encoded = self._site_encoder.transform(sites)
+        design_parts.append(sites_encoded)
+        n_sites = sites_encoded.shape[1]
+        logger.debug(f"Sites encoded: {n_samples} samples x {n_sites} sites")
+
+        # Transform categorical covariates
+        if categorical_covariates is not None:
+            for i, cat_encoder in enumerate(self._categorical_encoders):
+                cat_col = categorical_covariates[:, i].reshape(-1, 1)
+                cat_encoded = cat_encoder.transform(cat_col)
+
+                design_parts.append(cat_encoded)
+                n_categories = len(cat_encoder.categories_[0])
+                logger.debug(f"Categorical covariate {i} encoded: {n_categories} categories -> {cat_encoded.shape[1]} columns")
+
+        # Add continuous covariates
         if continuous_covariates is not None:
-            design_list.append(continuous_covariates)
+            design_parts.append(continuous_covariates)
+            logger.debug(f"Added {continuous_covariates.shape[1]} continuous covariates")
 
-        design = np.hstack(design_list)
+        # =====================================================================
+        # STEP 4: Assemble design matrix
+        # =====================================================================
+        design = np.hstack(design_parts)
+
+        # Final validation
+        if design.shape[0] != n_samples:
+            raise RuntimeError(f"Design matrix has {design.shape[0]} rows but expected {n_samples}")
+
+        logger.debug(f"Design matrix shape: {design.shape}")
+
         return design
 
     def _standardize_across_features(
@@ -398,6 +489,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         n_samples: int,
         n_samples_per_site: list[int],
         fitting: bool = False,
+        epsilon: float = 1e-8,
     ) -> tuple[npt.NDArray, npt.NDArray]:
         """Standardization of the features.
 
@@ -417,12 +509,14 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             Sample count per site.
         fitting : bool, optional (default False)
             Whether fitting or not.
+        epsilon : float, optional (default 1e-8)
+            Small constant to add to variance to avoid division by zero.
 
         Returns
         -------
-        array
+        Standardized data : array, shape (n_features, n_samples)
             Standardized data.
-        array
+        Standardized mean : array, shape (n_features, n_samples)
             Standardized mean used during the process.
 
         """
@@ -440,49 +534,19 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             # The step preservs the biological signal by modeling it as part of the residuals (error term)
 
             gram_matrix = design.T @ design
-            try:
-                # Quick check: try Cholesky decomposition (only works for well-conditioned SPD matrices)
-                # This is faster than computing full condition number
-                np.linalg.cholesky(gram_matrix)
-                # If Cholesky succeeds, matrix is well-conditioned, use fast inv
-                self._beta_hat = np.linalg.inv(gram_matrix) @ design.T @ X.T
-            except np.linalg.LinAlgError:
-                # Cholesky failed - matrix is singular or ill-conditioned
-                # Fall to pseudo-inverse for numerical stability and reise a warning
-                cond_num = np.linalg.cond(gram_matrix)
-                logger.warning(
-                    f"Design matrix is ill-conditioned (condition number: {cond_num:.2e}). "
-                    "Using pseudo-inverse for numerical stability. "
-                    "Consider removing redundant covariates or checking for perfect "
-                    "correlation between covariates and sites."
-                )
-                self._beta_hat = np.linalg.pinv(design) @ X.T
-
-            # Original version Step 1:
-            # self._beta_hat = np.dot(np.dot(np.linalg.inv(np.dot(design.T, design)), design.T), X.T)
+            self._beta_hat = solve_ordinary_least_squares(gram_matrix, X, design)
 
             # =====================================================================
             # STEP 2: Compute weighted grand mean across sites
             # =====================================================================
             # PURPOSE: Create a reference mean representing the "average site"
             # This becomes our harmonization target - all sites will be aligned to this
-            min_samples = np.min(n_samples_per_site)
-            if min_samples < 16:
-                logger.warning(
-                    f"Site with only {min_samples} samples detected. "
-                    "ComBat requires 16-32+ subjects per site for reliable harmonization. "
-                    "Results may be unstable or overfit."
-                )
+            minimum_samples_warning(n_samples_per_site)
 
             # Weighted average: each site's intercept weighted by sample proportion
             site_weights = np.array(n_samples_per_site) / float(n_samples)
             self._grand_mean = site_weights.T @ self._beta_hat[: self._n_sites, :]
 
-            # Original version step 2:
-            # self._grand_mean = np.dot(
-            #     site_weights.T,
-            #     self._beta_hat[: self._n_sites, :],
-            # )
             # =====================================================================
             # STEP 3: Compute pooled residual variance
             # =====================================================================
@@ -500,22 +564,8 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             # Handle near-zero variance features
             # Features with ~0 variance cause division by zero in standardization
             # This can happen with constant features or features with very small range
-            zero_var_mask = self._var_pooled < 1e-8
-            if np.any(zero_var_mask):
-                n_zero_var = np.sum(zero_var_mask)
-                logger.warning(
-                    f"{n_zero_var} features have near-zero variance. "
-                    "These will be set to small epsilon to avoid division by zero. "
-                    "Consider removing constant features before ComBat."
-                )
-                self._var_pooled[zero_var_mask] = 1e-8  # Small epsilon
+            self._var_pooled = handle_near_zero_values(self._var_pooled, epsilon=epsilon)
         # End Fitting
-
-        # Original version step 3:
-        # self._var_pooled = np.dot(
-        #     ((X - np.dot(design, self._beta_hat).T) ** 2),
-        #     np.ones((n_samples, 1)) / float(n_samples),
-        # )
 
         # =====================================================================
         # STEP 4: Construct target mean for each sample (harmonization target)
@@ -538,12 +588,6 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         covariate_adjustment = (design_covariates_only @ self._beta_hat).T
         standardized_mean += covariate_adjustment
 
-        # Original version step 4:
-        # standardized_mean = np.dot(self._grand_mean.T[:, np.newaxis], np.ones((1, n_samples)))
-        # tmp = np.asarray(design.copy())
-        # tmp[:, : self._n_sites] = 0
-        # standardized_mean += np.dot(tmp, self._beta_hat).T
-
         # =====================================================================
         # STEP 5: Standardize data to common scale
         # =====================================================================
@@ -553,19 +597,11 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         #   - Mean is centered relative to grand_mean + covariates (site effects removed)
         #   - Variance normalized to ~1 across all features
         #   - Features now on comparable scale for Empirical Bayes estimation
-        if np.any(self._var_pooled < 0):
-            n_neg = np.sum(self._var_pooled < 0)
-            logger.error(
-                f"{n_neg} features have negative pooled variance due to numerical errors. "
-                "Setting to absolute value, but check your data for issues."
-            )
-            self._var_pooled = np.abs(self._var_pooled)
 
+        # Make sure the variance is not negative due to numerical issues before taking sqrt
+        self._var_pooled = handle_negative_variance(self._var_pooled)
         pooled_std = np.sqrt(self._var_pooled)
         standardized_data = (X - standardized_mean) / (pooled_std @ np.ones((1, n_samples)))
-
-        # Original version step 5:
-        # standardized_data = (X - standardized_mean) / np.dot(np.sqrt(self._var_pooled), np.ones((1, n_samples)))
 
         # =====================================================================
         # STEP 6: Standardization stats for debugging
@@ -582,6 +618,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         standardized_data: npt.NDArray,
         design: npt.NDArray,
         idx_per_site: list[list[int]],
+        epsilon: float = 1e-8,
     ) -> tuple[npt.NDArray, list]:
         """Fit Location and Scale (L/S) model to estimate site-specific batch effects.
 
@@ -598,6 +635,8 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         idx_per_site : list of list of int
             List where each element contains sample indices for that site.
             e.g., idx_per_site[0] = [0, 5, 10, 15] means samples 0,5,10,15 are from site 0.
+        epsilon : float, optional (default 1e-8)
+            Small constant to add to variance to avoid division by zero.
 
         Returns
         -------
@@ -630,37 +669,18 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         # SOLUTION: gamma_hat = (X_site^T @ X_site)^(-1) @ X_site^T @ standardized_data
         # This gives the OLS estimate of site means on the standardized scale
         gram_site = site_design.T @ site_design
-        try:
-            # Fast path: try Cholesky decomposition (only works for well-conditioned SPD matrices)
-            np.linalg.cholesky(gram_site)
-            # Well-conditioned: use fast inverse
-            gamma_hat = np.linalg.inv(gram_site) @ site_design.T @ standardized_data.T
-        except np.linalg.LinAlgError:
-            # Ill-conditioned: fall back to pseudo-inverse with warning
-            cond_num = np.linalg.cond(gram_site)
-            logger.warning(
-                f"Site design matrix is ill-conditioned (condition number: {cond_num:.2e}). "
-                "Using pseudo-inverse for gamma estimation. Check for collinear site effects."
-            )
-            gamma_hat = np.linalg.pinv(site_design) @ standardized_data.T
+
+        gamma_hat = solve_ordinary_least_squares(gram_site, standardized_data, site_design)
 
         # Result shape: (n_sites, n_features)
         # gamma_hat[j, k] = mean offset of site j for feature k
 
-        # Original version step 2:
-        # gamma_hat = np.dot(
-        #     np.dot(
-        #         np.linalg.inv(np.dot(site_design.T, site_design)),
-        #         site_design.T,
-        #     ),
-        #     standardized_data.T,
-        # )
         # =====================================================================
         # STEP 3: Estimate scale parameters (delta_hat) per site
         # =====================================================================
-        # PURPOSE: Estimate each site's variance for each feature
+        # Estimate each site's variance for each feature
         #
-        # If sites have different variances (heteroscedasticity), this captures it
+        # If sites have different variances, this captures it
         # delta_hat[j][k] = variance of feature k in site j
         #
         # NOTE: We compute this per-site using sample indices, not via OLS
@@ -686,8 +706,8 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
                     delta_hat.append(np.ones(standardized_data.shape[0]))
                     continue
                 elif n_site_samples < 16:
-                    # [IMPROVEMENT 4] Warn about small sample sizes for variance estimation
-                    # Research shows ComBat becomes unstable with <16-32 samples per site [^16^]
+                    # Warn about small sample sizes for variance estimation
+                    # Research shows ComBat becomes unstable with <16-32 samples per site
                     logger.warning(
                         f"Site {site_idx} has only {n_site_samples} samples. "
                         "Variance estimates may be unstable. Consider using mean_only=True "
@@ -704,14 +724,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
 
                 # Handle near-zero or negative variances
                 # Numerical errors or constant features can cause this
-                zero_var_mask = site_var < 1e-8
-                if np.any(zero_var_mask):
-                    n_zero = np.sum(zero_var_mask)
-                    logger.warning(
-                        f"Site {site_idx}: {n_zero} features have near-zero variance. "
-                        "Setting to minimum variance to avoid numerical issues."
-                    )
-                    site_var[zero_var_mask] = 1e-8
+                site_var = handle_near_zero_values(site_var, epsilon=epsilon)
 
                 # delta_hat[site_idx][feature_idx] = variance of that feature in that site
                 delta_hat.append(site_var)
@@ -721,14 +734,6 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             raise ValueError(
                 f"Mismatch in site count: expected {self._n_sites} sites, but delta_hat has {len(delta_hat)} entries."
             )
-
-        # Original version step 3:
-        # delta_hat = []
-        # for site_idxs in idx_per_site:
-        #     if self.mean_only:
-        #         delta_hat.append(np.repeat(1, standardized_data.shape[0]))
-        #     else:
-        #         delta_hat.append(np.var(standardized_data[:, site_idxs], axis=1, ddof=1))
 
         # =====================================================================
         # STEP 4: Diagnostic logging of L/S estimates
@@ -745,6 +750,8 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         self,
         gamma_hat: npt.NDArray,
         delta_hat: npt.ArrayLike,
+        delta_epsilon: float = 1e-8,
+        tau_2_epsilon: float = 1e-10,
     ) -> tuple[npt.ArrayLike, npt.ArrayLike, list, list]:
         """Compute hyperparameters for the prior distributions of batch effects.
 
@@ -763,6 +770,10 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         delta_hat : array-like, list of arrays
             Estimated scale (variance) parameters for each site and feature.
             Each array has shape (n_features,).
+        delta_epsilon : float, optional (default 1e-8)
+            Small constant to add to variance to avoid numerical issues in inverse-gamma estimation.
+        tau_2_epsilon : float, optional (default 1e-10)
+            Small constant to add to tau_2 to avoid issues with near-zero variance in gamma_hat
 
         Returns
         -------
@@ -801,12 +812,9 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
                     "This may indicate constant features or numerical errors."
                 )
                 site_deltas = site_deltas.copy()
-                site_deltas[invalid_mask] = 1e-8
+                site_deltas[invalid_mask] = delta_epsilon
 
             delta_hat_clean.append(site_deltas)
-
-        # Original version step 1:
-        # delta_hat = list(map(_convert_zeroes, delta_hat))
 
         # Step 2
         # Compute mean of gamma_hat across features (axis=1) for each site
@@ -822,14 +830,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         # Handle near-zero tau_2 (no variation in batch effects)
         # This can happen if all features have identical batch effects (rare but possible)
         # or with very few features
-        small_tau_mask = tau_2 < 1e-10
-        if np.any(small_tau_mask):
-            n_small = np.sum(small_tau_mask)
-            logger.warning(
-                f"{n_small} sites have near-zero variance in gamma_hat (tau_2 < 1e-10). "
-                "Setting to minimum value. Empirical Bayes will strongly pool estimates."
-            )
-            tau_2[small_tau_mask] = 1e-10
+        tau_2 = handle_near_zero_values(tau_2, epsilon=tau_2_epsilon)
 
         # =====================================================================
         # STEP 4: Compute inverse-gamma prior parameters for scale (delta)
@@ -851,21 +852,18 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             #   a = 1 + mean^2 / variance (shape parameter)
             #   b = mean * (mean^2 / variance + 1) (scale parameter)
 
-            # Use list comprehension with explicit error handling
-            try:
-                a_prior = []
-                b_prior = []
+            # Initialize variables to store prior parameters for each site
+            a_prior = []
+            b_prior = []
 
-                for _, site_deltas in enumerate(delta_hat_clean):
-                    # Compute both parameters at once for this site
-                    a_vals, b_vals = _compute_inverse_gamma_priors(site_deltas)
+            for _, site_deltas in enumerate(delta_hat_clean):
+                # Compute both parameters at once for this site
+                a_vals, b_vals = self._compute_inverse_gamma_priors(site_deltas)
 
-                    a_prior.append(a_vals)
-                    b_prior.append(b_vals)
-            except Exception as e:
-                logger.error(f"Failed to compute inverse-gamma priors: {e!s}. Check delta_hat values for numerical issues.")
-                raise
+                a_prior.append(a_vals)
+                b_prior.append(b_vals)
 
+            # Logger after calculating all priors to avoid cluttering logs with warnings for each site
             for site_idx, (a_vals, b_vals) in enumerate(zip(a_prior, b_prior, strict=False)):
                 invalid_a = (a_vals <= 0) | ~np.isfinite(a_vals)
                 invalid_b = (b_vals <= 0) | ~np.isfinite(b_vals)
@@ -904,6 +902,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         tau_2: npt.ArrayLike,
         a_prior: list,
         b_prior: list,
+        max_iter: int = 1000,
     ) -> tuple[npt.NDArray, npt.NDArray]:
         """Compute parametric empirical Bayes site/batch effect parameter estimates.
 
@@ -935,6 +934,8 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             Shape parameters of inverse-gamma prior for each site.
         b_prior : list of arrays
             Scale parameters of inverse-gamma prior for each site.
+        max_iter : int, optional (default 1000)
+            Maximum number of iterations for the solver in full mode.
 
         Returns
         -------
@@ -947,13 +948,13 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         gamma_star, delta_star = [], []
         for i, site_idxs in enumerate(idx_per_site):
             if self.mean_only:
-                # Fix incorrect parameter passing!
+                # Fix incorrect parameter passing from original code!
                 # Original passes n=1, delta_star=1 which is wrong
                 # Should use actual sample count and delta_hat[i]
                 n_samples = len(site_idxs)
 
                 # Shrink gamma_hat toward gamma_bar using prior precision
-                gamma_adj = _postmean(
+                gamma_adj = self._postmean(
                     gamma_hat[i],  # Observed site means
                     gamma_bar[i],  # Prior mean
                     n_samples,  # Number of samples in site
@@ -974,10 +975,11 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
                     tau_2[i],
                     a_prior[i],
                     b_prior[i],
+                    max_iter=max_iter,
                 )
                 gamma_star.append(gamma_adj)
                 delta_star.append(delta_adj)
-        # [IMPROVEMENT 2] Stack lists into arrays with proper shape checking
+        # Stack lists into arrays with proper shape checking
         gamma_star_arr = np.asarray(gamma_star)
         delta_star_arr = np.asarray(delta_star)
 
@@ -1031,10 +1033,11 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             Converged posterior scale estimates.
 
         """
+        gamma_hat_new = None
+        delta_hat_new = None
         # Handle missing data (NaN) by counting non-NaN samples per feature
-        n = np.sum(~np.isnan(standardized_data), axis=1)
-
-        if np.any(n == 0):
+        sample_size = np.sum(~np.isnan(standardized_data), axis=1)
+        if np.any(sample_size == 0):
             raise ValueError("Some features have all NaN values for this site")
 
         gamma_hat_old = np.asarray(gamma_hat, dtype=np.float64).copy()
@@ -1049,7 +1052,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         count = 0
 
         while change > convergence:
-            # Add iteration limit
+            # Add iteration limit to void infinite loops in edge cases
             if count >= max_iter:
                 logger.warning(
                     f"_iteration_solver: Did not converge after {max_iter} iterations. "
@@ -1058,7 +1061,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
                 break
 
             # E-step: Update gamma given current delta
-            gamma_hat_new = _postmean(gamma_hat, gamma_bar, n, delta_hat_old, tau_2)
+            gamma_hat_new = self._postmean(gamma_hat, gamma_bar, sample_size, delta_hat_old, tau_2)
 
             # M-step: Update delta given new gamma
             # Use broadcasting instead of explicit ones matrix
@@ -1069,7 +1072,8 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
                 resid2 = np.square(residuals)
                 sum_2 = np.nansum(resid2, axis=1)
 
-            delta_hat_new = _postvar(sum_2, n, a_prior, b_prior)
+            delta_hat_new = self._postvar(sum_2, sample_size, a_prior, b_prior)
+            # Handle any numerical issues in delta_hat_new
             delta_hat_new = np.clip(delta_hat_new, 1e-8, None)
 
             # Convergence check
@@ -1087,6 +1091,9 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             count += 1
 
         logger.debug(f"_iteration_solver converged in {count} iterations (change={change:.6f})")
+        # Final validation of outputs
+        gamma_hat_new = np.asarray(gamma_hat_new, dtype=np.float64)
+        delta_hat_new = np.asarray(delta_hat_new, dtype=np.float64)
         return gamma_hat_new, delta_hat_new
 
     def _find_non_parametric_adjustments(
@@ -1120,7 +1127,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         gamma_star, delta_star = [], []
 
         for i, site_idxs in enumerate(idx_per_site):
-            # [IMPROVEMENT 1] Don't modify delta_hat in place
+            # Don't modify delta_hat in place
             if self.mean_only:
                 site_delta = np.ones(standardized_data.shape[0])
             else:
@@ -1135,9 +1142,9 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             gamma_star.append(gamma_adj)
             delta_star.append(delta_adj)
 
-        # [IMPROVEMENT 2] Convert to arrays with validation
-        gamma_star_arr = np.asarray(gamma_star)
-        delta_star_arr = np.asarray(delta_star)
+        # Convert to arrays with validation
+        gamma_star_arr = np.asarray(gamma_star, dtype=np.float64)
+        delta_star_arr = np.asarray(delta_star, dtype=np.float64)
 
         expected_shape = (self._n_sites, standardized_data.shape[0])
         if gamma_star_arr.shape != expected_shape:
@@ -1207,7 +1214,12 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
                 lh = np.exp(log_lh - log_lh_max)
 
             # Handle numerical issues
-            lh = np.nan_to_num(lh, nan=0.0, posinf=0.0, neginf=0.0)
+            if np.any(np.isnan(lh)) or np.any(np.isinf(lh)):
+                logger.warning(
+                    f"Feature {i}: Numerical issues in likelihood computation, replacing NaN/Inf with zeros"
+                    "Please check data for constant features or extreme values."
+                )
+                lh = np.nan_to_num(lh, nan=0.0, posinf=0.0, neginf=0.0)
 
             lh_sum = np.sum(lh)
             if lh_sum < 1e-300:
@@ -1216,8 +1228,10 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
                 delta_star[i] = delta_hat[i]
                 continue
 
+            # Compute weights and weighted averages for gamma and delta
             weights = lh / lh_sum
 
+            # Weighted average of gamma and delta using the computed weights
             gamma_star[i] = np.sum(g_other * weights)
             delta_star[i] = np.sum(d_other * weights)
 
@@ -1226,56 +1240,243 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
     def _adjust_data_final(
         self,
         standardized_data: npt.NDArray,
-        design: npt.NDArray,
         standardized_mean: npt.NDArray,
-        n_samples_per_site: list[int],
-        n_samples: int,
         idx_per_site: list[list[int]],
+        epsilon: float = 1e-8,
     ):
-        """Compute the harmonized data.
+        """Compute the final harmonized data by applying EB adjustments.
+
+        This method applies the Empirical Bayes adjustments (gamma_star, delta_star)
+        to remove site effects and then rescales the data back to original scale.
+
+        The harmonization formula for each site j:
+            bayes_data = (standardized_data - gamma_star[j]) / sqrt(delta_star[j])
+            Then rescale: bayes_data * sqrt(var_pooled) + standardized_mean
 
         Parameters
         ----------
-        standardized_data : array
-            Standardized data.
-        design : array
-            Design matrix.
-        standardized_mean : array
-            Standardized mean.
-        n_samples_per_site : list of int
-            Sample count per site.
-        n_samples : int
-            Sample count.
+        standardized_data : array, shape (n_features, n_samples)
+            Standardized data from _standardize_across_features.
+        standardized_mean : array, shape (n_features, n_samples)
+            Standardized mean used during standardization.
         idx_per_site : list of list of int
-            Index per site.
+            List of sample indices for each site.
+        epsilon : float, optional (default 1e-8)
+            Small constant to add to delta_star to avoid division by zero.
 
         Returns
         -------
-        array
-            Bayes data.
+        bayes_data : ndarray, shape (n_features, n_samples)
+            Harmonized data in original scale.
+
+        Raises
+        ------
+        ValueError
+            If gamma_star or delta_star are not fitted or have wrong shapes.
+        RuntimeError
+            If numerical issues are detected during harmonization.
 
         """
+        # =====================================================================
+        # STEP 1: Validate fitted attributes
+        # =====================================================================
+        if not hasattr(self, "_gamma_star") or not hasattr(self, "_delta_star"):
+            raise RuntimeError("gamma_star and delta_star must be computed before adjustment. Call fit() first.")
         n_sites = self._n_sites
         var_pooled = self._var_pooled
         gamma_star = self._gamma_star
         delta_star = self._delta_star
 
-        site_design = design[:, :n_sites]
+        # Validate shapes
+        expected_shape = (n_sites, standardized_data.shape[0])
+        if gamma_star.shape != expected_shape:
+            raise ValueError(f"gamma_star shape {gamma_star.shape} != expected {expected_shape}.")
+        if delta_star.shape != expected_shape:
+            raise ValueError(f"delta_star shape {delta_star.shape} != expected {expected_shape}.")
+        if var_pooled.shape[0] != standardized_data.shape[0]:
+            raise ValueError(f"var_pooled has {var_pooled.shape[0]} features but data has {standardized_data.shape[0]} features.")
 
-        bayes_data = standardized_data
-
+        # =====================================================================
+        # STEP 2: Apply EB adjustments per site
+        # =====================================================================
+        # Create output array (copy to avoid modifying input)
+        bayes_data = standardized_data.copy()
+        pooled_std = np.sqrt(var_pooled)
+        if pooled_std.ndim == 1:
+            pooled_std = pooled_std[:, np.newaxis]
         for j, site_idxs in enumerate(idx_per_site):
-            denominator = np.dot(
-                np.sqrt(delta_star[j, :])[:, np.newaxis],
-                np.ones((1, n_samples_per_site[j])),
-            )
-            numerator = bayes_data[:, site_idxs] - np.dot(site_design[site_idxs, :], gamma_star).T
+            if len(site_idxs) == 0:
+                logger.warning(f"Site {j} has no samples")
+                continue
 
-            bayes_data[:, site_idxs] = numerator / denominator
+            # Get EB parameters for this site
+            site_gamma = gamma_star[j, :][:, np.newaxis]  # (n_features, 1)
+            site_delta = np.maximum(delta_star[j, :], epsilon)[:, np.newaxis]  # (n_features, 1)
 
-        bayes_data = bayes_data * np.dot(np.sqrt(var_pooled), np.ones((1, n_samples))) + standardized_mean
+            # Apply harmonization formula
+            bayes_data[:, site_idxs] = (bayes_data[:, site_idxs] - site_gamma) / np.sqrt(site_delta)
 
+        # Rescale to original scale
+        bayes_data = bayes_data * pooled_std + standardized_mean
+
+        # Validate output
+        if not np.all(np.isfinite(bayes_data)):
+            raise RuntimeError("Harmonization produced non-finite values")
         return bayes_data
+
+    def _compute_inverse_gamma_priors(self, delta_hat: npt.NDArray) -> tuple[npt.NDArray, npt.NDArray]:
+        """Calculate both shape (a) and scale (b) parameters for inverse-gamma prior.
+
+        Computes both simultaneously since they share moment calculations.
+        This is ~2x faster than calling separate functions.
+
+        Parameters
+        ----------
+        delta_hat : array-like, shape (n_features,)
+            Estimated variance parameters for a single site.
+
+        Returns
+        -------
+        a_prior : ndarray, shape (n_features,)
+            Shape parameter: a = (2*s2 + m^2) / s2
+        b_prior : ndarray, shape (n_features,)
+            Scale parameter: b = (m*s2 + m^3) / s2
+
+        """
+        delta_hat = np.asarray(delta_hat, dtype=np.float64)
+
+        # Clean input
+        if np.any(delta_hat <= 0) or not np.all(np.isfinite(delta_hat)):
+            logger.warning("Invalid values in delta_hat, clipping to valid range and replacing non-finite values with median")
+            delta_hat = np.clip(delta_hat, 1e-10, 1e10)
+            delta_hat = np.where(np.isfinite(delta_hat), delta_hat, np.median(delta_hat))
+
+        # Compute moments once
+        m = np.mean(delta_hat)
+        s2 = np.var(delta_hat, ddof=1)
+
+        # Handle near-zero variance
+        if s2 < 1e-10:
+            logger.warning("Variance of delta_hat is near zero, using strong pooling for priors")
+            return (
+                np.full_like(delta_hat, 1e6),  # Large a = strong pooling
+                np.full_like(delta_hat, m),  # b = mean
+            )
+
+        # Compute both parameters
+        m2 = m * m
+        a_prior = (2.0 * s2 + m2) / s2
+        b_prior = m * (s2 + m2) / s2
+
+        a_prior = np.clip(a_prior, 1e-6, 1e8, dtype=np.float32)
+        b_prior = np.clip(b_prior, 1e-8, 1e8, dtype=np.float32)
+        return a_prior, b_prior
+
+    def _postmean(
+        self,
+        gamma_hat: npt.ArrayLike,
+        gamma_bar: npt.ArrayLike,
+        n: int | npt.NDArray,
+        delta_star: float | npt.ArrayLike,
+        tau_2: npt.ArrayLike,
+    ) -> npt.NDArray:
+        """Compute posterior mean (shrunken estimate) for location parameters.
+
+        Formula: gamma_star = (tau_2 * n * gamma_hat + delta * gamma_bar) / (tau_2 * n + delta)
+
+        Parameters
+        ----------
+        gamma_hat : array-like, shape (n_features,)
+            Observed site means from L/S model.
+        gamma_bar : array-like, shape (n_features,)
+            Prior mean (expected batch effect across features).
+        n : int or array-like
+            Sample size for the site.
+        delta_star : float or array-like
+            Estimated variance (sampling precision).
+        tau_2 : array-like, shape (n_features,)
+            Prior variance (how much batch effects vary across features).
+
+        Returns
+        -------
+        gamma_star : ndarray, shape (n_features,)
+            Posterior mean (shrunken estimate) for each feature.
+
+        """
+        # Convert to arrays for broadcasting
+        gamma_hat = np.asarray(gamma_hat)
+        gamma_bar = np.asarray(gamma_bar)
+        tau_2 = np.asarray(tau_2)
+        n = np.asarray(n)
+        delta_star = np.asarray(delta_star)
+
+        # Compute posterior mean using precision-weighted average
+        prior_precision = tau_2 * n
+
+        # Handle numerical issues
+        denominator = prior_precision + delta_star
+        if np.any(denominator <= 0):
+            logger.warning("_postmean: Non-positive denominator, clipping")
+            denominator = np.clip(denominator, 1e-10, None)
+
+        return (prior_precision * gamma_hat + delta_star * gamma_bar) / denominator
+
+    def _postvar(
+        self,
+        sum_2: float | npt.ArrayLike,
+        n: int | npt.ArrayLike,
+        a_prior: npt.ArrayLike,
+        b_prior: npt.ArrayLike,
+    ) -> npt.NDArray:
+        """Compute posterior variance estimate for scale parameters.
+
+        Formula: delta_star = (0.5 * sum_2 + b_prior) / (n/2 + a_prior - 1)
+
+        Parameters
+        ----------
+        sum_2 : float or array-like, shape (n_features,)
+            Sum of squared deviations: sum((x - gamma_star)^2)
+        n : int or array-like
+            Sample size.
+        a_prior : array-like, shape (n_features,)
+            Shape parameter of inverse-gamma prior.
+        b_prior : array-like, shape (n_features,)
+            Scale parameter of inverse-gamma prior.
+
+        Returns
+        -------
+        delta_star : ndarray, shape (n_features,)
+            Posterior variance estimate for each feature.
+
+        """
+        # Convert to arrays for broadcasting
+        sum_2 = np.asarray(sum_2)
+        a_prior = np.asarray(a_prior)
+        b_prior = np.asarray(b_prior)
+        n = np.asarray(n)
+
+        # Posterior update for inverse-gamma
+        numerator = 0.5 * sum_2 + b_prior
+        denominator = n / 2.0 + a_prior - 1.0
+
+        # Handle numerical issues
+        if np.any(denominator <= 0):
+            logger.warning("_postvar: Non-positive denominator, using prior estimate only")
+            with np.errstate(divide="ignore", invalid="ignore"):
+                prior_mean = np.where(a_prior > 1, b_prior / (a_prior - 1), b_prior)
+            return prior_mean
+
+        result = numerator / denominator
+
+        # Ensure positive variance
+        return np.clip(result, 1e-8, None)
+
+    def _convert_sites(self, s: list[str]) -> list[int]:
+        """Convert sites to proper format."""
+        ks = set(s)
+        vs = list(range(1, len(ks) + 1))
+        kvs = dict(zip(ks, vs, strict=True))
+        return [kvs[k] for k in s]
 
     # Overridden for check_is_fitted() usage
     def __sklearn_is_fitted__(self) -> bool:
@@ -1290,148 +1491,3 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         tags.target_tags.positive_only = True
         tags.input_tags.two_d_array = True
         return tags
-
-
-def _compute_inverse_gamma_priors(delta_hat: npt.NDArray) -> tuple[npt.NDArray, npt.NDArray]:
-    """Calculate both shape (a) and scale (b) parameters for inverse-gamma prior.
-
-    Computes both simultaneously since they share moment calculations.
-    This is ~2x faster than calling separate functions.
-
-    Parameters
-    ----------
-    delta_hat : array-like, shape (n_features,)
-        Estimated variance parameters for a single site.
-
-    Returns
-    -------
-    a_prior : ndarray, shape (n_features,)
-        Shape parameter: a = (2*s2 + m^2) / s2
-    b_prior : ndarray, shape (n_features,)
-        Scale parameter: b = (m*s2 + m^3) / s2
-
-    """
-    delta_hat = np.asarray(delta_hat, dtype=np.float64)
-
-    # Clean input
-    if np.any(delta_hat <= 0) or not np.all(np.isfinite(delta_hat)):
-        logger.warning("Invalid values in delta_hat, clipping to valid range")
-        delta_hat = np.clip(delta_hat, 1e-10, 1e10)
-        delta_hat = np.where(np.isfinite(delta_hat), delta_hat, np.median(delta_hat))
-
-    # Compute moments once
-    m = np.mean(delta_hat)
-    s2 = np.var(delta_hat, ddof=1)
-
-    # Handle near-zero variance
-    if s2 < 1e-10:
-        return (
-            np.full_like(delta_hat, 1e6),  # Large a = strong pooling
-            np.full_like(delta_hat, m),  # b = mean
-        )
-
-    # Compute both parameters
-    m2 = m * m
-    a_prior = (2.0 * s2 + m2) / s2
-    b_prior = m * (s2 + m2) / s2
-
-    return (np.clip(a_prior, 1e-6, 1e8), np.clip(b_prior, 1e-8, 1e8))
-
-
-def _postmean(
-    gamma_hat: npt.ArrayLike,
-    gamma_bar: npt.ArrayLike,
-    n: int | npt.NDArray,
-    delta_star: float | npt.ArrayLike,
-    tau_2: npt.ArrayLike,
-) -> npt.NDArray:
-    """Compute posterior mean (shrunken estimate) for location parameters.
-
-    Formula: gamma_star = (tau_2 * n * gamma_hat + delta * gamma_bar) / (tau_2 * n + delta)
-
-    Parameters
-    ----------
-    gamma_hat : array-like, shape (n_features,)
-        Observed site means from L/S model.
-    gamma_bar : array-like, shape (n_features,)
-        Prior mean (expected batch effect across features).
-    n : int or array-like
-        Sample size for the site.
-    delta_star : float or array-like
-        Estimated variance (sampling precision).
-    tau_2 : array-like, shape (n_features,)
-        Prior variance (how much batch effects vary across features).
-
-    Returns
-    -------
-    gamma_star : ndarray, shape (n_features,)
-        Posterior mean (shrunken estimate) for each feature.
-
-    """
-    # Convert to arrays for broadcasting
-    gamma_hat = np.asarray(gamma_hat)
-    gamma_bar = np.asarray(gamma_bar)
-    tau_2 = np.asarray(tau_2)
-    n = np.asarray(n)
-    delta_star = np.asarray(delta_star)
-
-    # Compute posterior mean using precision-weighted average
-    prior_precision = tau_2 * n
-
-    # Handle numerical issues
-    denominator = prior_precision + delta_star
-    if np.any(denominator <= 0):
-        logger.warning("_postmean: Non-positive denominator, clipping")
-        denominator = np.clip(denominator, 1e-10, None)
-
-    return (prior_precision * gamma_hat + delta_star * gamma_bar) / denominator
-
-
-def _postvar(
-    sum_2: float | npt.ArrayLike,
-    n: int | npt.ArrayLike,
-    a_prior: npt.ArrayLike,
-    b_prior: npt.ArrayLike,
-) -> npt.NDArray:
-    """Compute posterior variance estimate for scale parameters.
-
-    Formula: delta_star = (0.5 * sum_2 + b_prior) / (n/2 + a_prior - 1)
-
-    Parameters
-    ----------
-    sum_2 : float or array-like, shape (n_features,)
-        Sum of squared deviations: sum((x - gamma_star)^2)
-    n : int or array-like
-        Sample size.
-    a_prior : array-like, shape (n_features,)
-        Shape parameter of inverse-gamma prior.
-    b_prior : array-like, shape (n_features,)
-        Scale parameter of inverse-gamma prior.
-
-    Returns
-    -------
-    delta_star : ndarray, shape (n_features,)
-        Posterior variance estimate for each feature.
-
-    """
-    # Convert to arrays for broadcasting
-    sum_2 = np.asarray(sum_2)
-    a_prior = np.asarray(a_prior)
-    b_prior = np.asarray(b_prior)
-    n = np.asarray(n)
-
-    # Posterior update for inverse-gamma
-    numerator = 0.5 * sum_2 + b_prior
-    denominator = n / 2.0 + a_prior - 1.0
-
-    # Handle numerical issues
-    if np.any(denominator <= 0):
-        logger.warning("_postvar: Non-positive denominator, using prior estimate only")
-        with np.errstate(divide="ignore", invalid="ignore"):
-            prior_mean = np.where(a_prior > 1, b_prior / (a_prior - 1), b_prior)
-        return prior_mean
-
-    result = numerator / denominator
-
-    # Ensure positive variance
-    return np.clip(result, 1e-8, None)
