@@ -21,9 +21,17 @@ body:
       required: true
   - type: textarea
     id: behaviour
+    attributes:
+      label: Expected behavior
+      description: What should the model do? How should it integrate with existing harmonization approaches?
+      placeholder: Describe the expected behavior and integration points...
+    validations:
+      required: false
   - type: textarea
     id: extra
     attributes:
       label: Anything else to say?
-      description:
-      placeholder: ...
+      description: Additional context, references, or implementation details
+      placeholder: Any other information that might be helpful...
+    validations:
+      required: false
