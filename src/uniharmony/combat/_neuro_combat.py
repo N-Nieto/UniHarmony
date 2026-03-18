@@ -135,7 +135,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             sites = self._convert_sites(sites)
         if np.asarray(sites).ndim == 1:
             sites = np.asarray(sites).reshape(-1, 1)
-        sites = check_array(sites, copy=self.copy, estimator=self)
+        sites = check_array(sites, copy=self.copy, ensure_min_samples=2, estimator=self)
 
         check_consistent_length(X, sites)
 
