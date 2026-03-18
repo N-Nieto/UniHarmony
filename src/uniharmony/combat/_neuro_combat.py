@@ -687,7 +687,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         # This is because variance is a second-order moment estimated directly
 
         delta_hat = []
-        for site_idx, site_idxs in enumerate(idx_per_site):
+        for idx, site_idxs in enumerate(idx_per_site):
             if self.mean_only:
                 # [MEAN-ONLY MODE] Assume equal variance across sites
                 # Set all variances to 1 (already standardized)
@@ -700,7 +700,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
                 n_site_samples = len(site_idxs)
                 if n_site_samples < 2:
                     logger.error(
-                        f"Site {site_idx} has only {n_site_samples} sample(s). "
+                        f"Site {idx} has only {n_site_samples} sample(s). "
                         "Cannot estimate variance with ddof=1. Setting variance to 1."
                     )
                     delta_hat.append(np.ones(standardized_data.shape[0]))
@@ -709,7 +709,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
                     # Warn about small sample sizes for variance estimation
                     # Research shows ComBat becomes unstable with <16-32 samples per site
                     logger.warning(
-                        f"Site {site_idx} has only {n_site_samples} samples. "
+                        f"Site {idx} has only {n_site_samples} samples. "
                         "Variance estimates may be unstable. Consider using mean_only=True "
                         "or collecting more data."
                     )
@@ -798,7 +798,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         # Zero or negative variances cause numerical issues in inverse-gamma estimation
         # We replace them with a small epsilon and log warnings
         delta_hat_clean = []
-        for site_idx, site_deltas in enumerate(delta_hat):
+        for idx, site_deltas in enumerate(delta_hat):
             site_deltas = np.asarray(site_deltas)
 
             # Check for invalid values (zero, negative, NaN, Inf)
@@ -807,7 +807,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             if np.any(invalid_mask):
                 n_invalid = np.sum(invalid_mask)
                 logger.warning(
-                    f"Site {site_idx}: {n_invalid} features have invalid variance values "
+                    f"Site {idx}: {n_invalid} features have invalid variance values "
                     f"(<=0, NaN, or Inf). Setting to minimum variance (1e-8). "
                     "This may indicate constant features or numerical errors."
                 )
@@ -856,7 +856,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             a_prior = []
             b_prior = []
 
-            for _, site_deltas in enumerate(delta_hat_clean):
+            for site_deltas in delta_hat_clean:
                 # Compute both parameters at once for this site
                 a_vals, b_vals = self._compute_inverse_gamma_priors(site_deltas)
 
@@ -864,21 +864,21 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
                 b_prior.append(b_vals)
 
             # Logger after calculating all priors to avoid cluttering logs with warnings for each site
-            for site_idx, (a_vals, b_vals) in enumerate(zip(a_prior, b_prior, strict=False)):
+            for idx, (a_vals, b_vals) in enumerate(zip(a_prior, b_prior, strict=False)):
                 invalid_a = (a_vals <= 0) | ~np.isfinite(a_vals)
                 invalid_b = (b_vals <= 0) | ~np.isfinite(b_vals)
 
                 if np.any(invalid_a) or np.any(invalid_b):
                     n_bad = np.sum(invalid_a | invalid_b)
                     logger.warning(
-                        f"Site {site_idx}: {n_bad} features have invalid prior parameters. "
+                        f"Site {idx}: {n_bad} features have invalid prior parameters. "
                         "Clipping to valid range. This may indicate extreme variance values."
                     )
                     # Clip to valid ranges for inverse-gamma
                     a_vals = np.clip(a_vals, 1e-6, 1e6)
                     b_vals = np.clip(b_vals, 1e-8, 1e8)
-                    a_prior[site_idx] = a_vals
-                    b_prior[site_idx] = b_vals
+                    a_prior[idx] = a_vals
+                    b_prior[idx] = b_vals
                     logger.debug("Prior distribution parameters:")
                     logger.debug(f"  a_prior range: [{a_vals.min():.4f}, {a_vals.max():.4f}]")
                     logger.debug(f"  b_prior range: [{b_vals.min():.4f}, {b_vals.max():.4f}]")
