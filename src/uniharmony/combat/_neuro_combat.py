@@ -858,7 +858,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
                 b_prior.append(b_vals)
 
             # Logger after calculating all priors to avoid cluttering logs with warnings for each site
-            for idx, (a_vals, b_vals) in enumerate(zip(a_prior, b_prior, strict=False)):
+            for idx, (a_vals, b_vals) in enumerate(zip(a_prior, b_prior, strict=True)):
                 invalid_a = (a_vals <= 0) | ~np.isfinite(a_vals)
                 invalid_b = (b_vals <= 0) | ~np.isfinite(b_vals)
 
