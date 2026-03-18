@@ -17,7 +17,11 @@ __all__ = [
 logger = structlog.get_logger()
 
 
-def solve_ordinary_least_squares(gram_matrix, X: npt.ArrayLike, design: npt.NDArray) -> npt.NDArray:
+def solve_ordinary_least_squares(
+    gram_matrix: npt.NDArray,
+    X: npt.ArrayLike,
+    design: npt.NDArray,
+) -> npt.NDArray:
     """Solve Ordinary Least Squares using normal equations with stability checks.
 
     Solves: beta = (X_design^T @ X_design)^(-1) @ X_design^T @ X_data
@@ -33,8 +37,6 @@ def solve_ordinary_least_squares(gram_matrix, X: npt.ArrayLike, design: npt.NDAr
         Target values (transposed to (n_targets, n_samples) internally).
     design : array, shape (n_samples, n_features)
         Design matrix X_design.
-    check_condition : bool, optional (default True)
-        Whether to compute and log the condition number.
 
     Returns
     -------
@@ -77,7 +79,7 @@ def solve_ordinary_least_squares(gram_matrix, X: npt.ArrayLike, design: npt.NDAr
         solution = np.linalg.inv(gram_matrix) @ design.T @ X.T
     except np.linalg.LinAlgError:
         # Cholesky failed - matrix is singular or ill-conditioned
-        # Fall to pseudo-inverse for numerical stability and reise a warning
+        # Fall to pseudo-inverse for numerical stability and raise a warning
         cond_num = np.linalg.cond(gram_matrix)
         logger.warning(
             f"Design matrix is ill-conditioned (condition number: {cond_num:.2e}). "
@@ -90,7 +92,7 @@ def solve_ordinary_least_squares(gram_matrix, X: npt.ArrayLike, design: npt.NDAr
 
 
 def handle_near_zero_values(
-    values: npt.NDArray,
+    values: npt.ArrayLike,
     epsilon: float = 1e-8,
     context: str = "features",
 ) -> npt.NDArray:
@@ -139,7 +141,7 @@ def handle_near_zero_values(
     return values_arr
 
 
-def handle_negative_variance(variance: npt.NDArray) -> npt.NDArray:
+def handle_negative_variance(variance: npt.ArrayLike) -> npt.NDArray:
     """Handle negative variance values caused by numerical errors.
 
     Variance should always be non-negative, but numerical errors in
@@ -180,7 +182,7 @@ def handle_negative_variance(variance: npt.NDArray) -> npt.NDArray:
     return variance_arr
 
 
-def minimum_samples_warning(n_samples_per_site: list[int] | npt.NDArray, min_samples_limit: int = 16) -> None:
+def minimum_samples_warning(n_samples_per_site: list[list[int]] | npt.NDArray, min_samples_limit: int = 16) -> None:
     """Check if sites meet minimum sample size requirements.
 
     Parameters
@@ -209,6 +211,23 @@ def minimum_samples_warning(n_samples_per_site: list[int] | npt.NDArray, min_sam
 
 
 def validate_covariates(covariates: npt.ArrayLike | None, n_samples: int, name: str) -> npt.NDArray | None:
+    """Validate covariates.
+
+    Parameters
+    ----------
+    covariates : array-like or None
+        The covariates.
+    n_samples : int
+        Sample count.
+    name : str
+        Covariate name.
+
+    Returns
+    -------
+    array or None
+        Validated covariates or None.
+
+    """
     if covariates is not None:
         covariates = np.asarray(covariates)
         if covariates.ndim == 1:
@@ -219,7 +238,20 @@ def validate_covariates(covariates: npt.ArrayLike | None, n_samples: int, name: 
     return None
 
 
-def validate_sites(sites):
+def validate_sites(sites: npt.NDArray) -> npt.NDArray:
+    """Validate sites.
+
+    Parameters
+    ----------
+    sites : array
+        The sites.
+
+    Returns
+    -------
+    array
+        Validated sites.
+
+    """
     # Ensure sites is 2D for sklearn (n_samples, 1)
     if sites.ndim == 1:
         sites = sites.reshape(-1, 1)
