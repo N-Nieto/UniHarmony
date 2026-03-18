@@ -1481,7 +1481,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
     # Overridden for check_is_fitted() usage
     def __sklearn_is_fitted__(self) -> bool:
         """Check fitted status."""
-        return hasattr(self, "_n_sites")
+        return hasattr(self, "_gamma_star") and hasattr(self, "_delta_star")
 
     def __sklearn_tags__(self) -> Tags:
         tags = super().__sklearn_tags__()
