@@ -1484,4 +1484,5 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         tags.target_tags.two_d_labels = True
         tags.target_tags.positive_only = True
         tags.input_tags.two_d_array = True
+        tags.input_tags.allow_nan = True
         return tags
