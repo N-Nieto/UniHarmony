@@ -41,6 +41,10 @@ nav = [
   ]},
   {"API Reference" = "api_reference.md"},
 ]
+extra_javascript = [
+    "javascripts/mathjax.js",
+    "https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"
+]
 
 [project.theme]
 features = [
@@ -66,6 +70,9 @@ media = "(prefers-color-scheme: dark)"
 scheme = "slate"
 toggle.icon = "lucide/moon"
 toggle.name = "Switch to system preference"
+
+[project.markdown_extensions.pymdownx.arithmatex]
+generic = true
 
 [project.markdown_extensions.pymdownx.highlight]
 anchor_linenums = true
