@@ -487,7 +487,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         X: npt.ArrayLike,
         design: npt.NDArray,
         n_samples: int,
-        n_samples_per_site: list[int],
+        n_samples_per_site: npt.NDArray,
         fitting: bool = False,
         epsilon: float = 1e-8,
     ) -> tuple[npt.NDArray, npt.NDArray]:
@@ -505,7 +505,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             Design matrix.
         n_samples : int
             Sample count.
-        n_samples_per_site : list of int
+        n_samples_per_site : array
             Sample count per site.
         fitting : bool, optional (default False)
             Whether fitting or not.
@@ -749,10 +749,10 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
     def _find_priors(
         self,
         gamma_hat: npt.NDArray,
-        delta_hat: npt.ArrayLike,
+        delta_hat: list[npt.NDArray],
         delta_epsilon: float = 1e-8,
         tau_2_epsilon: float = 1e-10,
-    ) -> tuple[npt.ArrayLike, npt.ArrayLike, list, list]:
+    ) -> tuple[npt.NDArray, npt.NDArray, list[npt.NDArray], list[npt.NDArray]]:
         """Compute hyperparameters for the prior distributions of batch effects.
 
         This method estimates the hyperparameters for the Empirical Bayes priors:
@@ -767,7 +767,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         ----------
         gamma_hat : array, shape (n_sites, n_features)
             Estimated location (mean) shifts for each site and feature from _fit_ls_model.
-        delta_hat : array-like, list of arrays
+        delta_hat : list of arrays
             Estimated scale (variance) parameters for each site and feature.
             Each array has shape (n_features,).
         delta_epsilon : float, optional (default 1e-8)
@@ -897,11 +897,11 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         standardized_data: npt.NDArray,
         idx_per_site: list[list[int]],
         gamma_hat: npt.NDArray,
-        delta_hat: npt.ArrayLike,
-        gamma_bar: npt.ArrayLike,
-        tau_2: npt.ArrayLike,
-        a_prior: list,
-        b_prior: list,
+        delta_hat: list[npt.NDArray],
+        gamma_bar: npt.NDArray,
+        tau_2: npt.NDArray,
+        a_prior: list[npt.NDArray],
+        b_prior: list[npt.NDArray],
         max_iter: int = 1000,
     ) -> tuple[npt.NDArray, npt.NDArray]:
         """Compute parametric empirical Bayes site/batch effect parameter estimates.
@@ -924,11 +924,11 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             List of sample indices for each site.
         gamma_hat : array, shape (n_sites, n_features)
             Estimated location parameters from _fit_ls_model.
-        delta_hat : array-like, list of arrays
+        delta_hat : list of arrays
             Estimated scale parameters from _fit_ls_model.
-        gamma_bar : array-like, shape (n_sites,)
+        gamma_bar : array, shape (n_sites,)
             Mean of normal prior for each site.
-        tau_2 : array-like, shape (n_sites,)
+        tau_2 : array, shape (n_sites,)
             Variance of normal prior for each site.
         a_prior : list of arrays
             Shape parameters of inverse-gamma prior for each site.
@@ -993,12 +993,12 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
     def _iteration_solver(
         self,
         standardized_data: npt.NDArray,
-        gamma_hat: npt.ArrayLike,
-        delta_hat: npt.ArrayLike,
-        gamma_bar: npt.ArrayLike,
-        tau_2: npt.ArrayLike,
-        a_prior: list,
-        b_prior: list,
+        gamma_hat: npt.NDArray,
+        delta_hat: npt.NDArray,
+        gamma_bar: npt.NDArray,
+        tau_2: npt.NDArray,
+        a_prior: npt.NDArray,
+        b_prior: npt.NDArray,
         convergence: float = 0.0001,
         max_iter: int = 1000,
     ) -> tuple[npt.NDArray, npt.NDArray]:
@@ -1008,17 +1008,17 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         ----------
         standardized_data : array, shape (n_features, n_samples_site)
             Standardized data for a single site.
-        gamma_hat : array-like, shape (n_features,)
+        gamma_hat : array, shape (n_features,)
             Initial location estimates.
-        delta_hat : array-like, shape (n_features,)
+        delta_hat : array, shape (n_features,)
             Initial scale estimates.
-        gamma_bar : array-like, shape (n_features,)
+        gamma_bar : array, shape (n_features,)
             Prior mean for location.
-        tau_2 : array-like, shape (n_features,)
+        tau_2 : array, shape (n_features,)
             Prior variance for location.
-        a_prior : array-like, shape (n_features,)
+        a_prior : array shape (n_features,)
             Prior shape for scale.
-        b_prior : array-like, shape (n_features,)
+        b_prior : array, shape (n_features,)
             Prior scale for scale.
         convergence : float, optional (default 0.0001)
             Relative change threshold for convergence.
@@ -1101,7 +1101,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         standardized_data: npt.NDArray,
         idx_per_site: list[list[int]],
         gamma_hat: npt.NDArray,
-        delta_hat: npt.ArrayLike,
+        delta_hat: list[npt.NDArray],
     ) -> tuple[npt.NDArray, npt.NDArray]:
         """Compute non-parametric empirical Bayes site/batch effect parameter estimates.
 
@@ -1113,7 +1113,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
             List of sample indices for each site.
         gamma_hat : array, shape (n_sites, n_features)
             Estimated location parameters.
-        delta_hat : array-like, list of arrays
+        delta_hat : list of arrays
             Estimated scale parameters.
 
         Returns
@@ -1157,8 +1157,8 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
     def _int_eprior(
         self,
         standardized_data: npt.NDArray,
-        gamma_hat: npt.ArrayLike,
-        delta_hat: npt.ArrayLike,
+        gamma_hat: npt.NDArray,
+        delta_hat: npt.NDArray,
     ) -> tuple[npt.NDArray, npt.NDArray]:
         """Compute non-parametric empirical Bayes adjustments via kernel weighting.
 
@@ -1166,9 +1166,9 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         ----------
         standardized_data : array, shape (n_features, n_samples_site)
             Standardized data for a single site.
-        gamma_hat : array-like, shape (n_features,)
+        gamma_hat : array, shape (n_features,)
             Location parameters for each feature.
-        delta_hat : array-like, shape (n_features,)
+        delta_hat : array, shape (n_features,)
             Scale parameters for each feature.
 
         Returns
