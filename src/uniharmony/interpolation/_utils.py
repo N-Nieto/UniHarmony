@@ -22,14 +22,7 @@ __all__ = [
 
 def create_interpolator(
     name: str, random_state: int | np.random.RandomState = 23, **kwargs
-) -> (
-    type[SMOTE]
-    | type[BorderlineSMOTE]
-    | type[SVMSMOTE]
-    | type[ADASYN]
-    | type[KMeansSMOTE]
-    | type[RandomOverSampler]
-):
+) -> type[SMOTE] | type[BorderlineSMOTE] | type[SVMSMOTE] | type[ADASYN] | type[KMeansSMOTE] | type[RandomOverSampler]:
     """Create an imblearn interpolator based on a string name.
 
     Parameters
@@ -67,9 +60,7 @@ def create_interpolator(
     if name not in mapping:
         raise ValueError(f"Unsupported interpolator: {name}")
 
-    return mapping[name](
-        random_state=random_state, sampling_strategy="not majority", **kwargs
-    )
+    return mapping[name](random_state=random_state, sampling_strategy="not majority", **kwargs)
 
 
 def sites_sanity_checks(x: npt.NDArray, sites: npt.NDArray) -> None:
@@ -114,6 +105,4 @@ def class_representation_checks(y: npt.NDArray, sites: npt.NDArray) -> None:
     """
     for site in np.unique(sites):
         if len(np.unique(y[sites == site])) < 2:
-            raise ValueError(
-                f"Site {site} has only one class; cannot resample."
-            )
+            raise ValueError(f"Site {site} has only one class; cannot resample.")

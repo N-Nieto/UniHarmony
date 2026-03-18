@@ -29,6 +29,10 @@ uv add uniharmony
 
 ### Harmonization
 
+### ComBat methods
+
+- [NeuroComBat](./combat.md)
+
 #### Interpolation models
 
 - [IntraSiteInterpolation (ISI)](./interpolation.md)
