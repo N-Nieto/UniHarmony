@@ -672,9 +672,6 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
 
         gamma_hat = solve_ordinary_least_squares(gram_site, standardized_data, site_design)
 
-        # Result shape: (n_sites, n_features)
-        # gamma_hat[j, k] = mean offset of site j for feature k
-
         # =====================================================================
         # STEP 3: Estimate scale parameters (delta_hat) per site
         # =====================================================================
@@ -714,8 +711,6 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
                         "or collecting more data."
                     )
 
-                # standardized_data[:, site_idxs] = all samples from this site
-                # Shape: (n_features, n_samples_in_site)
                 site_data = standardized_data[:, site_idxs]
 
                 # axis=1 = compute variance across samples for each feature
@@ -726,7 +721,6 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
                 # Numerical errors or constant features can cause this
                 site_var = handle_near_zero_values(site_var, epsilon=epsilon)
 
-                # delta_hat[site_idx][feature_idx] = variance of that feature in that site
                 delta_hat.append(site_var)
 
         # Validate that we have the expected number of sites
