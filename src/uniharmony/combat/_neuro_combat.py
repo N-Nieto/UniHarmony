@@ -156,8 +156,8 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
                 "You specified categorical and/or continuous covariates to be preserved. "
                 "If you intend to build a machine learning (ML) model,"
                 "then make sure that you DO *NOT* preserve the ML model's target as covariate. "
-                "ComBat will require the covariate to be provided also at transform time, and this will produce data leakage. "
-                "If you are performing a statistical analysis and want to preserve a variable of interest,"
+                "You will be required to provide the covariate also at transform time, and this will produce data leakage. "
+                "If you are performing a statistical analysis and want to preserve a variable of interest, "
                 "then it is correct to specify it as covariate."
             )
 
