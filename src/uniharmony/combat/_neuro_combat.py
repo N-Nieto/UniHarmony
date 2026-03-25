@@ -1,13 +1,11 @@
 """Provide NeuroComBat transformer."""
 
 # Adapted from:
-# https://github.com/Jfortin1/neuroCombat/blob/master/neuroCombat/
-# neuroCombat.py
+# https://github.com/Jfortin1/neuroCombat
 # licensed under MIT license.
 #
 # Adapted from:
-# https://github.com/Warvito/neurocombat_sklearn/blob/master/examples/
-# machine_learning_example.py
+# https://github.com/Warvito/neurocombat_sklearn
 # licensed under MIT license.
 
 import math
