@@ -11,6 +11,7 @@ __all__ = [
     "minimum_samples_warning",
     "solve_ordinary_least_squares",
     "validate_covariates",
+    "validate_sites",
 ]
 
 
@@ -241,7 +242,7 @@ def validate_covariates(covariates: npt.NDArray | None, n_samples: int, name: st
         return covariates
 
 
-def validate_sites(sites: npt.NDArray) -> npt.NDArray:
+def validate_sites(sites: npt.ArrayLike) -> npt.NDArray:
     """Validate sites.
 
     Parameters
@@ -254,10 +255,16 @@ def validate_sites(sites: npt.NDArray) -> npt.NDArray:
     array
         Validated sites.
 
+    Raises
+    ------
+    ValueError
+        If shape is incorrect.
+
     """
+    sites = np.asarray(sites)
     # Ensure sites is 2D for sklearn (n_samples, 1)
     if sites.ndim == 1:
         sites = sites.reshape(-1, 1)
     elif sites.ndim != 2 or sites.shape[1] != 1:
         raise ValueError(f"sites must be shape (n_samples,) or (n_samples, 1), got {sites.shape}")
-    return sites
+    return sites.astype(int)
