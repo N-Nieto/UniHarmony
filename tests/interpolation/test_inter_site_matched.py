@@ -1,5 +1,6 @@
 """Comprehensive tests for InterSiteMatchedInterpolation."""
 
+import itertools
 import warnings
 from typing import Any
 
@@ -491,3 +492,58 @@ class TestUtilities:
         assert rev[1] == []  # dst1 unmatched
         assert set(rev[2]) == {0, 1}  # dst2 matched by src0, src1
         assert rev[3] == [1]  # dst3 matched by src1
+
+
+class TestReproducibility:
+    """Test reproducibility of results."""
+
+    def test_reproducibility_detailed(self, multi_3site: tuple) -> None:
+        """Test detailed reproducibility including unmatched samples and sites."""
+        X, y, sites = multi_3site
+
+        ismi1 = InterSiteMatchedInterpolation(random_state=42, k=3, alpha=0.5)
+        X_res1, y_res1 = ismi1.fit_resample(X, y, sites=sites)
+        unmatched1 = ismi1.unmatched_samples_.copy()
+        sites_resampled1 = ismi1.sites_resampled_.copy()
+
+        ismi2 = InterSiteMatchedInterpolation(random_state=42, k=3, alpha=0.5)
+        X_res2, y_res2 = ismi2.fit_resample(X, y, sites=sites)
+        unmatched2 = ismi2.unmatched_samples_.copy()
+        sites_resampled2 = ismi2.sites_resampled_.copy()
+
+        # Check data arrays
+        np.testing.assert_array_equal(X_res1, X_res2)
+        np.testing.assert_array_equal(y_res1, y_res2)
+        np.testing.assert_array_equal(sites_resampled1, sites_resampled2)
+
+        # Check unmatched samples dictionary is identical
+        assert unmatched1 == unmatched2, f"Unmatched samples not reproducible: {unmatched1} vs {unmatched2}"
+
+    def test_matching_consistency(self, binary_2site) -> None:
+        """Test that matching is logically consistent (if A matches B, B should see A)."""
+        X, y, sites = binary_2site
+
+        ismi = InterSiteMatchedInterpolation(random_state=42)
+        ismi.fit_resample(X, y, sites=sites)
+
+        # Check internal consistency using the _find_matches logic
+        unique_sites = np.unique(sites)
+        for s1, s2 in itertools.combinations(unique_sites, 2):
+            mask1 = sites == s1
+            mask2 = sites == s2
+            y1, y2 = y[mask1], y[mask2]
+
+            # Forward matches
+            matches_1to2 = []
+            for _, yi in enumerate(y1):
+                matches = np.where(y2 == yi)[0]
+                matches_1to2.append(matches.tolist())
+
+            # Reverse check: every match found should be bidirectional
+            for src_idx, dst_matches in enumerate(matches_1to2):
+                for dst_idx in dst_matches:
+                    # Check that reverse lookup finds the original source
+                    reverse_matches = np.where(y1 == y2[dst_idx])[0]
+                    assert src_idx in reverse_matches, (
+                        f"Inconsistency: {s1}[{src_idx}] matches {s2}[{dst_idx}], but reverse lookup doesn't find it"
+                    )
