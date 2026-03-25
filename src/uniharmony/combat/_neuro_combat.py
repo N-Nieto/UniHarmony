@@ -376,7 +376,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
 
         Notes
         -----
-        The drop-first encoding for categorical covariates avoids collinearity
+        The drop-first encoding for categorical covariates avoids co-linearity
         with the intercept (which is implicit in the site effects). This is
         standard practice in regression analysis.
 
