@@ -184,7 +184,7 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
 
     def __init__(
         self,
-        alpha: float | tuple[float, float] = 0.3,
+        alpha: float | tuple[float, float] | list[float] = 0.3,
         target_tolerance: float | None = None,
         covariate_tolerance: ArrayLike | None = None,
         k: int | Literal["max", "average"] = 1,
@@ -218,8 +218,8 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
             if not isinstance(a_min, (int, float)) or not isinstance(a_max, (int, float)):
                 raise ValueError(f"alpha must be float or tuple (min, max), got {self.alpha}")
             a_min, a_max = float(a_min), float(a_max)
-            if not (0 <= a_min <= a_max <= 1):
-                raise ValueError(f"alpha must satisfy 0 <= min <= max <= 1, got {self.alpha}")
+            if not (0 < a_min < a_max < 1):
+                raise ValueError(f"alpha must satisfy 0 < min < max < 1, got {self.alpha}")
             self.alpha_min_ = a_min
             self.alpha_max_ = a_max
         else:
@@ -249,6 +249,7 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         *,
         categorical_covariate: ArrayLike | None = None,
         continuous_covariate: ArrayLike | None = None,
+        allow_nan=False,
     ) -> tuple[NDArray[np.float64], NDArray[Any]]:
         """Fit and resample using cross-site matched interpolation.
 
@@ -270,6 +271,8 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
             Continuous covariates used for matching after categorical
             matching (e.g., age, education years). Matches must be within
             ``tolerance`` for each column.
+        allow_nan : bool, default=None
+            If allow continuos and categorical covariates to present NaN or not
 
         Returns
         -------
@@ -293,7 +296,7 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         self._validate_init_params()
         # Validate inputs
         X_arr, y_arr, sites_arr, cat_cov, cont_cov = self._validate_inputs(
-            X, y, sites, categorical_covariate, continuous_covariate
+            X, y, sites, categorical_covariate, continuous_covariate, allow_nan
         )
 
         # Initialize tracking
@@ -340,6 +343,7 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         sites: ArrayLike,
         categorical_covariate: ArrayLike | None,
         continuous_covariate: ArrayLike | None,
+        allow_nan: bool = False,
     ) -> tuple[
         NDArray[np.float64],
         NDArray[Any],
@@ -359,22 +363,12 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
                 raise ValueError(f"Need at least 2 sites, got {len(np.unique(sites_arr))}") from e
             raise
 
-        # Check for NaN in categorical covariates (check_array with dtype=object may miss NaN)
-        if categorical_covariate is not None:
-            cat_arr = np.asarray(categorical_covariate)
-            # Check for NaN in object arrays
-            for i in range(cat_arr.shape[0]):
-                for j in range(cat_arr.shape[1]):
-                    val = cat_arr[i, j]
-                    if isinstance(val, float) and np.isnan(val):
-                        raise ValueError("Input contains NaN, infinity or a value too large for dtype('float64').")
-
         cat_cov, cont_cov, cov_tol = validate_covariates(
             X_arr.shape[0],
             categorical_covariate,
             continuous_covariate,
             self.covariate_tolerance,
-            allow_nan=False,
+            allow_nan=allow_nan,
         )
 
         self.covariate_tolerance_ = cov_tol

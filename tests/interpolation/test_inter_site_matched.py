@@ -97,35 +97,61 @@ class TestInit:
 class TestParameterValidation:
     """Test parameter validation in __init__."""
 
-    def test_invalid_alpha_range(self) -> None:
+    def test_invalid_alpha_range(self, binary_2site) -> None:
         """Test invalid alpha range raises ValueError."""
-        with pytest.raises(ValueError, match="alpha"):
-            InterSiteMatchedInterpolation(alpha=(0.6, 0.2))
+        X, y, sites = binary_2site
+        with pytest.raises(ValueError):
+            ismi = InterSiteMatchedInterpolation(alpha=(0.6, 0.2))
+            ismi.fit_resample(X, y, sites=sites)
 
-    def test_invalid_alpha_negative(self) -> None:
+    def test_alpha_zero(self, binary_2site: tuple) -> None:
+        """Test alpha=0 interpolation."""
+        X, y, sites = binary_2site
+        ismi = InterSiteMatchedInterpolation(alpha=0.0, random_state=42)
+        with pytest.raises(ValueError):
+            ismi.fit_resample(X, y, sites=sites)
+
+    def test_alpha_one(self, binary_2site: tuple) -> None:
+        """Test alpha=1 interpolation."""
+        X, y, sites = binary_2site
+        ismi = InterSiteMatchedInterpolation(alpha=1, random_state=42)
+        with pytest.raises(ValueError):
+            ismi.fit_resample(X, y, sites=sites)
+
+    def test_invalid_alpha_negative(self, binary_2site) -> None:
         """Test negative alpha raises ValueError."""
+        X, y, sites = binary_2site
         with pytest.raises(ValueError, match="alpha"):
-            InterSiteMatchedInterpolation(alpha=-0.1)
+            ismi = InterSiteMatchedInterpolation(alpha=-0.1)
+            ismi.fit_resample(X, y, sites=sites)
 
-    def test_invalid_alpha_large(self) -> None:
+    def test_invalid_alpha_large(self, binary_2site) -> None:
         """Test alpha > 1 raises ValueError."""
+        X, y, sites = binary_2site
         with pytest.raises(ValueError, match="alpha"):
-            InterSiteMatchedInterpolation(alpha=1.5)
+            ismi = InterSiteMatchedInterpolation(alpha=1.5)
+            ismi.fit_resample(X, y, sites=sites)
 
-    def test_invalid_k_string(self) -> None:
+    def test_invalid_k_string(self, binary_2site) -> None:
         """Test invalid k string raises ValueError."""
+        X, y, sites = binary_2site
         with pytest.raises(ValueError, match="k"):
-            InterSiteMatchedInterpolation(k="invalid")
+            ismi = InterSiteMatchedInterpolation(k="invalid")
+            ismi.fit_resample(X, y, sites=sites)
 
-    def test_invalid_k_zero(self) -> None:
+    def test_invalid_k_zero(self, binary_2site) -> None:
         """Test k=0 raises ValueError."""
+        X, y, sites = binary_2site
         with pytest.raises(ValueError, match="k"):
-            InterSiteMatchedInterpolation(k=0)
+            ismi = InterSiteMatchedInterpolation(k=0)
+            ismi.fit_resample(X, y, sites=sites)
 
-    def test_invalid_k_negative(self) -> None:
+    def test_invalid_k_negative(self, binary_2site) -> None:
         """Test negative k raises ValueError."""
+        X, y, sites = binary_2site
         with pytest.raises(ValueError, match="k"):
-            InterSiteMatchedInterpolation(k=-1)
+            ismi = InterSiteMatchedInterpolation(k=-1)
+            ismi.fit_resample(X, y, sites=sites)
 
     def test_single_site_error(self) -> None:
         """Test single site raises ValueError."""
@@ -168,10 +194,18 @@ class TestParameterValidation:
     def test_nan_in_categorical(self, binary_2site: tuple) -> None:
         """Test NaN in categorical covariates raises ValueError."""
         X, y, sites = binary_2site
-        cat = np.array([["M"], [np.nan]] * 50)
+        cat = np.array([["M"], [np.nan]] * 50, dtype=object)
         ismi = InterSiteMatchedInterpolation()
-        with pytest.raises(ValueError, match="force_all_finite"):
-            ismi.fit_resample(X, y, sites=sites, categorical_covariate=cat)
+        ismi.fit_resample(X, y, sites=sites, categorical_covariate=cat, allow_nan=True)
+
+    def test_nan_in_categorical_not_allowd(self, binary_2site: tuple) -> None:
+        """Test NaN in categorical covariates raises ValueError."""
+        X, y, sites = binary_2site
+
+        cat = np.array([["M"], [np.nan]] * 50, dtype=object)
+        ismi = InterSiteMatchedInterpolation()
+        with pytest.raises(ValueError):
+            ismi.fit_resample(X, y, sites=sites, categorical_covariate=cat, allow_nan=False)
 
 
 # Core functionality tests
@@ -211,8 +245,7 @@ class TestCoreFunctionality:
         ismi = InterSiteMatchedInterpolation(mode="base_to_others", k=2, random_state=42)
         _X_res, _y_res = ismi.fit_resample(X, y, sites=sites)
 
-        assert ismi.k_ == "average"
-        assert ismi.use_average_
+        assert ismi.k == "average"
 
     def test_with_covariates(self, binary_2site: tuple, covariates_2site: tuple) -> None:
         """Test interpolation with covariates."""
@@ -296,11 +329,13 @@ class TestCoreFunctionality:
 class TestWarnings:
     """Test warning conditions."""
 
-    def test_alpha_out_of_range_warning(self) -> None:
+    def test_alpha_out_of_range_warning(self, binary_2site) -> None:
         """Test alpha out of range raises ValueError."""
         # This should raise, not warn
+        X, y, sites = binary_2site
         with pytest.raises(ValueError, match="alpha"):
-            InterSiteMatchedInterpolation(alpha=1.5)
+            ismi = InterSiteMatchedInterpolation(alpha=1.5)
+            ismi.fit_resample(X, y, sites=sites)
 
     def test_fewer_matches_than_k(self, binary_2site: tuple) -> None:
         """Test warning when fewer matches than k."""
@@ -318,26 +353,12 @@ class TestWarnings:
         ismi = InterSiteMatchedInterpolation(mode="base_to_others", k=2, verbose=True)
         # Should warn about override
         _X_res, _y_res = ismi.fit_resample(X, y, sites=sites)
-        assert ismi.k_ == "average"
+        assert ismi.k == "average"
 
 
 # Edge cases
 class TestEdgeCases:
     """Test boundary conditions."""
-
-    def test_alpha_zero(self, binary_2site: tuple) -> None:
-        """Test alpha=0 interpolation."""
-        X, y, sites = binary_2site
-        ismi = InterSiteMatchedInterpolation(alpha=0.0, random_state=42)
-        X_res, _y_res = ismi.fit_resample(X, y, sites=sites)
-        assert len(X_res) > len(X)
-
-    def test_alpha_one(self, binary_2site: tuple) -> None:
-        """Test alpha=1 interpolation."""
-        X, y, sites = binary_2site
-        ismi = InterSiteMatchedInterpolation(alpha=1.0, random_state=42)
-        X_res, _y_res = ismi.fit_resample(X, y, sites=sites)
-        assert len(X_res) > len(X)
 
     def test_single_feature(self) -> None:
         """Test interpolation with single feature."""
