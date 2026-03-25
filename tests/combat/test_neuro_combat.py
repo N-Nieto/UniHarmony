@@ -1,5 +1,6 @@
 """Tests for NeuroComBat transformer."""
 
+from collections.abc import Callable
 from pathlib import Path
 
 import numpy as np
@@ -42,13 +43,13 @@ def _ex_failed_checks(_) -> dict[str, str]:
     ],
     expected_failed_checks=_ex_failed_checks,
 )
-def test_neuro_combat_compat_sklearn(estimator: object, check: callable) -> None:
+def test_neuro_combat_compat_sklearn(estimator: object, check: Callable) -> None:
     """Test NeuroComBat compatibility with sklearn.
 
     Parameters
     ----------
     estimator : object
-        Instance of NeuroComat.
+        Instance of NeuroComBat.
     check : callable
         sklearn fixture.
 
