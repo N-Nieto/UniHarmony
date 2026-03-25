@@ -45,6 +45,7 @@ dependencies = [
     "pooch>=1.9.0",
     "pot>=0.9.6.post1",
     "scikit-learn>=1.7.2",
+    "statsmodels>=0.14.6",
     "structlog>=25.0.0,<26.0.0",
     "tqdm>=4.67.2",
 ]
