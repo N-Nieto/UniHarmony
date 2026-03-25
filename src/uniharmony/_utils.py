@@ -6,6 +6,7 @@ import structlog
 
 
 __all__ = [
+    "convert_sites",
     "handle_near_zero_values",
     "handle_negative_variance",
     "minimum_samples_warning",
@@ -242,6 +243,26 @@ def validate_covariates(covariates: npt.NDArray | None, n_samples: int, name: st
         return covariates
 
 
+def convert_sites(s: list[str]) -> list[int]:
+    """Convert sites to proper format.
+
+    Parameters
+    ----------
+    s : list of str
+        Sites.
+
+    Returns
+    -------
+    list of int
+        Converted sites.
+
+    """
+    ks = set(s)
+    vs = list(range(1, len(ks) + 1))
+    kvs = dict(zip(ks, vs, strict=True))
+    return [kvs[k] for k in s]
+
+
 def validate_sites(sites: npt.ArrayLike) -> npt.NDArray:
     """Validate sites.
 
@@ -261,6 +282,9 @@ def validate_sites(sites: npt.ArrayLike) -> npt.NDArray:
         If shape is incorrect.
 
     """
+    if isinstance(sites, list):
+        if isinstance(next(iter(sites)), str):
+            sites = convert_sites(sites)
     sites = np.asarray(sites)
     # Ensure sites is 2D for sklearn (n_samples, 1)
     if sites.ndim == 1:
