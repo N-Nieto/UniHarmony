@@ -131,10 +131,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         # ######## Set up and check data ########
         # Check that X and sites have correct shape and type, and convert sites if they are strings
         X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
-        if isinstance(next(iter(sites)), str):
-            sites = self._convert_sites(sites)
-        if np.asarray(sites).ndim == 1:
-            sites = np.asarray(sites).reshape(-1, 1)
+        sites = validate_sites(sites)
         sites = check_array(sites, copy=self.copy, ensure_min_samples=2, estimator=self)
 
         check_consistent_length(X, sites)
@@ -254,10 +251,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         check_is_fitted(self)
 
         X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
-        if isinstance(next(iter(sites)), str):
-            sites = self._convert_sites(sites)
-        if np.asarray(sites).ndim == 1:
-            sites = np.asarray(sites).reshape(-1, 1)
+        sites = validate_sites(sites)
         sites = check_array(sites, copy=self.copy, estimator=self)
 
         check_consistent_length(X, sites)
@@ -398,8 +392,6 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         # =====================================================================
         # STEP 1: Validate inputs
         # =====================================================================
-        sites = np.asarray(sites)
-        sites = validate_sites(sites)
         n_samples = sites.shape[0]
 
         categorical_covariates = validate_covariates(categorical_covariates, n_samples, "categorical_covariates")
@@ -1464,13 +1456,6 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
 
         # Ensure positive variance
         return np.clip(result, 1e-8, None)
-
-    def _convert_sites(self, s: list[str]) -> list[int]:
-        """Convert sites to proper format."""
-        ks = set(s)
-        vs = list(range(1, len(ks) + 1))
-        kvs = dict(zip(ks, vs, strict=True))
-        return [kvs[k] for k in s]
 
     # Overridden for check_is_fitted() usage
     def __sklearn_is_fitted__(self) -> bool:
