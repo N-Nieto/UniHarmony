@@ -5,6 +5,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import pytest
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import balanced_accuracy_score
@@ -44,6 +45,8 @@ def _ex_failed_checks(_) -> dict[str, str]:
         NeuroComBat(empirical_bayes=True, parametric_adjustments=True, mean_only=False),
         NeuroComBat(empirical_bayes=False, parametric_adjustments=True, mean_only=True),
         NeuroComBat(empirical_bayes=False, parametric_adjustments=True, mean_only=False),
+        NeuroComBat(empirical_bayes=True, parametric_adjustments=False, mean_only=False),
+        NeuroComBat(empirical_bayes=True, parametric_adjustments=False, mean_only=True),
     ],
     expected_failed_checks=_ex_failed_checks,
 )
@@ -85,6 +88,134 @@ def test_neuro_combat_ops_impl() -> None:
         continuous_covariates=covars[["age"]].to_numpy(),
     )
     assert data_combat.shape == data.shape
+
+
+def test_neuro_combat_reproducibility() -> None:
+    """Test reproducibility of NeuroComBat."""
+    data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
+    batches = np.array([1, 1, 1, 1, 1, 2, 2, 2, 2, 2]).reshape(-1, 1)
+    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2]).reshape(-1, 1)
+    data_combat_v1 = NeuroComBat().fit_transform(
+        data.T,
+        batches,
+        categorical_covariates=genders,
+    )
+    data_combat_v2 = NeuroComBat().fit_transform(
+        data.T,
+        batches,
+        categorical_covariates=genders,
+    )
+    np.testing.assert_array_equal(data_combat_v1, data_combat_v2, strict=True)
+
+
+def test_neuro_combat_reproducibility_categorical() -> None:
+    """Test reproducibility of NeuroComBat with categoricals."""
+    data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
+    batches = np.array([1, 1, 1, 1, 1, 2, 2, 2, 2, 2]).reshape(-1, 1)
+    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2]).reshape(-1, 1)
+    data_combat_v1 = NeuroComBat().fit_transform(
+        data.T,
+        batches,
+        categorical_covariates=genders,
+    )
+    data_combat_v2 = NeuroComBat().fit_transform(
+        data.T,
+        batches,
+    )
+    with pytest.raises(AssertionError):
+        np.testing.assert_array_equal(data_combat_v1, data_combat_v2, strict=True)
+
+
+def test_neuro_combat_no_parametrics() -> None:
+    """Test reproducibility of NeuroComBat with categoricals."""
+    data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
+    batches = np.array([1, 1, 1, 1, 1, 2, 2, 2, 2, 2]).reshape(-1, 1)
+    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2]).reshape(-1, 1)
+    _ = NeuroComBat(empirical_bayes=True, parametric_adjustments=False, mean_only=False).fit_transform(
+        data.T,
+        batches,
+        categorical_covariates=genders,
+    )
+
+
+def test_neuro_combat_site_with_nan() -> None:
+    """Test Site with nan."""
+    data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
+    batches = np.array([1, 1, 1, np.nan, 1, 2, 2, 2, 2, 2], dtype=object).reshape(-1, 1)
+    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2]).reshape(-1, 1)
+    with pytest.raises(ValueError):
+        _ = NeuroComBat(empirical_bayes=True, parametric_adjustments=False, mean_only=False).fit_transform(
+            data.T,
+            batches,
+            categorical_covariates=genders,
+        )
+
+
+def test_neuro_combat_covars_with_nan() -> None:
+    """Test covars with nan."""
+    data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
+    batches = np.array([1, 1, 1, 1, 1, 2, 2, 2, 2, 2], dtype=object).reshape(-1, 1)
+    genders = np.array([1, 2, 1, 2, np.nan, 2, 1, 2, 1, 2], dtype=object).reshape(-1, 1)
+    with pytest.raises(ValueError):
+        _ = NeuroComBat(empirical_bayes=True, parametric_adjustments=False, mean_only=False).fit_transform(
+            data.T,
+            batches,
+            categorical_covariates=genders,
+        )
+
+
+def test_neuro_combat_sites_as_str() -> None:
+    """Test sites as str."""
+    data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
+    batches = ["1", "1", "1", "1", "1", "2", "2", "2", "2", "2"]
+    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2]).reshape(-1, 1)
+
+    _ = NeuroComBat(empirical_bayes=True, parametric_adjustments=False, mean_only=False).fit_transform(
+        data.T,
+        batches,
+        categorical_covariates=genders,
+    )
+
+
+def test_neuro_combat_unseen_site() -> None:
+    """Test unseen sites."""
+    data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
+    batches = ["1", "1", "1", "1", "1", "2", "2", "2", "2", "2"]
+    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2]).reshape(-1, 1)
+    neurocombat = NeuroComBat(empirical_bayes=True, parametric_adjustments=False, mean_only=False)
+    _ = neurocombat.fit(
+        data.T,
+        batches,
+        categorical_covariates=genders,
+    )
+    batches_unseen = ["3", "3", "3", "3", "3", "4", "4", "5", "5", "5"]
+    with pytest.raises(ValueError):
+        _ = neurocombat.transform(data.T, batches_unseen, categorical_covariates=genders)
+
+
+def test_neuro_combat_unseen_site_same_nsites() -> None:
+    """Test sites  unseen sites with matching number of sites."""
+    data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
+    batches = ["1", "1", "1", "1", "1", "2", "2", "2", "2", "2"]
+    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2]).reshape(-1, 1)
+    neurocombat = NeuroComBat(empirical_bayes=True, parametric_adjustments=False, mean_only=False)
+    _ = neurocombat.fit(
+        data.T,
+        batches,
+        categorical_covariates=genders,
+    )
+    batches_unseen = ["3", "3", "3", "3", "3", "4", "4", "4", "4", "4"]
+    with pytest.raises(ValueError):
+        _ = neurocombat.transform(data.T, batches_unseen, categorical_covariates=genders)
+
+
+def test_neuro_combat_max_iter() -> None:
+    """Test sites max iter."""
+    data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
+    batches = ["1", "1", "1", "1", "1", "2", "2", "2", "2", "2"]
+    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2]).reshape(-1, 1)
+    neurocombat = NeuroComBat(empirical_bayes=True, parametric_adjustments=True, mean_only=False)
+    _ = neurocombat.fit(data.T, batches, categorical_covariates=genders, max_iter=1)
 
 
 def test_neuro_combat_performance_mareos() -> None:
