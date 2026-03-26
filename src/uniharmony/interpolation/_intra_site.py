@@ -74,7 +74,6 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         self,
         X: np.ndarray,
         y: np.ndarray,
-        *,
         sites: np.ndarray,
     ):
         """Fit and resample the dataset using site-wise harmonization.
@@ -129,10 +128,10 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         elif isinstance(self.interpolator, SamplerMixin):
             # Make sure the provided interpolator
             # has "not majority" as sampling_strategy
-            if self.interpolator.sampling_strategy in ["auto", "not majority"]:
+            if self.interpolator.sampling_strategy not in ["auto", "not majority"]:
                 raise ValueError("IntraSiteInterpolation requires the interpolator to have `sampling_strategy='not majority'`.")
         else:
-            raise ValueError("interpolator must be either a stringor an instance of SamplerMixin.")
+            raise ValueError("interpolator must be either a string or an instance of SamplerMixin.")
 
         X_out, y_out, sites_out = [], [], []
 
@@ -143,7 +142,7 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
             if self.verbose:
                 logger.info(f"[ISI] Site {site}: {Counter(y_site)}")
 
-            X_rs, y_rs = self.interpolator.fit_resample(X_site, y_site)  # type: ignore
+            X_rs, y_rs = self.interpolator.fit_resample(X=X_site, y=y_site)
 
             X_out.append(X_rs)
             y_out.append(y_rs)
