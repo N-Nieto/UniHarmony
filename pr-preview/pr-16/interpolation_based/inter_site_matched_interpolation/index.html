@@ -25,7 +25,7 @@
     
     
       
-        <title>Inter Site Matched Interpolation - UniHarmony</title>
+        <title>Inter-Site Matched Interpolation (ISMI) - UniHarmony</title>
       
     
     
@@ -81,7 +81,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#inter-site-matched-interpolation" class="md-skip">
+        <a href="#inter-site-matched-interpolation-ismi" class="md-skip">
           Skip to content
         </a>
       
@@ -117,7 +117,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Inter Site Matched Interpolation
+              Inter-Site Matched Interpolation (ISMI)
             
           </span>
         </div>
@@ -856,6 +856,24 @@
         
       
       
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Inter Site Matched Interpolation
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
       <a href="././" class="md-nav__link md-nav__link--active">
         
   
@@ -872,6 +890,70 @@
   
 
       </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mathematical-formulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mathematical Formulation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basic-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basic Usage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-usage-with-covariates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advanced Usage with Covariates
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -1059,7 +1141,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../examples/ISI_binary_classification_example/" class="md-nav__link">
+      <a href="../../examples/interpolation-based/ISI_binary_classification_example.md" class="md-nav__link">
         
   
   
@@ -1087,7 +1169,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../examples/ISI_multiclass_classification_example/" class="md-nav__link">
+      <a href="../../examples/interpolation-based/ISI_multiclass_classification_example.md" class="md-nav__link">
         
   
   
@@ -1221,6 +1303,58 @@
     
   
   
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#mathematical-formulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mathematical Formulation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parameters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#basic-usage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Basic Usage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#advanced-usage-with-covariates" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Advanced Usage with Covariates
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
 </nav>
                   </div>
                 </div>
@@ -1237,16 +1371,170 @@
   
 
 
-<h1 id="inter-site-matched-interpolation">Inter Site Matched Interpolation<a class="headerlink" href="#inter-site-matched-interpolation" title="Permanent link">&para;</a></h1>
-<p>This study introduces a novel harmonization technique, Inter-Site SMOTE, which generates synthetic training data by interpolating between age- and gender-matched participants from different sites, significantly improving model generalization to unseen scanners compared to traditional methods.</p>
-<p><strong>Paper</strong>
-Nieto, N., Asati, A., Jadhav, K., &amp; Patil, K. R. (2026). Data harmonizing via interpolation applied to brain age prediction. Discover Data, 4(1), 3. https://doi.org/10.1007/s44248-026-00100-7</p>
-<p><strong>Source code</strong></p>
-<p>https://github.com/Aditi-Asati/Interpolation-And-Brain-Age-Prediction</p>
-<h1 id="implementation">Implementation<a class="headerlink" href="#implementation" title="Permanent link">&para;</a></h1>
-<ul>
-<li>To be implemented</li>
-</ul>
+<h1 id="inter-site-matched-interpolation-ismi">Inter-Site Matched Interpolation (ISMI)<a class="headerlink" href="#inter-site-matched-interpolation-ismi" title="Permanent link">&para;</a></h1>
+<p>Inter-Site Matched Interpolation (ISMI) is a data harmonization technique that generates synthetic training samples by interpolating between participants matched across different data acquisition sites or scanners. Unlike traditional harmonization methods that remove site effects, ISMI explicitly models cross-site variation by creating intermediate samples between matched pairs, improving model generalization to unseen scanners and datasets.</p>
+<p>This method is particularly effective when:
+- Training data comes from multiple sites with different equipment/protocols
+- You need to balance site representation without discarding real data
+- Site-specific covariate distributions (age, sex) differ between locations
+- Traditional ComBat harmonization removes signal you want to preserve</p>
+<hr />
+<h2 id="mathematical-formulation">Mathematical Formulation<a class="headerlink" href="#mathematical-formulation" title="Permanent link">&para;</a></h2>
+<p>Given two sites <span class="arithmatex">\(S_i\)</span> and <span class="arithmatex">\(S_j\)</span>, for each sample <span class="arithmatex">\(\mathbf{x}_k \in S_i\)</span> with target <span class="arithmatex">\(y_k\)</span>, ISMI finds matches in <span class="arithmatex">\(S_j\)</span> where <span class="arithmatex">\(y_m \approx y_k\)</span> (and optionally matching categorical/continuous covariates). Synthetic samples are generated via:</p>
+<div class="arithmatex">\[\mathbf{x}_{\text{synth}} = \mathbf{x}_k + \alpha (\mathbf{x}_m - \mathbf{x}_k)\]</div>
+<div class="arithmatex">\[y_{\text{synth}} = y_k + \alpha (y_m - y_k) \quad \text{(regression)}\]</div>
+<div class="arithmatex">\[y_{\text{synth}} = y_k \quad \text{(classification)}\]</div>
+<p>Where <span class="arithmatex">\(\alpha \in [0, 1]\)</span> controls interpolation strength (default: 0.3).</p>
+<p>For <strong>regression</strong>, targets are interpolated continuously. For <strong>classification</strong>, targets remain discrete while features are interpolated.</p>
+<hr />
+<h2 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>alpha</code></td>
+<td>float or tuple</td>
+<td>0.3</td>
+<td>Interpolation weight. If float, constant. If tuple <code>(min, max)</code>, sampled uniformly per sample. Range [0, 1].</td>
+</tr>
+<tr>
+<td><code>target_tolerance</code></td>
+<td>float or None</td>
+<td>None</td>
+<td>Tolerance for target matching. <code>None</code> = exact match (classification) or 10% of range (regression).</td>
+</tr>
+<tr>
+<td><code>covariate_tolerance</code></td>
+<td>array-like or None</td>
+<td>None</td>
+<td>Tolerance for continuous covariates (e.g., age tolerance in years).</td>
+</tr>
+<tr>
+<td><code>k</code></td>
+<td>int, "max", or "average"</td>
+<td>1</td>
+<td>Number of matches per sample: - <code>int</code>: Specific count - <code>"max"</code>: All available matches - <code>"average"</code>: Interpolate toward mean of all matches</td>
+</tr>
+<tr>
+<td><code>mode</code></td>
+<td>"pairwise" or "base_to_others"</td>
+<td>"pairwise"</td>
+<td>Site pairing strategy. <code>base_to_others</code> forces <code>k="average"</code> and interpolates each site against all others combined.</td>
+</tr>
+<tr>
+<td><code>concatenate</code></td>
+<td>bool</td>
+<td>True</td>
+<td>If True, returns original + synthetic data. If False, returns only synthetic samples.</td>
+</tr>
+<tr>
+<td><code>random_state</code></td>
+<td>int or None</td>
+<td>None</td>
+<td>Random seed for reproducibility.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="basic-usage">Basic Usage<a class="headerlink" href="#basic-usage" title="Permanent link">&para;</a></h2>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.interpolation</span><span class="w"> </span><span class="kn">import</span> <span class="n">InterSiteMatchedInterpolation</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># Your multi-site data</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">300</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>  <span class="c1"># Features</span>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>  <span class="c1"># Binary targets</span>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">sites</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="s2">&quot;Site_A&quot;</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Site_B&quot;</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;Site_C&quot;</span><span class="p">]</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1"># Initialize and fit</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="n">ismi</span> <span class="o">=</span> <span class="n">InterSiteMatchedInterpolation</span><span class="p">(</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="p">)</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="n">X_harmonized</span><span class="p">,</span> <span class="n">y_harmonized</span> <span class="o">=</span> <span class="n">ismi</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span><span class="o">=</span><span class="n">sites</span><span class="p">)</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="si">}</span><span class="s2"> samples&quot;</span><span class="p">)</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Harmonized: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X_harmonized</span><span class="p">)</span><span class="si">}</span><span class="s2"> samples&quot;</span><span class="p">)</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Unmatched by direction: </span><span class="si">{</span><span class="n">ismi</span><span class="o">.</span><span class="n">unmatched_samples_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</span></code></pre></div>
+<h2 id="advanced-usage-with-covariates">Advanced Usage with Covariates<a class="headerlink" href="#advanced-usage-with-covariates" title="Permanent link">&para;</a></h2>
+<p>For strict matching on demographics (e.g., exact sex match, age within 5 years):</p>
+<h1 id="covariates">Covariates<a class="headerlink" href="#covariates" title="Permanent link">&para;</a></h1>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">sex</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="s2">&quot;M&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;F&quot;</span><span class="p">],</span> <span class="o">...</span><span class="p">])</span>  <span class="c1"># Categorical</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">age</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">25</span><span class="p">],</span> <span class="p">[</span><span class="mi">34</span><span class="p">],</span> <span class="o">...</span><span class="p">])</span>    <span class="c1"># Continuous</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">ismi</span> <span class="o">=</span> <span class="n">InterSiteMatchedInterpolation</span><span class="p">(</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">alpha</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">),</span>           <span class="c1"># Random interpolation per sample</span>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>    <span class="n">k</span><span class="o">=</span><span class="s2">&quot;average&quot;</span><span class="p">,</span>                 <span class="c1"># Interpolate toward mean of matches</span>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>    <span class="n">target_tolerance</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>       <span class="c1"># Exact class match required</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="n">covariate_tolerance</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.0</span><span class="p">]),</span>  <span class="c1"># Age within 5 years</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;pairwise&quot;</span><span class="p">,</span>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a><span class="p">)</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a><span class="n">X_res</span><span class="p">,</span> <span class="n">y_res</span> <span class="o">=</span> <span class="n">ismi</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span>
+</span><span id="__span-1-14"><a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span><span class="o">=</span><span class="n">sites</span><span class="p">,</span>
+</span><span id="__span-1-15"><a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>    <span class="n">categorical_covariate</span><span class="o">=</span><span class="n">sex</span><span class="p">,</span>
+</span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    <span class="n">continuous_covariate</span><span class="o">=</span><span class="n">age</span>
+</span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="p">)</span>
+</span></code></pre></div>
+<p>Understanding Unmatched Samples
+After fitting, ismi.unmatched_samples_ contains a dictionary mapping (source_site, target_site) to counts of samples that couldn't be matched.
+Important: Asymmetry is Expected
+The unmatched matrix is directional and typically asymmetric:</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="p">(</span><span class="s1">&#39;Site_A&#39;</span><span class="p">,</span> <span class="s1">&#39;Site_B&#39;</span><span class="p">):</span> <span class="mi">45</span><span class="p">,</span>   <span class="c1"># 45 samples from A couldn&#39;t match in B</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>    <span class="p">(</span><span class="s1">&#39;Site_B&#39;</span><span class="p">,</span> <span class="s1">&#39;Site_A&#39;</span><span class="p">):</span> <span class="mi">40</span><span class="p">,</span>   <span class="c1"># 40 samples from B couldn&#39;t match in A</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>    <span class="p">(</span><span class="s1">&#39;Site_A&#39;</span><span class="p">,</span> <span class="s1">&#39;Site_C&#39;</span><span class="p">):</span> <span class="mi">12</span><span class="p">,</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="p">(</span><span class="s1">&#39;Site_C&#39;</span><span class="p">,</span> <span class="s1">&#39;Site_A&#39;</span><span class="p">):</span> <span class="mi">8</span><span class="p">,</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>    <span class="o">...</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="p">}</span>
+</span></code></pre></div>
+<h2 id="algorithm-modes">Algorithm Modes<a class="headerlink" href="#algorithm-modes" title="Permanent link">&para;</a></h2>
+<h3 id="pairwise-mode-modepairwise">Pairwise Mode (<code>mode="pairwise"</code>)<a class="headerlink" href="#pairwise-mode-modepairwise" title="Permanent link">&para;</a></h3>
+<p>Creates synthetic samples for every site pair combination (A↔B, A↔C, B↔C). Best for:
+Understanding specific site-to-site relationships
+When you want maximum synthetic diversity</p>
+<h3 id="base-to-others-mode-modebase_to_others">Base-to-Others Mode (<code>mode="base_to_others"</code>)<a class="headerlink" href="#base-to-others-mode-modebase_to_others" title="Permanent link">&para;</a></h3>
+<p>Each site is interpolated against all other sites combined. Forces k="average". Best for:
+Reducing computational cost with many sites
+Creating "site vs. population" harmonization</p>
+<h2 id="implementation-notes">Implementation Notes<a class="headerlink" href="#implementation-notes" title="Permanent link">&para;</a></h2>
+<p>Classification: Targets are preserved exactly for synthetic samples (no interpolation of labels)
+Regression: Targets are interpolated continuously between matched pairs
+Memory: With k="max" and many sites, memory usage scales as O(n²). Use k=1 or k=5 for large datasets
+Validation: Always check unmatched_samples_ after fitting. High unmatched counts (&gt;50%) indicate poor site compatibility for the chosen matching criteria</p>
+<h2 id="reference-implementation">Reference Implementation<a class="headerlink" href="#reference-implementation" title="Permanent link">&para;</a></h2>
+<p>This implementation generalizes the method described in:
+Nieto, N., Asati, A., Jadhav, K., &amp; Patil, K. R. (2026). Data harmonizing via interpolation applied to brain age prediction. Discover Data, 4(1), 3. https://doi.org/10.1007/s44248-026-00100-7
+Key differences from the paper:
+The original implementation was specific to brain age prediction (regression)
+This version supports both classification and regression
+Added support for categorical covariates beyond binary sex
+Generalized to arbitrary site counts and pairing strategies</p>
+<p>Source code for original study: https://github.com/Aditi-Asati/Interpolation-And-Brain-Age-Prediction</p>
+<p>Citation
+If you use this method in your research, please cite:</p>
+<div class="language-bibtex highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nc">@article</span><span class="p">{</span><span class="nl">nieto2026data</span><span class="p">,</span>
+</span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="na">title</span><span class="p">=</span><span class="s">{Data harmonizing via interpolation applied to brain age prediction}</span><span class="p">,</span>
+</span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="na">author</span><span class="p">=</span><span class="s">{Nieto, Nicol{\&#39;a}s and Asati, Aditi and Jadhav, Kushaj and Patil, Kaustubh R}</span><span class="p">,</span>
+</span><span id="__span-3-4"><a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">  </span><span class="na">journal</span><span class="p">=</span><span class="s">{Discover Data}</span><span class="p">,</span>
+</span><span id="__span-3-5"><a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">  </span><span class="na">volume</span><span class="p">=</span><span class="s">{4}</span><span class="p">,</span>
+</span><span id="__span-3-6"><a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">  </span><span class="na">number</span><span class="p">=</span><span class="s">{1}</span><span class="p">,</span>
+</span><span id="__span-3-7"><a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">  </span><span class="na">pages</span><span class="p">=</span><span class="s">{3}</span><span class="p">,</span>
+</span><span id="__span-3-8"><a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="w">  </span><span class="na">year</span><span class="p">=</span><span class="s">{2026}</span><span class="p">,</span>
+</span><span id="__span-3-9"><a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="w">  </span><span class="na">publisher</span><span class="p">=</span><span class="s">{Springer}</span><span class="p">,</span>
+</span><span id="__span-3-10"><a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">  </span><span class="na">doi</span><span class="p">=</span><span class="s">{10.1007/s44248-026-00100-7}</span>
+</span><span id="__span-3-11"><a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="p">}</span>
+</span></code></pre></div>
 
 
 
