@@ -1372,7 +1372,7 @@
 
 
 <h1 id="inter-site-matched-interpolation-ismi">Inter-Site Matched Interpolation (ISMI)<a class="headerlink" href="#inter-site-matched-interpolation-ismi" title="Permanent link">&para;</a></h1>
-<p>Inter-Site Matched Interpolation (ISMI) is a data harmonization technique that generates synthetic training samples by interpolating between participants matched across different data acquisition sites or scanners. Unlike traditional harmonization methods that remove site effects, ISMI explicitly models cross-site variation by creating intermediate samples between matched pairs, improving model generalization to unseen scanners and datasets.</p>
+<p>Inter-Site Matched Interpolation (ISMI) is a data harmonization technique that generates synthetic training samples by interpolating between participants matched across different data acquisition sites or scanners. Unlike traditional harmonization methods that remove site effects, ISMI explicitly models cross-site variation by creating intermediate samples between matched pairs, aiming to improve model generalization to unseen scanners and datasets.</p>
 <p>This method is particularly effective when:
 - Training data comes from multiple sites with different equipment/protocols
 - You need to balance site representation without discarding real data
@@ -1384,7 +1384,7 @@
 <div class="arithmatex">\[\mathbf{x}_{\text{synth}} = \mathbf{x}_k + \alpha (\mathbf{x}_m - \mathbf{x}_k)\]</div>
 <div class="arithmatex">\[y_{\text{synth}} = y_k + \alpha (y_m - y_k) \quad \text{(regression)}\]</div>
 <div class="arithmatex">\[y_{\text{synth}} = y_k \quad \text{(classification)}\]</div>
-<p>Where <span class="arithmatex">\(\alpha \in [0, 1]\)</span> controls interpolation strength (default: 0.3).</p>
+<p>Where <span class="arithmatex">\(\alpha \in (0, 1)\)</span> controls interpolation strength (default: 0.3). An alpha of aproximately 0 will generate a interpolated sample more similar to the <em>base</em> sample. On the other hand, a value closer to 1 will generate an interpolated sample more similar to the <em>target</em> sample.</p>
 <p>For <strong>regression</strong>, targets are interpolated continuously. For <strong>classification</strong>, targets remain discrete while features are interpolated.</p>
 <hr />
 <h2 id="parameters">Parameters<a class="headerlink" href="#parameters" title="Permanent link">&para;</a></h2>
@@ -1486,8 +1486,8 @@
 </span><span id="__span-1-16"><a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    <span class="n">continuous_covariate</span><span class="o">=</span><span class="n">age</span>
 </span><span id="__span-1-17"><a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a><span class="p">)</span>
 </span></code></pre></div>
-<p>Understanding Unmatched Samples
-After fitting, ismi.unmatched_samples_ contains a dictionary mapping (source_site, target_site) to counts of samples that couldn't be matched.
+<h2 id="understanding-unmatched-samples">Understanding Unmatched Samples<a class="headerlink" href="#understanding-unmatched-samples" title="Permanent link">&para;</a></h2>
+<p>After fitting, ismi.unmatched_samples_ contains a dictionary mapping (source_site, target_site) to counts of samples that couldn't be matched.
 Important: Asymmetry is Expected
 The unmatched matrix is directional and typically asymmetric:</p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">{</span>
@@ -1513,16 +1513,18 @@ Regression: Targets are interpolated continuously between matched pairs
 Memory: With k="max" and many sites, memory usage scales as O(n²). Use k=1 or k=5 for large datasets
 Validation: Always check unmatched_samples_ after fitting. High unmatched counts (&gt;50%) indicate poor site compatibility for the chosen matching criteria</p>
 <h2 id="reference-implementation">Reference Implementation<a class="headerlink" href="#reference-implementation" title="Permanent link">&para;</a></h2>
-<p>This implementation generalizes the method described in:
-Nieto, N., Asati, A., Jadhav, K., &amp; Patil, K. R. (2026). Data harmonizing via interpolation applied to brain age prediction. Discover Data, 4(1), 3. https://doi.org/10.1007/s44248-026-00100-7
-Key differences from the paper:
-The original implementation was specific to brain age prediction (regression)
-This version supports both classification and regression
-Added support for categorical covariates beyond binary sex
-Generalized to arbitrary site counts and pairing strategies</p>
+<p>This implementation generalizes the method described in:</p>
+<ul>
+<li>Nieto, N., Asati, A., Jadhav, K., &amp; Patil, K. R. (2026). Data harmonizing via interpolation applied to brain age prediction. Discover Data, 4(1), 3. https://doi.org/10.1007/s44248-026-00100-7</li>
+</ul>
+<p>Key differences from the paper:
+- The original implementation was specific to brain age prediction (regression)
+- This version supports both classification and regression
+- Added support for categorical covariates beyond binary sex
+- Generalized to arbitrary site counts and pairing strategies</p>
 <p>Source code for original study: https://github.com/Aditi-Asati/Interpolation-And-Brain-Age-Prediction</p>
-<p>Citation
-If you use this method in your research, please cite:</p>
+<h1 id="citation">Citation<a class="headerlink" href="#citation" title="Permanent link">&para;</a></h1>
+<p>If you use this method in your research, please cite:</p>
 <div class="language-bibtex highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nc">@article</span><span class="p">{</span><span class="nl">nieto2026data</span><span class="p">,</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="w">  </span><span class="na">title</span><span class="p">=</span><span class="s">{Data harmonizing via interpolation applied to brain age prediction}</span><span class="p">,</span>
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">  </span><span class="na">author</span><span class="p">=</span><span class="s">{Nieto, Nicol{\&#39;a}s and Asati, Aditi and Jadhav, Kushaj and Patil, Kaustubh R}</span><span class="p">,</span>
