@@ -1,6 +1,6 @@
 # Inter-Site Matched Interpolation (ISMI)
 
-Inter-Site Matched Interpolation (ISMI) is a data harmonization technique that generates synthetic training samples by interpolating between participants matched across different data acquisition sites or scanners. Unlike traditional harmonization methods that remove site effects, ISMI explicitly models cross-site variation by creating intermediate samples between matched pairs, improving model generalization to unseen scanners and datasets.
+Inter-Site Matched Interpolation (ISMI) is a data harmonization technique that generates synthetic training samples by interpolating between participants matched across different data acquisition sites or scanners. Unlike traditional harmonization methods that remove site effects, ISMI explicitly models cross-site variation by creating intermediate samples between matched pairs, aiming to improve model generalization to unseen scanners and datasets.
 
 This method is particularly effective when:
 - Training data comes from multiple sites with different equipment/protocols
@@ -20,7 +20,7 @@ $$y_{\text{synth}} = y_k + \alpha (y_m - y_k) \quad \text{(regression)}$$
 
 $$y_{\text{synth}} = y_k \quad \text{(classification)}$$
 
-Where $\alpha \in [0, 1]$ controls interpolation strength (default: 0.3).
+Where $\alpha \in (0, 1)$ controls interpolation strength (default: 0.3). An alpha of aproximately 0 will generate a interpolated sample more similar to the *base* sample. On the other hand, a value closer to 1 will generate an interpolated sample more similar to the *target* sample.
 
 For **regression**, targets are interpolated continuously. For **classification**, targets remain discrete while features are interpolated.
 
@@ -91,7 +91,7 @@ X_res, y_res = ismi.fit_resample(
 ```
 
 
-Understanding Unmatched Samples
+## Understanding Unmatched Samples
 After fitting, ismi.unmatched_samples_ contains a dictionary mapping (source_site, target_site) to counts of samples that couldn't be matched.
 Important: Asymmetry is Expected
 The unmatched matrix is directional and typically asymmetric:
@@ -127,17 +127,18 @@ Validation: Always check unmatched_samples_ after fitting. High unmatched counts
 
 ## Reference Implementation
 This implementation generalizes the method described in:
-Nieto, N., Asati, A., Jadhav, K., & Patil, K. R. (2026). Data harmonizing via interpolation applied to brain age prediction. Discover Data, 4(1), 3. https://doi.org/10.1007/s44248-026-00100-7
+
+- Nieto, N., Asati, A., Jadhav, K., & Patil, K. R. (2026). Data harmonizing via interpolation applied to brain age prediction. Discover Data, 4(1), 3. https://doi.org/10.1007/s44248-026-00100-7
+
 Key differences from the paper:
-The original implementation was specific to brain age prediction (regression)
-This version supports both classification and regression
-Added support for categorical covariates beyond binary sex
-Generalized to arbitrary site counts and pairing strategies
+- The original implementation was specific to brain age prediction (regression)
+- This version supports both classification and regression
+- Added support for categorical covariates beyond binary sex
+- Generalized to arbitrary site counts and pairing strategies
 
 Source code for original study: https://github.com/Aditi-Asati/Interpolation-And-Brain-Age-Prediction
 
-
-Citation
+# Citation
 If you use this method in your research, please cite:
 
 ```bibtex
