@@ -39,7 +39,11 @@ nav = [
       {"neuroComBat for binary classification" = "examples/neuroComBat_binary_classification_example.md"},
       {"neuroComBat with MAREoS" = "examples/neuroComBat_in_MAREoS.md"},
   ]},
-  {"API Reference" = "api_reference.md"},
+  {"API Reference" = [
+      {"ComBat" = "api/combat.md"},
+      {"Interpolation" = "api/interpolation.md"},
+      {"Utilities" = "api/utils.md"},
+  ]},
 ]
 extra_javascript = [
     "javascripts/mathjax.js",
