@@ -22,13 +22,11 @@ nav = [
           {"BARTharmonization" = "combat_based/bartharmonize.md"},
           {"PrettYharmonize" = "combat_based/prettyharmony.md"}
       ]},
-
       {"Interpolation" = [
         {"Overview" = "interpolation.md"},
         {"Inter Site Matched Interpolation" = "interpolation_based/inter_site_matched_interpolation.md"},
         {"Intra Site Interpolation" = "interpolation_based/intra_site_interpolation.md"}
-                    ]}
-
+      ]}
   ]},
   {"Examples" = [
       {"Load MAREoS" = "examples/load_mareos_example.md"},
@@ -39,7 +37,15 @@ nav = [
       {"neuroComBat for binary classification" = "examples/neuroComBat_binary_classification_example.md"},
       {"neuroComBat with MAREoS" = "examples/neuroComBat_in_MAREoS.md"},
   ]},
-  {"API Reference" = "api_reference.md"},
+  {"API Reference" = [
+      {"ComBat" = [
+          {"NeuroComBat" = "api/combat/neurocombat.md"},
+      ]},
+      {"Interpolation" = [
+          {"IntraSiteInterpolation" = "api/interpolation/intrasite.md"},
+      ]},
+      {"Utilities" = "api/utils.md"},
+  ]},
 ]
 extra_javascript = [
     "javascripts/mathjax.js",
