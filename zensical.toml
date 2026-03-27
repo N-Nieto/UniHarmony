@@ -22,13 +22,11 @@ nav = [
           {"BARTharmonization" = "combat_based/bartharmonize.md"},
           {"PrettYharmonize" = "combat_based/prettyharmony.md"}
       ]},
-
       {"Interpolation" = [
         {"Overview" = "interpolation.md"},
         {"Inter Site Matched Interpolation" = "interpolation_based/inter_site_matched_interpolation.md"},
         {"Intra Site Interpolation" = "interpolation_based/intra_site_interpolation.md"}
-                    ]}
-
+      ]}
   ]},
   {"Examples" = [
       {"Load MAREoS" = "examples/load_mareos_example.md"},
