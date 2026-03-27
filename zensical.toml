@@ -38,8 +38,12 @@ nav = [
       {"neuroComBat with MAREoS" = "examples/neuroComBat_in_MAREoS.md"},
   ]},
   {"API Reference" = [
-      {"ComBat" = "api/combat.md"},
-      {"Interpolation" = "api/interpolation.md"},
+      {"ComBat" = [
+          {"NeuroComBat" = "api/combat/neurocombat.md"},
+      ]},
+      {"Interpolation" = [
+          {"IntraSiteInterpolation" = "api/interpolation/intrasite.md"},
+      ]},
       {"Utilities" = "api/utils.md"},
   ]},
 ]
