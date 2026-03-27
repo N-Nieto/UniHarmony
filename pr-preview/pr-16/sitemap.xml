@@ -61,6 +61,12 @@
         <loc>https://github.com/N-Nieto/UniHarmony/examples/neuroComBat_in_MAREoS/</loc>
       </url>
       <url>
-        <loc>https://github.com/N-Nieto/UniHarmony/api_reference/</loc>
+        <loc>https://github.com/N-Nieto/UniHarmony/api/combat/neurocombat/</loc>
+      </url>
+      <url>
+        <loc>https://github.com/N-Nieto/UniHarmony/api/interpolation/intrasite/</loc>
+      </url>
+      <url>
+        <loc>https://github.com/N-Nieto/UniHarmony/api/utils/</loc>
       </url>
 </urlset>
