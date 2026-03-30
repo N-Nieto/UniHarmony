@@ -16,8 +16,17 @@ def verbosity(min_level="info") -> None:
     min_level : {"critical", "error", "warning", "info", "debug"}
         Minimum level to log.
 
+    Raises
+    ------
+    ValueError
+        If `min_level` value is invalid.
+
     """
-    structlog.configure(wrapper_class=structlog.make_filtering_bound_logger(min_level))
+    try:
+        structlog.configure(wrapper_class=structlog.make_filtering_bound_logger(min_level))
+    except KeyError as e:
+        lvls = ["critical", "error", "warning", "info", "debug"]
+        raise ValueError(f"`min_level` needs to be one of: {lvls}") from e
 
 
 @contextmanager
