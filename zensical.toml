@@ -32,10 +32,12 @@ nav = [
       {"Load MAREoS" = "examples/load_mareos_example.md"},
       {"Generate mutlisite data" = "examples/generate_multisite_data_example.md"},
       {"Multisite data characterization" = "examples/multisite_data_characterization_example.md"},
+      {"Effects of Site in ML" = "examples/EoS_in_ML.md"},
       {"Intra Site Interpolation for binary classification" = "examples/ISI_binary_classification_example.md"},
       {"Intra Site Interpolation for multiclass classification" = "examples/ISI_multiclass_classification_example.md"},
       {"neuroComBat for binary classification" = "examples/neuroComBat_binary_classification_example.md"},
       {"neuroComBat with MAREoS" = "examples/neuroComBat_in_MAREoS.md"},
+      {"neuroComBat with imbalance across sites" = "examples/neuroComBat_imbalance_across_sites.md"},
   ]},
   {"API Reference" = [
       {"ComBat" = [

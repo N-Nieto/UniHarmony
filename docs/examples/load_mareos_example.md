@@ -8,7 +8,6 @@
 from pathlib import Path
 
 from uniharmony import load_MAREoS
-
 ```
 
 
@@ -16,7 +15,6 @@ from uniharmony import load_MAREoS
 # We can call the helper funtion to load all the dataset (aprox 3MB).
 # The files will be stored in the cache, so we don't have to worry about them
 datasets = load_MAREoS()
-
 ```
 
 
@@ -67,9 +65,7 @@ print(datasets.keys())
 
 
 ```python
-datasets = load_MAREoS(
-    effects="eos", effect_types="simple"
-)
+datasets = load_MAREoS(effects="eos", effect_types="simple")
 print(datasets.keys())
 ```
 
@@ -78,9 +74,7 @@ print(datasets.keys())
 
 
 ```python
-datasets = load_MAREoS(
-    effects="eos", effect_types="simple", effect_examples="1"
-)
+datasets = load_MAREoS(effects="eos", effect_types="simple", effect_examples="1")
 print(datasets.keys())
 ```
 
@@ -92,9 +86,7 @@ You can chose to load the dataset as pandas.DataFrame, with has the simulated ar
 
 
 ```python
-datasets = load_MAREoS(
-    effects="eos", effect_types="simple", effect_examples="1", as_numpy=False
-)
+datasets = load_MAREoS(effects="eos", effect_types="simple", effect_examples="1", as_numpy=False)
 dataset = datasets["eos_simple1"]["X"]
 dataset.head()
 ```
@@ -255,5 +247,4 @@ dataset.head()
 # We will use a relative path from this example to look for appropiated path
 data_dir = Path().resolve().parent / "src" / "uniharmony" / "datasets" / "data"
 datasets = load_MAREoS(data_dir=data_dir)
-
 ```

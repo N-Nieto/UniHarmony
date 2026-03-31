@@ -9,7 +9,6 @@ import numpy as np
 from sklearn.metrics import accuracy_score
 
 from uniharmony.metrics import report_metric_by_site
-
 ```
 
 
@@ -51,13 +50,9 @@ strong_acc_s1 = rng.uniform(0.95, 0.99)
 site_acc_s1 = dict.fromkeys(sites_unique, base_acc_s1)
 site_acc_s1[strong_site] = strong_acc_s1
 
-y_pred_s1 = _make_predictions_with_site_accuracy(
-    y_true, sites, site_acc_s1, rng
-)
+y_pred_s1 = _make_predictions_with_site_accuracy(y_true, sites, site_acc_s1, rng)
 metric_global_s1 = accuracy_score(y_true, y_pred_s1)
-metric_s1 = report_metric_by_site(
-    y_true, y_pred_s1, sites, accuracy_score, overall_performance=True
-)
+metric_s1 = report_metric_by_site(y_true, y_pred_s1, sites, accuracy_score, overall_performance=True)
 metric_global_s1 = metric_s1.pop("overall")
 
 print(f"Strong site: {strong_site}")
@@ -73,12 +68,8 @@ weak_acc_s2 = rng.uniform(0.05, 0.15)
 site_acc_s2 = dict.fromkeys(sites_unique, base_acc_s2)
 site_acc_s2[weak_site] = weak_acc_s2
 
-y_pred_s2 = _make_predictions_with_site_accuracy(
-    y_true, sites, site_acc_s2, rng
-)
-metric_s2 = report_metric_by_site(
-    y_true, y_pred_s2, sites, accuracy_score, overall_performance=True
-)
+y_pred_s2 = _make_predictions_with_site_accuracy(y_true, sites, site_acc_s2, rng)
+metric_s2 = report_metric_by_site(y_true, y_pred_s2, sites, accuracy_score, overall_performance=True)
 metric_global_s2 = metric_s2.pop("overall")
 print(f"Weak site: {weak_site}")
 print(f"Global accuracy: {metric_global_s2:.3f}")
@@ -119,7 +110,6 @@ axes[1].set_ylim([0, 1])
 
 plt.tight_layout()
 plt.show()
-
 ```
 
     Scenario 1: Overall bad performance, one site excels

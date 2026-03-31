@@ -248,7 +248,6 @@ neurocombat_results = pd.DataFrame(data=neurocombat_results, columns=["bACC", "F
 neurocombat_results["Method"] = "neuroComBat"
 
 results = pd.concat([unharmonized_results, neurocombat_results])
-
 ```
 
 ## 5) Plot results

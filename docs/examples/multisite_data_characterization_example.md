@@ -60,7 +60,6 @@ stats = get_site_data_statistics(
 
 # Print summary
 print_statistics_summary(stats)
-
 ```
 
     Computing statistics...
