@@ -8,7 +8,6 @@ import pandas as pd
 import seaborn as sns
 
 from uniharmony import make_multisite_classification
-
 ```
 
 ## We will start with the function as default
@@ -42,9 +41,7 @@ fig, axes = plt.subplots(1, 3, figsize=[15, 5])
 
 for idx, n_sites in enumerate([2, 4, 10]):
     X, y, sites = make_multisite_classification(n_sites=n_sites)
-    print(
-        f"For n_sites {n_sites}, X has {X.shape[0]} examples and {X.shape[1]} features"  # noqa: E501
-    )
+    print(f"For n_sites {n_sites}, X has {X.shape[0]} examples and {X.shape[1]} features")
 
     df_plot = pd.DataFrame(
         {
@@ -61,7 +58,6 @@ for idx, n_sites in enumerate([2, 4, 10]):
     axes[idx].grid(axis="y", color="black", alpha=0.5, linestyle="--")
 
 plt.tight_layout()
-
 ```
 
     For n_sites 2, X has 1000 examples and 10 features
@@ -81,9 +77,7 @@ fig, axes = plt.subplots(1, 3, figsize=[15, 5])
 
 for idx, n_classes in enumerate([2, 4, 10]):
     X, y, sites = make_multisite_classification(n_classes=n_classes)
-    print(
-        f"For n_classes {n_classes}, X has {X.shape[0]} examples and {X.shape[1]} features"  # noqa: E501
-    )
+    print(f"For n_classes {n_classes}, X has {X.shape[0]} examples and {X.shape[1]} features")
 
     df_plot = pd.DataFrame(
         {
@@ -94,13 +88,10 @@ for idx, n_classes in enumerate([2, 4, 10]):
         }
     )
     sns.countplot(df_plot, x="Class", hue="Site", ax=axes[idx])
-    axes[idx].set_title(
-        f"Class and site distribution with {n_classes} classes"
-    )
+    axes[idx].set_title(f"Class and site distribution with {n_classes} classes")
     axes[idx].grid(axis="y", color="black", alpha=0.5, linestyle="--")
 
 plt.tight_layout()
-
 ```
 
     For n_classes 2, X has 1000 examples and 10 features
@@ -126,12 +117,8 @@ We can control that using the `balance_per_site` of the function.
 fig, axes = plt.subplots(1, 3, figsize=[15, 5])
 balance_per_site_list = [[0.5, 0.5], [0.3, 0.7], [0.1, 0.9]]
 for idx, balance_per_site in enumerate(balance_per_site_list):
-    X, y, sites = make_multisite_classification(
-        balance_per_site=balance_per_site
-    )
-    print(
-        f"For n_classes {n_classes}, X has {X.shape[0]} examples and {X.shape[1]} features"  # noqa: E501
-    )
+    X, y, sites = make_multisite_classification(balance_per_site=balance_per_site)
+    print(f"For n_classes {n_classes}, X has {X.shape[0]} examples and {X.shape[1]} features")
 
     df_plot = pd.DataFrame(
         {
@@ -146,7 +133,6 @@ for idx, balance_per_site in enumerate(balance_per_site_list):
     axes[idx].grid(axis="y", color="black", alpha=0.5, linestyle="--")
 
 plt.tight_layout()
-
 ```
 
     For n_classes 10, X has 1000 examples and 10 features
@@ -185,9 +171,7 @@ for idx, signal_st in enumerate([0, 1, 5]):
         }
     )
 
-    sns.scatterplot(
-        df_plot, x="Feature 1", y="Feature 2", hue="Class", ax=axes[idx]
-    )
+    sns.scatterplot(df_plot, x="Feature 1", y="Feature 2", hue="Class", ax=axes[idx])
     axes[idx].set_title(f"Signal Strength: {signal_st}")
     axes[idx].grid(axis="y", color="black", alpha=0.5, linestyle="--")
 
@@ -221,9 +205,7 @@ for idx, noise_st in enumerate([0, 1, 5]):
         }
     )
 
-    sns.scatterplot(
-        df_plot, x="Feature 1", y="Feature 2", hue="Class", ax=axes[idx]
-    )
+    sns.scatterplot(df_plot, x="Feature 1", y="Feature 2", hue="Class", ax=axes[idx])
     axes[idx].set_title(f"Noise Strength: {noise_st}")
     axes[idx].grid(axis="y", color="black", alpha=0.5, linestyle="--")
 
@@ -258,9 +240,7 @@ for idx, site_st in enumerate([0, 1, 5]):
         }
     )
 
-    sns.scatterplot(
-        df_plot, x="Feature 1", y="Feature 2", hue="Class", ax=axes[idx]
-    )
+    sns.scatterplot(df_plot, x="Feature 1", y="Feature 2", hue="Class", ax=axes[idx])
     axes[idx].set_title(f"Effect of Site Strength: {site_st}")
     axes[idx].grid(axis="y", color="black", alpha=0.5, linestyle="--")
 

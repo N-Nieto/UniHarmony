@@ -42,9 +42,9 @@ plt.grid(axis="y", color="black", alpha=0.5, linestyle="--")
 ```
 
 
-    
+
 ![png](neuroComBat_imbalance_across_sites_files/neuroComBat_imbalance_across_sites_2_0.png)
-    
+
 
 
 
@@ -93,9 +93,9 @@ plt.tight_layout()
 
 
 
-    
+
 ![png](neuroComBat_imbalance_across_sites_files/neuroComBat_imbalance_across_sites_4_1.png)
-    
+
 
 
 
@@ -111,9 +111,9 @@ plt.tight_layout()
 ```
 
 
-    
+
 ![png](neuroComBat_imbalance_across_sites_files/neuroComBat_imbalance_across_sites_5_0.png)
-    
+
 
 
 
@@ -149,9 +149,9 @@ plt.tight_layout()
 
 
 
-    
+
 ![png](neuroComBat_imbalance_across_sites_files/neuroComBat_imbalance_across_sites_6_1.png)
-    
+
 
 
 
@@ -167,7 +167,5 @@ plt.tight_layout()
 ```
 
 
-    
-![png](neuroComBat_imbalance_across_sites_files/neuroComBat_imbalance_across_sites_7_0.png)
-    
 
+![png](neuroComBat_imbalance_across_sites_files/neuroComBat_imbalance_across_sites_7_0.png)

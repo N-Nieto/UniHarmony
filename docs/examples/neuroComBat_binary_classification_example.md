@@ -17,8 +17,6 @@ from uniharmony.datasets import make_multisite_classification
 
 # To only get the necessary info from structlog, we configure it to filter out messages below INFO level.
 structlog.configure(wrapper_class=structlog.make_filtering_bound_logger(logging.INFO))
-
-
 ```
 
 ## Generate data using `unharmony` function
@@ -37,7 +35,6 @@ plt.figure(figsize=[10, 6])
 plt.title("Unbalanced classes by site")
 sns.countplot(df, x="Target", hue="Site")
 plt.grid(axis="y", color="black", alpha=0.5, linestyle="--")
-
 ```
 
 
@@ -50,7 +47,6 @@ plt.grid(axis="y", color="black", alpha=0.5, linestyle="--")
 
 
 ```python
-
 combat = NeuroComBat()
 X_harmonized = combat.fit_transform(X, sites)
 df_orig = pd.DataFrame(X, columns=["Feature1", "Feature2"])
@@ -67,7 +63,6 @@ axes[0].set_title("Original data by site")
 sns.scatterplot(data=df_harm, x="Feature1", y="Feature2", hue="Site", palette="Set1", alpha=0.6, ax=axes[1])
 axes[1].set_title("Harmonized data by site")
 plt.tight_layout()
-
 ```
 
 
@@ -86,7 +81,6 @@ sns.boxplot(data=df_harm, y="Feature1", hue="Site", palette="Set1", ax=axes[1])
 axes[1].set_title("Harmonized data by site")
 axes[1].grid(axis="y", color="black", alpha=0.5, linestyle="--")
 plt.tight_layout()
-
 ```
 
 

@@ -10,7 +10,6 @@ import seaborn as sns
 
 from uniharmony.datasets import make_multisite_classification
 from uniharmony.interpolation import IntraSiteInterpolation
-
 ```
 
 ## Generate data using `unharmony` function
@@ -31,7 +30,6 @@ plt.figure(figsize=[10, 6])
 plt.title("Unbalanced classes by site")
 sns.countplot(df, x="Target", hue="Site")
 plt.grid(axis="y", color="black", alpha=0.5, linestyle="--")
-
 ```
 
 
@@ -58,7 +56,6 @@ plt.figure(figsize=[10, 6])
 plt.title("Balanced classes by site")
 sns.countplot(df, x="Target", hue="Site")
 plt.grid(axis="y", color="black", alpha=0.5, linestyle="--")
-
 ```
 
 

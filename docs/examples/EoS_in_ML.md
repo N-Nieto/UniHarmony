@@ -3,7 +3,7 @@ EoS can have two rather opposite effects to ML pipelines.
 
 - The first effect is to **hinder** the real true signal. In this cases, the ML model have harder time to find the true signal, thus removing EoS should *improve* our classification, as the signal-to-noise ratio should improve.
 
-- The second effect is to **confound** the true signal. In this cases, the ML model can *use* the EoS signal to fraudulently improve the performance, as the predictions will not be based on true biological signal but rather on site effects. In such cases, removing the EoS will *reduce* the model's performance. 
+- The second effect is to **confound** the true signal. In this cases, the ML model can *use* the EoS signal to fraudulently improve the performance, as the predictions will not be based on true biological signal but rather on site effects. In such cases, removing the EoS will *reduce* the model's performance.
 
 
 ```python
@@ -75,9 +75,9 @@ print(f"Mean AUC: {scores.mean():.4f}")
 
 
 
-    
+
 ![png](EoS_in_ML_files/EoS_in_ML_3_1.png)
-    
+
 
 
 
@@ -139,9 +139,9 @@ print(f"Mean AUC: {scores.mean():.4f}")
 
 
 
-    
+
 ![png](EoS_in_ML_files/EoS_in_ML_4_1.png)
-    
+
 
 
 
@@ -206,9 +206,9 @@ print(f"Mean accuracy: {scores.mean():.4f}")
 
 
 
-    
+
 ![png](EoS_in_ML_files/EoS_in_ML_5_1.png)
-    
+
 
 
 
@@ -274,9 +274,9 @@ print(f"Mean accuracy: {scores.mean():.4f}")
 
 
 
-    
+
 ![png](EoS_in_ML_files/EoS_in_ML_6_1.png)
-    
+
 
 
 
@@ -342,9 +342,9 @@ print(f"Mean accuracy: {scores.mean():.4f}")
 
 
 
-    
+
 ![png](EoS_in_ML_files/EoS_in_ML_7_1.png)
-    
+
 
 
 
@@ -410,7 +410,5 @@ print(f"Mean accuracy: {scores.mean():.4f}")
 
 
 
-    
-![png](EoS_in_ML_files/EoS_in_ML_8_1.png)
-    
 
+![png](EoS_in_ML_files/EoS_in_ML_8_1.png)
