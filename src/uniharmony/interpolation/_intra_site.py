@@ -47,24 +47,23 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
           - "kmeans-smote": KMeans-SMOTE
           - "random": Random Over-Sampling
 
+    interpolator_kwargs : dict or None, optional (default None)
+        Additional keyword arguments passed to ``interpolator``.
     random_state : int or RandomState instance or None, optional (default None)
         The seed of the pseudo random number generator or RandomState for
         reproducibility.
-    **kwargs : dict
-        Additional keyword arguments passed to ``interpolator``.
 
     """
 
     def __init__(
         self,
         interpolator: str | SamplerMixin = "smote",
-        *,
+        interpolator_kwargs: dict | None = None,
         random_state: int | np.random.RandomState | None = None,
-        **kwargs,
     ) -> None:
         self.interpolator = interpolator
+        self.interpolator_kwargs = interpolator_kwargs
         self.random_state = random_state
-        self.kwargs = kwargs
 
     def fit_resample(
         self,
@@ -119,7 +118,7 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
             self.interpolator = create_interpolator(
                 self.interpolator,
                 random_state=random_state,
-                **self.kwargs,
+                **self.interpolator_kwargs if self.interpolator_kwargs is not None else {},
             )
         elif isinstance(self.interpolator, SamplerMixin):
             # Make sure the provided interpolator
