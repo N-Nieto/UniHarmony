@@ -50,8 +50,6 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
     random_state : int or RandomState instance or None, optional (default None)
         The seed of the pseudo random number generator or RandomState for
         reproducibility.
-    verbose : bool, optional (default True)
-        If True, logs progress information.
     **kwargs : dict
         Additional keyword arguments passed to ``interpolator``.
 
@@ -62,12 +60,10 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         interpolator: str | SamplerMixin = "smote",
         *,
         random_state: int | np.random.RandomState | None = None,
-        verbose: bool = False,
         **kwargs,
     ) -> None:
         self.interpolator = interpolator
         self.random_state = random_state
-        self.verbose = verbose
         self.kwargs = kwargs
 
     def fit_resample(
@@ -139,8 +135,7 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
             mask = sites == site
             X_site, y_site = X[mask], y[mask]
 
-            if self.verbose:
-                logger.info(f"[ISI] Site {site}: {Counter(y_site)}")
+            logger.info(f"[ISI] Site {site}: {Counter(y_site)}")
 
             X_rs, y_rs = self.interpolator.fit_resample(X=X_site, y=y_site)
 
