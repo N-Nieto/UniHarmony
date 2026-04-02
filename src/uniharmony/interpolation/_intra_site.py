@@ -6,7 +6,7 @@ import numpy as np
 import structlog
 from imblearn.base import SamplerMixin
 from sklearn.base import BaseEstimator
-from sklearn.utils import check_random_state
+from sklearn.utils import Tags, check_random_state
 from sklearn.utils.validation import check_array, check_X_y
 
 from uniharmony.interpolation._utils import (
@@ -162,3 +162,12 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         requires the additional ``sites`` argument.
         """
         pass
+
+    def __sklearn_tags__(self) -> Tags:
+        tags = super().__sklearn_tags__()
+        tags.estimator_type = "sampler"
+        tags.input_tags.two_d_array = True
+        tags.input_tags.sparse = False
+        tags.input_tags.allow_nan = True
+        tags.requires_fit = False
+        return tags
