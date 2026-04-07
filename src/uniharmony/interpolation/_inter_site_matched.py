@@ -41,7 +41,7 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
 
     Parameters
     ----------
-    alpha : float or tuple[float, float], default=0.3
+    alpha : float or tuple[float, float], optional (default 0.3)
         Interpolation weight(s). If a float, all interpolations use this
         constant alpha value. If a tuple ``(min, max)``, alpha is sampled
         uniformly from ``[min, max]`` for each interpolation.
@@ -53,20 +53,20 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
 
         Default is 0.3 to keep synthetic samples closer to the base site.
 
-    target_tolerance : float or None, default=None
+    target_tolerance : float or None, optional (default None)
         Tolerance for target value matching. For classification tasks, this
         should be 0 or None (exact match required). For regression tasks, allows
         matching targets within ``±target_tolerance``.
         If ``None``, exact matching is required.
         target_tolerance should be in the same units as the target variable (e.g., years for age prediction).
 
-    covariate_tolerance : ArrayLike of shape (n_continuous,), default=None
+    covariate_tolerance : array-like, shape (n_continuous,), optional (default None)
         Maximum allowed absolute difference for continuous covariate matching.
         Must have one value per continuous covariate column.
         If ``None``, exact matching is required (covariate_tolerance=0).
         Covariate tolerance should be in the same units as the corresponding covariate (e.g., years for age).
 
-    k : int or Literal["max", "average"], default=1
+    k : int or {"max", "average"}, optional (default 1)
         Number of matches to use for interpolation:
         - ``int >= 1``: Use exactly ``k`` matches per sample. If fewer matches
           are found, a warning is issued and all available matches are used.
@@ -74,7 +74,7 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         - ``"average"``: Interpolate the base sample with the average of all
           matched samples from the target site.
 
-    mode : Literal["pairwise", "base_to_others"], default="pairwise"
+    mode : {"pairwise", "base_to_others"}, optional (default "pairwise")
         Interpolation mode:
         - ``"pairwise"``: Generate all unique site pairs. For ``n`` sites,
           this produces ``n*(n-1)/2`` pairs.
@@ -82,16 +82,12 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
           sites combined. This mode only works with k="average",
           as the avergage of all matches for all sites is used as target sample.
 
-    concatenate : bool, default=True
+    concatenate : bool, optional (default True)
         If ``True``, the output dataset includes both original and synthetic samples.
         If ``False``, only synthetic samples are returned.
 
-    random_state : int or np.random.RandomState or None, default=None
+    random_state : int or np.random.RandomState or None, optional (default None)
         The seed of the pseudo random number generator for reproducibility.
-
-    verbose : bool, default=False
-        If ``True``, logs detailed progress information including match
-        statistics and synthetic sample generation counts.
 
     Attributes
     ----------
@@ -99,7 +95,7 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         The fitted interpolator instance.
     sites_resampled_ : ndarray of shape (n_samples_new,)
         Site labels for the resampled dataset (original + synthetic).
-    unmatched_samples_ : dict[tuple[str | int, str | int] | tuple[str | int, Literal["others"]], int]
+    unmatched_samples_ : dict
         Dictionary tracking unmatched samples per direction. Keys are tuples
         indicating the interpolation direction (source_site, target_site).
         For ``base_to_others`` mode, target is ``"others"``. Values are counts
@@ -158,7 +154,6 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
     ...     tolerance=tolerance,
     ...     k=2,
     ...     mode="pairwise",
-    ...     verbose=True,
     ...     random_state=42,
     ... )
     >>>
@@ -192,7 +187,6 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         *,
         concatenate: bool = True,
         random_state: int | np.random.RandomState | None = None,
-        verbose: bool = False,
     ) -> None:
         self.alpha = alpha
         self.target_tolerance = target_tolerance
@@ -201,7 +195,6 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         self.mode = mode
         self.concatenate = concatenate
         self.random_state = random_state
-        self.verbose = verbose
 
     def _validate_init_params(self) -> None:
         """Validate constructor parameters."""
@@ -310,8 +303,7 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         # Setup parameters
         self.random_state_ = check_random_state(self.random_state)
 
-        if self.verbose:
-            self._log_configuration(cat_cov, cont_cov)
+        self._log_configuration(cat_cov, cont_cov)
 
         # Generate samples
         synthetic_X, synthetic_y, synthetic_sites = self._generate_samples(X_arr, y_arr, sites_arr, cat_cov, cont_cov)
@@ -331,8 +323,7 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
 
         self.sites_resampled_ = sites_out
 
-        if self.verbose:
-            self._log_completion(y_arr, synthetic_y)
+        self._log_completion(y_arr, synthetic_y)
 
         return X_out, y_out
 
@@ -463,8 +454,7 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
 
         pairs = list(itertools.combinations(self._unique_sites, 2))
 
-        if self.verbose:
-            logger.info(f"[ISMI] Processing {len(pairs)} pairs")
+        logger.info(f"[ISMI] Processing {len(pairs)} pairs")
 
         for s1, s2 in pairs:
             m1 = sites == s1
@@ -477,8 +467,7 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
             v1 = cont_cov[m1] if cont_cov is not None else None
             v2 = cont_cov[m2] if cont_cov is not None else None
 
-            if self.verbose:
-                logger.info(f"[ISMI] Pair: {s1} ({len(X1)}) ↔ {s2} ({len(X2)})")
+            logger.info(f"[ISMI] Pair: {s1} ({len(X1)}) ↔ {s2} ({len(X2)})")
 
             # Forward: s1 → s2
             matches_1to2 = _find_matches(y1, y2, c1, c2, v1, v2, self.target_tolerance_, self.covariate_tolerance_)
@@ -502,9 +491,8 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
                 all_y.append(y_synth_2)
                 all_sites.append(np.full(len(y_synth_2), s2))
 
-            if self.verbose:
-                total = len(y_synth_1) + len(y_synth_2)
-                logger.info(f"[ISMI]   Generated {total} samples ({n_un_1 + n_un_2} unmatched)")
+            total = len(y_synth_1) + len(y_synth_2)
+            logger.info(f"[ISMI]   Generated {total} samples ({n_un_1 + n_un_2} unmatched)")
 
         return all_X, all_y, all_sites
 
@@ -533,8 +521,7 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
             v_base = cont_cov[base_mask] if cont_cov is not None else None
             v_other = cont_cov[other_mask] if cont_cov is not None else None
 
-            if self.verbose:
-                logger.info(f"[ISMI] {base_site} ({len(X_base)}) → others ({len(X_other)})")
+            logger.info(f"[ISMI] {base_site} ({len(X_base)}) → others ({len(X_other)})")
 
             matches = _find_matches(
                 y_base, y_other, c_base, c_other, v_base, v_other, self.target_tolerance_, self.covariate_tolerance_
@@ -549,8 +536,7 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
                 all_y.append(y_synth)
                 all_sites.append(np.full(len(y_synth), base_site))
 
-            if self.verbose:
-                logger.info(f"[ISMI]   Generated {len(y_synth)} samples ({n_un} unmatched)")
+            logger.info(f"[ISMI]   Generated {len(y_synth)} samples ({n_un} unmatched)")
 
         return all_X, all_y, all_sites
 
