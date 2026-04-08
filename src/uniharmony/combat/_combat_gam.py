@@ -74,13 +74,13 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
         self.mean_only = mean_only
         self.copy = copy
 
-    def fit(  # noqa: C901
+    def fit(
         self,
         X: npt.ArrayLike,
         sites: npt.ArrayLike,
+        smooth_covariates: npt.ArrayLike = None,
+        smooth_covariates_bounds: tuple[float, float] | None = None,
         continuous_covariates: npt.ArrayLike | None = None,
-        smooth_terms: npt.ArrayLike | None = None,
-        smooth_term_bounds: tuple[float, float] | None = None,
         var_epsilon: float = 1e-8,
         delta_epsilon: float = 1e-8,
         tau_2_epsilon: float = 1e-10,
@@ -94,15 +94,14 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
             The training input samples.
         sites : array-like, shape (n_samples, 1)
             Sites.
+        smooth_covariates : array-like, shape (n_samples, n_smooth_terms)
+            The smooth, non-linear covariates. GAMs are used for optimal smoothing (e.g., age).
+        smooth_covariates_bounds : tuple of float and float or None, optional (default None)
+            Custom boundaries of the smoothing terms useful when holdout data covers different range than
+            specify the bounds as (minimum, maximum). Currently not supported for models with multiple smooth covariates.
         continuous_covariates : array-like, shape (n_samples, n_continuous_covariates) or None, optional (default None)
             The continuous covariates to be preserved during harmonization
             (e.g., clinical scores).
-        smooth_terms : array-like, shape (n_samples, n_smooth_terms) or None, optional (default None)
-            The smooth, non-linear terms. If not specified, ComBat is applied
-            with a linear model of covariates, else GAMs are used for optimal smoothing (e.g., age).
-        smooth_term_bounds : tuple of float and float or None, optional (default None)
-            Custom boundaries of the smoothing terms useful when holdout data covers different range than
-            specify the bounds as (minimum, maximum). Currently not supported for models with multiple smooth terms.
         var_epsilon : float, optional (default 1e-8)
             Small constant to add to variance to avoid division by zero.
         delta_epsilon : float, optional (default 1e-8)
@@ -125,21 +124,17 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
 
         check_consistent_length(X, sites)
 
-        # Check that continuous_covariates and smooth_terms have correct shape and type if they are not None.
-        # Track of whether they were used during fit to check during transform
+        smooth_covariates = check_array(smooth_covariates, dtype=FLOAT_DTYPES, estimator=self)
+
+        # Check that continuous_covariates has correct shape and type if it is not None.
+        # Track of whether it was used during fit to check during transform
         self._continuous_covariates_used = False
         if continuous_covariates is not None:
             self._continuous_covariates_used = True
             continuous_covariates = check_array(continuous_covariates, dtype=FLOAT_DTYPES, estimator=self)
 
-        self._smooth_terms_used = False
-        if smooth_terms is not None:
-            self._smooth_terms_used = True
-            smooth_terms = check_array(smooth_terms, dtype=FLOAT_DTYPES, estimator=self)
-
-        if self._continuous_covariates_used or self._smooth_terms_used:
             logger.warning(
-                "You specified continuous covariates to be preserved and / or smooth terms. "
+                "You specified continuous covariates to be preserved. "
                 "If you intend to build a machine learning (ML) model,"
                 "then make sure that you DO *NOT* preserve the ML model's target as covariate. "
                 "You will be required to provide the covariate also at transform time, and this will produce data leakage. "
@@ -162,53 +157,48 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
             fitting=True,
         )
         # Setup design matrix for smoothing
-        smooth_term_cols = None
-        formula = None
-        df_gam = None
-        self._bsplines = None
-        if self._smooth_terms_used:
-            logger.debug("Setting up smoothing using B-Splines")
-            # Create cubic spline basis for smooth terms
-            x_spline = smooth_terms.copy()
-            smooth_term_cols = smooth_terms.shape[1]
-            if smooth_term_cols == 1:
-                self._bsplines = BSplines(
-                    x_spline,
-                    df=10,
-                    degree=3,
-                    knot_kwds=[
-                        {
-                            "lower_bound": smooth_term_bounds[0],
-                            "upper_bound": smooth_term_bounds[1],
-                        }
-                    ],
-                )
-            else:
-                self._bsplines = BSplines(
-                    x_spline,
-                    df=[10] * smooth_term_cols,
-                    degree=[3] * smooth_term_cols,
-                )
-            # Construct formula and dataframe required for GAM
-            formula = "y ~ "
-            df_gam = {}
-            # Set data from created design matrix
-            for b in self._n_sites:
-                v = f"x{b!s}"
+        logger.debug("Setting up smoothing using B-Splines")
+        # Create cubic spline basis for smooth covariates
+        x_spline = smooth_covariates.copy()
+        smooth_covariates_cols = smooth_covariates.shape[1]
+        if smooth_covariates_cols == 1:
+            self._bsplines = BSplines(
+                x_spline,
+                df=10,
+                degree=3,
+                knot_kwds=[
+                    {
+                        "lower_bound": smooth_covariates_bounds[0],
+                        "upper_bound": smooth_covariates_bounds[1],
+                    }
+                ],
+            )
+        else:
+            self._bsplines = BSplines(
+                x_spline,
+                df=[10] * smooth_covariates_cols,
+                degree=[3] * smooth_covariates_cols,
+            )
+        # Construct formula and dataframe required for GAM
+        formula = "y ~ "
+        df_gam = {}
+        # Set data from created design matrix
+        for b in self._n_sites:
+            v = f"x{b!s}"
+            formula += f"{v} + "
+            df_gam[v] = design[:, b]
+        # Set data from continuous covariates
+        if self._continuous_covariates_used:
+            for c in range(self.continuous_covariates.shape[1]):
+                v = f"c{c!s}"
                 formula += f"{v} + "
-                df_gam[v] = design[:, b]
-            # Set data from covariates
-            if self._continuous_covariates_used:
-                for c in range(self.continuous_covariates.shape[1]):
-                    v = f"c{c!s}"
-                    formula += f"{v} + "
-                    df_gam[v] = self.continuous_covariates[:, c].astype(float)
-            # Complete formula
-            formula = formula[:-2] + "- 1"
-            logger.debug(f"Final formula for smoothing: {formula}")
-            df_gam = pd.DataFrame(df_gam)
-            # For matrix operations, a modified design matrix is required
-            design = np.concatenate((df_gam, self._bsplines.basis), axis=1)
+                df_gam[v] = self.continuous_covariates[:, c].astype(float)
+        # Complete formula
+        formula = formula[:-2] + "- 1"
+        logger.debug(f"Final formula for smoothing: {formula}")
+        df_gam = pd.DataFrame(df_gam)
+        # For matrix operations, a modified design matrix is required
+        design = np.concatenate((df_gam, self._bsplines.basis), axis=1)
 
         logger.debug("Standardizing data across features")
         standardized_data, _ = self._standardize_across_features(
@@ -216,7 +206,7 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
             design=design,
             n_samples=n_samples,
             n_samples_per_site=n_samples_per_site,
-            smooth_term_cols=smooth_term_cols,
+            smooth_term_cols=smooth_covariates_cols,
             smooth_formula=formula,
             df_gam=df_gam,
             fitting=True,
@@ -256,8 +246,8 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
         self,
         X: npt.ArrayLike,
         sites: npt.ArrayLike,
+        smooth_covariates: npt.ArrayLike,
         continuous_covariates: npt.ArrayLike | None = None,
-        smooth_terms: npt.ArrayLike | None = None,
     ) -> npt.NDArray:
         """Harmonize data.
 
@@ -267,12 +257,11 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
             The data to be harmonized.
         sites : array-like, shape (n_samples, 1)
             Sites.
+        smooth_covariates : array-like, shape (n_samples, n_smooth_covariates)
+            The smooth, non-linear terms. GAMs are used for optimal smoothing (e.g., age).
         continuous_covariates : array-like, shape (n_samples, n_continuous_covariates) or None, optional (default None)
             The continuous covariates to be preserved during harmonization.
             (e.g., clinical scores).
-        smooth_terms : array-like, shape (n_samples, n_smooth_terms) or None, optional (default None)
-            The smooth, non-linear terms. If not specified, ComBat is applied
-            with a linear model of covariates, else GAMs are used for optimal smoothing (e.g., age).
 
         Returns
         -------
@@ -295,11 +284,10 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
 
         check_consistent_length(X, sites)
 
+        smooth_covariates = check_array(smooth_covariates, dtype=FLOAT_DTYPES, estimator=self)
+
         if self._continuous_covariates_used:
             continuous_covariates = check_array(continuous_covariates, dtype=FLOAT_DTYPES, estimator=self)
-
-        if self._smooth_terms_used:
-            smooth_terms = check_array(smooth_terms, dtype=FLOAT_DTYPES, estimator=self)
 
         # Transpose to conform to neuroCombat and original ComBat
         X = X.T
@@ -320,32 +308,29 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
             fitting=False,
         )
         # Setup design matrix for smoothing
-        formula = None
-        df_gam = None
-        if self._smooth_terms_used:
-            logger.debug("Setting up smoothing using B-Splines")
-            # Create cubic spline basis for smooth terms
-            x_spline = smooth_terms.copy()
-            bs_basis = self._bsplines.transform(x_spline)
-            # Construct formula and dataframe required for GAM
-            formula = "y ~ "
-            df_gam = {}
-            # Set data from created design matrix
-            for b in self._n_sites:
-                v = f"x{b!s}"
+        logger.debug("Setting up smoothing using B-Splines")
+        # Create cubic spline basis for smooth terms
+        x_spline = smooth_covariates.copy()
+        bs_basis = self._bsplines.transform(x_spline)
+        # Construct formula and dataframe required for GAM
+        formula = "y ~ "
+        df_gam = {}
+        # Set data from created design matrix
+        for b in self._n_sites:
+            v = f"x{b!s}"
+            formula += f"{v} + "
+            df_gam[v] = design[:, b]
+        # Set data from continuous covariates
+        if self._continuous_covariates_used:
+            for c in range(self.continuous_covariates.shape[1]):
+                v = f"c{c!s}"
                 formula += f"{v} + "
-                df_gam[v] = design[:, b]
-            # Set data from covariates
-            if self._continuous_covariates_used:
-                for c in range(self.continuous_covariates.shape[1]):
-                    v = f"c{c!s}"
-                    formula += f"{v} + "
-                    df_gam[v] = self.continuous_covariates[:, c].astype(float)
-            # Complete formula
-            formula = formula[:-2] + "- 1"
-            df_gam = pd.DataFrame(df_gam)
-            # For matrix operations, a modified design matrix is required
-            design = np.concatenate((df_gam, bs_basis), axis=1)
+                df_gam[v] = self.continuous_covariates[:, c].astype(float)
+        # Complete formula
+        formula = formula[:-2] + "- 1"
+        df_gam = pd.DataFrame(df_gam)
+        # For matrix operations, a modified design matrix is required
+        design = np.concatenate((df_gam, bs_basis), axis=1)
 
         logger.debug("Standardizing data across features")
         standardized_data, standardized_mean = self._standardize_across_features(
@@ -548,37 +533,22 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
             # =====================================================================
             # STEP 1: Smoothing with GAMs
             # =====================================================================
-            if self._smooth_terms_used:
-                if X.shape[0] > 10:
-                    logger.info("Smoothing more than 10 variables may take several minutes of computation.")
-                # Penalization weight (not the final weight)
-                alpha = np.array([1.0] * smooth_term_cols)
-                # Empty matrix for beta
-                self._beta_hat = np.zeros((design.shape[1], X.shape[0]))
-                # Estimate beta for each variable to be harmonized
-                for i in range(0, X.shape[0]):
-                    df_gam.loc[:, "y"] = X[i, :]
-                    gam_bs = GLMGam.from_formula(smooth_formula, data=df_gam, smoother=self._bsplines, alpha=alpha)
-                    gam_bs.fit()
-                    # Optimal penalization weights alpha can be obtained through gcv/kfold
-                    # Note: kfold is faster, gcv is more robust
-                    gam_bs.alpha = gam_bs.select_penweight_kfold()[0]
-                    res_bs_optim = gam_bs.fit()
-                    self._beta_hat[:, i] = res_bs_optim.params
-            # =====================================================================
-            # STEP 1: Fit OLS model to estimate site and covariate effects (fitting only)
-            # =====================================================================
-            # SOLVES: beta_hat = (X_design^T * X_design)^(-1) * X_design^T * X_data
-            # This is Ordinary Least Squares (OLS) - finds coefficients that minimize residuals
-            #
-            # beta_hat structure: [site_intercepts | covariate_effects] per feature
-            #   - Rows 0 to _n_sites-1: intercept for each site (location effect)
-            #   - Rows _n_sites+: effects of categorical/continuous covariates
-            # Solve OLS is the same as fitting a linear model: X = design @ beta_hat + error
-            # The step preservs the biological signal by modeling it as part of the residuals (error term)
-            else:
-                gram_matrix = design.T @ design
-                self._beta_hat = solve_ordinary_least_squares(gram_matrix, X, design)
+            if X.shape[0] > 10:
+                logger.info("Smoothing more than 10 variables may take several minutes of computation.")
+            # Penalization weight (not the final weight)
+            alpha = np.array([1.0] * smooth_term_cols)
+            # Empty matrix for beta
+            self._beta_hat = np.zeros((design.shape[1], X.shape[0]))
+            # Estimate beta for each variable to be harmonized
+            for i in range(0, X.shape[0]):
+                df_gam.loc[:, "y"] = X[i, :]
+                gam_bs = GLMGam.from_formula(smooth_formula, data=df_gam, smoother=self._bsplines, alpha=alpha)
+                gam_bs.fit()
+                # Optimal penalization weights alpha can be obtained through gcv/kfold
+                # Note: kfold is faster, gcv is more robust
+                gam_bs.alpha = gam_bs.select_penweight_kfold()[0]
+                res_bs_optim = gam_bs.fit()
+                self._beta_hat[:, i] = res_bs_optim.params
 
             # =====================================================================
             # STEP 2: Compute weighted grand mean across sites
