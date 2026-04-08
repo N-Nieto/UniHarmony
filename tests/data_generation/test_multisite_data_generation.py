@@ -155,6 +155,8 @@ def test_edge_cases() -> None:
     X, _, _ = make_multisite_classification(n_features=1, random_state=42)
     assert X.shape[1] == 1, f"Expected 1 feature, got {X.shape[1]}"
 
+    make_multisite_classification(n_sites=1)
+
     # Test invalid parameters
     with pytest.raises(ValueError):
         make_multisite_classification(n_sites=0)
