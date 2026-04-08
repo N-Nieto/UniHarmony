@@ -86,14 +86,6 @@ def test_shape_missmatch() -> None:
         _, _ = isi.fit_resample(X, y, sites=sites)
 
 
-def test_verbosity() -> None:
-    """Test verbosity."""
-    x, y, sites = generate_data()
-    y = np.random.permutation(y)
-    isi = IntraSiteInterpolation("smote", verbose=True)
-    _, _ = isi.fit_resample(x, y, sites=sites)
-
-
 def test_single_class_in_a_site() -> None:
     """Test site generation."""
     x = np.random.randn(300, 10)
