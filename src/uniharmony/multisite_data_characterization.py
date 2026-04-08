@@ -20,7 +20,6 @@ def get_site_data_statistics(
     site_labels: np.ndarray,
     feature_names: list[str] | None = None,
     compute_comprehensive: bool = True,
-    verbose: bool = False,
 ) -> dict[str, Any]:
     """Compute comprehensive statistics for multi-site dataset.
 
@@ -40,8 +39,6 @@ def get_site_data_statistics(
     compute_comprehensive : bool, default=True
         Whether to compute comprehensive statistics including correlations
         and distribution metrics. Set to False for faster computation.
-    verbose : bool, default=False
-        Whether to log progress information.
 
     Returns
     -------
@@ -96,16 +93,15 @@ def get_site_data_statistics(
     }
 
     # Overall statistics
-    if verbose:
-        logger.info(f"Computing statistics for {n_samples} samples, {n_features} features, {n_sites} sites, {n_classes} classes")
+    logger.info(f"Computing statistics for {n_samples} samples, {n_features} features, {n_sites} sites, {n_classes} classes")
 
     stats["overall"] = _compute_overall_statistics(x, y, site_labels, feature_names)
 
     # Site-specific statistics
-    stats["site_statistics"] = _compute_site_statistics(x, y, site_labels, unique_sites, feature_names, verbose)
+    stats["site_statistics"] = _compute_site_statistics(x, y, site_labels, unique_sites, feature_names)
 
     # Class-specific statistics
-    stats["class_statistics"] = _compute_class_statistics(x, y, unique_classes, feature_names, verbose)
+    stats["class_statistics"] = _compute_class_statistics(x, y, unique_classes, feature_names)
 
     # Correlation and relationship statistics
     if compute_comprehensive:
@@ -261,7 +257,6 @@ def _compute_site_statistics(
     site_labels: np.ndarray,
     unique_sites: np.ndarray,
     feature_names: list[str] | None = None,
-    verbose: bool = False,
 ) -> dict[str, Any]:
     """Compute statistics for each site.
 
@@ -277,8 +272,6 @@ def _compute_site_statistics(
         Unique site identifiers.
     feature_names : list or None
         Names of features.
-    verbose : bool
-        Whether to log progress.
 
     Returns
     -------
@@ -293,8 +286,7 @@ def _compute_site_statistics(
     site_stats = {}
 
     for site in unique_sites:
-        if verbose:
-            logger.info(f"  Processing site {int(site)}...")
+        logger.info(f"  Processing site {int(site)}...")
 
         site_mask = site_labels == site
         x_site = x[site_mask]
@@ -342,7 +334,6 @@ def _compute_class_statistics(
     y: np.ndarray,
     unique_classes: np.ndarray,
     feature_names: list[str] | None = None,
-    verbose: bool = False,
 ) -> dict[str, Any]:
     """Compute statistics for each class.
 
@@ -356,8 +347,6 @@ def _compute_class_statistics(
         Unique class identifiers.
     feature_names : list or None
         Names of features.
-    verbose : bool
-        Whether to log progress.
 
     Returns
     -------
@@ -372,8 +361,7 @@ def _compute_class_statistics(
     class_stats = {}
 
     for class_label in unique_classes:
-        if verbose:
-            print(f"  Processing class {int(class_label)}...")
+        print(f"  Processing class {int(class_label)}...")
 
         class_mask = y == class_label
         x_class = x[class_mask]

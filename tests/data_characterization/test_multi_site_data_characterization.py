@@ -13,7 +13,6 @@ def test_data_characterization_and_printing() -> None:
         n_features=10,
         n_classes=3,
         random_state=42,
-        verbose=True,
     )
     # Compute statistics
     stats = get_site_data_statistics(
@@ -21,7 +20,6 @@ def test_data_characterization_and_printing() -> None:
         y=y,
         site_labels=sites,
         compute_comprehensive=True,
-        verbose=True,
     )
 
     # Compute statistics
@@ -30,7 +28,6 @@ def test_data_characterization_and_printing() -> None:
         y=y,
         site_labels=sites,
         compute_comprehensive=False,
-        verbose=False,
     )
 
     print_statistics_summary(stats)
