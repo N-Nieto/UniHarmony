@@ -14,17 +14,16 @@ logger = structlog.get_logger()
 
 
 def make_multisite_classification(
+    n_classes: int = 2,
     n_sites: int = 2,
     n_samples: int = 1000,
-    balance_per_site: list[float] | None = None,
+    balance_per_site: list[float] | list[list[float]] | None = None,
     n_features: int = 10,
     signal_strength: float = 1.0,
     noise_strength: float = 1.0,
     site_effect_strength: float = 3.0,
     site_effect_homogeneous: bool = True,
-    n_classes: int = 2,
     random_state: int | np.random.RandomState = 42,
-    verbose: bool = False,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """Simulate multi-site data with signal, noise, and site effect components.
 
@@ -33,11 +32,13 @@ def make_multisite_classification(
 
     Parameters
     ----------
+    n_classes : int, optional (default 2)
+        Number of classes to simulate (2 for binary, >2 for multi-class).
     n_sites : int, optional (default 2)
         Number of sites to simulate.
     n_samples : int, optional (default 1000)
         Total number of samples across all sites.
-    balance_per_site : list of float or None, optional (default None)
+    balance_per_site : list of float, list of list of float or None, optional (default None)
         Class balance for each site. If None, uses balanced classes (0.5 for
         binary, equal distribution for multi-class).
     n_features : int, optional (default 10)
@@ -49,15 +50,11 @@ def make_multisite_classification(
     site_effect_strength : float, optional (default 3.0)
         Strength of site-specific effects.
     site_effect_homogeneous : bool, optional (default True)
-        Whether the site effect is homogeneous (same for all samples in a
-        site).
-    n_classes : int, optional (default 2)
-        Number of classes to simulate (2 for binary, >2 for multi-class).
+        Whether the site effect is homogeneous (same for all samples in a site).
+
     random_state : int or RandomState instance, (default 42)
         The seed of the pseudo random number generator or RandomState for
         reproducibility.
-    verbose : bool, optional (default False)
-        Whether to print progress information.
 
     Returns
     -------
@@ -81,16 +78,16 @@ def make_multisite_classification(
 
     # Validate input parameters
     _validate_parameters(
+        n_classes=n_classes,
         n_sites=n_sites,
         n_samples=n_samples,
         n_features=n_features,
         signal_strength=signal_strength,
         noise_strength=noise_strength,
         site_effect_strength=site_effect_strength,
-        n_classes=n_classes,
     )
 
-    balance_per_site = _validate_balance_per_site(balance_per_site, n_sites, n_classes, verbose=verbose)
+    balance_per_site = _validate_balance_per_site(balance_per_site, n_sites, n_classes)
 
     # Allocate samples per site (even distribution)
     samples_per_site = np.full(n_sites, n_samples // n_sites, dtype=int)
@@ -105,8 +102,7 @@ def make_multisite_classification(
     for site_idx in range(n_sites):
         n_site_samples = samples_per_site[site_idx]
 
-        if verbose:
-            logger.info(f"Generating {n_site_samples} samples for site {site_idx}")
+        logger.info(f"Generating {n_site_samples} samples for site {site_idx}")
 
         # Generate labels for this site
         if n_classes == 2:
@@ -137,21 +133,22 @@ def make_multisite_classification(
 
         if site_effect_homogeneous:
             # Generate site effect (same for all samples in this site)
+            strength = random_state.uniform(
+                low=-site_effect_strength, high=site_effect_strength, size=1
+            )  # Randomly positive or negative
+            site_effect = strength * np.ones((1, n_features))  # Same effect for all samples in this site
+
+        else:
+            # Generate site effect (different for each feature in this site)
             site_effect = random_state.normal(
                 loc=0.0,
                 scale=site_effect_strength,
                 size=(
                     1,
                     n_features,
-                ),  # Same effect for all samples in this site
+                ),
             )
-        else:
-            # Generate site effect (different for each sample in this site)
-            site_effect = random_state.normal(
-                loc=0.0,
-                scale=site_effect_strength,
-                size=(n_site_samples, n_features),
-            )
+        logger.debug(f"Site {site_idx}, site effect strength {site_effect}")
 
         # Combine components: X = signal + noise + site_effect
         X_site = signal + noise + site_effect
@@ -171,10 +168,9 @@ def make_multisite_classification(
     y = y[indices]
     site_labels = site_labels[indices]
 
-    if verbose:
-        print(f"Generated {len(X)} samples across {n_sites} sites")
-        print(f"Class distribution: {np.bincount(y)}")
-        print(f"Site distribution: {np.bincount(site_labels)}")
+    logger.info(f"Generated {len(X)} samples across {n_sites} sites")
+    logger.info(f"Class distribution: {np.bincount(y)}")
+    logger.info(f"Site distribution: {np.bincount(site_labels)}")
 
     return X, y, site_labels
 
@@ -243,7 +239,7 @@ def _validate_parameters(
         )
 
 
-def _get_default_balance_per_site(n_sites: int, n_classes: int):
+def _get_default_balance_per_site(n_sites: int, n_classes: int) -> list[float] | list[list[float]]:
     """Get default class balance for each site."""
     if n_classes == 2:
         # Binary: 0.5 for each site
@@ -404,11 +400,10 @@ def _generate_signal_component(
 
 
 def _validate_balance_per_site(
-    balance_per_site: list | None,
+    balance_per_site: list | list[list] | None,
     n_sites: int,
     n_classes: int,
-    verbose: bool = False,
-) -> list:
+) -> list | list[list]:
     """Validate balance_per_site parameter for multi-site data generation.
 
     Parameters
@@ -419,8 +414,6 @@ def _validate_balance_per_site(
         Number of sites.
     n_classes : int
         Number of classes.
-    verbose : bool
-        Control verbosity.
 
     Raises
     ------
@@ -432,8 +425,7 @@ def _validate_balance_per_site(
     """
     if balance_per_site is None:
         balance_per_site = _get_default_balance_per_site(n_sites, n_classes)
-        if verbose:
-            logger.info(f"Using balanced classes: {balance_per_site}")
+        logger.info(f"Using balanced classes: {balance_per_site}")
 
     # Check it's a list
     if not isinstance(balance_per_site, list):
@@ -453,13 +445,13 @@ def _validate_balance_per_site(
 
 
 def _check_balance_for_binary_classification(
-    balance_per_site: list | None,
+    balance_per_site: list[float],
 ) -> None:
     """Check balance for binary classification.
 
     Parameters
     ----------
-    balance_per_site : list or None
+    balance_per_site : list or list[list]
         Class balance specification.
 
     Raises
@@ -481,14 +473,14 @@ def _check_balance_for_binary_classification(
             raise ValueError(f"balance_per_site[{i}] must be between 0 and 1, got {p_class1}")
 
 
-def _check_balance_for_multiclass(balance_per_site: list | None, n_classes: int) -> None:
+def _check_balance_for_multiclass(balance_per_site: list | list[list] | tuple, n_classes: int) -> None:
     """Check balance for multi-class classification.
 
     Parameters
     ----------
-    balance_per_site : list or None
+    balance_per_site: list, list[list] or tuple
         Class balance specification.
-    n_classes : int
+    n_classes: int
         Number of classes.
 
     Raises
