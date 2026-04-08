@@ -16,6 +16,8 @@ from uniharmony.interpolation._utils import (
 )
 
 
+__all__ = ["IntraSiteInterpolation"]
+
 logger = structlog.get_logger()
 
 
