@@ -35,6 +35,7 @@ nav = [
       {"Effects of Site in ML" = "examples/EoS_in_ML.md"},
       {"Intra Site Interpolation for binary classification" = "examples/ISI_binary_classification_example.md"},
       {"Intra Site Interpolation for multiclass classification" = "examples/ISI_multiclass_classification_example.md"},
+      {"Inter Site Matched Interpolation for binary classification" = "examples/ISMI_binary_classification_example.md"},
       {"neuroComBat for binary classification" = "examples/neuroComBat_binary_classification_example.md"},
       {"neuroComBat with MAREoS" = "examples/neuroComBat_in_MAREoS.md"},
       {"neuroComBat with imbalance across sites" = "examples/neuroComBat_imbalance_across_sites.md"},
@@ -45,6 +46,7 @@ nav = [
       ]},
       {"Interpolation" = [
           {"IntraSiteInterpolation" = "api/interpolation/intrasite.md"},
+          {"InterSiteMatchedInterpolation" = "api/interpolation/intersitematched.md"},
       ]},
       {"Utilities" = "api/utils.md"},
   ]},
