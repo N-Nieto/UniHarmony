@@ -1,7 +1,11 @@
 """Test suite for MAREoS dataset loading functions."""
 
-from uniharmony.datasets import load_MAREoS, make_multisite_classification
-from uniharmony.multisite_data_characterization import get_site_data_statistics, print_statistics_summary
+from uniharmony.datasets import (
+    get_site_data_statistics,
+    load_MAREoS,
+    make_multisite_classification,
+    print_statistics_summary,
+)
 
 
 def test_data_characterization_and_printing() -> None:
