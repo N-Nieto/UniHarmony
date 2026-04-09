@@ -9,6 +9,7 @@ import structlog
 
 __all__ = [
     "get_site_data_statistics",
+    "print_statistics_summary",
 ]
 
 logger = structlog.get_logger()
