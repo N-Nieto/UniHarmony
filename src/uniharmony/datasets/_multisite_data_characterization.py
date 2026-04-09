@@ -362,7 +362,7 @@ def _compute_class_statistics(
     class_stats = {}
 
     for class_label in unique_classes:
-        print(f"  Processing class {int(class_label)}...")
+        logger.info(f"  Processing class {int(class_label)}...")
 
         class_mask = y == class_label
         x_class = x[class_mask]
@@ -498,56 +498,56 @@ def print_statistics_summary(stats: dict[str, Any], max_features: int = 5) -> No
         Maximum number of features to show in summary
 
     """
-    print("=" * 60)
-    print("DATASET STATISTICS SUMMARY")
-    print("=" * 60)
+    logger.info("=" * 60)
+    logger.info("DATASET STATISTICS SUMMARY")
+    logger.info("=" * 60)
 
     # Overall statistics
     overall = stats["overall"]
-    print("\nOVERALL:")
-    print(f"  Samples: {overall['n_samples']}")
-    print(f"  Features: {overall['n_features']}")
-    print(f"  Sites: {overall['n_sites']}")
-    print(f"  Classes: {overall['n_classes']}")
+    logger.info("\nOVERALL:")
+    logger.info(f"  Samples: {overall['n_samples']}")
+    logger.info(f"  Features: {overall['n_features']}")
+    logger.info(f"  Sites: {overall['n_sites']}")
+    logger.info(f"  Classes: {overall['n_classes']}")
 
     # Class distribution
-    print("\nCLASS DISTRIBUTION:")
+    logger.info("\nCLASS DISTRIBUTION:")
     for class_key, count in overall["class_distribution"].items():
         percentage = overall["overall_class_balance"].get(class_key, 0) * 100
-        print(f"  {class_key}: {count} samples ({percentage:.1f}%)")
+        logger.info(f"  {class_key}: {count} samples ({percentage:.1f}%)")
 
     # Site distribution
-    print("\nSITE DISTRIBUTION:")
+    logger.info("\nSITE DISTRIBUTION:")
     for site_key, count in overall["site_distribution"].items():
         percentage = count / overall["n_samples"] * 100
-        print(f"  {site_key}: {count} samples ({percentage:.1f}%)")
+        logger.info(f"  {site_key}: {count} samples ({percentage:.1f}%)")
 
     # Site statistics summary
-    print("\nSITE STATISTICS (summary):")
+    logger.info("\nSITE STATISTICS (summary):")
     for site_key, site_data in stats["site_statistics"].items():
-        print(f"  {site_key}:")
-        print(f"    Samples: {site_data['n_samples']}")
-        print(f"    Class distribution: {site_data['class_counts']}")
+        logger.info(f"  {site_key}:")
+        logger.info(f"    Samples: {site_data['n_samples']}")
+        logger.info(f"    Class distribution: {site_data['class_counts']}")
 
     # Show first few feature statistics
     if "feature_statistics" in overall:
-        print(f"\nFEATURE STATISTICS (first {max_features} features):")
+        logger.info(f"\nFEATURE STATISTICS (first {max_features} features):")
         feature_names = list(overall["feature_statistics"]["means"].keys())[:max_features]
         for name in feature_names:
             mean = overall["feature_statistics"]["means"][name]
             std = overall["feature_statistics"]["stds"][name]
-            print(f"  {name}: mean={mean:.4f}, std={std:.4f}")
+            logger.info(f"  {name}: mean={mean:.4f}, std={std:.4f}")
 
     # Correlation summary
     if stats.get("correlations"):
-        print("\nCORRELATIONS:")
+        logger.info("\nCORRELATIONS:")
         if "site_target_correlation" in stats["correlations"]:
             corr = stats["correlations"]["site_target_correlation"]
             if corr is not None:
-                print(f"  Site-Target Correlation: {corr:.4f}")
+                logger.info(f"  Site-Target Correlation: {corr:.4f}")
 
         if "avg_inter_site_correlation" in stats["correlations"]:
             corr = stats["correlations"]["avg_inter_site_correlation"]
-            print(f"  Average Inter-Site Correlation: {corr:.4f}")
+            logger.info(f"  Average Inter-Site Correlation: {corr:.4f}")
 
-    print("=" * 60)
+    logger.info("=" * 60)
