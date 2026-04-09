@@ -48,6 +48,7 @@ nav = [
           {"IntraSiteInterpolation" = "api/interpolation/intrasite.md"},
           {"InterSiteMatchedInterpolation" = "api/interpolation/intersitematched.md"},
       ]},
+      {"Plotting" = "api/plot.md"},
       {"Utilities" = "api/utils.md"},
   ]},
 ]
