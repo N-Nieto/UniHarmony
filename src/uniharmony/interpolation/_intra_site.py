@@ -6,7 +6,7 @@ import numpy as np
 import structlog
 from imblearn.base import SamplerMixin
 from sklearn.base import BaseEstimator
-from sklearn.utils import check_random_state
+from sklearn.utils import Tags, check_random_state
 from sklearn.utils.validation import check_array, check_X_y
 
 from uniharmony.interpolation._utils import (
@@ -15,6 +15,8 @@ from uniharmony.interpolation._utils import (
     sites_sanity_checks,
 )
 
+
+__all__ = ["IntraSiteInterpolation"]
 
 logger = structlog.get_logger()
 
@@ -47,34 +49,28 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
           - "kmeans-smote": KMeans-SMOTE
           - "random": Random Over-Sampling
 
+    interpolator_kwargs : dict or None, optional (default None)
+        Additional keyword arguments passed to ``interpolator``.
     random_state : int or RandomState instance or None, optional (default None)
         The seed of the pseudo random number generator or RandomState for
         reproducibility.
-    verbose : bool, optional (default True)
-        If True, logs progress information.
-    **kwargs : dict
-        Additional keyword arguments passed to ``interpolator``.
 
     """
 
     def __init__(
         self,
         interpolator: str | SamplerMixin = "smote",
-        *,
+        interpolator_kwargs: dict | None = None,
         random_state: int | np.random.RandomState | None = None,
-        verbose: bool = False,
-        **kwargs,
     ) -> None:
         self.interpolator = interpolator
+        self.interpolator_kwargs = interpolator_kwargs
         self.random_state = random_state
-        self.verbose = verbose
-        self.kwargs = kwargs
 
     def fit_resample(
         self,
         X: np.ndarray,
         y: np.ndarray,
-        *,
         sites: np.ndarray,
     ):
         """Fit and resample the dataset using site-wise harmonization.
@@ -124,15 +120,15 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
             self.interpolator = create_interpolator(
                 self.interpolator,
                 random_state=random_state,
-                **self.kwargs,
+                **self.interpolator_kwargs if self.interpolator_kwargs is not None else {},
             )
         elif isinstance(self.interpolator, SamplerMixin):
             # Make sure the provided interpolator
             # has "not majority" as sampling_strategy
-            if self.interpolator.sampling_strategy in ["auto", "not majority"]:
+            if self.interpolator.sampling_strategy not in ["auto", "not majority"]:
                 raise ValueError("IntraSiteInterpolation requires the interpolator to have `sampling_strategy='not majority'`.")
         else:
-            raise ValueError("interpolator must be either a stringor an instance of SamplerMixin.")
+            raise ValueError("interpolator must be either a string or an instance of SamplerMixin.")
 
         X_out, y_out, sites_out = [], [], []
 
@@ -140,10 +136,9 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
             mask = sites == site
             X_site, y_site = X[mask], y[mask]
 
-            if self.verbose:
-                logger.info(f"[ISI] Site {site}: {Counter(y_site)}")
+            logger.info(f"[ISI] Site {site}: {Counter(y_site)}")
 
-            X_rs, y_rs = self.interpolator.fit_resample(X_site, y_site)  # type: ignore
+            X_rs, y_rs = self.interpolator.fit_resample(X=X_site, y=y_site)
 
             X_out.append(X_rs)
             y_out.append(y_rs)
@@ -163,3 +158,12 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         requires the additional ``sites`` argument.
         """
         pass
+
+    def __sklearn_tags__(self) -> Tags:
+        tags = super().__sklearn_tags__()
+        tags.estimator_type = "sampler"
+        tags.input_tags.two_d_array = True
+        tags.input_tags.sparse = False
+        tags.input_tags.allow_nan = True
+        tags.requires_fit = False
+        return tags

@@ -4,6 +4,7 @@ import numpy as np
 import numpy.typing as npt
 import pytest
 from imblearn.over_sampling import SMOTE
+from sklearn.linear_model import LogisticRegression
 
 from uniharmony import make_multisite_classification
 from uniharmony.interpolation import IntraSiteInterpolation
@@ -44,9 +45,9 @@ def test_binary_runs() -> None:
     """Test matching sample length."""
     x, y, sites = generate_data()
     y = np.random.permutation(y)
-    ici = IntraSiteInterpolation("smote")
-    xr, yr = ici.fit_resample(x, y, sites=sites)
-    sr = ici.sites_resampled_
+    isi = IntraSiteInterpolation("smote")
+    xr, yr = isi.fit_resample(x, y, sites=sites)
+    sr = isi.sites_resampled_
     assert len(xr) == len(yr) == len(sr)
 
 
@@ -54,9 +55,9 @@ def test_multiclass_balance() -> None:
     """Test multiclass balance."""
     x, y, sites = generate_data(multiclass=True)
     y = np.random.permutation(y)
-    ici = IntraSiteInterpolation("random")
-    _, yr = ici.fit_resample(x, y, sites=sites)
-    sr = ici.sites_resampled_
+    isi = IntraSiteInterpolation("random")
+    _, yr = isi.fit_resample(x, y, sites=sites)
+    sr = isi.sites_resampled_
 
     for site in np.unique(sr):
         counts = np.unique(yr[sr == site], return_counts=True)[1]
@@ -70,20 +71,9 @@ def test_invalid_site() -> None:
     y = np.random.permutation(y)
     sites = np.zeros(10)
 
-    ici = IntraSiteInterpolation()
+    isi = IntraSiteInterpolation()
     with pytest.raises(ValueError):
-        ici.fit_resample(x, y, sites=sites)
-
-
-def test_invalid_model_name() -> None:
-    """Test wrong model warning."""
-    x = np.random.randn(10, 2)
-    y = np.zeros(10)
-    y = np.random.permutation(y)
-    sites = np.zeros(10)
-    with pytest.raises(ValueError):
-        ici = IntraSiteInterpolation(interpolator="wrong_name")
-        ici.fit_resample(x, y, sites=sites)
+        isi.fit_resample(x, y, sites=sites)
 
 
 def test_shape_missmatch() -> None:
@@ -91,22 +81,9 @@ def test_shape_missmatch() -> None:
     _, y, sites = make_multisite_classification(2, 100)
     X, y, _ = make_multisite_classification(2, 400)
 
-    ici = IntraSiteInterpolation("smote")
+    isi = IntraSiteInterpolation("smote")
     with pytest.raises(ValueError):
-        _, _ = ici.fit_resample(X, y, sites=sites)
-
-
-def test_interpolator_as_instance() -> None:
-    """Test passing intepolator instance."""
-    IntraSiteInterpolation(interpolator=SMOTE())
-
-
-def test_verbosity() -> None:
-    """Test verbosity."""
-    x, y, sites = generate_data()
-    y = np.random.permutation(y)
-    ici = IntraSiteInterpolation("smote", verbose=True)
-    _, _ = ici.fit_resample(x, y, sites=sites)
+        _, _ = isi.fit_resample(X, y, sites=sites)
 
 
 def test_single_class_in_a_site() -> None:
@@ -114,6 +91,60 @@ def test_single_class_in_a_site() -> None:
     x = np.random.randn(300, 10)
     y = np.array([0] * 180 + [1] * 80 + [2] * 40)
     sites = np.array([0] * 150 + [1] * 150)
-    ici = IntraSiteInterpolation()
+    isi = IntraSiteInterpolation()
     with pytest.raises(ValueError):
-        ici.fit_resample(x, y, sites=sites)
+        isi.fit_resample(x, y, sites=sites)
+
+
+def test_interpolator_sampling_invalid() -> None:
+    """Test no majority sampling strategy."""
+    X, y, sites = make_multisite_classification(2, 100)
+    isi = IntraSiteInterpolation(interpolator=SMOTE(sampling_strategy="invalid"))
+    with pytest.raises(ValueError):
+        _, _ = isi.fit_resample(X, y, sites=sites)
+
+
+def test_interpolator_as_no_majority() -> None:
+    """Test no majority sampling strategy."""
+    X, y, sites = make_multisite_classification(2, 100)
+    isi = IntraSiteInterpolation(interpolator=SMOTE(sampling_strategy="auto"))
+    # with pytest.raises(ValueError):
+    _, _ = isi.fit_resample(X, y, sites=sites)
+
+
+def test_invalid_interpolation_name() -> None:
+    """Test wrong interpolation name."""
+    X, y, sites = make_multisite_classification(2, 100)
+    isi = IntraSiteInterpolation("invalid")
+    with pytest.raises(ValueError):
+        _, _ = isi.fit_resample(X, y, sites=sites)
+
+
+def test_interpolator_as_wrong_instance() -> None:
+    """Test wrong instance."""
+    X, y, sites = make_multisite_classification(2, 100)
+    isi = IntraSiteInterpolation(interpolator=LogisticRegression())
+    with pytest.raises(ValueError):
+        _, _ = isi.fit_resample(X, y, sites=sites)
+
+
+def test_interpolator_fit_resample_compatibility() -> None:
+    """Test _fit_resample compatibility."""
+    X, y, _ = make_multisite_classification(2, 100)
+    isi = IntraSiteInterpolation(interpolator="smote")
+    isi._fit_resample(X, y)
+
+
+def test_invalid_model_name_interpolatior_kwarg() -> None:
+    """Test wrong model warning."""
+    X, y, sites = make_multisite_classification(2, 100)
+    isi = IntraSiteInterpolation(interpolator="wrong_name")
+    with pytest.raises(ValueError):
+        isi.fit_resample(X, y, sites=sites)
+
+
+def test_interpolator_as_instance() -> None:
+    """Test passing intepolator instance."""
+    isi = IntraSiteInterpolation(interpolator=SMOTE())
+    X, y, sites = make_multisite_classification(2, 100)
+    isi._fit_resample(X, y, sites=sites)
