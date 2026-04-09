@@ -220,8 +220,8 @@ def _validate_parameters(
             f"n_sites is {n_sites}, which is less than 2."
             " This will result in a single site dataset, which may not be suitable for testing multi-site methods."
         )
-        if n_sites < 1:
-            raise ValueError(f"n_sites must be at least 1, got {n_sites}")
+    if n_sites < 1:
+        raise ValueError(f"n_sites must be at least 1, got {n_sites}")
 
     if n_features <= 0:
         raise ValueError(f"n_features must be positive, got {n_features}")
