@@ -1,4 +1,4 @@
-"""Unified harmonization methods for ML and DL."""
+"""Plotting helpers for uniharmony."""
 
 import lazy_loader as lazy
 
