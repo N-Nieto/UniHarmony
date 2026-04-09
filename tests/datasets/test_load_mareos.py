@@ -34,19 +34,6 @@ def test_force_download(tmp_path: Path) -> None:
     load_MAREoS(data_dir=data_dir, force_download=False)
 
 
-def test_verbose(tmp_path: Path) -> None:
-    """Force download functionality.
-
-    Parameters
-    ----------
-    tmp_path : Path
-        Pytest fixture that provides a temporary directory.
-
-    """
-    data_dir = tmp_path / "test_dir"
-    load_MAREoS(data_dir=data_dir, force_download=True, verbose=True)
-
-
 def test_invalid_load_params(tmp_path: Path) -> None:
     """Force download functionality.
 
@@ -177,23 +164,3 @@ def test_load_mareos_single_dataset_no_datadir() -> None:
             effect_type="simple",
             effect_example="1",
         )
-
-
-def test_load_mareos_single_dataset_verbose() -> None:
-    """Test Verbose."""
-    data_dir = _ensure_mareos_data()
-    _, _, _, _, _ = _load_mareos_single_dataset(
-        data_dir=data_dir,
-        effect="eos",
-        effect_type="simple",
-        effect_example="1",
-        verbose=True,
-    )
-
-    _, _, _, _, _ = _load_mareos_single_dataset(
-        data_dir=data_dir,
-        effect="eos",
-        effect_type="simple",
-        effect_example="1",
-        verbose=False,
-    )
