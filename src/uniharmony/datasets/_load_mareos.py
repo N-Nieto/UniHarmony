@@ -55,7 +55,6 @@ def load_MAREoS(  # noqa: N802
     as_numpy: bool = True,
     data_dir: Path | None = None,
     force_download: bool = False,
-    verbose: bool = False,
 ) -> dict[str, dict[str, pd.DataFrame | np.ndarray]]:
     """Load multiple MAREoS datasets.
 
@@ -75,8 +74,6 @@ def load_MAREoS(  # noqa: N802
         Directory containing MAREoS data files. If None, downloads to cache.
     force_download : bool, optional (default False)
         Force to download again the dataset in case of corrupt files.
-    verbose : bool, optional (default False)
-        Control verbosity.
 
     Returns
     -------
@@ -110,7 +107,7 @@ def load_MAREoS(  # noqa: N802
     effects, effect_types, effect_examples = _validate_mareos_parameters(effects, effect_types, effect_examples)
 
     # Ensure all requested data is available
-    data_dir = _ensure_mareos_data(data_dir, force_download, verbose)
+    data_dir = _ensure_mareos_data(data_dir, force_download)
 
     # Load all requested datasets
     dataset_dict = {}
@@ -126,7 +123,6 @@ def load_MAREoS(  # noqa: N802
                     effect_type=e_type,
                     effect_example=e_example,
                     as_numpy=as_numpy,
-                    verbose=verbose,
                 )
 
                 dataset_dict[dataset_name] = {
@@ -146,7 +142,6 @@ def _load_mareos_single_dataset(
     effect_type: str,
     effect_example: str,
     as_numpy: bool = True,
-    verbose: bool = False,
 ) -> tuple[pd.DataFrame | np.ndarray, ...]:
     """Load a single MAREoS dataset.
 
@@ -166,8 +161,6 @@ def _load_mareos_single_dataset(
         Which of the two simulated datasets to load. Options: "1" or "2"
     as_numpy : bool, optional (default True)
         If True, return ``numpy.ndarray``, else ``pandas.DataFrame``.
-    verbose : bool, optional (default False).
-        Control verbosity.
 
     Returns
     -------
@@ -204,8 +197,7 @@ def _load_mareos_single_dataset(
 
     data_file = data_dir / "public_datasets" / f"{dataset_name}_data.csv"
     response_file = data_dir / "public_datasets" / f"{dataset_name}_response.csv"
-    if verbose:
-        logger.info(f"Getting data file: {data_file}")
+    logger.info(f"Getting data file: {data_file}")
     # Verify files were found
     if not data_file.exists():
         raise FileNotFoundError(f"Data file not found for dataset {dataset_name}. Searched in: {data_dir}")
@@ -240,7 +232,6 @@ def _load_mareos_single_dataset(
 def _ensure_mareos_data(
     data_dir: Path | str | None = None,
     force_download: bool = False,
-    verbose: bool = False,
 ) -> Path:
     """Ensure MAREoS datasets are available locally, downloading if necessary.
 
@@ -252,8 +243,6 @@ def _ensure_mareos_data(
         Custom directory to store data. If None, uses default cache location.
     force_download : bool, optional (default False)
         Force re-download even if files exist.
-    verbose : bool, optional (default False)
-        Control verbosity.
 
     Returns
     -------
@@ -282,8 +271,7 @@ def _ensure_mareos_data(
     )
 
     if not force_download and files_exist:
-        if verbose:
-            logger.info(f"MAREoS datasets already exist at: {target_dir}")
+        logger.info(f"MAREoS datasets already exist at: {target_dir}")
         return target_dir
 
     # If files do not exist of force download
@@ -308,8 +296,7 @@ def _ensure_mareos_data(
     if not csv_files:
         raise RuntimeError(f"No CSV files found in {check_dir}")
 
-    if verbose:
-        logger.info(f"MAREoS datasets downloaded: {len(csv_files)} CSV files in {target_dir}")
+    logger.info(f"MAREoS datasets downloaded: {len(csv_files)} CSV files in {target_dir}")
 
     return target_dir
 
