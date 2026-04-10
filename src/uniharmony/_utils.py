@@ -242,7 +242,7 @@ def validate_covariates(covariates: npt.NDArray | None, n_samples: int, name: st
         return covariates
 
 
-def validate_sites(sites: npt.ArrayLike) -> npt.NDArray:
+def validate_sites(sites: npt.NDArray) -> None:
     """Validate sites.
 
     Parameters
@@ -250,21 +250,11 @@ def validate_sites(sites: npt.ArrayLike) -> npt.NDArray:
     sites : array
         The sites.
 
-    Returns
-    -------
-    array
-        Validated sites.
-
     Raises
     ------
     ValueError
-        If shape is incorrect.
+        If single site is provided.
 
     """
-    sites = np.asarray(sites)
-    # Ensure sites is 2D for sklearn (n_samples, 1)
-    if sites.ndim == 1:
-        sites = sites.reshape(-1, 1)
-    elif sites.ndim != 2 or sites.shape[1] != 1:
-        raise ValueError(f"sites must be shape (n_samples,) or (n_samples, 1), got {sites.shape}")
-    return sites.astype(int)
+    if len(np.unique(sites)) < 2:
+        raise ValueError("At least two sites required")
