@@ -291,6 +291,7 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
             parameters are inconsistent.
 
         """
+        sites = check_array(sites, dtype=None, ensure_2d=False, estimator=self)
         validate_sites(sites)
         # Validate parameters immediately (sklearn convention allows basic validation)
         self._validate_init_params()

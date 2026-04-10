@@ -108,13 +108,13 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
 
         """
         X, y = check_X_y(X, y)
-        sites = check_array(sites, ensure_2d=False)
 
         # Sanity checks for site length and number of sites
         sites_sanity_checks(X, sites)
 
         # This methods needs at least two classes per site
         class_representation_checks(y, sites)
+        sites = check_array(sites, dtype=None, ensure_2d=False, estimator=self)
         validate_sites(sites)
 
         random_state = check_random_state(self.random_state)

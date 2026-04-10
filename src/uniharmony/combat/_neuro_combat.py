@@ -105,7 +105,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         ----------
         X : array-like, shape (n_samples, n_features)
             The training input samples.
-        sites : array-like, shape (n_samples, 1)
+        sites : array-like, shape (n_samples,)
             Sites.
         categorical_covariates : array-like, shape (n_samples, n_categorical_covariates) or None, optional (default None)
             The categorical covariates to be preserved during harmonization.
@@ -131,8 +131,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         # ######## Set up and check data ########
         # Check that X and sites have correct shape and type, and convert sites if they are strings
         X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
-        sites = check_array(sites, copy=self.copy, ensure_min_samples=2, estimator=self)
-
+        sites = check_array(sites, copy=self.copy, dtype=None, ensure_2d=False, estimator=self)
         check_consistent_length(X, sites)
         validate_sites(sites)
 
@@ -226,7 +225,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         ----------
         X : array-like, shape (n_samples, n_features)
             The data to be harmonized.
-        sites : array-like, shape (n_samples, 1)
+        sites : array-like, shape (n_samples,)
             Sites.
         categorical_covariates : array-like, shape (n_samples, n_categorical_covariates) or None, optional (default None)
             The categorical covariates to be preserved during harmonization.
@@ -251,8 +250,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         check_is_fitted(self)
 
         X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
-        sites = check_array(sites, copy=self.copy, estimator=self)
-
+        sites = check_array(sites, copy=self.copy, dtype=None, ensure_2d=False, estimator=self)
         check_consistent_length(X, sites)
 
         if self._categorical_covariates_used:
