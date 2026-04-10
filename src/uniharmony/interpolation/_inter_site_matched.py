@@ -10,7 +10,11 @@ from imblearn.base import SamplerMixin
 from numpy.typing import ArrayLike, NDArray
 from sklearn.base import BaseEstimator
 from sklearn.utils import check_random_state
-from sklearn.utils.validation import check_array, check_X_y
+from sklearn.utils.validation import (
+    check_array,
+    check_consistent_length,
+    check_X_y,
+)
 
 from uniharmony._utils import validate_sites
 from uniharmony.interpolation._utils import (
@@ -291,6 +295,7 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
 
         """
         sites = check_array(sites, dtype=None, ensure_2d=False, estimator=self)
+        check_consistent_length(X, y, sites)
         validate_sites(sites)
         # Validate parameters immediately (sklearn convention allows basic validation)
         self._validate_init_params()

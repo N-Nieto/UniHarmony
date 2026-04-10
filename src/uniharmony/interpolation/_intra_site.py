@@ -7,7 +7,11 @@ import structlog
 from imblearn.base import SamplerMixin
 from sklearn.base import BaseEstimator
 from sklearn.utils import Tags, check_random_state
-from sklearn.utils.validation import check_array, check_X_y
+from sklearn.utils.validation import (
+    check_array,
+    check_consistent_length,
+    check_X_y,
+)
 
 from uniharmony._utils import validate_sites
 from uniharmony.interpolation._utils import (
@@ -111,6 +115,7 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         # This methods needs at least two classes per site
         class_representation_checks(y, sites)
         sites = check_array(sites, dtype=None, ensure_2d=False, estimator=self)
+        check_consistent_length(X, y, sites)
         validate_sites(sites)
 
         random_state = check_random_state(self.random_state)
