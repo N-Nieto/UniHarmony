@@ -12,6 +12,7 @@ from sklearn.base import BaseEstimator
 from sklearn.utils import check_random_state
 from sklearn.utils.validation import check_array, check_X_y
 
+from uniharmony._utils import validate_sites
 from uniharmony.interpolation._utils import (
     sites_sanity_checks,
     validate_covariates,
@@ -290,6 +291,7 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
             parameters are inconsistent.
 
         """
+        validate_sites(sites)
         # Validate parameters immediately (sklearn convention allows basic validation)
         self._validate_init_params()
         # Validate inputs

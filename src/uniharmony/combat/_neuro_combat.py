@@ -131,10 +131,10 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         # ######## Set up and check data ########
         # Check that X and sites have correct shape and type, and convert sites if they are strings
         X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
-        sites = validate_sites(sites)
         sites = check_array(sites, copy=self.copy, ensure_min_samples=2, estimator=self)
 
         check_consistent_length(X, sites)
+        validate_sites(sites)
 
         # Check that categorical_covariates and continuous_covariates have correct shape and type if they are not None.
         # Track of whether they were used during fit to check during transform
@@ -251,7 +251,6 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         check_is_fitted(self)
 
         X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
-        sites = validate_sites(sites)
         sites = check_array(sites, copy=self.copy, estimator=self)
 
         check_consistent_length(X, sites)

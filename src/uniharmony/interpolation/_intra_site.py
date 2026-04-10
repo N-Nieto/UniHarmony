@@ -9,6 +9,7 @@ from sklearn.base import BaseEstimator
 from sklearn.utils import Tags, check_random_state
 from sklearn.utils.validation import check_array, check_X_y
 
+from uniharmony._utils import validate_sites
 from uniharmony.interpolation._utils import (
     class_representation_checks,
     create_interpolator,
@@ -114,6 +115,7 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
 
         # This methods needs at least two classes per site
         class_representation_checks(y, sites)
+        validate_sites(sites)
 
         random_state = check_random_state(self.random_state)
         if isinstance(self.interpolator, str):
