@@ -413,7 +413,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
                 dtype=np.float64,
                 handle_unknown="error",
             )
-            self._site_encoder.fit(sites)
+            self._site_encoder.fit(sites.reshape(-1, 1))
             logger.debug(f"Fitted site encoder: {len(self._site_encoder.categories_[0])} sites")
 
             # Fit categorical encoders if provided
@@ -444,7 +444,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         design_parts = []
 
         # Transform sites
-        sites_encoded = self._site_encoder.transform(sites)
+        sites_encoded = self._site_encoder.transform(sites.reshape(-1, 1))
         design_parts.append(sites_encoded)
         n_sites = sites_encoded.shape[1]
         logger.debug(f"Sites encoded: {n_samples} samples x {n_sites} sites")
