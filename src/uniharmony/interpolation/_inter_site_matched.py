@@ -304,13 +304,11 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         # Validate parameters immediately (sklearn convention allows basic validation)
         self._validate_init_params()
         # Validate inputs
-        X_arr, y_arr, sites_arr, cat_cov, cont_cov = self._validate_inputs(
-            X, y, sites, categorical_covariate, continuous_covariate, allow_nan
-        )
+        cat_cov, cont_cov = self._validate_inputs(X, y, sites, categorical_covariate, continuous_covariate, allow_nan)
 
         # Initialize tracking
         self.unmatched_samples_: dict[tuple[Any, Any], int] = {}
-        self._unique_sites = np.unique(sites_arr)
+        self._unique_sites = np.unique(sites)
         self._n_sites = len(self._unique_sites)
 
         if self._n_sites < 2:
@@ -322,24 +320,24 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         self._log_configuration(cat_cov, cont_cov)
 
         # Generate samples
-        synthetic_X, synthetic_y, synthetic_sites = self._generate_samples(X_arr, y_arr, sites_arr, cat_cov, cont_cov)
+        synthetic_X, synthetic_y, synthetic_sites = self._generate_samples(X, y, sites, cat_cov, cont_cov)
 
         # Combine results
         if synthetic_X:
             if self.concatenate:
-                X_out = np.vstack([X_arr, *synthetic_X])
-                y_out = np.concatenate([y_arr, *synthetic_y])
-                sites_out = np.concatenate([sites_arr, *synthetic_sites])
+                X_out = np.vstack([X, *synthetic_X])
+                y_out = np.concatenate([y, *synthetic_y])
+                sites_out = np.concatenate([sites, *synthetic_sites])
             else:
                 X_out = np.vstack(synthetic_X)
                 y_out = np.concatenate(synthetic_y)
                 sites_out = np.concatenate(synthetic_sites)
         else:
-            X_out, y_out, sites_out = X_arr, y_arr, sites_arr
+            X_out, y_out, sites_out = X, y, sites
 
         self.sites_resampled_ = sites_out
 
-        self._log_completion(y_arr, synthetic_y)
+        self._log_completion(y, synthetic_y)
 
         return X_out, y_out
 
@@ -347,23 +345,16 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         self,
         X: ArrayLike,
         y: ArrayLike,
-        sites: ArrayLike,
         categorical_covariate: ArrayLike | None,
         continuous_covariate: ArrayLike | None,
         allow_nan: bool = False,
     ) -> tuple[
-        NDArray[np.float64],
-        NDArray[Any],
-        NDArray[Any],
         NDArray[Any] | None,
         NDArray[np.float64] | None,
     ]:
         """Validate and convert input arrays."""
-        X_arr, y_arr = check_X_y(X, y)
-        sites_arr = check_array(sites, ensure_2d=False, dtype=None)
-
         cat_cov, cont_cov, cov_tol = validate_covariates(
-            X_arr.shape[0],
+            X.shape[0],
             categorical_covariate,
             continuous_covariate,
             self.covariate_tolerance,
@@ -371,16 +362,16 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         )
 
         self.covariate_tolerance_ = cov_tol
-        self._problem_type = "classification" if y_arr.dtype.kind in "biu" else "regression"
+        self._problem_type = "classification" if y.dtype.kind in "biu" else "regression"
 
         # Set default target_tolerance for regression if not specified
         if self._problem_type == "regression" and self.target_tolerance is None:
-            y_range = np.ptp(y_arr)
+            y_range = np.ptp(y)
             self.target_tolerance_ = y_range * 0.1 if y_range > 0 else 1.0
         else:
             self.target_tolerance_ = self.target_tolerance
 
-        return X_arr, y_arr, sites_arr, cat_cov, cont_cov
+        return cat_cov, cont_cov
 
     def _log_configuration(
         self,
