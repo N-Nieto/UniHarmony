@@ -294,6 +294,7 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
             parameters are inconsistent.
 
         """
+        X, y = check_X_y(X, y, estimator=self)
         sites = check_array(sites, dtype=None, ensure_2d=False, estimator=self)
         check_consistent_length(X, y, sites)
         validate_sites(sites)

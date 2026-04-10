@@ -110,10 +110,10 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         this count using the configured interpolator.
 
         """
-        X, y = check_X_y(X, y)
 
         # This methods needs at least two classes per site
         class_representation_checks(y, sites)
+        X, y = check_X_y(X, y, estimator=self)
         sites = check_array(sites, dtype=None, ensure_2d=False, estimator=self)
         check_consistent_length(X, y, sites)
         validate_sites(sites)
