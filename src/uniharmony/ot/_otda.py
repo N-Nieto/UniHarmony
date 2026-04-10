@@ -273,7 +273,7 @@ class OTDA(BaseTransport, TransformerMixin, BaseEstimator):
 
         if sites is not None:
             sites = np.asarray(sites)
-            _, harm_mask = self._validate_sites(sites, self.ref_site_)
+            _, harm_mask = self._get_reference_sites(sites, self.ref_site_)
 
             if not np.any(harm_mask):
                 # All samples are from reference site, nothing to transform
