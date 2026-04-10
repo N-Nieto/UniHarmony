@@ -311,9 +311,6 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         self._unique_sites = np.unique(sites)
         self._n_sites = len(self._unique_sites)
 
-        if self._n_sites < 2:
-            raise ValueError(f"Need at least 2 sites, got {self._n_sites}")
-
         # Setup parameters
         self.random_state_ = check_random_state(self.random_state)
 
