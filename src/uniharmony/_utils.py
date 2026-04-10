@@ -257,4 +257,4 @@ def validate_sites(sites: npt.NDArray) -> None:
 
     """
     if len(np.unique(sites)) < 2:
-        raise ValueError("At least two sites required")
+        raise ValueError("At least 2 sites required")
