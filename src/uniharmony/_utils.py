@@ -11,6 +11,7 @@ __all__ = [
     "minimum_samples_warning",
     "solve_ordinary_least_squares",
     "validate_covariates",
+    "validate_sites",
 ]
 
 
@@ -210,12 +211,12 @@ def minimum_samples_warning(n_samples_per_site: list[list[int]] | npt.NDArray, m
         )
 
 
-def validate_covariates(covariates: npt.ArrayLike | None, n_samples: int, name: str) -> npt.NDArray | None:
+def validate_covariates(covariates: npt.NDArray | None, n_samples: int, name: str) -> npt.NDArray | None:
     """Validate covariates.
 
     Parameters
     ----------
-    covariates : array-like or None
+    covariates : array or None
         The covariates.
     n_samples : int
         Sample count.
@@ -227,18 +228,21 @@ def validate_covariates(covariates: npt.ArrayLike | None, n_samples: int, name: 
     array or None
         Validated covariates or None.
 
+    Raises
+    ------
+    ValueError
+        If covariates has incorrect shape.
+
     """
     if covariates is not None:
-        covariates = np.asarray(covariates)
         if covariates.ndim == 1:
             covariates = covariates.reshape(-1, 1)
         if covariates.shape[0] != n_samples:
             raise ValueError(f"{name} has {covariates.shape[0]} samples but sites has {n_samples}")
         return covariates
-    return None
 
 
-def validate_sites(sites: npt.NDArray) -> npt.NDArray:
+def validate_sites(sites: npt.NDArray) -> None:
     """Validate sites.
 
     Parameters
@@ -246,15 +250,11 @@ def validate_sites(sites: npt.NDArray) -> npt.NDArray:
     sites : array
         The sites.
 
-    Returns
-    -------
-    array
-        Validated sites.
+    Raises
+    ------
+    ValueError
+        If single site is provided.
 
     """
-    # Ensure sites is 2D for sklearn (n_samples, 1)
-    if sites.ndim == 1:
-        sites = sites.reshape(-1, 1)
-    elif sites.ndim != 2 or sites.shape[1] != 1:
-        raise ValueError(f"sites must be shape (n_samples,) or (n_samples, 1), got {sites.shape}")
-    return sites
+    if len(np.unique(sites)) < 2:
+        raise ValueError("At least 2 sites required")

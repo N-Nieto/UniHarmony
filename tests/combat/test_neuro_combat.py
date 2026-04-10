@@ -28,6 +28,7 @@ def _ex_failed_checks(_) -> dict[str, str]:
         "check_fit_idempotent": "sites instead of y",
         "check_n_features_in": "not needed",
         "check_fit2d_predict1d": "sites instead of y",
+        "check_fit2d_1sample": "custom message",
         "check_requires_y_none": "target cannot be None",
     }
 

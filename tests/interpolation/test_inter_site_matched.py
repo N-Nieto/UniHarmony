@@ -153,7 +153,7 @@ def test_single_site_error() -> None:
     y = np.random.randint(0, 2, 50)
     sites = np.array(["A"] * 50)
     ismi = InterSiteMatchedInterpolation()
-    with pytest.raises(ValueError, match="at least 2 sites"):
+    with pytest.raises(ValueError, match="2 sites"):
         ismi.fit_resample(X, y, sites=sites)
 
 
@@ -316,11 +316,8 @@ def test_no_matches_found() -> None:
     sites = np.array(["A"] * 10 + ["B"] * 10)
 
     ismi = InterSiteMatchedInterpolation(random_state=42)
-    X_res, _ = ismi.fit_resample(X, y, sites=sites)
-
-    # Returns original only (no matches possible since site A has class 0, site B has class 1)
-    assert len(X_res) == len(X)
-    assert sum(ismi.unmatched_samples_.values()) == 20
+    with pytest.raises(ValueError, match="cannot resample"):
+        ismi.fit_resample(X, y, sites=sites)
 
 
 def test_empty_site() -> None:
@@ -330,8 +327,8 @@ def test_empty_site() -> None:
     sites = np.array(["A"] * 5 + ["B"] * 5)
 
     ismi = InterSiteMatchedInterpolation(random_state=42)
-    X_res, _ = ismi.fit_resample(X, y, sites=sites)
-    assert len(X_res) >= len(X)
+    with pytest.raises(ValueError, match="cannot resample"):
+        ismi.fit_resample(X, y, sites=sites)
 
 
 def test_alpha_out_of_range_warning(binary_2site) -> None:
@@ -400,8 +397,8 @@ def test_multiclass() -> None:
     y = np.array([0] * 50 + [1] * 50 + [2] * 50)
     sites = np.array(["A"] * 50 + ["B"] * 50 + ["C"] * 50)
     ismi = InterSiteMatchedInterpolation(random_state=42)
-    _, y_res = ismi.fit_resample(X, y, sites=sites)
-    assert len(np.unique(y_res)) == 3
+    with pytest.raises(ValueError, match="cannot resample"):
+        ismi.fit_resample(X, y, sites=sites)
 
 
 def test_integer_sites() -> None:

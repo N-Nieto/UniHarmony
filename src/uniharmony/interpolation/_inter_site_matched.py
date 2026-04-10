@@ -10,10 +10,15 @@ from imblearn.base import SamplerMixin
 from numpy.typing import ArrayLike, NDArray
 from sklearn.base import BaseEstimator
 from sklearn.utils import check_random_state
-from sklearn.utils.validation import check_array, check_X_y
+from sklearn.utils.validation import (
+    check_array,
+    check_consistent_length,
+    check_X_y,
+)
 
+from uniharmony._utils import validate_sites
 from uniharmony.interpolation._utils import (
-    sites_sanity_checks,
+    validate_class_representation,
     validate_covariates,
 )
 
@@ -290,20 +295,21 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
             parameters are inconsistent.
 
         """
+        X, y = check_X_y(X, y, estimator=self)
+        sites = check_array(sites, dtype=None, ensure_2d=False, estimator=self)
+        check_consistent_length(X, y, sites)
+        validate_sites(sites)
+        validate_class_representation(y, sites)
+
         # Validate parameters immediately (sklearn convention allows basic validation)
         self._validate_init_params()
         # Validate inputs
-        X_arr, y_arr, sites_arr, cat_cov, cont_cov = self._validate_inputs(
-            X, y, sites, categorical_covariate, continuous_covariate, allow_nan
-        )
+        cat_cov, cont_cov = self._validate_inputs(X, y, categorical_covariate, continuous_covariate, allow_nan)
 
         # Initialize tracking
         self.unmatched_samples_: dict[tuple[Any, Any], int] = {}
-        self._unique_sites = np.unique(sites_arr)
+        self._unique_sites = np.unique(sites)
         self._n_sites = len(self._unique_sites)
-
-        if self._n_sites < 2:
-            raise ValueError(f"Need at least 2 sites, got {self._n_sites}")
 
         # Setup parameters
         self.random_state_ = check_random_state(self.random_state)
@@ -311,24 +317,24 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         self._log_configuration(cat_cov, cont_cov)
 
         # Generate samples
-        synthetic_X, synthetic_y, synthetic_sites = self._generate_samples(X_arr, y_arr, sites_arr, cat_cov, cont_cov)
+        synthetic_X, synthetic_y, synthetic_sites = self._generate_samples(X, y, sites, cat_cov, cont_cov)
 
         # Combine results
         if synthetic_X:
             if self.concatenate:
-                X_out = np.vstack([X_arr, *synthetic_X])
-                y_out = np.concatenate([y_arr, *synthetic_y])
-                sites_out = np.concatenate([sites_arr, *synthetic_sites])
+                X_out = np.vstack([X, *synthetic_X])
+                y_out = np.concatenate([y, *synthetic_y])
+                sites_out = np.concatenate([sites, *synthetic_sites])
             else:
                 X_out = np.vstack(synthetic_X)
                 y_out = np.concatenate(synthetic_y)
                 sites_out = np.concatenate(synthetic_sites)
         else:
-            X_out, y_out, sites_out = X_arr, y_arr, sites_arr
+            X_out, y_out, sites_out = X, y, sites
 
         self.sites_resampled_ = sites_out
 
-        self._log_completion(y_arr, synthetic_y)
+        self._log_completion(y, synthetic_y)
 
         return X_out, y_out
 
@@ -336,31 +342,16 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         self,
         X: ArrayLike,
         y: ArrayLike,
-        sites: ArrayLike,
         categorical_covariate: ArrayLike | None,
         continuous_covariate: ArrayLike | None,
         allow_nan: bool = False,
     ) -> tuple[
-        NDArray[np.float64],
-        NDArray[Any],
-        NDArray[Any],
         NDArray[Any] | None,
         NDArray[np.float64] | None,
     ]:
         """Validate and convert input arrays."""
-        X_arr, y_arr = check_X_y(X, y)
-        sites_arr = check_array(sites, ensure_2d=False, dtype=None)
-
-        # Wrap sites_sanity_checks to match expected error message
-        try:
-            sites_sanity_checks(X_arr, sites_arr)
-        except ValueError as e:
-            if "At least two sites required" in str(e):
-                raise ValueError(f"Need at least 2 sites, got {len(np.unique(sites_arr))}") from e
-            raise
-
         cat_cov, cont_cov, cov_tol = validate_covariates(
-            X_arr.shape[0],
+            X.shape[0],
             categorical_covariate,
             continuous_covariate,
             self.covariate_tolerance,
@@ -368,16 +359,16 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         )
 
         self.covariate_tolerance_ = cov_tol
-        self._problem_type = "classification" if y_arr.dtype.kind in "biu" else "regression"
+        self._problem_type = "classification" if y.dtype.kind in "biu" else "regression"
 
         # Set default target_tolerance for regression if not specified
         if self._problem_type == "regression" and self.target_tolerance is None:
-            y_range = np.ptp(y_arr)
+            y_range = np.ptp(y)
             self.target_tolerance_ = y_range * 0.1 if y_range > 0 else 1.0
         else:
             self.target_tolerance_ = self.target_tolerance
 
-        return X_arr, y_arr, sites_arr, cat_cov, cont_cov
+        return cat_cov, cont_cov
 
     def _log_configuration(
         self,

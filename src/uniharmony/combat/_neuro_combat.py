@@ -58,6 +58,11 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
     copy : bool, optional (default True)
         Whether to copy objects when doing `check_array`.
 
+    Attributes
+    ----------
+    sites_ : array, shape (n_samples,)
+        Fitted site names.
+
     References
     ----------
     [^1]:
@@ -105,7 +110,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         ----------
         X : array-like, shape (n_samples, n_features)
             The training input samples.
-        sites : array-like, shape (n_samples, 1)
+        sites : array-like, shape (n_samples,)
             Sites.
         categorical_covariates : array-like, shape (n_samples, n_categorical_covariates) or None, optional (default None)
             The categorical covariates to be preserved during harmonization.
@@ -131,13 +136,9 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         # ######## Set up and check data ########
         # Check that X and sites have correct shape and type, and convert sites if they are strings
         X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
-        if isinstance(next(iter(sites)), str):
-            sites = self._convert_sites(sites)
-        if np.asarray(sites).ndim == 1:
-            sites = np.asarray(sites).reshape(-1, 1)
-        sites = check_array(sites, copy=self.copy, ensure_min_samples=2, estimator=self)
-
+        sites = check_array(sites, copy=self.copy, dtype=None, ensure_2d=False, estimator=self)
         check_consistent_length(X, sites)
+        validate_sites(sites)
 
         # Check that categorical_covariates and continuous_covariates have correct shape and type if they are not None.
         # Track of whether they were used during fit to check during transform
@@ -164,10 +165,10 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         # Transpose to conform to neuroCombat and original ComBat
         X = X.T
 
-        self._sites_names, n_samples_per_site = np.unique(sites, return_counts=True)
-        self._n_sites = len(self._sites_names)
+        self.sites_, n_samples_per_site = np.unique(sites, return_counts=True)
+        self._n_sites = len(self.sites_)
         n_samples = sites.shape[0]
-        idx_per_site = [list(np.where(sites == idx)[0]) for idx in self._sites_names]
+        idx_per_site = [list(np.where(sites == s)[0].tolist()) for s in self.sites_]
 
         logger.debug("Making design matrix")
         design = self._make_design_matrix(
@@ -229,7 +230,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         ----------
         X : array-like, shape (n_samples, n_features)
             The data to be harmonized.
-        sites : array-like, shape (n_samples, 1)
+        sites : array-like, shape (n_samples,)
             Sites.
         categorical_covariates : array-like, shape (n_samples, n_categorical_covariates) or None, optional (default None)
             The categorical covariates to be preserved during harmonization.
@@ -254,12 +255,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         check_is_fitted(self)
 
         X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
-        if isinstance(next(iter(sites)), str):
-            sites = self._convert_sites(sites)
-        if np.asarray(sites).ndim == 1:
-            sites = np.asarray(sites).reshape(-1, 1)
-        sites = check_array(sites, copy=self.copy, estimator=self)
-
+        sites = check_array(sites, copy=self.copy, dtype=None, ensure_2d=False, estimator=self)
         check_consistent_length(X, sites)
 
         if self._categorical_covariates_used:
@@ -274,12 +270,13 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         new_data_sites_name = np.unique(sites)
 
         # Check all sites from new_data were seen
-        if not all(site_name in self._sites_names for site_name in new_data_sites_name):
+        if not all(s in self.sites_ for s in new_data_sites_name):
             raise ValueError("There is a site unseen during the fit method in the data.")
 
         n_samples = sites.shape[0]
-        n_samples_per_site = np.asarray([np.sum(sites == site_name) for site_name in self._sites_names])
-        idx_per_site = [list(np.where(sites == site_name)[0]) for site_name in self._sites_names]
+        n_samples_per_site = np.asarray([np.sum(sites == s) for s in self.sites_])
+        idx_per_site = [list(np.where(sites == s)[0].tolist()) for s in self.sites_]
+
         logger.debug("Making design matrix")
         design = self._make_design_matrix(
             sites,
@@ -398,8 +395,6 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         # =====================================================================
         # STEP 1: Validate inputs
         # =====================================================================
-        sites = np.asarray(sites)
-        sites = validate_sites(sites)
         n_samples = sites.shape[0]
 
         categorical_covariates = validate_covariates(categorical_covariates, n_samples, "categorical_covariates")
@@ -418,7 +413,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
                 dtype=np.float64,
                 handle_unknown="error",
             )
-            self._site_encoder.fit(sites)
+            self._site_encoder.fit(sites.reshape(-1, 1))
             logger.debug(f"Fitted site encoder: {len(self._site_encoder.categories_[0])} sites")
 
             # Fit categorical encoders if provided
@@ -449,7 +444,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         design_parts = []
 
         # Transform sites
-        sites_encoded = self._site_encoder.transform(sites)
+        sites_encoded = self._site_encoder.transform(sites.reshape(-1, 1))
         design_parts.append(sites_encoded)
         n_sites = sites_encoded.shape[1]
         logger.debug(f"Sites encoded: {n_samples} samples x {n_sites} sites")
@@ -1464,13 +1459,6 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
 
         # Ensure positive variance
         return np.clip(result, 1e-8, None)
-
-    def _convert_sites(self, s: list[str]) -> list[int]:
-        """Convert sites to proper format."""
-        ks = set(s)
-        vs = list(range(1, len(ks) + 1))
-        kvs = dict(zip(ks, vs, strict=True))
-        return [kvs[k] for k in s]
 
     # Overridden for check_is_fitted() usage
     def __sklearn_is_fitted__(self) -> bool:
