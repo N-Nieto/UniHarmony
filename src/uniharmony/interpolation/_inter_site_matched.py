@@ -14,7 +14,6 @@ from sklearn.utils.validation import check_array, check_X_y
 
 from uniharmony._utils import validate_sites
 from uniharmony.interpolation._utils import (
-    sites_sanity_checks,
     validate_covariates,
 )
 
@@ -353,14 +352,6 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         """Validate and convert input arrays."""
         X_arr, y_arr = check_X_y(X, y)
         sites_arr = check_array(sites, ensure_2d=False, dtype=None)
-
-        # Wrap sites_sanity_checks to match expected error message
-        try:
-            sites_sanity_checks(X_arr, sites_arr)
-        except ValueError as e:
-            if "At least two sites required" in str(e):
-                raise ValueError(f"Need at least 2 sites, got {len(np.unique(sites_arr))}") from e
-            raise
 
         cat_cov, cont_cov, cov_tol = validate_covariates(
             X_arr.shape[0],

@@ -13,7 +13,6 @@ from uniharmony._utils import validate_sites
 from uniharmony.interpolation._utils import (
     class_representation_checks,
     create_interpolator,
-    sites_sanity_checks,
 )
 
 
@@ -108,9 +107,6 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
 
         """
         X, y = check_X_y(X, y)
-
-        # Sanity checks for site length and number of sites
-        sites_sanity_checks(X, sites)
 
         # This methods needs at least two classes per site
         class_representation_checks(y, sites)

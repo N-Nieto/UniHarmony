@@ -21,7 +21,6 @@ from sklearn.utils.validation import check_array
 __all__ = [
     "class_representation_checks",
     "create_interpolator",
-    "sites_sanity_checks",
     "validate_covariates",
 ]
 
@@ -69,30 +68,6 @@ def create_interpolator(
         raise ValueError(f"Unsupported interpolator: {name}")
 
     return mapping[name](random_state=random_state, sampling_strategy="not majority", **kwargs)
-
-
-def sites_sanity_checks(x: npt.NDArray, sites: npt.NDArray) -> None:
-    """Sanity checks for site array.
-
-    Parameters
-    ----------
-    x : array
-        Features.
-    sites : array
-        Sites.
-
-    Raises
-    ------
-    ValueError
-        If ``x`` and ``sites`` have different length or
-        if single site is provided.
-
-    """
-    if x.shape[0] != sites.shape[0]:
-        raise ValueError("X and sites must have same length")
-
-    if len(np.unique(sites)) < 2:
-        raise ValueError("At least two sites required")
 
 
 def class_representation_checks(y: npt.NDArray, sites: npt.NDArray) -> None:
