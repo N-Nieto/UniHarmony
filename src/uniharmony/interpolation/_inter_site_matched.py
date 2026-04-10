@@ -304,7 +304,7 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         # Validate parameters immediately (sklearn convention allows basic validation)
         self._validate_init_params()
         # Validate inputs
-        cat_cov, cont_cov = self._validate_inputs(X, y, sites, categorical_covariate, continuous_covariate, allow_nan)
+        cat_cov, cont_cov = self._validate_inputs(X, y, categorical_covariate, continuous_covariate, allow_nan)
 
         # Initialize tracking
         self.unmatched_samples_: dict[tuple[Any, Any], int] = {}
