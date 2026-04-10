@@ -19,8 +19,8 @@ from sklearn.utils.validation import check_array
 
 
 __all__ = [
-    "class_representation_checks",
     "create_interpolator",
+    "validate_class_representation",
     "validate_covariates",
 ]
 
@@ -70,7 +70,7 @@ def create_interpolator(
     return mapping[name](random_state=random_state, sampling_strategy="not majority", **kwargs)
 
 
-def class_representation_checks(y: npt.NDArray, sites: npt.NDArray) -> None:
+def validate_class_representation(y: npt.NDArray, sites: npt.NDArray) -> None:
     """Check that each site has at least two classes.
 
     Parameters

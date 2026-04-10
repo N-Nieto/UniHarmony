@@ -15,8 +15,8 @@ from sklearn.utils.validation import (
 
 from uniharmony._utils import validate_sites
 from uniharmony.interpolation._utils import (
-    class_representation_checks,
     create_interpolator,
+    validate_class_representation,
 )
 
 
@@ -110,13 +110,11 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         this count using the configured interpolator.
 
         """
-
-        # This methods needs at least two classes per site
-        class_representation_checks(y, sites)
         X, y = check_X_y(X, y, estimator=self)
         sites = check_array(sites, dtype=None, ensure_2d=False, estimator=self)
         check_consistent_length(X, y, sites)
         validate_sites(sites)
+        validate_class_representation(y, sites)
 
         random_state = check_random_state(self.random_state)
         if isinstance(self.interpolator, str):

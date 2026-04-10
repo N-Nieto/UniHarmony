@@ -18,6 +18,7 @@ from sklearn.utils.validation import (
 
 from uniharmony._utils import validate_sites
 from uniharmony.interpolation._utils import (
+    validate_class_representation,
     validate_covariates,
 )
 
@@ -298,6 +299,8 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         sites = check_array(sites, dtype=None, ensure_2d=False, estimator=self)
         check_consistent_length(X, y, sites)
         validate_sites(sites)
+        validate_class_representation(y, sites)
+
         # Validate parameters immediately (sklearn convention allows basic validation)
         self._validate_init_params()
         # Validate inputs
