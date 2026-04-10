@@ -58,6 +58,11 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
     copy : bool, optional (default True)
         Whether to copy objects when doing `check_array`.
 
+    Attributes
+    ----------
+    sites_ : array, shape (n_samples,)
+        Fitted site names.
+
     References
     ----------
     [^1]:
@@ -160,10 +165,10 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         # Transpose to conform to neuroCombat and original ComBat
         X = X.T
 
-        self._sites_names, n_samples_per_site = np.unique(sites, return_counts=True)
-        self._n_sites = len(self._sites_names)
+        self.sites_, n_samples_per_site = np.unique(sites, return_counts=True)
+        self._n_sites = len(self.sites_)
         n_samples = sites.shape[0]
-        idx_per_site = [list(np.where(sites == idx)[0]) for idx in self._sites_names]
+        idx_per_site = [list(np.where(sites == s)[0].tolist()) for s in self.sites_]
 
         logger.debug("Making design matrix")
         design = self._make_design_matrix(
@@ -265,12 +270,13 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         new_data_sites_name = np.unique(sites)
 
         # Check all sites from new_data were seen
-        if not all(site_name in self._sites_names for site_name in new_data_sites_name):
+        if not all(s in self.sites_ for s in new_data_sites_name):
             raise ValueError("There is a site unseen during the fit method in the data.")
 
         n_samples = sites.shape[0]
-        n_samples_per_site = np.asarray([np.sum(sites == site_name) for site_name in self._sites_names])
-        idx_per_site = [list(np.where(sites == site_name)[0]) for site_name in self._sites_names]
+        n_samples_per_site = np.asarray([np.sum(sites == s) for s in self.sites_])
+        idx_per_site = [list(np.where(sites == s)[0].tolist()) for s in self.sites_]
+
         logger.debug("Making design matrix")
         design = self._make_design_matrix(
             sites,
