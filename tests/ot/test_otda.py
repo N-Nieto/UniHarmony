@@ -207,7 +207,7 @@ def test_single_string_site(str_sites_data):
     """Test validation with single string reference site."""
     _, sites, _ = str_sites_data
     otda = OTDA()
-    ref_mask, harm_mask = otda._validate_sites(sites, "site_A")
+    ref_mask, harm_mask = otda._get_reference_sites(sites, "site_A")
 
     assert np.sum(ref_mask) == 50
     assert np.sum(harm_mask) == 50
@@ -219,7 +219,7 @@ def test_single_integer_site(simple_data):
     """Test validation with integer reference site."""
     _, sites, _ = simple_data
     otda = OTDA()
-    ref_mask, harm_mask = otda._validate_sites(sites, 0)
+    ref_mask, harm_mask = otda._get_reference_sites(sites, 0)
 
     assert np.sum(ref_mask) == 500
     assert np.sum(harm_mask) == 500
@@ -231,7 +231,7 @@ def test_list_of_sites(multi_site_data):
     """Test validation with list of reference sites."""
     _, sites, _ = multi_site_data
     otda = OTDA()
-    ref_mask, harm_mask = otda._validate_sites(sites, [1, 2])
+    ref_mask, harm_mask = otda._get_reference_sites(sites, [1, 2])
 
     assert np.sum(ref_mask) == 500  # A + B
     assert np.sum(harm_mask) == 500  # C + D
@@ -241,7 +241,7 @@ def test_list_of_integer_sites():
     """Test validation with list of integer reference sites."""
     sites = np.array([0, 0, 1, 1, 2, 2])
     otda = OTDA()
-    ref_mask, harm_mask = otda._validate_sites(sites, [0, 1])
+    ref_mask, harm_mask = otda._get_reference_sites(sites, [0, 1])
 
     assert np.sum(ref_mask) == 4  # 0s and 1s
     assert np.sum(harm_mask) == 2  # 2s
@@ -251,7 +251,7 @@ def test_mixed_type_list():
     """Test validation with mixed type list (should convert to strings)."""
     sites = np.array(["0", "1", "2", "3"])  # String sites
     otda = OTDA()
-    ref_mask, harm_mask = otda._validate_sites(sites, [0, 1])  # Int ref
+    ref_mask, harm_mask = otda._get_reference_sites(sites, [0, 1])  # Int ref
 
     assert np.sum(ref_mask) == 2
     assert np.sum(harm_mask) == 2
@@ -263,7 +263,7 @@ def test_missing_site_error(simple_data):
     otda = OTDA()
 
     with pytest.raises(ValueError):
-        otda._validate_sites(sites, "nonexistent_site")
+        otda._get_reference_sites(sites, "nonexistent_site")
 
 
 def test_missing_site_in_list_error(multi_site_data):
@@ -272,7 +272,7 @@ def test_missing_site_in_list_error(multi_site_data):
     otda = OTDA()
 
     with pytest.raises(ValueError):
-        otda._validate_sites(sites, ["A", "Z"])  # Z doesn't exist
+        otda._get_reference_sites(sites, ["A", "Z"])  # Z doesn't exist
 
 
 def test_no_reference_samples_error():
@@ -281,7 +281,7 @@ def test_no_reference_samples_error():
     otda = OTDA()
 
     with pytest.raises(ValueError):
-        otda._validate_sites(sites, "Z")
+        otda._get_reference_sites(sites, "Z")
 
 
 # =============================================================================
