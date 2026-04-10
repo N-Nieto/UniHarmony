@@ -31,32 +31,19 @@ def multi_site_data():
     return X, sites, y
 
 
-# @pytest.fixture
-# def str_sites_data():
-#     """Create data with string site labels."""
-#     np.random.seed(42)
-#     X = np.random.randn(100, 5)
-#     sites = np.array(["site_A"] * 50 + ["site_B"] * 50)
-#     y = np.random.randint(0, 2, 100)
-#     return X, sites, y
-
-
-# @pytest.fixture
-# def otda_instances():
-#     """Return various OTDA configurations for testing."""
-#     return [
-#         OTDA(ot_method="emd"),
-#         OTDA(ot_method="sinkhorn", reg=0.1),
-#         OTDA(ot_method="sinkhorn_gl", reg=0.1, eta=0.01),
-#         OTDA(ot_method="emd_laplace"),
-#     ]
+@pytest.fixture
+def str_sites_data():
+    """Create data with string site labels."""
+    np.random.seed(42)
+    X = np.random.randn(100, 5)
+    sites = np.array(["site_A"] * 50 + ["site_B"] * 50)
+    y = np.random.randint(0, 2, 100)
+    return X, sites, y
 
 
 # =============================================================================
 # Test create_ot_object
 # =============================================================================
-
-
 def test_create_emd():
     """Test EMD transport creation."""
     obj = create_ot_object("emd")
@@ -215,16 +202,17 @@ def test_init_with_all_params():
 # Test OTDA _validate_sites
 # =============================================================================
 
-# def test_single_string_site(simple_data):
-#     """Test validation with single string reference site."""
-#     _, sites, _ = simple_data
-#     otda = OTDA()
-#     ref_mask, harm_mask = otda._validate_sites(sites, "site_A")
 
-#     assert np.sum(ref_mask) == 50
-#     assert np.sum(harm_mask) == 50
-#     assert np.all(sites[ref_mask] == "site_A")
-#     assert np.all(sites[harm_mask] == "site_B")
+def test_single_string_site(str_sites_data):
+    """Test validation with single string reference site."""
+    _, sites, _ = str_sites_data
+    otda = OTDA()
+    ref_mask, harm_mask = otda._validate_sites(sites, "site_A")
+
+    assert np.sum(ref_mask) == 50
+    assert np.sum(harm_mask) == 50
+    assert np.all(sites[ref_mask] == "site_A")
+    assert np.all(sites[harm_mask] == "site_B")
 
 
 def test_single_integer_site(simple_data):

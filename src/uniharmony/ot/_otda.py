@@ -16,6 +16,7 @@ from sklearn.utils.validation import (
     check_consistent_length,
 )
 
+from uniharmony._utils import validate_sites
 from uniharmony.ot._utils import create_ot_object, data_consistency_check
 
 
@@ -173,7 +174,7 @@ class OTDA(BaseTransport, TransformerMixin, BaseEstimator):
         sites : array-like, shape (n_samples,)
             Site labels for each sample. Must align with X.
 
-        ref_site : str or list of str
+        ref_site : str, int or list of str or list of int
             Site identifier(s) to use as reference (target domain).
             If list, combines all specified sites as the reference distribution.
 
@@ -188,20 +189,21 @@ class OTDA(BaseTransport, TransformerMixin, BaseEstimator):
 
         """
         X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
-        if np.asarray(sites).ndim == 1:
-            sites = np.asarray(sites).reshape(-1, 1)
-        sites = check_array(sites, copy=self.copy, ensure_min_samples=2, estimator=self)
-        check_consistent_length(X, sites)
+
         if y is not None:
             y = check_array(y, copy=self.copy, ensure_2d=False, estimator=self)
             check_consistent_length(X, y)
-
+        if np.asarray(sites).ndim == 1:
+            sites = np.asarray(sites).reshape(-1, 1)
+        sites = check_array(sites, copy=self.copy, dtype=None, ensure_2d=False, estimator=self)
+        check_consistent_length(X, sites)
+        validate_sites(sites)
         sites = np.array(sites).flatten()  # Ensure sites is 1D for processing
         # Store reference site info
         self.ref_site_ = ref_site
 
         # Create masks for reference vs. harmonization data
-        ref_mask, harm_mask = self._validate_sites(sites, ref_site)
+        ref_mask, harm_mask = self._get_reference_sites(sites, ref_site)
 
         # Split data
         X_ref = X[ref_mask]  # Target domain (reference)
@@ -227,7 +229,7 @@ class OTDA(BaseTransport, TransformerMixin, BaseEstimator):
             # Unsupervised domain adaptation
             self.ot_obj_.fit(Xs=X_harm, Xt=X_ref)
 
-        # Expose key attributes from underlying OT object for inspection
+        # Expose key attributes from underlying OT object for easier inspection
         self.coupling_ = self.ot_obj_.coupling_
         self.cost_ = self.ot_obj_.cost_
 
@@ -396,7 +398,7 @@ class OTDA(BaseTransport, TransformerMixin, BaseEstimator):
 
         raise TypeError(f"ot_method must be str or BaseTransport instance, got {type(self.ot_method).__name__}")
 
-    def _validate_sites(
+    def _get_reference_sites(
         self, sites: npt.ArrayLike, ref_site: str | int | list[str] | list[int]
     ) -> tuple[npt.NDArray[np.bool_], npt.NDArray[np.bool_]]:
         """Validate site labels and create masks for reference vs. harmonization data.
