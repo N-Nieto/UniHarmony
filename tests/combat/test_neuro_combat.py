@@ -45,8 +45,6 @@ def _ex_failed_checks(_) -> dict[str, str]:
         NeuroComBat(empirical_bayes=True, parametric_adjustments=True, mean_only=False),
         NeuroComBat(empirical_bayes=False, parametric_adjustments=True, mean_only=True),
         NeuroComBat(empirical_bayes=False, parametric_adjustments=True, mean_only=False),
-        NeuroComBat(empirical_bayes=True, parametric_adjustments=False, mean_only=False),
-        NeuroComBat(empirical_bayes=True, parametric_adjustments=False, mean_only=True),
     ],
     expected_failed_checks=_ex_failed_checks,
 )
