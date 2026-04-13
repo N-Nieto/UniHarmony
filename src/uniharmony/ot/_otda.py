@@ -57,28 +57,29 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
 
     Parameters
     ----------
-    ot_method : str or BaseTransport instance, default ("emd")
+    ot_method : str or BaseTransport instance, optional (default "emd")
         Optimal transport method to use. Can be either:
+
         - A string: "emd", "sinkhorn"/"s", "sinkhorn_gl"/"s_gl", "emd_laplace"/"emd_l"
         - A pre-configured BaseTransport instance (e.g., ot.da.SinkhornTransport(reg_e=0.1))
 
-    metric : str, default ("euclidean")
+    metric : str, optional (default "euclidean")
         Distance metric for cost matrix computation. Supports all metrics from
         scipy.spatial.distance.cdist and POT's backend implementations.
 
-    reg : float or None, default (1.0)
+    reg : float or None, optional (default 1.0)
         Entropic regularization parameter. Used for Sinkhorn-based methods.
 
-    eta : float or None, default (0.1)
+    eta : float or None, optional (default 0.1)
         Regularization parameter for Laplace or group Lasso regularization.
 
-    max_iter : int or None, default (10)
+    max_iter : int or None, optional (default 10)
         Maximum number of iterations for iterative solvers.
 
-    cost_norm : str or None, default (None)
+    cost_norm : str or None, optional (default None)
         Cost matrix normalization method: "median", "max", "log", "loglog".
 
-    limit_max : int or None, default (10)
+    limit_max : int or None, optional (default 10)
         Semi-supervised mode control. Sets infinite cost (10 * max(cost))
         for transport between different classes.
 
@@ -87,26 +88,26 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
     ot_obj_ : BaseTransport
         The fitted underlying OT object (set during fit).
 
-    ref_site_ : str | list[str]
+    ref_site_ : str or list of str
         The reference site(s) used for alignment.
 
     coupling_ : array, shape (n_source_samples, n_target_samples)
         The optimal coupling matrix (forwarded from ot_obj_).
 
-    cost_ : array-like
+    cost_ : array
         The computed cost matrix (forwarded from ot_obj_).
 
     Examples
     --------
     >>> # Using string-based method selection
-    >>> otda = OTDA(ot_method="sinkhorn", reg=0.1, metric="sqeuclidean")
+    >>> otda = OptimalTransportDomainAdaptation(ot_method="sinkhorn", reg=0.1, metric="sqeuclidean")
     >>> otda.fit(X_train, sites_train, ref_site="site_A", y=labels)
     >>> X_aligned = otda.transform(X_test, sites_test)
 
     >>> # Using pre-configured OT instance
     >>> from ot.da import SinkhornTransport
     >>> ot_solver = SinkhornTransport(reg_e=0.5, norm="median")
-    >>> otda = OTDA(ot_method=ot_solver)
+    >>> otda = OptimalTransportDomainAdaptation(ot_method=ot_solver)
     >>> otda.fit(X_train, sites_train, ref_site="site_A")
     >>> X_aligned = otda.transform(X_test, sites_test))
 
@@ -164,13 +165,13 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
             Site identifier(s) to use as reference (target domain).
             If list, combines all specified sites as the reference distribution.
 
-        y : array-like, shape (n_samples,) or (n_samples, n_classes), optional
+        y : array-like, shape (n_samples,) or (n_samples, n_classes), optional (default None)
             Labels for supervised/semi-supervised transport. Used for cost
             matrix computation. Must align with X if provided.
 
         Returns
         -------
-        self : OTDA
+        self : OptimalTransportDomainAdaptation
             Fitted instance.
 
         """
@@ -186,12 +187,12 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
         validate_sites(sites)
 
         # Store reference site info
-        logger.info("Using reference site(s): %s", ref_site)
+        logger.info(f"Using reference site(s): {ref_site}")
         self.ref_site_ = ref_site
 
         # Initialize OT object (string or instance)
         self.ot_obj_ = self._resolve_ot_method()
-        logger.info("Initialized OT object: %s", type(self.ot_obj_).__name__)
+        logger.info(f"Initialized OT object: {type(self.ot_obj_).__name__}")
 
         # Split reference vs. harmonization data
         # Data from the reference site(s) is the target distribution
@@ -236,15 +237,15 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
         X : array-like, shape (n_samples, n_features)
             Input data to transform.
 
-        sites : array-like, shape (n_samples,), default (None)
+        sites : array-like, shape (n_samples,), optional (default None)
             Site labels for X. If provided, only non-reference sites are
             transformed. Reference site samples are returned as-is.
 
-        y : array-like, shape (n_samples,) or (n_samples, n_classes), optional
+        y : array-like, shape (n_samples,) or (n_samples, n_classes), optional (default None)
             Labels for supervised transport. Must align with X if provided.
              Used to ensure consistent handling of supervised transformations.
 
-        batch_size : int, default (128)
+        batch_size : int, optional (default 128)
             Batch size for out-of-sample transformation.
 
         Returns
@@ -306,10 +307,10 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
         ref_site : str or list of str
             Reference site(s).
 
-        y : array-like, optional
+        y : array-like, optional (default None)
             Labels for supervised transport.
 
-        batch_size : int, default=128
+        batch_size : int, optional (default 128)
             Batch size for transformation.
 
         Returns
@@ -333,15 +334,15 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
         ----------
         X : array-like, shape (n_samples, n_features)
             Reference domain data to map back.
-        sites : array-like, shape (n_samples,), default (None)
+        sites : array-like, shape (n_samples,), optional (default None)
             Site labels for X. If provided, only reference site samples are
             inverse transformed. Non-reference samples are returned as-is.
 
-        y : array-like, shape (n_samples,) or (n_samples, n_classes), optional
+        y : array-like, shape (n_samples,) or (n_samples, n_classes), optional (default None)
             Labels for supervised transport. Must align with X if provided.
              Used to ensure consistent handling of supervised transformations.
 
-        batch_size : int, default=128
+        batch_size : int, optional (default 128)
             Batch size for transformation.
 
         Returns
