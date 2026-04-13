@@ -111,14 +111,11 @@ def test_neuro_combat_performance_mareos() -> None:
                 clf = LogisticRegression(random_state=random_state)
             for e_example in effect_examples:
                 example = effect + "_" + e_types + e_example
-                print("Experiment name: " + example)
-
                 data = datasets[example]
                 folds = data["folds"]
                 folds = pd.Series(folds)
 
                 for fold in folds.unique():
-                    print("Fold Number: " + str(fold))
                     # Train Data
                     X = data["X"].copy()
                     y = data["y"].copy()
