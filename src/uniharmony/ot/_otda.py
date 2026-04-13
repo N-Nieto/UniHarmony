@@ -133,11 +133,6 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
         self.limit_max = limit_max
         self.copy = copy
 
-        # Attributes set during fit
-        self.ot_obj_: BaseTransport | None = None
-        self.ref_site_: str | list[str] | None = None
-        self._is_fitted = False
-
         self._ot_method_aliases: dict[str, str] = {
             "s": "sinkhorn",
             "s_gl": "sinkhorn_gl",
@@ -275,9 +270,12 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
 
             X_transformed_partial = self.ot_obj_.transform(Xs=X_harm, ys=y_harm, Xt=X_ref, yt=y_ref, batch_size=batch_size)
 
-            # Reconstruct full array
+            # Reconstruct full array using X_harm to find matching indices
             X_transformed = X.copy()
-            X_transformed[X_harm.__index__()] = X_transformed_partial
+            # Create a set of X_harm rows (as tuples) for fast membership testing
+            harm_rows = set(map(tuple, X_harm))
+            harm_mask = np.array([tuple(row) in harm_rows for row in X])
+            X_transformed[harm_mask] = X_transformed_partial
             return X_transformed
         else:
             # Transform all samples assuming they are from source domain
@@ -371,9 +369,12 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
                 Xt=X_harm, yt=y_harm, Xs=X_ref, ys=y_ref, batch_size=batch_size
             )
 
-            # Reconstruct full array
+            # Reconstruct full array using X_harm to find matching indices
             X_transformed = X.copy()
-            X_transformed[X_harm.__index__()] = X_transformed_partial
+            # Create a set of X_harm rows (as tuples) for fast membership testing
+            harm_rows = set(map(tuple, X_harm))
+            harm_mask = np.array([tuple(row) in harm_rows for row in X])
+            X_transformed[harm_mask] = X_transformed_partial
             return X_transformed
         else:
             # Transform all samples assuming they are from source domain
