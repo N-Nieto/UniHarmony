@@ -78,7 +78,7 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
         self,
         X: npt.ArrayLike,
         sites: npt.ArrayLike,
-        smooth_covariates: npt.ArrayLike = None,
+        smooth_covariates: npt.ArrayLike,
         smooth_covariates_bounds: tuple[float, float] | None = None,
         continuous_covariates: npt.ArrayLike | None = None,
         var_epsilon: float = 1e-8,
