@@ -92,7 +92,7 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
         ----------
         X : array-like, shape (n_samples, n_features)
             The training input samples.
-        sites : array-like, shape (n_samples, 1)
+        sites : array-like, shape (n_samples,)
             Sites.
         smooth_covariates : array-like, shape (n_samples, n_smooth_terms)
             The smooth, non-linear covariates. GAMs are used for optimal smoothing (e.g., age).
@@ -119,10 +119,9 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
         # ######## Set up and check data ########
         # Check that X and sites have correct shape and type, and convert sites if they are strings
         X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
-        sites = validate_sites(sites)
-        sites = check_array(sites, copy=self.copy, ensure_min_samples=2, estimator=self)
-
+        sites = check_array(sites, copy=self.copy, dtype=None, ensure_2d=False, estimator=self)
         check_consistent_length(X, sites)
+        validate_sites(sites)
 
         smooth_covariates = check_array(smooth_covariates, dtype=FLOAT_DTYPES, estimator=self)
 
@@ -145,10 +144,10 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
         # Transpose to conform to neuroCombat and original ComBat
         X = X.T
 
-        self._sites_names, n_samples_per_site = np.unique(sites, return_counts=True)
-        self._n_sites = len(self._sites_names)
+        self.sites_, n_samples_per_site = np.unique(sites, return_counts=True)
+        self._n_sites = len(self.sites_)
         n_samples = sites.shape[0]
-        idx_per_site = [list(np.where(sites == idx)[0]) for idx in self._sites_names]
+        idx_per_site = [list(np.where(sites == idx)[0]) for idx in self.sites_]
 
         logger.debug("Making design matrix")
         design = self._make_design_matrix(
@@ -255,7 +254,7 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
         ----------
         X : array-like, shape (n_samples, n_features)
             The data to be harmonized.
-        sites : array-like, shape (n_samples, 1)
+        sites : array-like, shape (n_samples,)
             Sites.
         smooth_covariates : array-like, shape (n_samples, n_smooth_covariates)
             The smooth, non-linear terms. GAMs are used for optimal smoothing (e.g., age).
@@ -279,9 +278,7 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
         check_is_fitted(self)
 
         X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
-        sites = validate_sites(sites)
-        sites = check_array(sites, copy=self.copy, estimator=self)
-
+        sites = check_array(sites, copy=self.copy, dtype=None, ensure_2d=False, estimator=self)
         check_consistent_length(X, sites)
 
         smooth_covariates = check_array(smooth_covariates, dtype=FLOAT_DTYPES, estimator=self)
@@ -295,12 +292,12 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
         new_data_sites_name = np.unique(sites)
 
         # Check all sites from new_data were seen
-        if not all(site_name in self._sites_names for site_name in new_data_sites_name):
+        if not all(s in self.sites_ for s in new_data_sites_name):
             raise ValueError("There is a site unseen during the fit method in the data.")
 
         n_samples = sites.shape[0]
-        n_samples_per_site = np.asarray([np.sum(sites == site_name) for site_name in self._sites_names])
-        idx_per_site = [list(np.where(sites == site_name)[0]) for site_name in self._sites_names]
+        n_samples_per_site = np.asarray([np.sum(sites == site_name) for site_name in self.sites_])
+        idx_per_site = [list(np.where(sites == site_name)[0]) for site_name in self.sites_]
         logger.debug("Making design matrix")
         design = self._make_design_matrix(
             sites,
