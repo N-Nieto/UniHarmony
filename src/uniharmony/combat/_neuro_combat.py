@@ -1,13 +1,11 @@
 """Provide NeuroComBat transformer."""
 
 # Adapted from:
-# https://github.com/Jfortin1/neuroCombat/blob/master/neuroCombat/
-# neuroCombat.py
+# https://github.com/Jfortin1/neuroCombat
 # licensed under MIT license.
 #
 # Adapted from:
-# https://github.com/Warvito/neurocombat_sklearn/blob/master/examples/
-# machine_learning_example.py
+# https://github.com/Warvito/neurocombat_sklearn
 # licensed under MIT license.
 
 import math
@@ -332,9 +330,9 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
 
     def _make_design_matrix(
         self,
-        sites: npt.ArrayLike,
-        categorical_covariates: npt.ArrayLike | None,
-        continuous_covariates: npt.ArrayLike | None,
+        sites: npt.NDArray,
+        categorical_covariates: npt.NDArray | None,
+        continuous_covariates: npt.NDArray | None,
         fitting: bool = False,
     ) -> npt.NDArray:
         """Create a design matrix for the linear model.
@@ -349,12 +347,12 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
 
         Parameters
         ----------
-        sites : array-like, shape (n_samples,) or (n_samples, 1)
-            Site labels for each sample. Can be integers or strings.
-        categorical_covariates : array-like, shape (n_samples, n_categorical) or None
+        sites : array, shape (n_samples, 1)
+            Site labels for each sample.
+        categorical_covariates : array, shape (n_samples, n_categorical) or None
             Categorical covariates to preserve (e.g., sex, disease status).
             Each column is treated as a separate categorical variable.
-        continuous_covariates : array-like, shape (n_samples, n_continuous) or None
+        continuous_covariates : array, shape (n_samples, n_continuous) or None
             Continuous covariates to preserve (e.g., age, clinical scores).
         fitting : bool, optional (default False)
             If True, fit encoders on the data and store them as attributes.
@@ -378,7 +376,7 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
 
         Notes
         -----
-        The drop-first encoding for categorical covariates avoids collinearity
+        The drop-first encoding for categorical covariates avoids co-linearity
         with the intercept (which is implicit in the site effects). This is
         standard practice in regression analysis.
 
