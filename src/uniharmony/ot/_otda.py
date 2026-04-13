@@ -1,4 +1,4 @@
-"""Optimal Transport for Domain Adaptation (BOTDA) implementation."""
+"""Optimal Transport for Domain Adaptation (OTDA) implementation."""
 
 from typing import Any, Literal
 
