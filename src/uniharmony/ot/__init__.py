@@ -1,4 +1,4 @@
-"""Interpolation methods."""
+"""Optimal Transport for Domain Adaptation based methods."""
 
 import lazy_loader as lazy
 

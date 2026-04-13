@@ -1,4 +1,3 @@
-__all__ = ["OTDA", "rBOTDA"]
+__all__ = ["OptimalTransportDomainAdaptation"]
 
-from ._otda import OTDA
-from ._rbotda import rBOTDA
+from ._otda import OptimalTransportDomainAdaptation

@@ -47,14 +47,24 @@ def data_consistency_check(
     X_target: ntp.ArrayLike,
     y_source: ntp.ArrayLike | None = None,
     y_target: ntp.ArrayLike | None = None,
-):
+) -> None:
     """Check data dimensions.
 
-    Args:
-        X_source (ArrayLike): Source data [Samples x Features]
-        X_target (ArrayLike): Target data [Samples x Features]
-        y_source (ArrayLike optional): Source Targets [Samples]. Defaults to None.
-        y_target (ArrayLike, optional): Target Targets [Sample]. Defaults to None.
+    Parameters
+    ----------
+    X_source : ArrayLike
+        Source data [Samples x Features]
+    X_target : ArrayLike
+        Target data [Samples x Features]
+    y_source : ArrayLike, optional
+        Source Targets [Samples]. Defaults to None.
+    y_target : ArrayLike, optional
+        Target Targets [Samples]. Defaults to None.
+
+    Raises
+    ------
+    RuntimeError
+        If there is a mismatch in the number of samples between features and targets.
 
     """
     # Check consistensy if ys is provided
