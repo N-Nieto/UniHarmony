@@ -213,9 +213,9 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
 
         # Expose key attributes from underlying OT object for easier inspection
         self.coupling_ = self.ot_obj_.coupling_
-        logger.debug("Fitted coupling matrix with shape: %s", self.coupling_.shape)
+        logger.debug(f"Fitted coupling matrix with shape: {self.coupling_.shape}")
         self.cost_ = self.ot_obj_.cost_
-        logger.debug("Fitted cost matrix with shape: %s", self.cost_.shape)
+        logger.debug(f"Fitted cost matrix with shape: {self.cost_.shape}")
 
         return self
 
@@ -517,9 +517,8 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
         data_consistency_check(X_source=X_ref, X_target=X_harm, y_source=y_ref, y_target=y_harm)
 
         logger.debug(
-            "Data split into reference and harmonization sets: %d reference samples, %d harmonization samples",
-            X_ref.shape[0],
-            X_harm.shape[0],
+            f"Data split into reference and harmonization sets: {X_ref.shape[0]} reference samples, "
+            f"{X_harm.shape[0]} harmonization samples",
         )
 
         return X_ref, X_harm, y_ref, y_harm
