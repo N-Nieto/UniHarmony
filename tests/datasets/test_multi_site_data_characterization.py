@@ -12,15 +12,13 @@ def test_data_characterization_and_printing() -> None:
     X, y, sites = make_multisite_classification(
         n_sites=3,
         n_samples=100,
-        n_features=10,
         n_classes=3,
-        random_state=42,
     )
     # Compute statistics
     stats = get_site_data_statistics(
         X=X,
         y=y,
-        site_labels=sites,
+        sites=sites,
         compute_comprehensive=True,
     )
 
@@ -28,7 +26,7 @@ def test_data_characterization_and_printing() -> None:
     _ = get_site_data_statistics(
         X=X,
         y=y,
-        site_labels=sites,
+        sites=sites,
         compute_comprehensive=False,
     )
 
