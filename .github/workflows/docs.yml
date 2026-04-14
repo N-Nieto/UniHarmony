@@ -19,13 +19,11 @@ jobs:
           python-version: 3.x
       - name: Install dependencies
         run: pip install -e .[docs]
-      - name: Checkout gh-pages
-        uses: actions/checkout@v6
-        with:
-          ref: gh-pages
-          path: docs/_build
       - name: Build docs
-        run: make -C docs/ html
+        run: |
+          cd docs
+          make html
+          cd ..
       - uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
