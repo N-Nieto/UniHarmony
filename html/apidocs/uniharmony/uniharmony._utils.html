@@ -1,0 +1,811 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>uniharmony._utils &#8212; uniharmony 0.1.dev1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/myst_sphinx_gallery.css?v=92de7a9e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=b99859c3"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'apidocs/uniharmony/uniharmony._utils';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="CHANGELOG" href="../../changelog.html" />
+    <link rel="prev" title="uniharmony._verbose" href="uniharmony._verbose.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">uniharmony 0.1.dev1 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">▶️ Getting Started</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../utilities/index.html">🛠️ Utilities</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/simulate_multisite_data.html">🧪 Multisite Data Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/load_mareos_datasets.html">📊 MAREoS Benchmark Datasets for Harmonization Method Evaluation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../methods/index.html">🧮 Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../methods/combat_based/index.html">🤺 ComBat-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/combat.html">ComBat and neuroComBat</a></li>
+
+
+
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/combat_gam.html">ComBat-GAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/covbat.html">CovBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/neuroharmony.html">Neuroharmony</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/bartharm.html">BARTharm</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/longcombat.html">LongComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/deepcombat.html">DeepComBat</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/prettyharmony.html">PrettYharmonize</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../methods/interpolation_based/index.html">📈 Interpolation-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/interpolation_based/inter_site_matched_interpolation.html">Inter-Site Matched Interpolation (ISMI)</a></li>
+
+
+<li class="toctree-l3"><a class="reference internal" href="../../methods/interpolation_based/intra_site_interpolation.html">Intra Site Interpolation</a></li>
+
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../auto_examples/index.html">🎛️ Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../auto_examples/basic-examples/index.html">Basic examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/basic-examples/EoS_in_ML.html">This example aims to show how Effects of Site (EoS) can be problematic for ML.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/basic-examples/compute_metrics_by_site.html">Compute metrics by site to detect biased performance.</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/basic-examples/multisite_data_characterization_example.html">Characterize a multisite problem using UniHarmony</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../auto_examples/multisite-data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/multisite-data/generate_multisite_data_example.html">Let’s use the different modes of the <code class="docutils literal notranslate"><span class="pre">make_multisite_classification</span></code> function</a></li>
+
+
+
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/multisite-data/load_mareos_example.html">This tutorial shows how to download the MAREoS dataset from the web</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../auto_examples/combat-based/index.html">ComBat Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/combat-based/neuroComBat_binary_classification.html">Harmonize data with neuroComBat</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/combat-based/neuroComBat_imbalance_across_sites.html">Analasing neuroComBat behaivor when imbalance across sites.</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/combat-based/neuroComBat_in_MAREoS.html">Notebook Explanation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../auto_examples/interpolation-based/index.html">Interpolation Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/interpolation-based/ISI_binary_classification_example.html">Using ISI for binary classification problem.</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/interpolation-based/ISMI_binary_classification_example.html">Inter-Site Matched Interpolation (ISMI) - Multi-Site Harmonization Example</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="uniharmony.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony</span></code></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="uniharmony.interpolation.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.interpolation</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="uniharmony.interpolation._inter_site_matched.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.interpolation._inter_site_matched</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="uniharmony.interpolation._intra_site.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.interpolation._intra_site</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="uniharmony.interpolation._utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.interpolation._utils</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="uniharmony.dl.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.dl</span></code></a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="uniharmony.prettyharmonize.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.prettyharmonize</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="uniharmony.prettyharmonize._prettyharmonize.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.prettyharmonize._prettyharmonize</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="uniharmony.normative.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.normative</span></code></a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="uniharmony.combat.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.combat</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="uniharmony.combat._neuro_combat.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.combat._neuro_combat</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="uniharmony.plot.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.plot</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="uniharmony.plot._utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.plot._utils</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="uniharmony.metrics.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.metrics</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="uniharmony.metrics._report_metric_by_site.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.metrics._report_metric_by_site</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="uniharmony.datasets.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.datasets</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="uniharmony.datasets._make_multisite_classification.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.datasets._make_multisite_classification</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="uniharmony.datasets._multisite_data_characterization.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.datasets._multisite_data_characterization</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="uniharmony.datasets._load_mareos.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.datasets._load_mareos</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="uniharmony.ot.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.ot</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="uniharmony.ot._otda.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.ot._otda</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="uniharmony.ot._utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.ot._utils</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="uniharmony._version.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony._version</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="uniharmony._verbose.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony._verbose</span></code></a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony._utils</span></code></a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">CHANGELOG</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/N-Nieto/uniharmony" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/apidocs/uniharmony/uniharmony._utils.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>uniharmony._utils</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api">API</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony._utils.__all__"><code class="docutils literal notranslate"><span class="pre">__all__</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony._utils.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony._utils.solve_ordinary_least_squares"><code class="docutils literal notranslate"><span class="pre">solve_ordinary_least_squares()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony._utils.handle_near_zero_values"><code class="docutils literal notranslate"><span class="pre">handle_near_zero_values()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony._utils.handle_negative_variance"><code class="docutils literal notranslate"><span class="pre">handle_negative_variance()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony._utils.minimum_samples_warning"><code class="docutils literal notranslate"><span class="pre">minimum_samples_warning()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony._utils.validate_covariates"><code class="docutils literal notranslate"><span class="pre">validate_covariates()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony._utils.validate_sites"><code class="docutils literal notranslate"><span class="pre">validate_sites()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-uniharmony._utils">
+<span id="uniharmony-utils"></span><h1><a class="reference internal" href="#module-uniharmony._utils" title="uniharmony._utils"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony._utils</span></code></a><a class="headerlink" href="#module-uniharmony._utils" title="Link to this heading">#</a></h1>
+<p>General utilities.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">#</a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table table-left">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony._utils.solve_ordinary_least_squares" title="uniharmony._utils.solve_ordinary_least_squares"><code class="xref py py-obj docutils literal notranslate"><span class="pre">solve_ordinary_least_squares</span></code></a></p></td>
+<td><p>Solve Ordinary Least Squares using normal equations with stability checks.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#uniharmony._utils.handle_near_zero_values" title="uniharmony._utils.handle_near_zero_values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">handle_near_zero_values</span></code></a></p></td>
+<td><p>Replace near-zero values with epsilon to prevent division by zero.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony._utils.handle_negative_variance" title="uniharmony._utils.handle_negative_variance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">handle_negative_variance</span></code></a></p></td>
+<td><p>Handle negative variance values caused by numerical errors.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#uniharmony._utils.minimum_samples_warning" title="uniharmony._utils.minimum_samples_warning"><code class="xref py py-obj docutils literal notranslate"><span class="pre">minimum_samples_warning</span></code></a></p></td>
+<td><p>Check if sites meet minimum sample size requirements.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony._utils.validate_covariates" title="uniharmony._utils.validate_covariates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_covariates</span></code></a></p></td>
+<td><p>Validate covariates.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#uniharmony._utils.validate_sites" title="uniharmony._utils.validate_sites"><code class="xref py py-obj docutils literal notranslate"><span class="pre">validate_sites</span></code></a></p></td>
+<td><p>Validate sites.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="data">
+<h3>Data<a class="headerlink" href="#data" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table table-left">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony._utils.__all__" title="uniharmony._utils.__all__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__all__</span></code></a></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#uniharmony._utils.logger" title="uniharmony._utils.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="api">
+<h3>API<a class="headerlink" href="#api" title="Link to this heading">#</a></h3>
+<dl class="py data">
+<dt class="sig sig-object py" id="uniharmony._utils.__all__">
+<span class="sig-prename descclassname"><span class="pre">uniharmony._utils.</span></span><span class="sig-name descname"><span class="pre">__all__</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['handle_near_zero_values',</span> <span class="pre">'handle_negative_variance',</span> <span class="pre">'minimum_samples_warning',</span> <span class="pre">'solve_ordinary_l...</span></span><a class="headerlink" href="#uniharmony._utils.__all__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="uniharmony._utils.logger">
+<span class="sig-prename descclassname"><span class="pre">uniharmony._utils.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'get_logger(...)'</span></span><a class="headerlink" href="#uniharmony._utils.logger" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="uniharmony._utils.solve_ordinary_least_squares">
+<span class="sig-prename descclassname"><span class="pre">uniharmony._utils.</span></span><span class="sig-name descname"><span class="pre">solve_ordinary_least_squares</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gram_matrix</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">design</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span></span></span><a class="headerlink" href="#uniharmony._utils.solve_ordinary_least_squares" title="Link to this definition">#</a></dt>
+<dd><p>Solve Ordinary Least Squares using normal equations with stability checks.</p>
+<p>Solves: beta = (X_design^T &#64; X_design)^(-1) &#64; X_design^T &#64; X_data</p>
+<p>Uses Cholesky decomposition for well-conditioned matrices and falls back
+to pseudo-inverse for ill-conditioned cases.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>gram_matrix<span class="classifier">array, shape (n_features, n_features)</span></dt><dd><p>The Gram matrix X_design^T &#64; X_design.</p>
+</dd>
+<dt>X<span class="classifier">array-like, shape (n_samples, n_targets)</span></dt><dd><p>Target values (transposed to (n_targets, n_samples) internally).</p>
+</dd>
+<dt>design<span class="classifier">array, shape (n_samples, n_features)</span></dt><dd><p>Design matrix X_design.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>solution<span class="classifier">ndarray, shape (n_features, n_targets)</span></dt><dd><p>OLS coefficients.</p>
+</dd>
+<dt>condition_number<span class="classifier">float</span></dt><dd><p>Condition number of the Gram matrix (useful for diagnostics).</p>
+</dd>
+</dl>
+</section>
+<section id="raises">
+<h4>Raises<a class="headerlink" href="#raises" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>If gram_matrix is not square or shapes are incompatible.</p>
+</dd>
+<dt>np.linalg.LinAlgError</dt><dd><p>If both Cholesky and pseudo-inverse fail.</p>
+</dd>
+</dl>
+</section>
+<section id="notes">
+<h4>Notes<a class="headerlink" href="#notes" title="Link to this heading">#</a></h4>
+<p>The condition number is computed as the ratio of largest to smallest
+singular value. Large condition numbers (&gt;1e10) indicate potential
+numerical instability.</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="uniharmony._utils.handle_near_zero_values">
+<span class="sig-prename descclassname"><span class="pre">uniharmony._utils.</span></span><span class="sig-name descname"><span class="pre">handle_near_zero_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-08</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">context</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'features'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span></span></span><a class="headerlink" href="#uniharmony._utils.handle_near_zero_values" title="Link to this definition">#</a></dt>
+<dd><p>Replace near-zero values with epsilon to prevent division by zero.</p>
+<p>Creates a copy of the input array and replaces values below epsilon
+with epsilon. This is useful for variance estimates that might be
+zero or near-zero due to constant features or numerical errors.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>values<span class="classifier">array-like</span></dt><dd><p>Input array that may contain near-zero values.</p>
+</dd>
+<dt>epsilon<span class="classifier">float, optional (default 1e-8)</span></dt><dd><p>Threshold below which values are replaced. Also the replacement value.</p>
+</dd>
+<dt>context<span class="classifier">str, optional (default “values”)</span></dt><dd><p>Description of what the values represent (for logging).</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>safe_values<span class="classifier">ndarray</span></dt><dd><p>Copy of input with near-zero values replaced by epsilon.
+Always returns a new array, never modifies input in place.</p>
+</dd>
+</dl>
+</section>
+<section id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1e-10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">safe_var</span> <span class="o">=</span> <span class="n">handle_near_zero_values</span><span class="p">(</span><span class="n">var</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">1e-8</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">safe_var</span>
+<span class="go">array([1.e-08, 1.e-08, 5.e-01, 3.e-01])</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="uniharmony._utils.handle_negative_variance">
+<span class="sig-prename descclassname"><span class="pre">uniharmony._utils.</span></span><span class="sig-name descname"><span class="pre">handle_negative_variance</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">variance</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.ArrayLike</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span></span></span><a class="headerlink" href="#uniharmony._utils.handle_negative_variance" title="Link to this definition">#</a></dt>
+<dd><p>Handle negative variance values caused by numerical errors.</p>
+<p>Variance should always be non-negative, but numerical errors in
+computations can produce small negative values. This function
+corrects them by taking absolute value or clipping to epsilon.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>variance<span class="classifier">array-like</span></dt><dd><p>Variance estimates that may contain negative values due to
+numerical errors.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>safe_variance<span class="classifier">ndarray</span></dt><dd><p>Corrected variance with negative values replaced by absolute
+values (and optionally clipped to epsilon).</p>
+</dd>
+</dl>
+</section>
+<section id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">var</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">1e-15</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">2e-16</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">safe_var</span> <span class="o">=</span> <span class="n">handle_negative_variance</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">safe_var</span>
+<span class="go">array([1.e-15, 5.e-01, 2.e-16, 3.e-01])</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="uniharmony._utils.minimum_samples_warning">
+<span class="sig-prename descclassname"><span class="pre">uniharmony._utils.</span></span><span class="sig-name descname"><span class="pre">minimum_samples_warning</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_samples_per_site</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">numpy.typing.NDArray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_samples_limit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#uniharmony._utils.minimum_samples_warning" title="Link to this definition">#</a></dt>
+<dd><p>Check if sites meet minimum sample size requirements.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>n_samples_per_site<span class="classifier">list or array of int</span></dt><dd><p>Number of samples per site.</p>
+</dd>
+<dt>min_samples_limit<span class="classifier">int, optional (default 16)</span></dt><dd><p>Minimum number of samples required. Below this is considered critical.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading">#</a></h4>
+<p>None</p>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="uniharmony._utils.validate_covariates">
+<span class="sig-prename descclassname"><span class="pre">uniharmony._utils.</span></span><span class="sig-name descname"><span class="pre">validate_covariates</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">covariates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.typing.NDArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#uniharmony._utils.validate_covariates" title="Link to this definition">#</a></dt>
+<dd><p>Validate covariates.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>covariates<span class="classifier">array or None</span></dt><dd><p>The covariates.</p>
+</dd>
+<dt>n_samples<span class="classifier">int</span></dt><dd><p>Sample count.</p>
+</dd>
+<dt>name<span class="classifier">str</span></dt><dd><p>Covariate name.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>array or None</dt><dd><p>Validated covariates or None.</p>
+</dd>
+</dl>
+</section>
+<section id="raises">
+<h4>Raises<a class="headerlink" href="#raises" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>If covariates has incorrect shape.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="uniharmony._utils.validate_sites">
+<span class="sig-prename descclassname"><span class="pre">uniharmony._utils.</span></span><span class="sig-name descname"><span class="pre">validate_sites</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sites</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.typing.NDArray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#uniharmony._utils.validate_sites" title="Link to this definition">#</a></dt>
+<dd><p>Validate sites.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>sites<span class="classifier">array</span></dt><dd><p>The sites.</p>
+</dd>
+</dl>
+</section>
+<section id="raises">
+<h4>Raises<a class="headerlink" href="#raises" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>If single site is provided.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="uniharmony._verbose.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony._verbose</span></code></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../changelog.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">CHANGELOG</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api">API</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony._utils.__all__"><code class="docutils literal notranslate"><span class="pre">__all__</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony._utils.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony._utils.solve_ordinary_least_squares"><code class="docutils literal notranslate"><span class="pre">solve_ordinary_least_squares()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony._utils.handle_near_zero_values"><code class="docutils literal notranslate"><span class="pre">handle_near_zero_values()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony._utils.handle_negative_variance"><code class="docutils literal notranslate"><span class="pre">handle_negative_variance()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony._utils.minimum_samples_warning"><code class="docutils literal notranslate"><span class="pre">minimum_samples_warning()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony._utils.validate_covariates"><code class="docutils literal notranslate"><span class="pre">validate_covariates()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony._utils.validate_sites"><code class="docutils literal notranslate"><span class="pre">validate_sites()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By uniharmony Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026, uniharmony Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,913 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>uniharmony.datasets._load_mareos &#8212; uniharmony 0.1.dev1 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.11b39860a7a0cbfd473a3ad8a317855267ff0bd372690045ca344a6b62be495e.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
+    <link rel="stylesheet" type="text/css" href="../../_static/myst_sphinx_gallery.css?v=92de7a9e" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=b99859c3"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script src="../../_static/design-tabs.js?v=f930bc37"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'apidocs/uniharmony/uniharmony.datasets._load_mareos';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="uniharmony.ot" href="uniharmony.ot.html" />
+    <link rel="prev" title="uniharmony.datasets._multisite_data_characterization" href="uniharmony.datasets._multisite_data_characterization.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">uniharmony 0.1.dev1 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">▶️ Getting Started</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../utilities/index.html">🛠️ Utilities</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/simulate_multisite_data.html">🧪 Multisite Data Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/load_mareos_datasets.html">📊 MAREoS Benchmark Datasets for Harmonization Method Evaluation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../methods/index.html">🧮 Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../methods/combat_based/index.html">🤺 ComBat-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/combat.html">ComBat and neuroComBat</a></li>
+
+
+
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/combat_gam.html">ComBat-GAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/covbat.html">CovBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/neuroharmony.html">Neuroharmony</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/bartharm.html">BARTharm</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/longcombat.html">LongComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/deepcombat.html">DeepComBat</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/prettyharmony.html">PrettYharmonize</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../methods/interpolation_based/index.html">📈 Interpolation-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/interpolation_based/inter_site_matched_interpolation.html">Inter-Site Matched Interpolation (ISMI)</a></li>
+
+
+<li class="toctree-l3"><a class="reference internal" href="../../methods/interpolation_based/intra_site_interpolation.html">Intra Site Interpolation</a></li>
+
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../auto_examples/index.html">🎛️ Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../auto_examples/basic-examples/index.html">Basic examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/basic-examples/EoS_in_ML.html">This example aims to show how Effects of Site (EoS) can be problematic for ML.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/basic-examples/compute_metrics_by_site.html">Compute metrics by site to detect biased performance.</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/basic-examples/multisite_data_characterization_example.html">Characterize a multisite problem using UniHarmony</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../auto_examples/multisite-data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/multisite-data/generate_multisite_data_example.html">Let’s use the different modes of the <code class="docutils literal notranslate"><span class="pre">make_multisite_classification</span></code> function</a></li>
+
+
+
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/multisite-data/load_mareos_example.html">This tutorial shows how to download the MAREoS dataset from the web</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../auto_examples/combat-based/index.html">ComBat Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/combat-based/neuroComBat_binary_classification.html">Harmonize data with neuroComBat</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/combat-based/neuroComBat_imbalance_across_sites.html">Analasing neuroComBat behaivor when imbalance across sites.</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/combat-based/neuroComBat_in_MAREoS.html">Notebook Explanation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../auto_examples/interpolation-based/index.html">Interpolation Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/interpolation-based/ISI_binary_classification_example.html">Using ISI for binary classification problem.</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/interpolation-based/ISMI_binary_classification_example.html">Inter-Site Matched Interpolation (ISMI) - Multi-Site Harmonization Example</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="uniharmony.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony</span></code></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3 has-children"><a class="reference internal" href="uniharmony.interpolation.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.interpolation</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="uniharmony.interpolation._inter_site_matched.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.interpolation._inter_site_matched</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="uniharmony.interpolation._intra_site.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.interpolation._intra_site</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="uniharmony.interpolation._utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.interpolation._utils</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="uniharmony.dl.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.dl</span></code></a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="uniharmony.prettyharmonize.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.prettyharmonize</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="uniharmony.prettyharmonize._prettyharmonize.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.prettyharmonize._prettyharmonize</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="uniharmony.normative.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.normative</span></code></a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="uniharmony.combat.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.combat</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="uniharmony.combat._neuro_combat.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.combat._neuro_combat</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="uniharmony.plot.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.plot</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="uniharmony.plot._utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.plot._utils</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="uniharmony.metrics.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.metrics</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="uniharmony.metrics._report_metric_by_site.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.metrics._report_metric_by_site</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 current active has-children"><a class="reference internal" href="uniharmony.datasets.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.datasets</span></code></a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="uniharmony.datasets._make_multisite_classification.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.datasets._make_multisite_classification</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="uniharmony.datasets._multisite_data_characterization.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.datasets._multisite_data_characterization</span></code></a></li>
+<li class="toctree-l4 current active"><a class="current reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.datasets._load_mareos</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="uniharmony.ot.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.ot</span></code></a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="uniharmony.ot._otda.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.ot._otda</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="uniharmony.ot._utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.ot._utils</span></code></a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="uniharmony._version.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony._version</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="uniharmony._verbose.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony._verbose</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="uniharmony._utils.html"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony._utils</span></code></a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">CHANGELOG</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/N-Nieto/uniharmony" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/apidocs/uniharmony/uniharmony.datasets._load_mareos.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>uniharmony.datasets._load_mareos</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api">API</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos.__all__"><code class="docutils literal notranslate"><span class="pre">__all__</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos.MAREOS_ZIP_URL"><code class="docutils literal notranslate"><span class="pre">MAREOS_ZIP_URL</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos.VALID_EFFECTS"><code class="docutils literal notranslate"><span class="pre">VALID_EFFECTS</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos.VALID_EFFECT_TYPES"><code class="docutils literal notranslate"><span class="pre">VALID_EFFECT_TYPES</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos.VALID_EFFECT_EXAMPLES"><code class="docutils literal notranslate"><span class="pre">VALID_EFFECT_EXAMPLES</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos.DATASET_NAMES"><code class="docutils literal notranslate"><span class="pre">DATASET_NAMES</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos.mareos_pooch"><code class="docutils literal notranslate"><span class="pre">mareos_pooch</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos.load_MAREoS"><code class="docutils literal notranslate"><span class="pre">load_MAREoS()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos._load_mareos_single_dataset"><code class="docutils literal notranslate"><span class="pre">_load_mareos_single_dataset()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos._ensure_mareos_data"><code class="docutils literal notranslate"><span class="pre">_ensure_mareos_data()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos._validate_mareos_parameters"><code class="docutils literal notranslate"><span class="pre">_validate_mareos_parameters()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos._create_target_dir"><code class="docutils literal notranslate"><span class="pre">_create_target_dir()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos._process_effect_param"><code class="docutils literal notranslate"><span class="pre">_process_effect_param()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-uniharmony.datasets._load_mareos">
+<span id="uniharmony-datasets-load-mareos"></span><h1><a class="reference internal" href="#module-uniharmony.datasets._load_mareos" title="uniharmony.datasets._load_mareos"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.datasets._load_mareos</span></code></a><a class="headerlink" href="#module-uniharmony.datasets._load_mareos" title="Link to this heading">#</a></h1>
+<p>Functions to load the MAREoS datasets.</p>
+<p>The MAREoS (Methods Aiming to Remove Effect of Site) datasets provide
+standardized benchmarks for evaluating data harmonization
+methods with known ground truth.</p>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">#</a></h2>
+<section id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table table-left">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony.datasets._load_mareos.load_MAREoS" title="uniharmony.datasets._load_mareos.load_MAREoS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load_MAREoS</span></code></a></p></td>
+<td><p>Load multiple MAREoS datasets.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#uniharmony.datasets._load_mareos._load_mareos_single_dataset" title="uniharmony.datasets._load_mareos._load_mareos_single_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_load_mareos_single_dataset</span></code></a></p></td>
+<td><p>Load a single MAREoS dataset.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony.datasets._load_mareos._ensure_mareos_data" title="uniharmony.datasets._load_mareos._ensure_mareos_data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_ensure_mareos_data</span></code></a></p></td>
+<td><p>Ensure MAREoS datasets are available locally, downloading if necessary.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#uniharmony.datasets._load_mareos._validate_mareos_parameters" title="uniharmony.datasets._load_mareos._validate_mareos_parameters"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_validate_mareos_parameters</span></code></a></p></td>
+<td><p>Validate and normalize MAREoS dataset selection parameters.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony.datasets._load_mareos._create_target_dir" title="uniharmony.datasets._load_mareos._create_target_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_create_target_dir</span></code></a></p></td>
+<td><p>Create target directory.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#uniharmony.datasets._load_mareos._process_effect_param" title="uniharmony.datasets._load_mareos._process_effect_param"><code class="xref py py-obj docutils literal notranslate"><span class="pre">_process_effect_param</span></code></a></p></td>
+<td><p>Process and validate a single parameter.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="data">
+<h3>Data<a class="headerlink" href="#data" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table table-left">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony.datasets._load_mareos.__all__" title="uniharmony.datasets._load_mareos.__all__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__all__</span></code></a></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#uniharmony.datasets._load_mareos.logger" title="uniharmony.datasets._load_mareos.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony.datasets._load_mareos.MAREOS_ZIP_URL" title="uniharmony.datasets._load_mareos.MAREOS_ZIP_URL"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MAREOS_ZIP_URL</span></code></a></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#uniharmony.datasets._load_mareos.VALID_EFFECTS" title="uniharmony.datasets._load_mareos.VALID_EFFECTS"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VALID_EFFECTS</span></code></a></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony.datasets._load_mareos.VALID_EFFECT_TYPES" title="uniharmony.datasets._load_mareos.VALID_EFFECT_TYPES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VALID_EFFECT_TYPES</span></code></a></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#uniharmony.datasets._load_mareos.VALID_EFFECT_EXAMPLES" title="uniharmony.datasets._load_mareos.VALID_EFFECT_EXAMPLES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">VALID_EFFECT_EXAMPLES</span></code></a></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony.datasets._load_mareos.DATASET_NAMES" title="uniharmony.datasets._load_mareos.DATASET_NAMES"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DATASET_NAMES</span></code></a></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#uniharmony.datasets._load_mareos.mareos_pooch" title="uniharmony.datasets._load_mareos.mareos_pooch"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mareos_pooch</span></code></a></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="api">
+<h3>API<a class="headerlink" href="#api" title="Link to this heading">#</a></h3>
+<dl class="py data">
+<dt class="sig sig-object py" id="uniharmony.datasets._load_mareos.__all__">
+<span class="sig-prename descclassname"><span class="pre">uniharmony.datasets._load_mareos.</span></span><span class="sig-name descname"><span class="pre">__all__</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['_ensure_mareos_data',</span> <span class="pre">'load_MAREoS']</span></span><a class="headerlink" href="#uniharmony.datasets._load_mareos.__all__" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="uniharmony.datasets._load_mareos.logger">
+<span class="sig-prename descclassname"><span class="pre">uniharmony.datasets._load_mareos.</span></span><span class="sig-name descname"><span class="pre">logger</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'get_logger(...)'</span></span><a class="headerlink" href="#uniharmony.datasets._load_mareos.logger" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="uniharmony.datasets._load_mareos.MAREOS_ZIP_URL">
+<span class="sig-prename descclassname"><span class="pre">uniharmony.datasets._load_mareos.</span></span><span class="sig-name descname"><span class="pre">MAREOS_ZIP_URL</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'https://www.imardgroup.com/mareos-benchmark/public_datasets.zip'</span></span><a class="headerlink" href="#uniharmony.datasets._load_mareos.MAREOS_ZIP_URL" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="uniharmony.datasets._load_mareos.VALID_EFFECTS">
+<span class="sig-prename descclassname"><span class="pre">uniharmony.datasets._load_mareos.</span></span><span class="sig-name descname"><span class="pre">VALID_EFFECTS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['eos',</span> <span class="pre">'true']</span></span><a class="headerlink" href="#uniharmony.datasets._load_mareos.VALID_EFFECTS" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="uniharmony.datasets._load_mareos.VALID_EFFECT_TYPES">
+<span class="sig-prename descclassname"><span class="pre">uniharmony.datasets._load_mareos.</span></span><span class="sig-name descname"><span class="pre">VALID_EFFECT_TYPES</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['simple',</span> <span class="pre">'interaction']</span></span><a class="headerlink" href="#uniharmony.datasets._load_mareos.VALID_EFFECT_TYPES" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="uniharmony.datasets._load_mareos.VALID_EFFECT_EXAMPLES">
+<span class="sig-prename descclassname"><span class="pre">uniharmony.datasets._load_mareos.</span></span><span class="sig-name descname"><span class="pre">VALID_EFFECT_EXAMPLES</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['1',</span> <span class="pre">'2']</span></span><a class="headerlink" href="#uniharmony.datasets._load_mareos.VALID_EFFECT_EXAMPLES" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="uniharmony.datasets._load_mareos.DATASET_NAMES">
+<span class="sig-prename descclassname"><span class="pre">uniharmony.datasets._load_mareos.</span></span><span class="sig-name descname"><span class="pre">DATASET_NAMES</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['eos_simple1',</span> <span class="pre">'eos_simple2',</span> <span class="pre">'eos_interaction1',</span> <span class="pre">'eos_interaction2',</span> <span class="pre">'true_simple1',</span> <span class="pre">'true_simple2...</span></span><a class="headerlink" href="#uniharmony.datasets._load_mareos.DATASET_NAMES" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="uniharmony.datasets._load_mareos.mareos_pooch">
+<span class="sig-prename descclassname"><span class="pre">uniharmony.datasets._load_mareos.</span></span><span class="sig-name descname"><span class="pre">mareos_pooch</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'create(...)'</span></span><a class="headerlink" href="#uniharmony.datasets._load_mareos.mareos_pooch" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="uniharmony.datasets._load_mareos.load_MAREoS">
+<span class="sig-prename descclassname"><span class="pre">uniharmony.datasets._load_mareos.</span></span><span class="sig-name descname"><span class="pre">load_MAREoS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">effects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">effect_types</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">effect_examples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_numpy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">pathlib.Path</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_download</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://pandas.pydata.org/pandas-docs/dev/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas)"><span class="pre">pandas.DataFrame</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#uniharmony.datasets._load_mareos.load_MAREoS" title="Link to this definition">#</a></dt>
+<dd><p>Load multiple MAREoS datasets.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>effects<span class="classifier">list of str, str or None, optional (default None)</span></dt><dd><p>List of effects to load. If None, loads all [“eos”, “true”]</p>
+</dd>
+<dt>effect_types<span class="classifier">list of str, str or None, optional (default None)</span></dt><dd><p>List of effect types to load.
+If None, loads all [“simple”, “interaction”]</p>
+</dd>
+<dt>effect_examples<span class="classifier">list of str, str or None, optional (default None)</span></dt><dd><p>List of examples to load.
+If None, loads all [“1”, “2”].</p>
+</dd>
+<dt>as_numpy<span class="classifier">bool, optional (default True)</span></dt><dd><p>If True, return <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>, else <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>.</p>
+</dd>
+<dt>data_dir<span class="classifier">Path | None, optional (default None)</span></dt><dd><p>Directory containing MAREoS data files. If None, downloads to cache.</p>
+</dd>
+<dt>force_download<span class="classifier">bool, optional (default False)</span></dt><dd><p>Force to download again the dataset in case of corrupt files.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>dict of str and dict</dt><dd><p>Nested dictionary where keys are dataset names
+containing:</p>
+<ul class="simple">
+<li><p>“X”: Feature matrix</p></li>
+<li><p>“y”: Target labels</p></li>
+<li><p>“sites”: Site labels</p></li>
+<li><p>“covs”: Covariates</p></li>
+<li><p>“folds”: Cross-validation folds</p></li>
+</ul>
+</dd>
+</dl>
+</section>
+<section id="raises">
+<h4>Raises<a class="headerlink" href="#raises" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>If any parameter contains invalid values.</p>
+</dd>
+</dl>
+</section>
+<section id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">datasets</span> <span class="o">=</span> <span class="n">load_MAREoS</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">datasets</span><span class="p">)</span>
+<span class="go">8</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">datasets</span> <span class="o">=</span> <span class="n">load_MAREoS</span><span class="p">(</span><span class="n">effects</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;eos&quot;</span><span class="p">],</span> <span class="n">effect_types</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;simple&quot;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">datasets</span><span class="p">)</span>
+<span class="go">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">datasets</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+<span class="go">[&#39;eos_simple1&#39;, &#39;eos_simple2&#39;]</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="uniharmony.datasets._load_mareos._load_mareos_single_dataset">
+<span class="sig-prename descclassname"><span class="pre">uniharmony.datasets._load_mareos.</span></span><span class="sig-name descname"><span class="pre">_load_mareos_single_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">pathlib.Path</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">effect</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">effect_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">effect_example</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_numpy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://pandas.pydata.org/pandas-docs/dev/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas)"><span class="pre">pandas.DataFrame</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">numpy.ndarray</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#uniharmony.datasets._load_mareos._load_mareos_single_dataset" title="Link to this definition">#</a></dt>
+<dd><p>Load a single MAREoS dataset.</p>
+<p>This function is expected to be called only within “load_MAREoS”</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>data_dir<span class="classifier">Path</span></dt><dd><p>Directory containing MAREoS data files.</p>
+</dd>
+<dt>effect<span class="classifier">str</span></dt><dd><p>Type of effect. Options: “true” (true biological signal) or
+“eos” (effect of site, spurious signal)</p>
+</dd>
+<dt>effect_type<span class="classifier">str</span></dt><dd><p>Type of effect. Options: “simple” (linear effects) or
+“interaction” (non-linear interactions)</p>
+</dd>
+<dt>effect_example<span class="classifier">str</span></dt><dd><p>Which of the two simulated datasets to load. Options: “1” or “2”</p>
+</dd>
+<dt>as_numpy<span class="classifier">bool, optional (default True)</span></dt><dd><p>If True, return <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>, else <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>X<span class="classifier">pd.DataFrame or np.ndarray</span></dt><dd><p>Feature matrix of shape (1000, 15)</p>
+</dd>
+<dt>y<span class="classifier">pd.DataFrame or np.ndarray</span></dt><dd><p>Target labels of shape (1000, 1)</p>
+</dd>
+<dt>sites<span class="classifier">pd.Series or np.ndarray</span></dt><dd><p>Site labels of shape (1000,)</p>
+</dd>
+<dt>covariates<span class="classifier">pd.DataFrame or np.ndarray</span></dt><dd><p>Covariates (cov1, cov2) of shape (1000, 2)</p>
+</dd>
+<dt>folds<span class="classifier">pd.Series or np.ndarray</span></dt><dd><p>Predefined cross-validation folds of shape (1000,)</p>
+</dd>
+</dl>
+</section>
+<section id="raises">
+<h4>Raises<a class="headerlink" href="#raises" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>If any parameter has an invalid value.</p>
+</dd>
+<dt>RuntimeError</dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">data_dir</span></code> is not found.</p>
+</dd>
+<dt>FileNotFoundError</dt><dd><p>If the requested dataset files are not found.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="uniharmony.datasets._load_mareos._ensure_mareos_data">
+<span class="sig-prename descclassname"><span class="pre">uniharmony.datasets._load_mareos.</span></span><span class="sig-name descname"><span class="pre">_ensure_mareos_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">pathlib.Path</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_download</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">pathlib.Path</span></a></span></span><a class="headerlink" href="#uniharmony.datasets._load_mareos._ensure_mareos_data" title="Link to this definition">#</a></dt>
+<dd><p>Ensure MAREoS datasets are available locally, downloading if necessary.</p>
+<p>Downloads the entire ZIP file and extracts it to the cache directory.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>data_dir<span class="classifier">Path or str or None, optional (default None)</span></dt><dd><p>Custom directory to store data. If None, uses default cache location.</p>
+</dd>
+<dt>force_download<span class="classifier">bool, optional (default False)</span></dt><dd><p>Force re-download even if files exist.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>Path</dt><dd><p>Path to the directory containing the extracted MAREoS data files.</p>
+</dd>
+</dl>
+</section>
+<section id="raises">
+<h4>Raises<a class="headerlink" href="#raises" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>ConnectionError</dt><dd><p>If unable to download or extract the ZIP file.</p>
+</dd>
+</dl>
+</section>
+<section id="examples">
+<h4>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h4>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data_path</span> <span class="o">=</span> <span class="n">ensure_mareos_data</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data_path</span> <span class="o">=</span> <span class="n">ensure_mareos_data</span><span class="p">(</span><span class="n">data_dir</span><span class="o">=</span><span class="n">Path</span><span class="p">(</span><span class="s2">&quot;./data&quot;</span><span class="p">))</span>
+</pre></div>
+</div>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="uniharmony.datasets._load_mareos._validate_mareos_parameters">
+<span class="sig-prename descclassname"><span class="pre">uniharmony.datasets._load_mareos.</span></span><span class="sig-name descname"><span class="pre">_validate_mareos_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">effects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">effect_types</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">effect_examples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#uniharmony.datasets._load_mareos._validate_mareos_parameters" title="Link to this definition">#</a></dt>
+<dd><p>Validate and normalize MAREoS dataset selection parameters.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>effects<span class="classifier">str, list of str, or None, optional (default None)</span></dt><dd><p>Type(s) of effect to load. Valid: “eos”, “true”.</p>
+</dd>
+<dt>effect_types<span class="classifier">str, list of str, or None, optional (default None)</span></dt><dd><p>Type(s) of effect pattern. Valid: “simple”, “interaction”.</p>
+</dd>
+<dt>effect_examples<span class="classifier">str, list of str, or None, optional (default None)</span></dt><dd><p>Example number(s). Valid: “1”, “2”.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>tuple</dt><dd><p>Normalized lists of validated parameters.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="uniharmony.datasets._load_mareos._create_target_dir">
+<span class="sig-prename descclassname"><span class="pre">uniharmony.datasets._load_mareos.</span></span><span class="sig-name descname"><span class="pre">_create_target_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">pathlib.Path</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">pathlib.Path</span></a></span></span><a class="headerlink" href="#uniharmony.datasets._load_mareos._create_target_dir" title="Link to this definition">#</a></dt>
+<dd><p>Create target directory.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>data_dir<span class="classifier">pathlib.Path or str or None</span></dt><dd><p>Base data directory.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>pathlib.Path</dt><dd><p>Target directory.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="uniharmony.datasets._load_mareos._process_effect_param">
+<span class="sig-prename descclassname"><span class="pre">uniharmony.datasets._load_mareos.</span></span><span class="sig-name descname"><span class="pre">_process_effect_param</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_values</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">param_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#uniharmony.datasets._load_mareos._process_effect_param" title="Link to this definition">#</a></dt>
+<dd><p>Process and validate a single parameter.</p>
+<section id="parameters">
+<h4>Parameters<a class="headerlink" href="#parameters" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>param<span class="classifier">str or list of str or None</span></dt><dd><p>Effect parameter.</p>
+</dd>
+<dt>default_values<span class="classifier">list of str</span></dt><dd><p>Default values for <code class="docutils literal notranslate"><span class="pre">param</span></code>.</p>
+</dd>
+<dt>param_name<span class="classifier">str</span></dt><dd><p>Parameter name.</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h4>Returns<a class="headerlink" href="#returns" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>list of str</dt><dd><p>Validated parameter.</p>
+</dd>
+</dl>
+</section>
+<section id="raises">
+<h4>Raises<a class="headerlink" href="#raises" title="Link to this heading">#</a></h4>
+<dl class="simple">
+<dt>ValueError</dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">param</span></code> has invalid values.</p>
+</dd>
+<dt>TypeError</dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">param</span></code> has invalid type.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="uniharmony.datasets._multisite_data_characterization.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.datasets._multisite_data_characterization</span></code></p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="uniharmony.ot.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><code class="xref py py-mod docutils literal notranslate"><span class="pre">uniharmony.ot</span></code></p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data">Data</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#api">API</a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos.__all__"><code class="docutils literal notranslate"><span class="pre">__all__</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos.MAREOS_ZIP_URL"><code class="docutils literal notranslate"><span class="pre">MAREOS_ZIP_URL</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos.VALID_EFFECTS"><code class="docutils literal notranslate"><span class="pre">VALID_EFFECTS</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos.VALID_EFFECT_TYPES"><code class="docutils literal notranslate"><span class="pre">VALID_EFFECT_TYPES</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos.VALID_EFFECT_EXAMPLES"><code class="docutils literal notranslate"><span class="pre">VALID_EFFECT_EXAMPLES</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos.DATASET_NAMES"><code class="docutils literal notranslate"><span class="pre">DATASET_NAMES</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos.mareos_pooch"><code class="docutils literal notranslate"><span class="pre">mareos_pooch</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos.load_MAREoS"><code class="docutils literal notranslate"><span class="pre">load_MAREoS()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos._load_mareos_single_dataset"><code class="docutils literal notranslate"><span class="pre">_load_mareos_single_dataset()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos._ensure_mareos_data"><code class="docutils literal notranslate"><span class="pre">_ensure_mareos_data()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos._validate_mareos_parameters"><code class="docutils literal notranslate"><span class="pre">_validate_mareos_parameters()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos._create_target_dir"><code class="docutils literal notranslate"><span class="pre">_create_target_dir()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets._load_mareos._process_effect_param"><code class="docutils literal notranslate"><span class="pre">_process_effect_param()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By uniharmony Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026, uniharmony Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
