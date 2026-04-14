@@ -1,3 +1,0 @@
-# InterSiteMatchedInterpolation
-
-::: uniharmony.interpolation.InterSiteMatchedInterpolation
