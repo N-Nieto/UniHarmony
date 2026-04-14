@@ -1,10 +1,14 @@
 """Provide statistics and basic information about multisite data."""
 
-import warnings
 from typing import Any
 
 import numpy as np
 import structlog
+from sklearn.utils.validation import (
+    check_array,
+    check_consistent_length,
+    check_X_y,
+)
 
 
 __all__ = [
@@ -18,7 +22,7 @@ logger = structlog.get_logger()
 def get_site_data_statistics(
     X: np.ndarray,
     y: np.ndarray,
-    site_labels: np.ndarray,
+    sites: np.ndarray,
     feature_names: list[str] | None = None,
     compute_comprehensive: bool = True,
 ) -> dict[str, Any]:
@@ -33,7 +37,7 @@ def get_site_data_statistics(
         Feature matrix containing the input data
     y : np.ndarray of shape (n_samples,)
         Target labels (can be binary or multi-class)
-    site_labels : np.ndarray of shape (n_samples,)
+    sites : np.ndarray of shape (n_samples,)
         Site labels indicating which site each sample belongs to
     feature_names : list of str or None, optional
         Names of features for more readable output. If None, uses indices.
@@ -66,12 +70,14 @@ def get_site_data_statistics(
     100
 
     """
-    # Validate inputs
-    _validate_inputs(X, y, site_labels)
+    # Check data.
+    X, y = check_X_y(X, y)
+    sites = check_array(sites, dtype=None, ensure_2d=False)
+    check_consistent_length(X, y, sites)
 
     # Get basic dimensions
     n_samples, n_features = X.shape
-    unique_sites = np.unique(site_labels)
+    unique_sites = np.unique(sites)
     unique_classes = np.unique(y)
     n_sites = len(unique_sites)
     n_classes = len(unique_classes)
@@ -96,95 +102,19 @@ def get_site_data_statistics(
     # Overall statistics
     logger.info(f"Computing statistics for {n_samples} samples, {n_features} features, {n_sites} sites, {n_classes} classes")
 
-    stats["overall"] = _compute_overall_statistics(X, y, site_labels, feature_names)
+    stats["overall"] = _compute_overall_statistics(X, y, sites, feature_names)
 
     # Site-specific statistics
-    stats["site_statistics"] = _compute_site_statistics(X, y, site_labels, unique_sites, feature_names)
+    stats["site_statistics"] = _compute_site_statistics(X, y, sites, unique_sites, feature_names)
 
     # Class-specific statistics
     stats["class_statistics"] = _compute_class_statistics(X, y, unique_classes, feature_names)
 
     # Correlation and relationship statistics
     if compute_comprehensive:
-        stats["correlations"] = _compute_correlation_statistics(X, y, site_labels, unique_sites, unique_classes)
+        stats["correlations"] = _compute_correlation_statistics(X, y, sites, unique_sites, unique_classes)
 
     return stats
-
-
-def _validate_inputs(X: np.ndarray, y: np.ndarray, site_labels: np.ndarray) -> None:
-    """Validate input arrays for get_site_data_statistics.
-
-    Parameters
-    ----------
-    X : np.ndarray
-        Feature matrix
-    y : np.ndarray
-        Target labels
-    site_labels : np.ndarray
-        Site labels
-
-    """
-    # Type validation
-    _validate_array_types(X, y, site_labels)
-
-    # Shape validation
-    _validate_array_shapes(X, y, site_labels)
-
-    # Dimensionality validation
-    _validate_array_dimensions(X, y, site_labels)
-
-    # Value validation
-    _validate_array_values(X, y, site_labels)
-
-
-def _validate_array_types(X: np.ndarray, y: np.ndarray, site_labels: np.ndarray) -> None:
-    """Validate that all inputs are numpy arrays."""
-    if not isinstance(X, np.ndarray):
-        raise TypeError(f"X must be a numpy array, got {type(X)}")
-    if not isinstance(y, np.ndarray):
-        raise TypeError(f"y must be a numpy array, got {type(y)}")
-    if not isinstance(site_labels, np.ndarray):
-        raise TypeError(f"site_labels must be a numpy array, got {type(site_labels)}")
-
-
-def _validate_array_shapes(X: np.ndarray, y: np.ndarray, site_labels: np.ndarray) -> None:
-    """Validate that all inputs have compatible shapes."""
-    n_samples = X.shape[0]
-
-    if y.shape[0] != n_samples:
-        raise ValueError(f"y must have same number of samples as X. X has {n_samples}, y has {y.shape[0]}")
-
-    if site_labels.shape[0] != n_samples:
-        raise ValueError(
-            f"site_labels must have same number of samples as X. X has {n_samples}, site_labels has {site_labels.shape[0]}"
-        )
-
-
-def _validate_array_dimensions(X: np.ndarray, y: np.ndarray, site_labels: np.ndarray) -> None:
-    """Validate the dimensionality of input arrays."""
-    if X.ndim != 2:
-        raise ValueError(f"X must be 2D array, got {X.ndim}D")
-
-    if y.ndim != 1:
-        raise ValueError(f"y must be 1D array, got {y.ndim}D")
-
-    if site_labels.ndim != 1:
-        raise ValueError(f"site_labels must be 1D array, got {site_labels.ndim}D")
-
-
-def _validate_array_values(X: np.ndarray, y: np.ndarray, site_labels: np.ndarray) -> None:
-    """Check for problematic values in input arrays."""
-    if np.any(np.isnan(X)):
-        warnings.warn("X contains NaN values, statistics may be affected", stacklevel=2)
-
-    if np.any(np.isnan(y)):
-        warnings.warn("y contains NaN values, statistics may be affected", stacklevel=2)
-
-    # if np.any(np.isnan(site_labels)):
-    #     warnings.warn(
-    #         "site_labels contains NaN values, statistics may be affected",
-    #         stacklevel=2,
-    #     )
 
 
 def _compute_overall_statistics(
