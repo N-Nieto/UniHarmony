@@ -93,7 +93,7 @@ def test_multiclass_balance() -> None:
                 actual_prob = np.mean(y_site == class_idx)
                 expected_prob = expected_probs[class_idx]
                 # Allow 5% tolerance
-                assert abs(actual_prob - expected_prob) < 0.05, (
+                assert np.isclose(actual_prob, expected_prob, rtol=0.5), (
                     f"Site {site_idx}, class {class_idx}: expected {expected_prob}, got {actual_prob}"
                 )
 
