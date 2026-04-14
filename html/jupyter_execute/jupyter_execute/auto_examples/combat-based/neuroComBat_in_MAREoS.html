@@ -631,15 +631,15 @@
 </div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">58</span>
-<span class="g g-Whitespace">     </span><span class="mi">54</span> 
-<span class="g g-Whitespace">     </span><span class="mi">55</span>                 <span class="c1"># neuroComBat (do not include target as covariate - avoiding data leakage)</span>
-<span class="g g-Whitespace">     </span><span class="mi">56</span>                 <span class="n">X_train_harm</span> <span class="o">=</span> <span class="n">harm_model</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X_train</span><span class="p">,</span> <span class="n">sites</span><span class="o">=</span><span class="n">site_train</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">57</span>                 <span class="c1"># Fit the model with the harmonized train</span>
-<span class="ne">---&gt; </span><span class="mi">58</span>                 <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_harm</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">59</span>                 <span class="c1"># harmonize the test data</span>
-<span class="g g-Whitespace">     </span><span class="mi">60</span>                 <span class="n">X_test_harm</span> <span class="o">=</span> <span class="n">harm_model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X_test</span><span class="p">,</span> <span class="n">sites</span><span class="o">=</span><span class="n">site_test</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">61</span> 
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">43</span>
+<span class="g g-Whitespace">     </span><span class="mi">39</span>                 <span class="c1"># Test target</span>
+<span class="g g-Whitespace">     </span><span class="mi">40</span>                 <span class="n">y_test</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;folds&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">fold</span><span class="p">]</span>
+<span class="g g-Whitespace">     </span><span class="mi">41</span> 
+<span class="g g-Whitespace">     </span><span class="mi">42</span>                 <span class="c1"># Unharmonized baseline model</span>
+<span class="ne">---&gt; </span><span class="mi">43</span>                 <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">44</span>                 <span class="n">unharmonized_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">45</span>                     <span class="p">[</span>
+<span class="g g-Whitespace">     </span><span class="mi">46</span>                         <span class="n">balanced_accuracy_score</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X_test</span><span class="p">)),</span>
 
 <span class="nn">File /opt/hostedtoolcache/Python/3.14.3/x64/lib/python3.14/site-packages/sklearn/base.py:1336,</span> in <span class="ni">_fit_context.&lt;locals&gt;.decorator.&lt;locals&gt;.wrapper</span><span class="nt">(estimator, *args, **kwargs)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1329</span>     <span class="n">estimator</span><span class="o">.</span><span class="n">_validate_params</span><span class="p">()</span>
@@ -735,80 +735,16 @@
    <span class="p">(</span><span class="o">...</span><span class="p">)</span>    <span class="mi">201</span>         <span class="n">missing_values_in_feature_mask</span><span class="o">=</span><span class="n">missing_values_in_feature_mask</span><span class="p">,</span>
 <span class="g g-Whitespace">    </span><span class="mi">202</span>     <span class="p">)</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.3/x64/lib/python3.14/site-packages/sklearn/tree/_classes.py:297,</span> in <span class="ni">BaseDecisionTree._fit</span><span class="nt">(self, X, y, sample_weight, check_input, missing_values_in_feature_mask)</span>
-<span class="g g-Whitespace">    </span><span class="mi">294</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_outputs_</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-<span class="g g-Whitespace">    </span><span class="mi">296</span> <span class="k">if</span> <span class="n">is_classification</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">297</span>     <span class="n">check_classification_targets</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">298</span>     <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">300</span>     <span class="bp">self</span><span class="o">.</span><span class="n">classes_</span> <span class="o">=</span> <span class="p">[]</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.3/x64/lib/python3.14/site-packages/sklearn/utils/multiclass.py:213,</span> in <span class="ni">check_classification_targets</span><span class="nt">(y)</span>
-<span class="g g-Whitespace">    </span><span class="mi">201</span> <span class="k">def</span><span class="w"> </span><span class="nf">check_classification_targets</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">202</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;Ensure that target y is of a non-regression type.</span>
-<span class="g g-Whitespace">    </span><span class="mi">203</span><span class="sd"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">204</span><span class="sd">     Only the following target types (as defined in type_of_target) are allowed:</span>
-<span class="sd">   (...)    211         Target values.</span>
-<span class="g g-Whitespace">    </span><span class="mi">212</span><span class="sd">     &quot;&quot;&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">213</span>     <span class="n">y_type</span> <span class="o">=</span> <span class="n">type_of_target</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">input_name</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">214</span>     <span class="k">if</span> <span class="n">y_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span>
-<span class="g g-Whitespace">    </span><span class="mi">215</span>         <span class="s2">&quot;binary&quot;</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">216</span>         <span class="s2">&quot;multiclass&quot;</span><span class="p">,</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>    <span class="mi">219</span>         <span class="s2">&quot;multilabel-sequences&quot;</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">220</span>     <span class="p">]:</span>
-<span class="g g-Whitespace">    </span><span class="mi">221</span>         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">222</span>             <span class="sa">f</span><span class="s2">&quot;Unknown label type: </span><span class="si">{</span><span class="n">y_type</span><span class="si">}</span><span class="s2">. Maybe you are trying to fit a &quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">223</span>             <span class="s2">&quot;classifier, which expects discrete classes on a &quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">224</span>             <span class="s2">&quot;regression target with continuous values.&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">225</span>         <span class="p">)</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.3/x64/lib/python3.14/site-packages/sklearn/utils/multiclass.py:343,</span> in <span class="ni">type_of_target</span><span class="nt">(y, input_name, raise_unknown)</span>
-<span class="g g-Whitespace">    </span><span class="mi">340</span> <span class="k">if</span> <span class="n">sparse_pandas</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">341</span>     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;y cannot be class &#39;SparseSeries&#39; or &#39;SparseArray&#39;&quot;</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">343</span> <span class="k">if</span> <span class="n">is_multilabel</span><span class="p">(</span><span class="n">y</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">344</span>     <span class="k">return</span> <span class="s2">&quot;multilabel-indicator&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">346</span> <span class="c1"># DeprecationWarning will be replaced by ValueError, see NEP 34</span>
-<span class="g g-Whitespace">    </span><span class="mi">347</span> <span class="c1"># https://numpy.org/neps/nep-0034-infer-dtype-is-object.html</span>
-<span class="g g-Whitespace">    </span><span class="mi">348</span> <span class="c1"># We therefore catch both deprecation (NumPy &lt; 1.24) warning and</span>
-<span class="g g-Whitespace">    </span><span class="mi">349</span> <span class="c1"># value error (NumPy &gt;= 1.24).</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.3/x64/lib/python3.14/site-packages/sklearn/utils/multiclass.py:172,</span> in <span class="ni">is_multilabel</span><span class="nt">(y)</span>
-<span class="g g-Whitespace">    </span><span class="mi">170</span> <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="n">VisibleDeprecationWarning</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">171</span> <span class="k">try</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">172</span>     <span class="n">y</span> <span class="o">=</span> <span class="n">check_array</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">check_y_kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">173</span> <span class="k">except</span> <span class="p">(</span><span class="n">VisibleDeprecationWarning</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">174</span>     <span class="k">if</span> <span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;Complex data not supported&quot;</span><span class="p">):</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.3/x64/lib/python3.14/site-packages/sklearn/utils/validation.py:1004,</span> in <span class="ni">check_array</span><span class="nt">(array, accept_sparse, accept_large_sparse, dtype, order, copy, force_writeable, ensure_all_finite, ensure_non_negative, ensure_2d, allow_nd, ensure_min_samples, ensure_min_features, estimator, input_name)</span>
-<span class="g g-Whitespace">    </span><span class="mi">992</span>         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">993</span>             <span class="sa">f</span><span class="s2">&quot;Expected 2D input, got input with shape </span><span class="si">{</span><span class="n">array</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">.</span><span class="se">\n</span><span class="s2">&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">994</span>             <span class="s2">&quot;Reshape your data either using array.reshape(-1, 1) if &quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">995</span>             <span class="s2">&quot;your data has a single feature or array.reshape(1, -1) &quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">996</span>             <span class="s2">&quot;if it contains a single sample.&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">997</span>         <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">998</span> <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">999</span>     <span class="c1"># If np.array(..) gives ComplexWarning, then we convert the warning</span>
-<span class="g g-Whitespace">   </span><span class="mi">1000</span>     <span class="c1"># to an error. This is needed because specifying a non complex</span>
-<span class="g g-Whitespace">   </span><span class="mi">1001</span>     <span class="c1"># dtype to the function converts complex to real dtype,</span>
-<span class="g g-Whitespace">   </span><span class="mi">1002</span>     <span class="c1"># thereby passing the test made in the lines following the scope</span>
-<span class="g g-Whitespace">   </span><span class="mi">1003</span>     <span class="c1"># of warnings context manager.</span>
-<span class="ne">-&gt; </span><span class="mi">1004</span>     <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
-<span class="g g-Whitespace">   </span><span class="mi">1005</span>         <span class="k">try</span><span class="p">:</span>
-<span class="g g-Whitespace">   </span><span class="mi">1006</span>             <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">,</span> <span class="n">ComplexWarning</span><span class="p">)</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.3/x64/lib/python3.14/_py_warnings.py:616,</span> in <span class="ni">catch_warnings.__init__</span><span class="nt">(self, record, module, action, category, lineno, append)</span>
-<span class="g g-Whitespace">    </span><span class="mi">596</span> <span class="k">class</span><span class="w"> </span><span class="nc">catch_warnings</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">598</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;A context manager that copies and restores the warnings filter upon</span>
-<span class="g g-Whitespace">    </span><span class="mi">599</span><span class="sd">     exiting the context.</span>
-<span class="g g-Whitespace">    </span><span class="mi">600</span><span class="sd"> </span>
-<span class="sd">   (...)    613     context.</span>
-<span class="g g-Whitespace">    </span><span class="mi">614</span><span class="sd">     &quot;&quot;&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">616</span>     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">record</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">module</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">617</span>                  <span class="n">action</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">Warning</span><span class="p">,</span> <span class="n">lineno</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">618</span><span class="w">         </span><span class="sd">&quot;&quot;&quot;Specify whether to record warnings and if an alternative module</span>
-<span class="g g-Whitespace">    </span><span class="mi">619</span><span class="sd">         should be used other than sys.modules[&#39;warnings&#39;].</span>
-<span class="g g-Whitespace">    </span><span class="mi">620</span><span class="sd"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">621</span><span class="sd">         &quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">622</span>         <span class="bp">self</span><span class="o">.</span><span class="n">_record</span> <span class="o">=</span> <span class="n">record</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.3/x64/lib/python3.14/site-packages/sklearn/tree/_classes.py:475,</span> in <span class="ni">BaseDecisionTree._fit</span><span class="nt">(self, X, y, sample_weight, check_input, missing_values_in_feature_mask)</span>
+<span class="g g-Whitespace">    </span><span class="mi">464</span> <span class="k">else</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">465</span>     <span class="n">builder</span> <span class="o">=</span> <span class="n">BestFirstTreeBuilder</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">466</span>         <span class="n">splitter</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">467</span>         <span class="n">min_samples_split</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>    <span class="mi">472</span>         <span class="bp">self</span><span class="o">.</span><span class="n">min_impurity_decrease</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">473</span>     <span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">475</span> <span class="n">builder</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tree_</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sample_weight</span><span class="p">,</span> <span class="n">missing_values_in_feature_mask</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">477</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_outputs_</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">is_classifier</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="g g-Whitespace">    </span><span class="mi">478</span>     <span class="bp">self</span><span class="o">.</span><span class="n">n_classes_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_classes_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
 <span class="ne">KeyboardInterrupt</span>: 
 </pre></div>

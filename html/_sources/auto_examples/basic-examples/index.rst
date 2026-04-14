@@ -23,7 +23,7 @@ Basic examples
         :link: example_eos_in_ml
         :link-type: ref
         :shadow: md
-        :class-card: sd-rounded-2 msg-sd-card sd-border-0
+        :class-card: msg-sd-card sd-border-0 sd-rounded-2
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
@@ -39,7 +39,7 @@ Basic examples
         :link: example_compute_metrics_by_site
         :link-type: ref
         :shadow: md
-        :class-card: sd-rounded-2 msg-sd-card sd-border-0
+        :class-card: msg-sd-card sd-border-0 sd-rounded-2
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
@@ -55,7 +55,7 @@ Basic examples
         :link: example_multisite_data_characterization_example
         :link-type: ref
         :shadow: md
-        :class-card: sd-rounded-2 msg-sd-card sd-border-0
+        :class-card: msg-sd-card sd-border-0 sd-rounded-2
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top

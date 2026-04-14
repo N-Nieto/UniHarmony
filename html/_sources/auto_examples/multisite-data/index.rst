@@ -22,7 +22,7 @@ Multisite Data
         :link: example_generate_multisite_data_example
         :link-type: ref
         :shadow: md
-        :class-card: sd-rounded-2 msg-sd-card sd-border-0
+        :class-card: msg-sd-card sd-border-0 sd-rounded-2
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
@@ -38,7 +38,7 @@ Multisite Data
         :link: example_load_mareos_example
         :link-type: ref
         :shadow: md
-        :class-card: sd-rounded-2 msg-sd-card sd-border-0
+        :class-card: msg-sd-card sd-border-0 sd-rounded-2
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top

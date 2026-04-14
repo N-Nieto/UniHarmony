@@ -631,15 +631,15 @@
 </div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">58</span>
-<span class="g g-Whitespace">     </span><span class="mi">54</span> 
-<span class="g g-Whitespace">     </span><span class="mi">55</span>                 <span class="c1"># neuroComBat (do not include target as covariate - avoiding data leakage)</span>
-<span class="g g-Whitespace">     </span><span class="mi">56</span>                 <span class="n">X_train_harm</span> <span class="o">=</span> <span class="n">harm_model</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X_train</span><span class="p">,</span> <span class="n">sites</span><span class="o">=</span><span class="n">site_train</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">57</span>                 <span class="c1"># Fit the model with the harmonized train</span>
-<span class="ne">---&gt; </span><span class="mi">58</span>                 <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_harm</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">59</span>                 <span class="c1"># harmonize the test data</span>
-<span class="g g-Whitespace">     </span><span class="mi">60</span>                 <span class="n">X_test_harm</span> <span class="o">=</span> <span class="n">harm_model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X_test</span><span class="p">,</span> <span class="n">sites</span><span class="o">=</span><span class="n">site_test</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">61</span> 
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">43</span>
+<span class="g g-Whitespace">     </span><span class="mi">39</span>                 <span class="c1"># Test target</span>
+<span class="g g-Whitespace">     </span><span class="mi">40</span>                 <span class="n">y_test</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;folds&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">fold</span><span class="p">]</span>
+<span class="g g-Whitespace">     </span><span class="mi">41</span> 
+<span class="g g-Whitespace">     </span><span class="mi">42</span>                 <span class="c1"># Unharmonized baseline model</span>
+<span class="ne">---&gt; </span><span class="mi">43</span>                 <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">44</span>                 <span class="n">unharmonized_results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">45</span>                     <span class="p">[</span>
+<span class="g g-Whitespace">     </span><span class="mi">46</span>                         <span class="n">balanced_accuracy_score</span><span class="p">(</span><span class="n">y_true</span><span class="o">=</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="o">=</span><span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="o">=</span><span class="n">X_test</span><span class="p">)),</span>
 
 <span class="nn">File /opt/hostedtoolcache/Python/3.14.3/x64/lib/python3.14/site-packages/sklearn/base.py:1336,</span> in <span class="ni">_fit_context.&lt;locals&gt;.decorator.&lt;locals&gt;.wrapper</span><span class="nt">(estimator, *args, **kwargs)</span>
 <span class="g g-Whitespace">   </span><span class="mi">1329</span>     <span class="n">estimator</span><span class="o">.</span><span class="n">_validate_params</span><span class="p">()</span>
