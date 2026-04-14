@@ -1,3 +1,0 @@
-# NeuroComBat
-
-::: uniharmony.combat.NeuroComBat

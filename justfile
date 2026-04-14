@@ -16,11 +16,8 @@ install-dev:
 format-lint:
     uv run -- ruff format . && ruff check --fix .
 
-convert-notebooks:
-    uv run -- jupyter nbconvert --to markdown --output-dir=docs/examples/ examples/**/*
-
-serve-docs: convert-notebooks
-    uv run -- zensical serve
+serve-docs:
+    uv run -- sphinx-autobuild docs docs/_build
 
 lint:
     uv run -- tox -e ruff

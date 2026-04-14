@@ -1,38 +1,34 @@
----
-icon: lucide/play
----
+# ▶️ Getting Started
 
-# Getting Started
-
-## Installation
+## 💾 Installation
 
 UniHarmony is written in Python and [published on PyPI](https://pypi.org/project/uniharmony/). It is recommended to install it in a *virtual environment*.
 
-### Install with `pip`
+### Install with ``pip``
 
 ```console
 pip install uniharmony
 ```
 
-### Install with `uv`
+### Install with ``uv``
 
 ```console
 uv add uniharmony
 ```
 
-## Usage
+## 🪄 Usage
 
 ### Data loading and simulation
 
-- [Simulate multisite classification problems](./simulate_multisite_data.md)
-- [Download and load MAREoS dataset](./load_mareos_datasets.md)
+- [Simulate multisite classification problems](#simulate-multisite-data)
+- [Download and load MAREoS dataset](#load-mareos-datasets)
 
 ### Harmonization
 
-### ComBat methods
+#### ComBat methods
 
-- [NeuroComBat](./combat.md)
+- [NeuroComBat](#neurocombat-long)
 
 #### Interpolation models
 
-- [IntraSiteInterpolation (ISI)](./interpolation.md)
+- [IntraSiteInterpolation (ISI)](#intrasite-long)

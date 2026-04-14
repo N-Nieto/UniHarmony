@@ -1,3 +1,0 @@
-# IntraSiteInterpolation
-
-::: uniharmony.interpolation.IntraSiteInterpolation
