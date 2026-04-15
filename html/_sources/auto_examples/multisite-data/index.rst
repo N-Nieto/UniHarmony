@@ -8,8 +8,9 @@ Multisite Data
 .. toctree::
     :hidden:
 
-    generate_multisite_data_example
-    load_mareos_example
+    Generate_multisite_data_example
+    Load_mareos_example
+    Generate_imbalance_multisite_data_example
 
 
 .. grid::
@@ -18,11 +19,11 @@ Multisite Data
 
     
     .. grid-item-card:: :ref:`example_generate_multisite_data_example`
-        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/01-generate_multisite_data_example.webp
+        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/01-Generate_multisite_data_example.webp
         :link: example_generate_multisite_data_example
         :link-type: ref
         :shadow: md
-        :class-card: sd-border-0 sd-rounded-2 msg-sd-card
+        :class-card: msg-sd-card sd-rounded-2 sd-border-0
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
@@ -38,7 +39,23 @@ Multisite Data
         :link: example_load_mareos_example
         :link-type: ref
         :shadow: md
-        :class-card: sd-border-0 sd-rounded-2 msg-sd-card
+        :class-card: msg-sd-card sd-rounded-2 sd-border-0
+        :class-item: msg-sd-card-hover
+        :class-title: msg-sd-card-title
+        :class-img-top: msg-sd-card-img-top
+        :class-header: msg-sd-card-header
+        :class-body: msg-sd-card-body
+        :class-footer: msg-sd-card-footer
+        :text-align: center
+
+
+    
+    .. grid-item-card:: :ref:`example_generate_imbalance_multisite_data_example`
+        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/03-Generate_imbalance_multisite_data_example.webp
+        :link: example_generate_imbalance_multisite_data_example
+        :link-type: ref
+        :shadow: md
+        :class-card: msg-sd-card sd-rounded-2 sd-border-0
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
