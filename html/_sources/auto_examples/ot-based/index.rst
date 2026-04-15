@@ -21,7 +21,7 @@ Optimal Transport for Domain Adaptation Methods
         :link: example_ot_binary_classification_example
         :link-type: ref
         :shadow: md
-        :class-card: sd-border-0 msg-sd-card sd-rounded-2
+        :class-card: sd-rounded-2 sd-border-0 msg-sd-card
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
