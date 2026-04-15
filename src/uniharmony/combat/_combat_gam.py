@@ -81,6 +81,8 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
         smooth_covariates: npt.ArrayLike,
         smooth_covariates_bounds: tuple[float, float] | None = None,
         continuous_covariates: npt.ArrayLike | None = None,
+        df: int = 10,
+        degree: int = 3,
         var_epsilon: float = 1e-8,
         delta_epsilon: float = 1e-8,
         tau_2_epsilon: float = 1e-10,
@@ -102,6 +104,10 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
         continuous_covariates : array-like, shape (n_samples, n_continuous_covariates) or None, optional (default None)
             The continuous covariates to be preserved during harmonization
             (e.g., clinical scores).
+        df : int, optional (default 10)
+            Number of basis functions or degrees of freedom for BSplines.
+        degree : int, optional (default 3)
+            Degree(s) of the spline for BSplines.
         var_epsilon : float, optional (default 1e-8)
             Small constant to add to variance to avoid division by zero.
         delta_epsilon : float, optional (default 1e-8)
@@ -165,8 +171,8 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
         if smooth_covariates_cols == 1:
             self._bsplines = BSplines(
                 x_spline,
-                df=10,
-                degree=3,
+                df=df,
+                degree=degree,
                 knot_kwds=[
                     {
                         "lower_bound": smooth_covariates_bounds[0],
@@ -177,8 +183,8 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
         else:
             self._bsplines = BSplines(
                 x_spline,
-                df=[10] * smooth_covariates_cols,
-                degree=[3] * smooth_covariates_cols,
+                df=[df] * smooth_covariates_cols,
+                degree=[degree] * smooth_covariates_cols,
             )
         # Construct formula and dataframe required for GAM
         formula = "y ~ "
