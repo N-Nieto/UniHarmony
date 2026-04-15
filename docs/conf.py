@@ -40,6 +40,7 @@ extensions = [
     "sphinx.ext.extlinks",  # markup to shorten external links
     "sphinx.ext.intersphinx",  # link to other projects` documentation
     # Third-party extensions:
+    "numpydoc",  # support for NumPy style docstrings
     "sphinx_copybutton",  # copy button for code blocks
     "myst_nb",  # md + ipynb to rst parser
     "myst_sphinx_gallery",  # HTML gallery of examples
@@ -83,6 +84,7 @@ extlinks = {
 myst_enable_extensions = [
     "dollarmath",
     "linkify",
+    "fieldlist",
 ]
 
 # myst_sphinx_gallery configuration

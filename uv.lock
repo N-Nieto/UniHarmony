@@ -1719,6 +1719,21 @@ wheels = [
 ]
 
 [[package]]
+name = "numpydoc"
+version = "1.10.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
+    { name = "sphinx", version = "9.0.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.11.*'" },
+    { name = "sphinx", version = "9.1.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "tomli", marker = "python_full_version < '3.11'" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e9/3c/dfccc9e7dee357fb2aa13c3890d952a370dd0ed071e0f7ed62ed0df567c1/numpydoc-1.10.0.tar.gz", hash = "sha256:3f7970f6eee30912260a6b31ac72bba2432830cd6722569ec17ee8d3ef5ffa01", size = 94027, upload-time = "2025-12-02T16:39:12.937Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/62/5e/3a6a3e90f35cea3853c45e5d5fb9b7192ce4384616f932cf7591298ab6e1/numpydoc-1.10.0-py3-none-any.whl", hash = "sha256:3149da9874af890bcc2a82ef7aae5484e5aa81cb2778f08e3c307ba6d963721b", size = 69255, upload-time = "2025-12-02T16:39:11.561Z" },
+]
+
+[[package]]
 name = "packaging"
 version = "26.0"
 source = { registry = "https://pypi.org/simple" }
@@ -3524,6 +3539,7 @@ docs = [
     { name = "myst-parser", version = "4.0.1", source = { registry = "https://pypi.org/simple" }, extra = ["linkify"], marker = "python_full_version < '3.11'" },
     { name = "myst-parser", version = "5.0.0", source = { registry = "https://pypi.org/simple" }, extra = ["linkify"], marker = "python_full_version >= '3.11'" },
     { name = "myst-sphinx-gallery" },
+    { name = "numpydoc" },
     { name = "seaborn" },
     { name = "setuptools-scm" },
     { name = "sphinx", version = "8.1.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
@@ -3544,6 +3560,7 @@ requires-dist = [
     { name = "myst-parser", extras = ["linkify"], marker = "extra == 'docs'", specifier = ">=4.0.1" },
     { name = "myst-sphinx-gallery", marker = "extra == 'docs'", specifier = ">=0.3.0" },
     { name = "numpy", specifier = ">=2.2.6" },
+    { name = "numpydoc", marker = "extra == 'docs'", specifier = ">=1.10.0" },
     { name = "pandas", specifier = ">=2.3.3" },
     { name = "pooch", specifier = ">=1.9.0" },
     { name = "pot", specifier = ">=0.9.6.post1" },
