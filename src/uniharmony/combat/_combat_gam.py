@@ -124,6 +124,8 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
         validate_sites(sites)
 
         smooth_covariates = check_array(smooth_covariates, dtype=FLOAT_DTYPES, estimator=self)
+        if smooth_covariates_bounds is None:
+            smooth_covariates_bounds = (None, None)
 
         # Check that continuous_covariates has correct shape and type if it is not None.
         # Track of whether it was used during fit to check during transform
@@ -325,6 +327,7 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
                 df_gam[v] = continuous_covariates[:, c].astype(float)
         # Complete formula
         formula = formula[:-2] + "- 1"
+        logger.debug(f"Final formula for smoothing: {formula}")
         df_gam = pd.DataFrame(df_gam)
         # For matrix operations, a modified design matrix is required
         design = np.concatenate((df_gam, bs_basis), axis=1)
