@@ -43,7 +43,6 @@ extensions = [
     # Third-party extensions:
     "sphinx_copybutton",  # copy button for code blocks
     "myst_nb",  # md + ipynb to rst parser
-    "autodoc2",  # include documentation from docstrings
     "myst_sphinx_gallery",  # HTML gallery of examples
 ]
 
@@ -85,13 +84,6 @@ extlinks = {
 myst_enable_extensions = [
     "dollarmath",
     "linkify",
-]
-
-# autodoc2 configuration
-
-autodoc2_packages = ["../src/uniharmony"]
-autodoc2_docstring_parser_regexes = [
-    (".*", "rst"),
 ]
 
 # myst_sphinx_gallery configuration
