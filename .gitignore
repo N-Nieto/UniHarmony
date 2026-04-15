@@ -71,6 +71,8 @@ instance/
 # Sphinx documentation
 docs/_build/
 docs/auto_examples
+docs/jupyter_execute
+docs/jupyter_execute/auto_examples
 docs/generated
 docs/make.bat
 
