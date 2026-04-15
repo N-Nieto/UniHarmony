@@ -178,12 +178,11 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
 
     References
     ----------
-    [^1]:
-        Nieto, N., et al. (2026).
-        Data harmonizing via interpolation applied
-        to brain age prediction.
-        Springer Nature.
-        https://doi.org/10.1007/s44248-026-00100-7
+    .. [1] Nieto, N., et al. (2026).
+           Data harmonizing via interpolation applied
+           to brain age prediction.
+           Springer Nature.
+           https://doi.org/10.1007/s44248-026-00100-7
 
     """
 

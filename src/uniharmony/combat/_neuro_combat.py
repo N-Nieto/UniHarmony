@@ -42,8 +42,8 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
     """Harmonize scanner effects in multi-site imaging data.
 
     This transformer performs harmonization using a parametric empirical Bayes
-    framework proposed in ComBat[^1] and adapted to neuroimaging data
-    here[^2].
+    framework proposed in ComBat [1]_ and adapted to neuroimaging data
+    here [2]_ .
 
     Parameters
     ----------
@@ -63,19 +63,17 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
 
     References
     ----------
-    [^1]:
-        W. Evan Johnson and Cheng Li
-        "Adjusting batch effects in microarray expression data using empirical
-        Bayes methods."
-        Biostatistics, 8(1):118-127, 2007.
-        https://doi.org/10.1093/biostatistics/kxj037
+    .. [1] W. Evan Johnson and Cheng Li
+           "Adjusting batch effects in microarray expression data using empirical
+           Bayes methods."
+           Biostatistics, 8(1):118-127, 2007.
+           https://doi.org/10.1093/biostatistics/kxj037
 
-    [^2]:
-        Fortin, Jean-Philippe, et al.
-        "Harmonization of cortical thickness measurements across scanners and
-        sites."
-        Neuroimage 167 (2018): 104-120.
-        https://doi.org/10.1016/j.neuroimage.2017.11.024
+    .. [2] Fortin, Jean-Philippe, et al.
+           "Harmonization of cortical thickness measurements across scanners and
+           sites."
+           Neuroimage 167 (2018): 104-120.
+           https://doi.org/10.1016/j.neuroimage.2017.11.024
 
     """
 

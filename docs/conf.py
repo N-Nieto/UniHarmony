@@ -35,15 +35,14 @@ release = get_scm_version(
 
 extensions = [
     # Built-in extensions:
+    "sphinx.ext.autodoc",  # include documentation from docstrings
     "sphinx.ext.doctest",  # test snippets in the documentation
     "sphinx.ext.extlinks",  # markup to shorten external links
     "sphinx.ext.intersphinx",  # link to other projects` documentation
-    "sphinx.ext.napoleon",  # parse numpy-style docstrings
-    "sphinx.ext.githubpages",  # publish to github-pages
     # Third-party extensions:
+    "numpydoc",  # support for NumPy style docstrings
     "sphinx_copybutton",  # copy button for code blocks
     "myst_nb",  # md + ipynb to rst parser
-    "autodoc2",  # include documentation from docstrings
     "myst_sphinx_gallery",  # HTML gallery of examples
 ]
 
@@ -85,13 +84,7 @@ extlinks = {
 myst_enable_extensions = [
     "dollarmath",
     "linkify",
-]
-
-# autodoc2 configuration
-
-autodoc2_packages = ["../src/uniharmony"]
-autodoc2_docstring_parser_regexes = [
-    (".*", "rst"),
+    "fieldlist",
 ]
 
 # myst_sphinx_gallery configuration
