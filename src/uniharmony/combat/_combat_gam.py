@@ -96,7 +96,7 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
             The training input samples.
         sites : array-like, shape (n_samples,)
             Sites.
-        smooth_covariates : array-like, shape (n_samples, n_smooth_terms)
+        smooth_covariates : array-like, shape (n_samples, n_smooth_covariates)
             The smooth, non-linear covariates. GAMs are used for optimal smoothing (e.g., age).
         smooth_covariates_bounds : tuple of float and float or None, optional (default None)
             Custom boundaries of the smoothing terms useful when holdout data covers different range than
