@@ -30,9 +30,9 @@ def report_metric_by_site(
     sites : np.ndarray
         Site identifiers for stratification.
     metric : Callable
-        Metric to compute from sklean.metrics.
+        Metric to compute from sklearn.metrics.
     overall_performance: bool
-        Add an aditional dictionary entry with the overall performance.
+        Add an additional dictionary entry with the overall performance.
 
     Returns
     -------
@@ -77,9 +77,9 @@ def _input_checks(
     sites : np.ndarray
         Site identifiers for stratification.
     metric : Callable
-        Metric to compute from sklean.metrics.
+        Metric to compute from sklearn.metrics.
     overall_performance: bool
-        Add an aditional dictionary entry with the overall performance.
+        Add an additional dictionary entry with the overall performance.
 
     Raises
     ------
