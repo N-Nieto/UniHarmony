@@ -188,10 +188,10 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
             df_gam[v] = design[:, b]
         # Set data from continuous covariates
         if self._continuous_covariates_used:
-            for c in range(self.continuous_covariates.shape[1]):
+            for c in range(continuous_covariates.shape[1]):
                 v = f"c{c!s}"
                 formula += f"{v} + "
-                df_gam[v] = self.continuous_covariates[:, c].astype(float)
+                df_gam[v] = continuous_covariates[:, c].astype(float)
         # Complete formula
         formula = formula[:-2] + "- 1"
         logger.debug(f"Final formula for smoothing: {formula}")
@@ -319,10 +319,10 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
             df_gam[v] = design[:, b]
         # Set data from continuous covariates
         if self._continuous_covariates_used:
-            for c in range(self.continuous_covariates.shape[1]):
+            for c in range(continuous_covariates.shape[1]):
                 v = f"c{c!s}"
                 formula += f"{v} + "
-                df_gam[v] = self.continuous_covariates[:, c].astype(float)
+                df_gam[v] = continuous_covariates[:, c].astype(float)
         # Complete formula
         formula = formula[:-2] + "- 1"
         df_gam = pd.DataFrame(df_gam)
