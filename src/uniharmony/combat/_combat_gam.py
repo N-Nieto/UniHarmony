@@ -311,23 +311,17 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
         # Create cubic spline basis for smooth covariates
         x_spline = smooth_covariates.copy()
         bs_basis = self._bsplines.transform(x_spline)
-        # Construct formula and dataframe required for GAM
-        formula = "y ~ "
+        # Construct dataframe required for GAM
         df_gam = {}
         # Set data from created design matrix
         for b in range(self._n_sites):
             v = f"x{b!s}"
-            formula += f"{v} + "
             df_gam[v] = design[:, b]
         # Set data from continuous covariates
         if self._continuous_covariates_used:
             for c in range(continuous_covariates.shape[1]):
                 v = f"c{c!s}"
-                formula += f"{v} + "
                 df_gam[v] = continuous_covariates[:, c].astype(float)
-        # Complete formula
-        formula = formula[:-2] + "- 1"
-        logger.debug(f"Final formula for smoothing: {formula}")
         df_gam = pd.DataFrame(df_gam)
         # For matrix operations, a modified design matrix is required
         design = np.concatenate((df_gam, bs_basis), axis=1)
