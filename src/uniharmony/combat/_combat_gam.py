@@ -308,7 +308,7 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
         )
         # Setup design matrix for smoothing
         logger.debug("Setting up smoothing using B-Splines")
-        # Create cubic spline basis for smooth terms
+        # Create cubic spline basis for smooth covariates
         x_spline = smooth_covariates.copy()
         bs_basis = self._bsplines.transform(x_spline)
         # Construct formula and dataframe required for GAM
