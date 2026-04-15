@@ -147,7 +147,7 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
         self.sites_, n_samples_per_site = np.unique(sites, return_counts=True)
         self._n_sites = len(self.sites_)
         n_samples = sites.shape[0]
-        idx_per_site = [list(np.where(sites == idx)[0]) for idx in self.sites_]
+        idx_per_site = [list(np.where(sites == s)[0].tolist()) for s in self.sites_]
 
         logger.debug("Making design matrix")
         design = self._make_design_matrix(
@@ -296,8 +296,8 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
             raise ValueError("There is a site unseen during the fit method in the data.")
 
         n_samples = sites.shape[0]
-        n_samples_per_site = np.asarray([np.sum(sites == site_name) for site_name in self.sites_])
-        idx_per_site = [list(np.where(sites == site_name)[0]) for site_name in self.sites_]
+        n_samples_per_site = np.asarray([np.sum(sites == s) for s in self.sites_])
+        idx_per_site = [list(np.where(sites == s)[0].tolist()) for s in self.sites_]
         logger.debug("Making design matrix")
         design = self._make_design_matrix(
             sites,
