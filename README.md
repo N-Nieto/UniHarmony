@@ -34,3 +34,11 @@ Contributions are welcome and greatly appreciated. Please read the [guidelines](
 ## License
 
 UniHarmony is released under the AGPL v3 license unless otherwise stated.
+
+
+## Running the Example Notebooks on Binder
+
+You can run the example notebooks instantly online without any local setup using Binder.
+
+1.  **Click the badge** to launch the Binder environment:
+    [![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/N-Nieto/UniHarmony/HEAD)
