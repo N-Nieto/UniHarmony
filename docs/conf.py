@@ -35,6 +35,7 @@ release = get_scm_version(
 
 extensions = [
     # Built-in extensions:
+    "sphinx.ext.autodoc",  # include documentation from docstrings
     "sphinx.ext.doctest",  # test snippets in the documentation
     "sphinx.ext.extlinks",  # markup to shorten external links
     "sphinx.ext.intersphinx",  # link to other projects` documentation
