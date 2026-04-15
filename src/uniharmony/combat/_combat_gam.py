@@ -354,6 +354,7 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
         self,
         X: npt.ArrayLike,
         sites: npt.ArrayLike,
+        smooth_covariates: npt.ArrayLike,
         **fit_params,
     ) -> npt.NDArray:
         """Fit to data, then transform it.
@@ -367,6 +368,8 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
             Input samples.
         sites : array-like, shape (n_samples, 1)
             Sites.
+        smooth_covariates : array-like, shape (n_samples, n_smooth_terms)
+            The smooth, non-linear covariates. GAMs are used for optimal smoothing (e.g., age).
         **fit_params : dict
             Additional fit parameters.
 
@@ -376,7 +379,7 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
             Transformed array.
 
         """
-        return self.fit(X, sites, **fit_params).transform(X, sites, **fit_params)
+        return self.fit(X, sites, smooth_covariates, **fit_params).transform(X, sites, smooth_covariates, **fit_params)
 
     def _make_design_matrix(
         self,
