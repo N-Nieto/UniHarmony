@@ -182,7 +182,7 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
         formula = "y ~ "
         df_gam = {}
         # Set data from created design matrix
-        for b in self._n_sites:
+        for b in range(self._n_sites):
             v = f"x{b!s}"
             formula += f"{v} + "
             df_gam[v] = design[:, b]
@@ -313,7 +313,7 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
         formula = "y ~ "
         df_gam = {}
         # Set data from created design matrix
-        for b in self._n_sites:
+        for b in range(self._n_sites):
             v = f"x{b!s}"
             formula += f"{v} + "
             df_gam[v] = design[:, b]
