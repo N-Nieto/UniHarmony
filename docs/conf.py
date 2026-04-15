@@ -39,8 +39,6 @@ extensions = [
     "sphinx.ext.doctest",  # test snippets in the documentation
     "sphinx.ext.extlinks",  # markup to shorten external links
     "sphinx.ext.intersphinx",  # link to other projects` documentation
-    "sphinx.ext.napoleon",  # parse numpy-style docstrings
-    "sphinx.ext.githubpages",  # publish to github-pages
     # Third-party extensions:
     "sphinx_copybutton",  # copy button for code blocks
     "myst_nb",  # md + ipynb to rst parser
