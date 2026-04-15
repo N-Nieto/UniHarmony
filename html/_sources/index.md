@@ -26,6 +26,6 @@ getting_started
 utilities/index
 methods/index
 auto_examples/index
-apidocs/index
+api/index
 changelog
 ```

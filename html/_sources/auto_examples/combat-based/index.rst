@@ -23,7 +23,7 @@ ComBat Methods
         :link: example_neurocombat_binary_classification
         :link-type: ref
         :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
+        :class-card: sd-border-0 sd-rounded-2 msg-sd-card
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
@@ -39,7 +39,7 @@ ComBat Methods
         :link: example_neurocombat_imbalance_across_sites
         :link-type: ref
         :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
+        :class-card: sd-border-0 sd-rounded-2 msg-sd-card
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
@@ -55,7 +55,7 @@ ComBat Methods
         :link: example_neurocombat_in_mareos
         :link-type: ref
         :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
+        :class-card: sd-border-0 sd-rounded-2 msg-sd-card
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top

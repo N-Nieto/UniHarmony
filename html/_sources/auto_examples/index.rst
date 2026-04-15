@@ -12,6 +12,7 @@
     multisite-data/index
     combat-based/index
     interpolation-based/index
+    ot-based/index
 
 
 Basic examples
@@ -28,7 +29,7 @@ Basic examples
         :link: example_eos_in_ml
         :link-type: ref
         :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
+        :class-card: sd-border-0 sd-rounded-2 msg-sd-card
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
@@ -44,7 +45,7 @@ Basic examples
         :link: example_compute_metrics_by_site
         :link-type: ref
         :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
+        :class-card: sd-border-0 sd-rounded-2 msg-sd-card
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
@@ -60,7 +61,7 @@ Basic examples
         :link: example_multisite_data_characterization_example
         :link-type: ref
         :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
+        :class-card: sd-border-0 sd-rounded-2 msg-sd-card
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
@@ -86,7 +87,7 @@ Multisite Data
         :link: example_generate_multisite_data_example
         :link-type: ref
         :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
+        :class-card: sd-border-0 sd-rounded-2 msg-sd-card
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
@@ -102,7 +103,7 @@ Multisite Data
         :link: example_load_mareos_example
         :link-type: ref
         :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
+        :class-card: sd-border-0 sd-rounded-2 msg-sd-card
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
@@ -128,7 +129,7 @@ ComBat Methods
         :link: example_neurocombat_binary_classification
         :link-type: ref
         :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
+        :class-card: sd-border-0 sd-rounded-2 msg-sd-card
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
@@ -144,7 +145,7 @@ ComBat Methods
         :link: example_neurocombat_imbalance_across_sites
         :link-type: ref
         :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
+        :class-card: sd-border-0 sd-rounded-2 msg-sd-card
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
@@ -160,7 +161,7 @@ ComBat Methods
         :link: example_neurocombat_in_mareos
         :link-type: ref
         :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
+        :class-card: sd-border-0 sd-rounded-2 msg-sd-card
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
@@ -186,7 +187,7 @@ Interpolation Methods
         :link: example_isi_binary_classification_example
         :link-type: ref
         :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
+        :class-card: sd-border-0 sd-rounded-2 msg-sd-card
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
@@ -202,7 +203,7 @@ Interpolation Methods
         :link: example_isi_multiclass_classification_example
         :link-type: ref
         :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
+        :class-card: sd-border-0 sd-rounded-2 msg-sd-card
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
@@ -218,7 +219,33 @@ Interpolation Methods
         :link: example_ismi_binary_classification_example
         :link-type: ref
         :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
+        :class-card: sd-border-0 sd-rounded-2 msg-sd-card
+        :class-item: msg-sd-card-hover
+        :class-title: msg-sd-card-title
+        :class-img-top: msg-sd-card-img-top
+        :class-header: msg-sd-card-header
+        :class-body: msg-sd-card-body
+        :class-footer: msg-sd-card-footer
+        :text-align: center
+
+
+
+
+Optimal Transport for Domain Adaptation Methods
+-----------------------------------------------
+
+
+.. grid::
+    :class-container: msg-sd-container
+    :class-row: msg-sd-row
+
+    
+    .. grid-item-card:: :ref:`example_ot_binary_classification_example`
+        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/01-OT_binary_classification_example.webp
+        :link: example_ot_binary_classification_example
+        :link-type: ref
+        :shadow: md
+        :class-card: sd-border-0 sd-rounded-2 msg-sd-card
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
