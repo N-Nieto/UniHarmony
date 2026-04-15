@@ -3,6 +3,11 @@
 import numpy as np
 import structlog
 from sklearn.utils import check_random_state
+from sklearn.utils.validation import (
+    check_array,
+    check_consistent_length,
+    check_X_y,
+)
 
 
 __all__ = [
@@ -62,7 +67,7 @@ def make_multisite_classification(
         Simulated feature matrix
     y : np.ndarray of shape (n_samples,)
         Class labels (0 to n_classes-1)
-    site_labels : np.ndarray of shape (n_samples,)
+    sites : np.ndarray of shape (n_samples,)
         Site labels (0 to ``n_sites``-1)
 
     Examples
@@ -104,20 +109,8 @@ def make_multisite_classification(
 
         logger.info(f"Generating {n_site_samples} samples for site {site_idx}")
 
-        # Generate labels for this site
-        if n_classes == 2:
-            y_site = _generate_binary_labels(
-                n_site_samples,
-                balance_per_site[site_idx],
-                random_state,
-            )
-        else:
-            y_site = _generate_multiclass_labels(
-                n_site_samples,
-                balance_per_site[site_idx],
-                n_classes,
-                random_state,
-            )
+        balance = balance_per_site[site_idx]
+        y_site = _generate_labels(n_classes, n_site_samples, balance, random_state)
 
         # Generate signal component based on class labels
         signal = _generate_signal_component(
@@ -131,24 +124,8 @@ def make_multisite_classification(
         # Generate noise component
         noise = random_state.normal(loc=0.0, scale=noise_strength, size=(n_site_samples, n_features))
 
-        if site_effect_homogeneous:
-            # Generate site effect (same for all samples in this site)
-            strength = random_state.uniform(
-                low=-site_effect_strength, high=site_effect_strength, size=1
-            )  # Randomly positive or negative
-            site_effect = strength * np.ones((1, n_features))  # Same effect for all samples in this site
-
-        else:
-            # Generate site effect (different for each feature in this site)
-            site_effect = random_state.normal(
-                loc=0.0,
-                scale=site_effect_strength,
-                size=(
-                    1,
-                    n_features,
-                ),
-            )
-        logger.debug(f"Site {site_idx}, site effect strength {site_effect}")
+        # Generate site effect component
+        site_effect = _generate_site_effect_component(site_effect_homogeneous, site_effect_strength, n_features, random_state)
 
         # Combine components: X = signal + noise + site_effect
         X_site = signal + noise + site_effect
@@ -156,23 +133,29 @@ def make_multisite_classification(
         X_list.append(X_site)
         y_list.append(y_site)
         site_labels_list.extend([site_idx] * n_site_samples)
+        logger.debug(f"Site {site_idx}, site effect strength {site_effect}")
 
     # Concatenate all sites
     X = np.vstack(X_list)
     y = np.concatenate(y_list)
-    site_labels = np.array(site_labels_list, dtype=int)
+    sites = np.array(site_labels_list, dtype=int)
 
-    # Shuffle samples across sites (optional but recommended)
+    # Shuffle samples across sites
     indices = random_state.permutation(len(X))
     X = X[indices]
     y = y[indices]
-    site_labels = site_labels[indices]
+    sites = sites[indices]
+
+    # Check generated data.
+    X, y = check_X_y(X, y)
+    sites = check_array(sites, dtype=None, ensure_2d=False)
+    check_consistent_length(X, y, sites)
 
     logger.info(f"Generated {len(X)} samples across {n_sites} sites")
     logger.info(f"Class distribution: {np.bincount(y)}")
-    logger.info(f"Site distribution: {np.bincount(site_labels)}")
+    logger.info(f"Site distribution: {np.bincount(sites)}")
 
-    return X, y, site_labels
+    return X, y, sites
 
 
 def _validate_parameters(
@@ -206,7 +189,7 @@ def _validate_parameters(
     Raises
     ------
     ValueError
-        If ``n_sites`` is less than 2 or
+        If ``n_sites`` is less than 1 or
         if ``n_features`` is negative or
         if ``n_classes`` is less than 2 or
         if ``signal_strength`` is negative or
@@ -253,6 +236,41 @@ def _get_default_balance_per_site(n_sites: int, n_classes: int) -> list[float] |
         # Multi-class: equal distribution for each site
         equal_prob = 1.0 / n_classes
         return [[equal_prob] * n_classes] * n_sites
+
+
+def _generate_labels(
+    n_classes: int,
+    n_site_samples: int,
+    balance: float | list[float],
+    random_state: np.random.RandomState,
+) -> np.ndarray:
+    """Generate labels for a single site.
+
+    Parameters
+    ----------
+    n_classes : int
+        Number of classes (2 for binary, >2 for multiclass).
+    n_site_samples : int
+        Number of samples in this site.
+    balance : float or list[float].
+        Class balance for a given site. For binary classification, this is the
+        probability of class 1. For multiclass, this is a list of probabilities
+        for each class (must sum to 1.0).
+    site_idx : int
+        Index of the current site.
+    random_state : RandomState instance
+        The RandomState for reproducibility.
+
+    Returns
+    -------
+    np.ndarray
+        Generated labels of shape (n_site_samples,).
+
+    """
+    if n_classes == 2:
+        return _generate_binary_labels(n_site_samples, balance, random_state)
+    else:
+        return _generate_multiclass_labels(n_site_samples, balance, n_classes, random_state)
 
 
 def _generate_binary_labels(
@@ -311,20 +329,16 @@ def _generate_multiclass_labels(
         Multi-class labels (0 to ``n_classes``-1).
 
     """
-    # Calculate number of samples per class
-    samples_per_class = np.round(np.array(class_probs) * n_samples).astype(int)
+    # Using multinomial for cleaner and potentially faster generation
+    samples_per_class = random_state.multinomial(n_samples, class_probs)
 
-    # Adjust to ensure total equals n_samples
+    # Handle rounding issues by adjusting the largest class if needed
     diff = n_samples - samples_per_class.sum()
     if diff != 0:
         samples_per_class[np.argmax(samples_per_class)] += diff
 
-    # Generate labels
-    y = []
-    for class_idx in range(n_classes):
-        y.extend([class_idx] * samples_per_class[class_idx])
-
-    y = np.array(y, dtype=int)
+    # Create labels using repeat (more efficient than loop with extend)
+    y = np.repeat(np.arange(n_classes), samples_per_class)
     random_state.shuffle(y)
 
     return y
@@ -519,3 +533,41 @@ def _check_balance_for_multiclass(balance_per_site: list | list[list] | tuple, n
         # Check sum is approximately 1
         if not np.isclose(np.sum(site_balance_array), 1.0, atol=1e-10):
             raise ValueError(f"balance_per_site[{i}] must sum to 1.0, got {np.sum(site_balance_array):.6f}")
+
+
+def _generate_site_effect_component(
+    site_effect_homogeneous: bool,
+    site_effect_strength: float,
+    n_features: int,
+    random_state: np.random.RandomState,
+) -> np.ndarray:
+    """Generate site effect component for features.
+
+    Parameters
+    ----------
+    site_effect_homogeneous : bool
+        If True, generates same effect for all features in this site.
+        If False, generates different effect for each feature.
+    site_effect_strength : float
+        Magnitude of site effect. For homogeneous case, effects are uniformly
+        distributed in [-site_effect_strength, site_effect_strength].
+        For heterogeneous case, effects are normally distributed with
+        scale = site_effect_strength.
+    n_features : int
+        Number of features.
+    random_state : RandomState instance
+        The RandomState for reproducibility.
+
+    Returns
+    -------
+    np.ndarray
+        Site effect component of shape (1, n_features).
+
+    """
+    if site_effect_homogeneous:
+        # Single uniform value replicated across all features
+        strength = random_state.uniform(-site_effect_strength, site_effect_strength)
+        return np.full((1, n_features), strength)
+    else:
+        # Different normal value for each feature
+        return random_state.normal(0.0, site_effect_strength, (1, n_features))

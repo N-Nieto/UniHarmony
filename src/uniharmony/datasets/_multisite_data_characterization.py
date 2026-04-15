@@ -1,10 +1,14 @@
 """Provide statistics and basic information about multisite data."""
 
-import warnings
 from typing import Any
 
 import numpy as np
 import structlog
+from sklearn.utils.validation import (
+    check_array,
+    check_consistent_length,
+    check_X_y,
+)
 
 
 __all__ = [
@@ -16,9 +20,9 @@ logger = structlog.get_logger()
 
 
 def get_site_data_statistics(
-    x: np.ndarray,
+    X: np.ndarray,
     y: np.ndarray,
-    site_labels: np.ndarray,
+    sites: np.ndarray,
     feature_names: list[str] | None = None,
     compute_comprehensive: bool = True,
 ) -> dict[str, Any]:
@@ -29,11 +33,11 @@ def get_site_data_statistics(
 
     Parameters
     ----------
-    x : np.ndarray of shape (n_samples, n_features)
+    X : np.ndarray of shape (n_samples, n_features)
         Feature matrix containing the input data
     y : np.ndarray of shape (n_samples,)
         Target labels (can be binary or multi-class)
-    site_labels : np.ndarray of shape (n_samples,)
+    sites : np.ndarray of shape (n_samples,)
         Site labels indicating which site each sample belongs to
     feature_names : list of str or None, optional
         Names of features for more readable output. If None, uses indices.
@@ -66,12 +70,14 @@ def get_site_data_statistics(
     100
 
     """
-    # Validate inputs
-    _validate_inputs(x, y, site_labels)
+    # Check data.
+    X, y = check_X_y(X, y)
+    sites = check_array(sites, dtype=None, ensure_2d=False)
+    check_consistent_length(X, y, sites)
 
     # Get basic dimensions
-    n_samples, n_features = x.shape
-    unique_sites = np.unique(site_labels)
+    n_samples, n_features = X.shape
+    unique_sites = np.unique(sites)
     unique_classes = np.unique(y)
     n_sites = len(unique_sites)
     n_classes = len(unique_classes)
@@ -96,99 +102,23 @@ def get_site_data_statistics(
     # Overall statistics
     logger.info(f"Computing statistics for {n_samples} samples, {n_features} features, {n_sites} sites, {n_classes} classes")
 
-    stats["overall"] = _compute_overall_statistics(x, y, site_labels, feature_names)
+    stats["overall"] = _compute_overall_statistics(X, y, sites, feature_names)
 
     # Site-specific statistics
-    stats["site_statistics"] = _compute_site_statistics(x, y, site_labels, unique_sites, feature_names)
+    stats["site_statistics"] = _compute_site_statistics(X, y, sites, unique_sites, feature_names)
 
     # Class-specific statistics
-    stats["class_statistics"] = _compute_class_statistics(x, y, unique_classes, feature_names)
+    stats["class_statistics"] = _compute_class_statistics(X, y, unique_classes, feature_names)
 
     # Correlation and relationship statistics
     if compute_comprehensive:
-        stats["correlations"] = _compute_correlation_statistics(x, y, site_labels, unique_sites, unique_classes)
+        stats["correlations"] = _compute_correlation_statistics(X, y, sites, unique_sites, unique_classes)
 
     return stats
 
 
-def _validate_inputs(x: np.ndarray, y: np.ndarray, site_labels: np.ndarray) -> None:
-    """Validate input arrays for get_site_data_statistics.
-
-    Parameters
-    ----------
-    x : np.ndarray
-        Feature matrix
-    y : np.ndarray
-        Target labels
-    site_labels : np.ndarray
-        Site labels
-
-    """
-    # Type validation
-    _validate_array_types(x, y, site_labels)
-
-    # Shape validation
-    _validate_array_shapes(x, y, site_labels)
-
-    # Dimensionality validation
-    _validate_array_dimensions(x, y, site_labels)
-
-    # Value validation
-    _validate_array_values(x, y, site_labels)
-
-
-def _validate_array_types(x: np.ndarray, y: np.ndarray, site_labels: np.ndarray) -> None:
-    """Validate that all inputs are numpy arrays."""
-    if not isinstance(x, np.ndarray):
-        raise TypeError(f"x must be a numpy array, got {type(x)}")
-    if not isinstance(y, np.ndarray):
-        raise TypeError(f"y must be a numpy array, got {type(y)}")
-    if not isinstance(site_labels, np.ndarray):
-        raise TypeError(f"site_labels must be a numpy array, got {type(site_labels)}")
-
-
-def _validate_array_shapes(x: np.ndarray, y: np.ndarray, site_labels: np.ndarray) -> None:
-    """Validate that all inputs have compatible shapes."""
-    n_samples = x.shape[0]
-
-    if y.shape[0] != n_samples:
-        raise ValueError(f"y must have same number of samples as x. x has {n_samples}, y has {y.shape[0]}")
-
-    if site_labels.shape[0] != n_samples:
-        raise ValueError(
-            f"site_labels must have same number of samples as x. x has {n_samples}, site_labels has {site_labels.shape[0]}"
-        )
-
-
-def _validate_array_dimensions(x: np.ndarray, y: np.ndarray, site_labels: np.ndarray) -> None:
-    """Validate the dimensionality of input arrays."""
-    if x.ndim != 2:
-        raise ValueError(f"x must be 2D array, got {x.ndim}D")
-
-    if y.ndim != 1:
-        raise ValueError(f"y must be 1D array, got {y.ndim}D")
-
-    if site_labels.ndim != 1:
-        raise ValueError(f"site_labels must be 1D array, got {site_labels.ndim}D")
-
-
-def _validate_array_values(x: np.ndarray, y: np.ndarray, site_labels: np.ndarray) -> None:
-    """Check for problematic values in input arrays."""
-    if np.any(np.isnan(x)):
-        warnings.warn("x contains NaN values, statistics may be affected", stacklevel=2)
-
-    if np.any(np.isnan(y)):
-        warnings.warn("y contains NaN values, statistics may be affected", stacklevel=2)
-
-    if np.any(np.isnan(site_labels)):
-        warnings.warn(
-            "site_labels contains NaN values, statistics may be affected",
-            stacklevel=2,
-        )
-
-
 def _compute_overall_statistics(
-    x: np.ndarray,
+    X: np.ndarray,
     y: np.ndarray,
     site_labels: np.ndarray,
     feature_names: list[str] | None = None,
@@ -197,7 +127,7 @@ def _compute_overall_statistics(
 
     Parameters
     ----------
-    x : np.ndarray
+    X : np.ndarray
         Feature matrix
     y : np.ndarray
         Target labels
@@ -212,7 +142,7 @@ def _compute_overall_statistics(
         Overall statistics
 
     """
-    n_samples, n_features = x.shape
+    n_samples, n_features = X.shape
     unique_sites = np.unique(site_labels)
     unique_classes = np.unique(y)
 
@@ -228,9 +158,9 @@ def _compute_overall_statistics(
     if feature_names is None:
         feature_names = [f"feature_{i}" for i in range(n_features)]
 
-    feature_means = {name: float(val) for name, val in zip(feature_names, x.mean(axis=0), strict=True)}
-    feature_stds = {name: float(val) for name, val in zip(feature_names, x.std(axis=0), strict=True)}
-    feature_ranges = {name: {"min": float(x[:, i].min()), "max": float(x[:, i].max())} for i, name in enumerate(feature_names)}
+    feature_means = {name: float(val) for name, val in zip(feature_names, X.mean(axis=0), strict=True)}
+    feature_stds = {name: float(val) for name, val in zip(feature_names, X.std(axis=0), strict=True)}
+    feature_ranges = {name: {"min": float(X[:, i].min()), "max": float(X[:, i].max())} for i, name in enumerate(feature_names)}
 
     return {
         "n_samples": int(n_samples),
@@ -253,7 +183,7 @@ def _compute_overall_statistics(
 
 
 def _compute_site_statistics(
-    x: np.ndarray,
+    X: np.ndarray,
     y: np.ndarray,
     site_labels: np.ndarray,
     unique_sites: np.ndarray,
@@ -263,7 +193,7 @@ def _compute_site_statistics(
 
     Parameters
     ----------
-    x : np.ndarray
+    X : np.ndarray
         Feature matrix.
     y : np.ndarray
         Target labels.
@@ -280,7 +210,7 @@ def _compute_site_statistics(
         Site statistics.
 
     """
-    n_features = x.shape[1]
+    n_features = X.shape[1]
     if feature_names is None:
         feature_names = [f"feature_{i}" for i in range(n_features)]
 
@@ -290,7 +220,7 @@ def _compute_site_statistics(
         logger.info(f"  Processing site {int(site)}...")
 
         site_mask = site_labels == site
-        x_site = x[site_mask]
+        X_site = X[site_mask]
         y_site = y[site_mask]
 
         # Basic counts
@@ -306,12 +236,12 @@ def _compute_site_statistics(
         }
 
         # Feature statistics for this site
-        feature_means = {name: float(val) for name, val in zip(feature_names, x_site.mean(axis=0), strict=True)}
-        feature_stds = {name: float(val) for name, val in zip(feature_names, x_site.std(axis=0), strict=True)}
+        feature_means = {name: float(val) for name, val in zip(feature_names, X_site.mean(axis=0), strict=True)}
+        feature_stds = {name: float(val) for name, val in zip(feature_names, X_site.std(axis=0), strict=True)}
 
         # Distance from global means
-        global_means = x.mean(axis=0)
-        site_means = x_site.mean(axis=0)
+        global_means = X.mean(axis=0)
+        site_means = X_site.mean(axis=0)
         feature_distance_from_global = {
             name: float(abs(site_mean - global_mean))
             for name, site_mean, global_mean in zip(feature_names, site_means, global_means, strict=True)
@@ -331,7 +261,7 @@ def _compute_site_statistics(
 
 
 def _compute_class_statistics(
-    x: np.ndarray,
+    X: np.ndarray,
     y: np.ndarray,
     unique_classes: np.ndarray,
     feature_names: list[str] | None = None,
@@ -340,7 +270,7 @@ def _compute_class_statistics(
 
     Parameters
     ----------
-    x : np.ndarray
+    X : np.ndarray
         Feature matrix.
     y : np.ndarray
         Target labels.
@@ -355,7 +285,7 @@ def _compute_class_statistics(
         Class statistics.
 
     """
-    n_features = x.shape[1]
+    n_features = X.shape[1]
     if feature_names is None:
         feature_names = [f"feature_{i}" for i in range(n_features)]
 
@@ -365,14 +295,14 @@ def _compute_class_statistics(
         logger.info(f"  Processing class {int(class_label)}...")
 
         class_mask = y == class_label
-        x_class = x[class_mask]
+        X_class = X[class_mask]
 
         # Basic counts
         n_class_samples = int(np.sum(class_mask))
 
         # Feature statistics for this class
-        feature_means = {name: float(val) for name, val in zip(feature_names, x_class.mean(axis=0), strict=True)}
-        feature_stds = {name: float(val) for name, val in zip(feature_names, x_class.std(axis=0), strict=True)}
+        feature_means = {name: float(val) for name, val in zip(feature_names, X_class.mean(axis=0), strict=True)}
+        feature_stds = {name: float(val) for name, val in zip(feature_names, X_class.std(axis=0), strict=True)}
 
         class_stats[f"class_{int(class_label)}"] = {
             "n_samples": n_class_samples,
@@ -384,7 +314,7 @@ def _compute_class_statistics(
 
 
 def _compute_correlation_statistics(
-    x: np.ndarray,
+    X: np.ndarray,
     y: np.ndarray,
     site_labels: np.ndarray,
     unique_sites: np.ndarray,
@@ -394,7 +324,7 @@ def _compute_correlation_statistics(
 
     Parameters
     ----------
-    x : np.ndarray
+    X : np.ndarray
         Feature matrix
     y : np.ndarray
         Target labels
@@ -424,9 +354,9 @@ def _compute_correlation_statistics(
     # Feature correlations with target (for binary classification)
     if len(unique_classes) == 2:
         feature_target_correlations = []
-        for i in range(x.shape[1]):
+        for i in range(X.shape[1]):
             try:
-                corr = np.corrcoef(x[:, i], y)[0, 1]
+                corr = np.corrcoef(X[:, i], y)[0, 1]
                 feature_target_correlations.append(float(corr))
             except (ValueError, RuntimeWarning):
                 feature_target_correlations.append(None)
@@ -435,7 +365,7 @@ def _compute_correlation_statistics(
     # Inter-site feature mean correlations
     n_sites = len(unique_sites)
     if n_sites > 1:
-        site_means = np.array([x[site_labels == site].mean(axis=0) for site in unique_sites])
+        site_means = np.array([X[site_labels == site].mean(axis=0) for site in unique_sites])
 
         # Correlation matrix between site means
         site_mean_corr_matrix = np.corrcoef(site_means)
@@ -451,8 +381,8 @@ def _compute_correlation_statistics(
         class_separation = {}
         for i in range(len(unique_classes)):
             for j in range(i + 1, len(unique_classes)):
-                mean_i = x[y == unique_classes[i]].mean(axis=0)
-                mean_j = x[y == unique_classes[j]].mean(axis=0)
+                mean_i = X[y == unique_classes[i]].mean(axis=0)
+                mean_j = X[y == unique_classes[j]].mean(axis=0)
                 distance = np.linalg.norm(mean_i - mean_j)
                 key = f"class_{int(unique_classes[i])}_vs_class_{int(unique_classes[j])}"
                 class_separation[key] = float(distance)
