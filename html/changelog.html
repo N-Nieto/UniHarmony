@@ -388,12 +388,17 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">0.0.1 - 2026-03-26</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">0.0.2 - 2026-04-16</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#added">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#changed">Changed</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">0.0.0 - 2026-01-15</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">0.0.1 - 2026-03-26</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Added</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">0.0.0 - 2026-01-15</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Added</a></li>
 </ul>
 </li>
 </ul>
@@ -410,9 +415,32 @@
   <section class="tex2jax_ignore mathjax_ignore" id="changelog">
 <h1>📂 CHANGELOG<a class="headerlink" href="#changelog" title="Link to this heading">#</a></h1>
 <section id="id1">
-<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.1">0.0.1</a> - 2026-03-26<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.2">0.0.2</a> - 2026-04-16<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <section id="added">
 <h3>Added<a class="headerlink" href="#added" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Introduce <code class="docutils literal notranslate"><span class="pre">uniharmony.verbosity</span></code> and <code class="docutils literal notranslate"><span class="pre">uniharmony.verbosity_context</span></code> to manage logging levels (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/10">#10</a>)</p></li>
+<li><p>Add InterSiteMatchedInterpolation harmonisation method (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/16">#16</a>)</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">plot</span></code> sub-package for providing plotting helpers (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/26">#26</a>)</p></li>
+</ul>
+</section>
+<section id="changed">
+<h3>Changed<a class="headerlink" href="#changed" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Improve <code class="docutils literal notranslate"><span class="pre">sites</span></code> validation, handling and storage across transformers (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/17">#17</a>)</p></li>
+<li><p>Split up API reference in docs (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/19">#19</a>)</p></li>
+<li><p>Fix IntraSiteInterpolation logic and improve test coverage (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/25">#25</a>)</p></li>
+<li><p>Improve multi-site data generation and move it to <code class="docutils literal notranslate"><span class="pre">datasets</span></code> (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/27">#27</a>)</p></li>
+<li><p>Improve NeuroComBat tests (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/29">#29</a>)</p></li>
+<li><p>Add Optimal Transport for Domain Adaptation wrapper that allows for harmonizing data to a reference site(s) (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/30">#30</a>)</p></li>
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">zensical</span></code> with <code class="docutils literal notranslate"><span class="pre">sphinx</span></code> for documentation (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/35">#35</a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="id2">
+<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.1">0.0.1</a> - 2026-03-26<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<section id="id3">
+<h3>Added<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Setup documentation and add initial info (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/2">#2</a>)</p></li>
 <li><p>Add IntraSiteInterpolation harmonisation method, MAREoS dataset loading and multisite data generation functions (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/4">#4</a>)</p></li>
@@ -420,10 +448,10 @@
 </ul>
 </section>
 </section>
-<section id="id2">
-<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.0">0.0.0</a> - 2026-01-15<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
-<section id="id3">
-<h3>Added<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<section id="id4">
+<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.0">0.0.0</a> - 2026-01-15<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<section id="id5">
+<h3>Added<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Clean up repository and publish package (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/1">#1</a>)</p></li>
 </ul>
@@ -469,12 +497,17 @@
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">0.0.1 - 2026-03-26</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">0.0.2 - 2026-04-16</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#added">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#changed">Changed</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">0.0.0 - 2026-01-15</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">0.0.1 - 2026-03-26</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Added</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">0.0.0 - 2026-01-15</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Added</a></li>
 </ul>
 </li>
 </ul>
