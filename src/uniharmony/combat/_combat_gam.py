@@ -105,9 +105,9 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
             The continuous covariates to be preserved during harmonization
             (e.g., clinical scores).
         df : int, optional (default 10)
-            Number of basis functions or degrees of freedom for BSplines.
+            Number of basis functions or degrees of freedom for BSplines. Default value used in the original implementation.
         degree : int, optional (default 3)
-            Degree(s) of the spline for BSplines.
+            Degree(s) of the spline for BSplines. Default value used in the original implementation.
         var_epsilon : float, optional (default 1e-8)
             Small constant to add to variance to avoid division by zero.
         delta_epsilon : float, optional (default 1e-8)
