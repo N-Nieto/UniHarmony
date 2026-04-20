@@ -242,7 +242,7 @@ def _resolve_dimensionality_reductor(
             dim_reductor = PCA(n_components=2, random_state=random_state, **dim_reductor_kwargs)
         elif method.lower() == "kernelpca":
             dim_reductor = KernelPCA(n_components=2, random_state=random_state, **dim_reductor_kwargs)
-        elif method.lower() == "MDS":
+        elif method.lower() == "mds":
             dim_reductor = MDS(n_components=2, random_state=random_state, **dim_reductor_kwargs)
         elif method.lower() == "isomap":
             dim_reductor = Isomap(n_components=2, **dim_reductor_kwargs)
@@ -252,9 +252,6 @@ def _resolve_dimensionality_reductor(
     # Validate dimensionality reducer
     if not hasattr(dim_reductor, "fit_transform"):
         raise TypeError(f"Dimensionality reducer must have 'fit_transform' method. Got {type(dim_reductor).__name__}")
-
-    if not hasattr(dim_reductor, "n_components"):
-        raise TypeError(f"Dimensionality reducer must have 'n_components' attribute. Got {type(dim_reductor).__name__}")
 
     if dim_reductor.n_components != 2:
         raise ValueError(
@@ -344,6 +341,11 @@ def plot_features_by_site(
         Figure and axes objects for further customization
 
     """
+    # Validate inputs
+    X = check_array(X, copy=True, dtype=FLOAT_DTYPES)
+    sites = check_array(sites, copy=True, dtype=None, ensure_2d=False)
+    check_consistent_length(X, sites)
+    validate_sites(sites)
     # Prepare data
     df = prepare_data_for_boxplot(X, sites, feature_names)
 
