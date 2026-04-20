@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import numpy.typing as npt
 import pandas as pd
+import seaborn as sns
 import sklearn.linear_model
 import structlog
 from matplotlib.axes import Axes
@@ -20,7 +21,7 @@ from sklearn.utils.validation import (
 from uniharmony._utils import validate_sites
 
 
-__all__ = ["plot_2d_components_by_value", "plot_2d_projection", "plot_decision_boundary_2d"]
+__all__ = ["plot_2d_components_by_value", "plot_2d_projection", "plot_decision_boundary_2d", "plot_features_by_site"]
 
 logger = structlog.get_logger()
 
@@ -71,7 +72,7 @@ def plot_2d_components_by_value(
     group_value : str
         Column name in projection_data to use for coloring.
     reducer_name : str
-        Name of the dimentionality reduction method
+        Name of the dimensionality reduction method
     ax : Axes
         Matplotlib axes to plot on.
     alpha : float (default 0.6)
@@ -264,3 +265,112 @@ def _resolve_dimensionality_reductor(
     logger.info(f"Fitting dimensionality reducer: {type(dim_reductor).__name__}")
 
     return dim_reductor
+
+
+def prepare_data_for_boxplot(X: np.ndarray, sites: np.ndarray, feature_names: list[str] | None = None) -> pd.DataFrame:
+    """Convert numpy array and sites to a tidy DataFrame suitable for seaborn boxplots.
+
+    Parameters
+    ----------
+    X : np.ndarray
+        Feature matrix of shape (n_samples, n_features)
+    sites : np.ndarray
+        Array of site labels for each sample, shape (n_samples,)
+    feature_names : List[str], optional
+        Names for each feature column. If None, uses 'Feature_0', 'Feature_1', etc.
+
+    Returns
+    -------
+    pd.DataFrame
+        Tidy DataFrame with columns: 'site', 'feature', 'value'
+
+    """
+    n_samples, n_features = X.shape
+
+    # Create default feature names if not provided
+    if feature_names is None:
+        feature_names = [f"Feature_{i}" for i in range(n_features)]
+    else:
+        assert len(feature_names) == n_features, (
+            f"Number of feature names ({len(feature_names)}) must match n_features ({n_features})"
+        )
+
+    # Reshape data to long format
+    data_list = []
+    for i in range(n_samples):
+        for j in range(n_features):
+            data_list.append({"site": sites[i], "feature": feature_names[j], "value": X[i, j]})
+
+    return pd.DataFrame(data_list)
+
+
+def plot_features_by_site(
+    X: np.ndarray,
+    sites: np.ndarray,
+    feature_names: list[str] | None = None,
+    figsize: tuple[int, int] = (14, 7),
+    rotation: int = 45,
+    show_points: bool = False,
+    title: str | None = None,
+    site_order: list[str] | None = None,
+    feature_order: list[str] | None = None,
+) -> tuple[plt.Figure, plt.Axes]:
+    """Create boxplots with ALL features in the SAME plot, grouped by feature and colored by site.
+
+    Parameters
+    ----------
+    X : np.ndarray
+        Feature matrix of shape (n_samples, n_features)
+    sites : np.ndarray
+        Array of site labels for each sample
+    feature_names : List[str], optional
+        Names for each feature
+    figsize : Tuple[int, int]
+        Figure size (width, height)
+    rotation : int
+        Rotation angle for x-axis labels
+    show_points : bool
+        Whether to overlay individual data points on boxplots
+    title : str, optional
+        Custom title for the plot
+    site_order : List[str], optional
+        Order of sites in the legend
+    feature_order : List[str], optional
+        Order of features on x-axis
+
+    Returns
+    -------
+    Tuple[plt.Figure, plt.Axes]
+        Figure and axes objects for further customization
+
+    """
+    # Prepare data
+    df = prepare_data_for_boxplot(X, sites, feature_names)
+
+    # Set orders if provided
+    if feature_order:
+        df["feature"] = pd.Categorical(df["feature"], categories=feature_order, ordered=True)
+    if site_order:
+        df["site"] = pd.Categorical(df["site"], categories=site_order, ordered=True)
+
+    # Create plot
+    fig, ax = plt.subplots(figsize=figsize)
+
+    # Create boxplot with hue by site - ALL FEATURES TOGETHER
+    sns.boxplot(data=df, x="feature", y="value", hue="site", ax=ax, width=0.8)
+
+    # Optionally add individual points
+    if show_points:
+        sns.stripplot(data=df, x="feature", y="value", hue="site", ax=ax, dodge=True, alpha=0.5, size=2, legend=False)
+
+    # Customize plot
+    ax.set_xlabel("Features", fontsize=12, fontweight="bold")
+    ax.set_ylabel("Values", fontsize=12, fontweight="bold")
+    ax.set_title(title or "Feature Distributions by Site (All Features Together)", fontsize=14, fontweight="bold")
+    ax.tick_params(axis="x", rotation=rotation)
+    ax.legend(title="Site", bbox_to_anchor=(1.05, 1), loc="upper left")
+    ax.grid(True, alpha=0.3, axis="y")
+
+    plt.tight_layout()
+
+    return fig, ax
