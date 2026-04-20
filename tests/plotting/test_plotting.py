@@ -1,6 +1,5 @@
 """Test suite for plotting functionalities."""
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pytest
@@ -108,6 +107,8 @@ def test_plot_features_by_site(multisite_data) -> None:
 @pytest.mark.docs
 def test_plot_decision_boundary_2d() -> None:
     """Plot decision boundary 2D."""
+    import matplotlib.pyplot as plt
+
     X, y, _ = make_multisite_classification(n_features=2, n_samples=100)
     _, ax = plt.subplots(1, 1, figsize=(10, 8))
 
@@ -121,6 +122,8 @@ def test_plot_decision_boundary_2d() -> None:
 @pytest.mark.docs
 def test_plot_2d_components_by_value() -> None:
     """Test plot 2D components by value."""
+    import matplotlib.pyplot as plt
+
     X, y, sites = make_multisite_classification(n_features=2, n_samples=100)
 
     df = pd.DataFrame({"comp1": X[:, 0], "comp2": X[:, 1], "site": sites, "target": y})
