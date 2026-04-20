@@ -1,4 +1,4 @@
-"""Test suite for MAREoS dataset loading functions."""
+"""Test suite for plotting functionalities."""
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -21,6 +21,7 @@ def multisite_data() -> tuple[NDArray[np.float64], NDArray[np.int64], NDArray[np
     return X, y, sites
 
 
+@pytest.mark.docs
 def test_plot_2d_projection_default(multisite_data) -> None:
     """Plot 2D projection with default parameters."""
     X, y, sites = multisite_data
@@ -28,6 +29,7 @@ def test_plot_2d_projection_default(multisite_data) -> None:
     plot_2d_projection(X, sites, y)
 
 
+@pytest.mark.docs
 def test_plot_2d_projection_default_without_y(multisite_data) -> None:
     """Plot 2D projection with default parameters without y."""
     X, _, sites = multisite_data
@@ -36,6 +38,7 @@ def test_plot_2d_projection_default_without_y(multisite_data) -> None:
 
 
 # TODO: Parametrize this test
+@pytest.mark.docs
 def test_plot_2d_projection_methods_as_str(multisite_data) -> None:
     """Plot 2D projection passing method as str."""
     X, y, sites = multisite_data
@@ -47,6 +50,7 @@ def test_plot_2d_projection_methods_as_str(multisite_data) -> None:
     plot_2d_projection(X, sites, y, method="isomap")
 
 
+@pytest.mark.docs
 def test_plot_2d_projection_methods_as_str_invalid(multisite_data) -> None:
     """Plot 2D projection passing method as str invalid."""
     X, y, sites = multisite_data
@@ -55,6 +59,7 @@ def test_plot_2d_projection_methods_as_str_invalid(multisite_data) -> None:
         plot_2d_projection(X, sites, y, method="invalid")
 
 
+@pytest.mark.docs
 def test_plot_2d_projection_with_instance(multisite_data) -> None:
     """Plot 2D projection passing instance."""
     X, y, sites = multisite_data
@@ -63,6 +68,7 @@ def test_plot_2d_projection_with_instance(multisite_data) -> None:
     plot_2d_projection(X, sites, y, dim_reductor=dim_reductor)
 
 
+@pytest.mark.docs
 def test_plot_2d_projection_with_invalida_params(multisite_data) -> None:
     """Plot 2D projection passing instance."""
     X, y, sites = multisite_data
@@ -76,6 +82,7 @@ def test_plot_2d_projection_with_invalida_params(multisite_data) -> None:
         plot_2d_projection(X, sites, y, dim_reductor=dim_reductor)
 
 
+@pytest.mark.docs
 def test_plot_features_by_site_with_default(multisite_data) -> None:
     """Test plot features by site with defaults."""
     X, _, sites = multisite_data
@@ -83,6 +90,7 @@ def test_plot_features_by_site_with_default(multisite_data) -> None:
     plot_features_by_site(X, sites)
 
 
+@pytest.mark.docs
 def test_plot_features_by_site(multisite_data) -> None:
     """Plot features by site with with more parameters."""
     X, _, sites = multisite_data
@@ -97,6 +105,7 @@ def test_plot_features_by_site(multisite_data) -> None:
     )
 
 
+@pytest.mark.docs
 def test_plot_decision_boundary_2d() -> None:
     """Plot decision boundary 2D."""
     X, y, _ = make_multisite_classification(n_features=2, n_samples=100)
@@ -109,6 +118,7 @@ def test_plot_decision_boundary_2d() -> None:
     plot_decision_boundary_2d(ax, clf)
 
 
+@pytest.mark.docs
 def test_plot_2d_components_by_value() -> None:
     """Test plot 2D components by value."""
     X, y, sites = make_multisite_classification(n_features=2, n_samples=100)
