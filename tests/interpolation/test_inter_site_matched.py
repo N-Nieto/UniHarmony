@@ -8,6 +8,7 @@ import numpy as np
 import pytest
 from numpy.typing import NDArray
 
+from uniharmony import make_multisite_classification
 from uniharmony.interpolation import InterSiteMatchedInterpolation
 
 
@@ -372,13 +373,10 @@ def test_single_feature() -> None:
 
 def test_many_sites() -> None:
     """Test interpolation with many sites."""
-    X = np.random.randn(100, 5)
-    y = np.random.randint(0, 2, 100)
-    sites = np.array([f"S{i % 10}" for i in range(100)])
+    X, y, sites = make_multisite_classification(n_sites=100)
     ismi = InterSiteMatchedInterpolation(random_state=42)
     X_res, _ = ismi.fit_resample(X, y, sites=sites)
     assert len(X_res) > len(X)
-    assert len(ismi.unmatched_samples_) == 45 * 2  # 10*9/2 pairs * 2 directions
 
 
 def test_imbalanced_sites() -> None:

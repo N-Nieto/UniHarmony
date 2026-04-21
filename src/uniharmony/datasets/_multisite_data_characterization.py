@@ -4,6 +4,7 @@ from typing import Any
 
 import numpy as np
 import structlog
+from scipy.stats import median_abs_deviation
 from sklearn.utils.validation import (
     check_array,
     check_consistent_length,
@@ -12,19 +13,18 @@ from sklearn.utils.validation import (
 
 
 __all__ = [
-    "get_site_data_statistics",
+    "get_multisite_data_statistics",
     "print_statistics_summary",
 ]
 
 logger = structlog.get_logger()
 
 
-def get_site_data_statistics(
+def get_multisite_data_statistics(
     X: np.ndarray,
     y: np.ndarray,
     sites: np.ndarray,
     feature_names: list[str] | None = None,
-    compute_comprehensive: bool = True,
 ) -> dict[str, Any]:
     """Compute comprehensive statistics for multi-site dataset.
 
@@ -111,8 +111,7 @@ def get_site_data_statistics(
     stats["class_statistics"] = _compute_class_statistics(X, y, unique_classes, feature_names)
 
     # Correlation and relationship statistics
-    if compute_comprehensive:
-        stats["correlations"] = _compute_correlation_statistics(X, y, sites, unique_sites, unique_classes)
+    stats["correlations"] = _compute_correlation_statistics(X, y, sites, unique_sites, unique_classes)
 
     return stats
 
@@ -160,6 +159,8 @@ def _compute_overall_statistics(
 
     feature_means = {name: float(val) for name, val in zip(feature_names, X.mean(axis=0), strict=True)}
     feature_stds = {name: float(val) for name, val in zip(feature_names, X.std(axis=0), strict=True)}
+    feature_MAD = {name: float(val) for name, val in zip(feature_names, median_abs_deviation(X, axis=0), strict=True)}
+
     feature_ranges = {name: {"min": float(X[:, i].min()), "max": float(X[:, i].max())} for i, name in enumerate(feature_names)}
 
     return {
@@ -175,6 +176,7 @@ def _compute_overall_statistics(
         "feature_statistics": {
             "means": feature_means,
             "stds": feature_stds,
+            "MAD": feature_MAD,
             "ranges": feature_ranges,
         },
         "dataset_entropy": float(_compute_dataset_entropy(y)),
@@ -466,7 +468,8 @@ def print_statistics_summary(stats: dict[str, Any], max_features: int = 5) -> No
         for name in feature_names:
             mean = overall["feature_statistics"]["means"][name]
             std = overall["feature_statistics"]["stds"][name]
-            logger.info(f"  {name}: mean={mean:.4f}, std={std:.4f}")
+            MAD = overall["feature_statistics"]["MAD"][name]
+            logger.info(f"  {name}: mean={mean:.4f}, std={std:.4f}, MAD={MAD:.4f}")
 
     # Correlation summary
     if stats.get("correlations"):

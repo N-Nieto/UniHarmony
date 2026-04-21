@@ -1,7 +1,7 @@
 """Test suite for data characterization functions."""
 
 from uniharmony.datasets import (
-    get_site_data_statistics,
+    get_multisite_data_statistics,
     make_multisite_classification,
     print_statistics_summary,
 )
@@ -15,19 +15,17 @@ def test_data_characterization_and_printing() -> None:
         n_classes=3,
     )
     # Compute statistics
-    stats = get_site_data_statistics(
+    stats = get_multisite_data_statistics(
         X=X,
         y=y,
         sites=sites,
-        compute_comprehensive=True,
     )
 
     # Compute statistics
-    _ = get_site_data_statistics(
+    _ = get_multisite_data_statistics(
         X=X,
         y=y,
         sites=sites,
-        compute_comprehensive=False,
     )
 
     print_statistics_summary(stats)
