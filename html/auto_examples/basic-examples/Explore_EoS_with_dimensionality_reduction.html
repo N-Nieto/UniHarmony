@@ -54,7 +54,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Characterize a multisite problem using UniHarmony" href="Multisite_data_characterization_example.html" />
-    <link rel="prev" title="Discover biases in metrics metrics by site." href="Found_biases_in_metrics_by_site.html" />
+    <link rel="prev" title="Discover biases in metrics by site." href="Found_biases_in_metrics_by_site.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -183,7 +183,7 @@
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">Basic examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="EoS_in_ML.html">Impact of Effects of Site in Machine learning.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Compute_metrics_by_site.html">How to desegregate the metrics by site.</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Found_biases_in_metrics_by_site.html">Discover biases in metrics metrics by site.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Found_biases_in_metrics_by_site.html">Discover biases in metrics by site.</a></li>
 
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">Exploring EoS with dimensionality reduction techniques</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Multisite_data_characterization_example.html">Characterize a multisite problem using UniHarmony</a></li>
@@ -389,11 +389,10 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-first-step-before-applying-any-harmonization-technique-is-to-understand-and-characterize-our-data">The first step before applying any harmonization technique is to understand and characterize our data.</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usually-we-deal-with-high-dimensional-data-in-order-to-reduce-the-dimensions-of-the-problem-and-see-how-much-target-and-effect-of-site-eos-information-there-is-in-our-data">Usually, we deal with high dimensional data. In order to reduce the dimensions of the problem and see how much target and Effect of Site (EoS) information there is in our data.</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#let-s-simulate-data-with-only-effects-of-site-eos-or-only-real-signal-and-see-how-tsne-groups-the-target-and-eos">Let’s simulate data with only Effects of Site (EoS) or only real signal, and see how tSNE groups the target and Eos.</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-first-step-before-applying-any-harmonization-technique-is-to-understand-and-characterize-our-data">The first step before applying any harmonization technique is to understand and characterize our data.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usually-we-deal-with-high-dimensional-data-in-order-to-reduce-the-dimensions-of-the-problem-and-see-how-much-target-and-effect-of-site-eos-information-there-is-in-our-data">Usually, we deal with high dimensional data. In order to reduce the dimensions of the problem and see how much target and Effect of Site (EoS) information there is in our data.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#let-s-explore-how-simulated-data-looks-like-using-different-dimensionality-reduction-methods">Let’s explore how simulated data looks like using different dimensionality reduction methods.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#let-s-simulate-data-with-only-effects-of-site-eos-or-only-real-signal-and-see-how-tsne-groups-the-target-and-eos">Let’s simulate data with only Effects of Site (EoS) or only real signal, and see how tSNE groups the target and Eos.</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#let-s-try-now-another-dimensionality-reduction-method">Let’s try now another dimensionality reduction method.</a></li>
 </ul>
             </nav>
@@ -410,13 +409,19 @@
 <span id="example-explore-eos-with-dimensionality-reduction"></span><h1>Exploring EoS with dimensionality reduction techniques<a class="headerlink" href="#exploring-eos-with-dimensionality-reduction-techniques" title="Link to this heading">#</a></h1>
 <section id="the-first-step-before-applying-any-harmonization-technique-is-to-understand-and-characterize-our-data">
 <h2>The first step before applying any harmonization technique is to understand and characterize our data.<a class="headerlink" href="#the-first-step-before-applying-any-harmonization-technique-is-to-understand-and-characterize-our-data" title="Link to this heading">#</a></h2>
+</section>
 <section id="usually-we-deal-with-high-dimensional-data-in-order-to-reduce-the-dimensions-of-the-problem-and-see-how-much-target-and-effect-of-site-eos-information-there-is-in-our-data">
-<h3>Usually, we deal with high dimensional data. In order to reduce the dimensions of the problem and see how much target and Effect of Site (EoS) information there is in our data.<a class="headerlink" href="#usually-we-deal-with-high-dimensional-data-in-order-to-reduce-the-dimensions-of-the-problem-and-see-how-much-target-and-effect-of-site-eos-information-there-is-in-our-data" title="Link to this heading">#</a></h3>
+<h2>Usually, we deal with high dimensional data. In order to reduce the dimensions of the problem and see how much target and Effect of Site (EoS) information there is in our data.<a class="headerlink" href="#usually-we-deal-with-high-dimensional-data-in-order-to-reduce-the-dimensions-of-the-problem-and-see-how-much-target-and-effect-of-site-eos-information-there-is-in-our-data" title="Link to this heading">#</a></h2>
+</section>
+<section id="let-s-explore-how-simulated-data-looks-like-using-different-dimensionality-reduction-methods">
+<h2>Let’s explore how simulated data looks like using different dimensionality reduction methods.<a class="headerlink" href="#let-s-explore-how-simulated-data-looks-like-using-different-dimensionality-reduction-methods" title="Link to this heading">#</a></h2>
+<p>For this we will use the function <code class="docutils literal notranslate"><span class="pre">plot_2d_projection</span></code> of <code class="docutils literal notranslate"><span class="pre">uniharmony</span></code>, that allows us to pass our data and automatically generate a scatter plot.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Imports</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.decomposition</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastICA</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_multisite_classification</span><span class="p">,</span> <span class="n">verbosity</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.plot</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_2d_projection</span>
@@ -430,10 +435,11 @@
 </div>
 </section>
 <section id="let-s-simulate-data-with-only-effects-of-site-eos-or-only-real-signal-and-see-how-tsne-groups-the-target-and-eos">
-<h3>Let’s simulate data with only Effects of Site (EoS) or only real signal, and see how tSNE groups the target and Eos.<a class="headerlink" href="#let-s-simulate-data-with-only-effects-of-site-eos-or-only-real-signal-and-see-how-tsne-groups-the-target-and-eos" title="Link to this heading">#</a></h3>
+<h2>Let’s simulate data with only Effects of Site (EoS) or only real signal, and see how tSNE groups the target and Eos.<a class="headerlink" href="#let-s-simulate-data-with-only-effects-of-site-eos-or-only-real-signal-and-see-how-tsne-groups-the-target-and-eos" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span><span class="n">n_sites</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">signal_strength</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">site_effect_strength</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1"># Using the function as default. The function will use t-SNE as default dimensionality reductor.</span>
 <span class="n">plot_2d_projection</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">sites</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
 
 <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span><span class="n">n_sites</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">signal_strength</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">site_effect_strength</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">23</span><span class="p">)</span>
@@ -451,12 +457,12 @@
 This is because tSNE used the target information to get the clusters, as there was no EoS information.</p>
 <p>In the second plot, exactly the opposite happened, tSNE clustered the sites almost perfectly.</p>
 </section>
-</section>
 <section id="let-s-try-now-another-dimensionality-reduction-method">
 <h2>Let’s try now another dimensionality reduction method.<a class="headerlink" href="#let-s-try-now-another-dimensionality-reduction-method" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_sites</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span> <span class="n">signal_strength</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">site_effect_strength</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1"># We can also pass the method as string. Only a few methods are available to pass as string in &quot;method&quot;</span>
 <span class="n">plot_2d_projection</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">sites</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s2">&quot;pca&quot;</span><span class="p">)</span>
 
 
@@ -467,11 +473,30 @@ This is because tSNE used the target information to get the clusters, as there w
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/6eb76a9d854712b4833d9a293c7bcace30105be358d65fcd8f3878f69da515db.png" src="../../_images/6eb76a9d854712b4833d9a293c7bcace30105be358d65fcd8f3878f69da515db.png" />
-<img alt="../../_images/9c0e88f115a3e06c3af0af798a8a9ea5f52ef17dfe9444624999856602d2f73e.png" src="../../_images/9c0e88f115a3e06c3af0af798a8a9ea5f52ef17dfe9444624999856602d2f73e.png" />
+<img alt="../../_images/fe8fa085c21506c2879542cf648e9501b22bf3779f1b5e2fb3727b3f7751517b.png" src="../../_images/fe8fa085c21506c2879542cf648e9501b22bf3779f1b5e2fb3727b3f7751517b.png" />
+<img alt="../../_images/2d4856bcc9c6936f37775b5912848d5e1019da17ae53387bed34a340d17c5e90.png" src="../../_images/2d4856bcc9c6936f37775b5912848d5e1019da17ae53387bed34a340d17c5e90.png" />
 </div>
 </div>
-<p>We found similar behavior using PCA, but different clusters were generated.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dim_reductor</span> <span class="o">=</span> <span class="n">FastICA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_sites</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">1200</span><span class="p">,</span> <span class="n">signal_strength</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">site_effect_strength</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="c1"># We can also pass directly an instance of the dimensionality reductor that we want to use.</span>
+<span class="n">plot_2d_projection</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">sites</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">dim_reductor</span><span class="o">=</span><span class="n">dim_reductor</span><span class="p">)</span>
+
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span><span class="n">n_classes</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">n_sites</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">120</span><span class="p">,</span> <span class="n">signal_strength</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">site_effect_strength</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plot_2d_projection</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">sites</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">dim_reductor</span><span class="o">=</span><span class="n">dim_reductor</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/d3b9c589b06e87c31521822b94950d1911e7c08487ac2232b5628a59c663e939.png" src="../../_images/d3b9c589b06e87c31521822b94950d1911e7c08487ac2232b5628a59c663e939.png" />
+<img alt="../../_images/aafc4994701a76b64c9b87cc6699fc89daf27adfc0093b483f2f2e92ef7b81a9.png" src="../../_images/aafc4994701a76b64c9b87cc6699fc89daf27adfc0093b483f2f2e92ef7b81a9.png" />
+</div>
+</div>
+<p>We found similar behavior using PCA os FastICA, but different clusters were generated.</p>
 </section>
 </section>
 
@@ -492,7 +517,7 @@ This is because tSNE used the target information to get the clusters, as there w
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Discover biases in metrics metrics by site.</p>
+        <p class="prev-next-title">Discover biases in metrics by site.</p>
       </div>
     </a>
     <a class="right-next"
@@ -522,11 +547,10 @@ This is because tSNE used the target information to get the clusters, as there w
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-first-step-before-applying-any-harmonization-technique-is-to-understand-and-characterize-our-data">The first step before applying any harmonization technique is to understand and characterize our data.</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#usually-we-deal-with-high-dimensional-data-in-order-to-reduce-the-dimensions-of-the-problem-and-see-how-much-target-and-effect-of-site-eos-information-there-is-in-our-data">Usually, we deal with high dimensional data. In order to reduce the dimensions of the problem and see how much target and Effect of Site (EoS) information there is in our data.</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#let-s-simulate-data-with-only-effects-of-site-eos-or-only-real-signal-and-see-how-tsne-groups-the-target-and-eos">Let’s simulate data with only Effects of Site (EoS) or only real signal, and see how tSNE groups the target and Eos.</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-first-step-before-applying-any-harmonization-technique-is-to-understand-and-characterize-our-data">The first step before applying any harmonization technique is to understand and characterize our data.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usually-we-deal-with-high-dimensional-data-in-order-to-reduce-the-dimensions-of-the-problem-and-see-how-much-target-and-effect-of-site-eos-information-there-is-in-our-data">Usually, we deal with high dimensional data. In order to reduce the dimensions of the problem and see how much target and Effect of Site (EoS) information there is in our data.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#let-s-explore-how-simulated-data-looks-like-using-different-dimensionality-reduction-methods">Let’s explore how simulated data looks like using different dimensionality reduction methods.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#let-s-simulate-data-with-only-effects-of-site-eos-or-only-real-signal-and-see-how-tsne-groups-the-target-and-eos">Let’s simulate data with only Effects of Site (EoS) or only real signal, and see how tSNE groups the target and Eos.</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#let-s-try-now-another-dimensionality-reduction-method">Let’s try now another dimensionality reduction method.</a></li>
 </ul>
   </nav></div>

@@ -86,7 +86,7 @@ Basic examples
 
     
     .. grid-item-card:: :ref:`example_multisite_data_characterization_example`
-        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/no_image.webp
+        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/05-Multisite_data_characterization_example.webp
         :link: example_multisite_data_characterization_example
         :link-type: ref
         :shadow: md
