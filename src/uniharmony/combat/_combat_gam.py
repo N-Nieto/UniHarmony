@@ -132,6 +132,13 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
         smooth_covariates = check_array(smooth_covariates, dtype=FLOAT_DTYPES, estimator=self)
         if smooth_covariates_bounds is None:
             smooth_covariates_bounds = (None, None)
+        logger.info(
+            "If you intend to build a machine learning (ML) model,"
+            "then make sure that you DO *NOT* preserve the ML model's target as covariate. "
+            "You will be required to provide the covariate also at transform time, and this will produce data leakage. "
+            "If you are performing a statistical analysis and want to preserve a variable of interest, "
+            "then it is correct to specify it as covariate."
+        )
 
         # Check that continuous_covariates has correct shape and type if it is not None.
         # Track of whether it was used during fit to check during transform
