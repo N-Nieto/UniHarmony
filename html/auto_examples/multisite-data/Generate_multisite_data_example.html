@@ -207,6 +207,10 @@
 
 <li class="toctree-l3"><a class="reference internal" href="../combat-based/NeuroComBat_imbalance_across_sites.html">Analasing neuroComBat behaivor when imbalance across sites.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../combat-based/NeuroComBat_in_MAREoS.html">Benchmark NeuroComBat in MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../combat-based/ComBatGAM_binary_classification.html">Harmonize data with neuroComBat</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../combat-based/ComBatGAM_imbalance_across_sites.html">Analasing neuroComBat behaivor when imbalance across sites.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../combat-based/ComBatGAM_in_MAREoS.html">Benchmark NeuroComBat in MAREoS dataset</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../interpolation-based/index.html">Interpolation Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -449,7 +453,7 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>X has 1000 examples and 10 features
 </pre></div>
 </div>
-<img alt="../../_images/be4b2a9a754f761b0def48190079db0a29573067d34281af78292e5db9fbd9be.png" src="../../_images/be4b2a9a754f761b0def48190079db0a29573067d34281af78292e5db9fbd9be.png" />
+<img alt="../../_images/5f6cb6462e1ac459628c67a32e1c6f31e6e4609c1eff055566bdca0ad97262cb.png" src="../../_images/5f6cb6462e1ac459628c67a32e1c6f31e6e4609c1eff055566bdca0ad97262cb.png" />
 </div>
 </div>
 <p>Let’s increase the number of sites. Note that the total number of samples is the same, but the distribution changed.</p>
@@ -481,13 +485,13 @@
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>For n_sites 2, X has 1000 examples and 10 features
+For n_sites 4, X has 1000 examples and 10 features
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>For n_sites 4, X has 1000 examples and 10 features
-For n_sites 10, X has 1000 examples and 10 features
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>For n_sites 10, X has 1000 examples and 10 features
 </pre></div>
 </div>
-<img alt="../../_images/c6b766bd6695ed13ad93563ff21b50c8ebb52f0265693f52e7dbfe03b1990610.png" src="../../_images/c6b766bd6695ed13ad93563ff21b50c8ebb52f0265693f52e7dbfe03b1990610.png" />
+<img alt="../../_images/c83a3f3df4c56d81ea5f85a2947d61b0a4d2339a2e27356d805a8693a42dc5b9.png" src="../../_images/c83a3f3df4c56d81ea5f85a2947d61b0a4d2339a2e27356d805a8693a42dc5b9.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -520,7 +524,7 @@ For n_classes 4, X has 1000 examples and 10 features
 For n_classes 10, X has 1000 examples and 10 features
 </pre></div>
 </div>
-<img alt="../../_images/c1e5154d6899e8deed63dfec86cc21d235069884896c3b9a243aa9a2d61ac893.png" src="../../_images/c1e5154d6899e8deed63dfec86cc21d235069884896c3b9a243aa9a2d61ac893.png" />
+<img alt="../../_images/83db0ff9bc9a670a694dcc44a569ffc89b70faf9db1407a0583db2839b74ad79.png" src="../../_images/83db0ff9bc9a670a694dcc44a569ffc89b70faf9db1407a0583db2839b74ad79.png" />
 </div>
 </div>
 </section>
@@ -561,7 +565,7 @@ For n_classes 10, X has 1000 examples and 10 features
 For n_classes 10, X has 1000 examples and 10 features
 </pre></div>
 </div>
-<img alt="../../_images/db8f4880d52105890f8dafaf0383294ae4fdbcead655cf0c16b5390ebef5f17f.png" src="../../_images/db8f4880d52105890f8dafaf0383294ae4fdbcead655cf0c16b5390ebef5f17f.png" />
+<img alt="../../_images/6f3f16c500237d4ffc119dd48a0a992e4069152b458498665d603fa24e8c8757.png" src="../../_images/6f3f16c500237d4ffc119dd48a0a992e4069152b458498665d603fa24e8c8757.png" />
 </div>
 </div>
 <p>Now that we changed the balance, we have different occurence in different sites. Note that the total number of classes is still balanced, is the distribution accross sites that changed.</p>
@@ -599,7 +603,7 @@ For n_classes 10, X has 1000 examples and 10 features
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/2e42482f54478142dfaff06199cee7c3f0c1d91b4bc0a5e3920105189fa83886.png" src="../../_images/2e42482f54478142dfaff06199cee7c3f0c1d91b4bc0a5e3920105189fa83886.png" />
+<img alt="../../_images/2018cc4ea6ee86d065bb237f1c459e06f88d8d044c5d4135f7046c58552144be.png" src="../../_images/2018cc4ea6ee86d065bb237f1c459e06f88d8d044c5d4135f7046c58552144be.png" />
 </div>
 </div>
 <section id="effect-of-site-effect">
@@ -634,7 +638,7 @@ For n_classes 10, X has 1000 examples and 10 features
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/f78929f0b27d48e45594127fd459a5c9f3c2d3765f8b0a4dc52fdc759a226648.png" src="../../_images/f78929f0b27d48e45594127fd459a5c9f3c2d3765f8b0a4dc52fdc759a226648.png" />
+<img alt="../../_images/b1562743cb98db858ea441a8260d120673d017953fc04871ac3a0cb8fe72c6f6.png" src="../../_images/b1562743cb98db858ea441a8260d120673d017953fc04871ac3a0cb8fe72c6f6.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -668,55 +672,55 @@ For n_classes 10, X has 1000 examples and 10 features
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-21 17:24:18</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Using balanced classes: [0.5, 0.5]</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-27 14:49:37</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Using balanced classes: [0.5, 0.5]</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-21 17:24:18</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Generating 500 samples for site 0</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-27 14:49:37</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Generating 500 samples for site 0</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-21 17:24:18</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Site 0, site effect strength [[-1.08176037 -1.08176037]]</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-27 14:49:37</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Site 0, site effect strength [[-1.08176037 -1.08176037]]</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-21 17:24:18</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Generating 500 samples for site 1</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-27 14:49:37</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Generating 500 samples for site 1</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-21 17:24:18</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Site 1, site effect strength [[2.21054661 2.21054661]]</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-27 14:49:37</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Site 1, site effect strength [[2.21054661 2.21054661]]</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-21 17:24:18</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Generated 1000 samples across 2 sites</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-27 14:49:37</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Generated 1000 samples across 2 sites</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-21 17:24:18</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Class distribution: [500 500] </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-27 14:49:37</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Class distribution: [500 500] </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-21 17:24:18</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Site distribution: [500 500]  </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-27 14:49:37</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Site distribution: [500 500]  </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-21 17:24:18</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Using balanced classes: [0.5, 0.5]</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-27 14:49:37</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Using balanced classes: [0.5, 0.5]</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-21 17:24:18</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Generating 500 samples for site 0</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-27 14:49:37</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Generating 500 samples for site 0</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-21 17:24:18</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Site 0, site effect strength [[  4.76512074 -11.03781863]]</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-27 14:49:37</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Site 0, site effect strength [[  4.76512074 -11.03781863]]</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-21 17:24:18</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Generating 500 samples for site 1</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-27 14:49:37</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Generating 500 samples for site 1</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-21 17:24:18</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Site 1, site effect strength [[-4.79488122  4.36459174]]</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-27 14:49:37</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Site 1, site effect strength [[-4.79488122  4.36459174]]</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-21 17:24:18</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Generated 1000 samples across 2 sites</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-27 14:49:37</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Generated 1000 samples across 2 sites</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-21 17:24:18</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Class distribution: [500 500] </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-27 14:49:37</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Class distribution: [500 500] </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-21 17:24:18</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Site distribution: [500 500]  </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-27 14:49:37</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Site distribution: [500 500]  </span>
 </pre></div>
 </div>
-<img alt="../../_images/69d0c967f5210422c133a2fb685beb59ced0364b50d773e37eadecb6fed9c37f.png" src="../../_images/69d0c967f5210422c133a2fb685beb59ced0364b50d773e37eadecb6fed9c37f.png" />
+<img alt="../../_images/977a3649ce97682cd64249c63c24df55cd4e037c1120ece87600ed309137830c.png" src="../../_images/977a3649ce97682cd64249c63c24df55cd4e037c1120ece87600ed309137830c.png" />
 </div>
 </div>
 <p>​For the information printed, we can see that for <code class="docutils literal notranslate"><span class="pre">site_effect_homogeneous</span> <span class="pre">=</span> <span class="pre">True</span></code>, the Effect of Site (EoS) is <strong>the same</strong> for all features (in this case, we have 2 features).</p>
@@ -761,7 +765,7 @@ For n_classes 10, X has 1000 examples and 10 features
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/70d0512c7b7d32f3d93480ad2948ee542a5876750914ffa6955d99c920861d53.png" src="../../_images/70d0512c7b7d32f3d93480ad2948ee542a5876750914ffa6955d99c920861d53.png" />
+<img alt="../../_images/dc2da35b6ee7ba39db70444ac239dec96bab87145de8b16260981c55837be6cc.png" src="../../_images/dc2da35b6ee7ba39db70444ac239dec96bab87145de8b16260981c55837be6cc.png" />
 </div>
 </div>
 </section>
