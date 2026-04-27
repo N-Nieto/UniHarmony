@@ -26,7 +26,7 @@ Basic examples
         :link: example_eos_in_ml
         :link-type: ref
         :shadow: md
-        :class-card: sd-border-0 sd-rounded-2 msg-sd-card
+        :class-card: msg-sd-card sd-border-0 sd-rounded-2
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
@@ -42,7 +42,7 @@ Basic examples
         :link: example_compute_metrics_by_site
         :link-type: ref
         :shadow: md
-        :class-card: sd-border-0 sd-rounded-2 msg-sd-card
+        :class-card: msg-sd-card sd-border-0 sd-rounded-2
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
@@ -58,7 +58,7 @@ Basic examples
         :link: example_found_biases_in_metrics_by_site
         :link-type: ref
         :shadow: md
-        :class-card: sd-border-0 sd-rounded-2 msg-sd-card
+        :class-card: msg-sd-card sd-border-0 sd-rounded-2
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
@@ -74,7 +74,7 @@ Basic examples
         :link: example_explore_eos_with_dimensionality_reduction
         :link-type: ref
         :shadow: md
-        :class-card: sd-border-0 sd-rounded-2 msg-sd-card
+        :class-card: msg-sd-card sd-border-0 sd-rounded-2
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
@@ -90,7 +90,7 @@ Basic examples
         :link: example_multisite_data_characterization_example
         :link-type: ref
         :shadow: md
-        :class-card: sd-border-0 sd-rounded-2 msg-sd-card
+        :class-card: msg-sd-card sd-border-0 sd-rounded-2
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
@@ -106,7 +106,7 @@ Basic examples
         :link: example_explore_mareos_with_tsne
         :link-type: ref
         :shadow: md
-        :class-card: sd-border-0 sd-rounded-2 msg-sd-card
+        :class-card: msg-sd-card sd-border-0 sd-rounded-2
         :class-item: msg-sd-card-hover
         :class-title: msg-sd-card-title
         :class-img-top: msg-sd-card-img-top
