@@ -2,6 +2,14 @@
 
 **MRI Harmonization using Image Quality Metrics and Bayesian Non-parametrics**
 
+**Paper**
+
+Prevot E, et al., (2025). BARTharm: MRI Harmonization Using Image Quality Metrics and Bayesian Non-parametric. bioRxiv. Published online 2025. doi:10.1101/2025.06.04.657792 https://www.biorxiv.org/content/10.1101/2025.06.04.657792v1
+
+**Source code**
+
+- https://github.com/NeuroSML/BARTharm
+
 ---
 
 ## Overview
@@ -78,13 +86,7 @@ Compared to standard harmonization:
 
 ---
 
-**Paper**
 
-Prevot E, et al., (2025). BARTharm: MRI Harmonization Using Image Quality Metrics and Bayesian Non-parametric. bioRxiv. Published online 2025. doi:10.1101/2025.06.04.657792 https://www.biorxiv.org/content/10.1101/2025.06.04.657792v1
-
-**Source code**
-
-- https://github.com/NeuroSML/BARTharm
 
 # Implementation
 - To be implemented.
