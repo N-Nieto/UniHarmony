@@ -35,9 +35,9 @@ BARTharm is a fully data-driven harmonization framework with clear advantages in
 
 BARTharm decomposes each IDP as:
 
-\[
+$$
 y = \mu(\text{IQMs}) + \tau(\text{biological covariates}) + \epsilon
-\]
+$$
 
 - **μ(·)** → scanner-related effects (learned from IQMs)  
 - **τ(·)** → biological signal  
@@ -50,15 +50,17 @@ Both components are modeled using **independent BART ensembles**, allowing:
 
 Harmonized data is obtained by removing the estimated scanner component:
 
-\[
+$$
 \hat{y} = y - \hat{\mu}
-\]
+$$
 
 This avoids the restrictive **location-scale assumptions** of classical approaches like ComBat.
 
 Above is the **homoskedastic version**, which captures scanner effects in the **mean structure** through flexible, non-linear functions of IQMs, without requiring scanner or site labels. This allows the model to account for complex, continuous acquisition variability and within-scanner heterogeneity.
 
 There is also a **heteroskedastic version**, which extends the model to account for **scanner-specific differences in variance**. In this setting, the residual variance is allowed to vary across scanners (when available), introducing a multiplicative scaling term that captures differences in noise levels and reliability across acquisition settings. The resulting harmonization removes both **additive (mean)** and **multiplicative (variance)** scanner effects, while preserving the estimated biological signal.
+
+
 ---
 
 ## Key Advantages
