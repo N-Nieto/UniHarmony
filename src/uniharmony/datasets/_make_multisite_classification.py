@@ -97,7 +97,6 @@ def make_multisite_classification(
         n_sites=n_sites,
         n_samples=n_samples,
         n_features=n_features,
-        signal_type=signal_type,
         signal_strength=signal_strength,
         noise_strength=noise_strength,
         site_effect_strength=site_effect_strength,
@@ -417,14 +416,11 @@ def _generate_base_samples(
     ------
     ValueError
         If ``signal_type`` is not supported.
+        If ``signal_type`` is "moons" but n_classes != 2 or n_features < 2.
 
     """
     if signal_strength == 0.0:
-        logger.warning(
-            "signal_strength is 0. This will result in no separation between classes"
-            "making the classification problem very difficult."
-            "Adding a delta to signal_strength to avoid degenerate data."
-        )
+        logger.warning("signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.")
         signal_strength = 1e-6
 
     base_samples = int(np.ceil(n_samples * 1.05))  # Generate 5% more samples than needed for sampling
