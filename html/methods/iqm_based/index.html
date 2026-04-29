@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>BARTharm &#8212; uniharmony 0.1.dev1 documentation</title>
+    <title>🔬 IQM-based Harmonization &#8212; uniharmony 0.1.dev1 documentation</title>
   
   
   
@@ -50,11 +50,11 @@
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
     <script src="../../_static/design-tabs.js?v=f930bc37"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'methods/combat_based/bartharm';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'methods/iqm_based/index';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="LongComBat" href="longcombat.html" />
-    <link rel="prev" title="Neuroharmony" href="neuroharmony.html" />
+    <link rel="next" title="BARTharm" href="bartharm.html" />
+    <link rel="prev" title="Intra Site Interpolation" href="../interpolation_based/intra_site_interpolation.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -152,21 +152,19 @@
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">🧮 Methods</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">🤺 ComBat-based Harmonization</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="combat.html">ComBat and neuroComBat</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../combat_based/index.html">🤺 ComBat-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../combat_based/combat.html">ComBat and neuroComBat</a></li>
 
 
 
-<li class="toctree-l3"><a class="reference internal" href="combat_gam.html">ComBat-GAM</a></li>
-<li class="toctree-l3"><a class="reference internal" href="covbat.html">CovBat</a></li>
-<li class="toctree-l3"><a class="reference internal" href="neuroharmony.html">Neuroharmony</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../combat_based/combat_gam.html">ComBat-GAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../combat_based/covbat.html">CovBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../combat_based/neuroharmony.html">Neuroharmony</a></li>
 
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">BARTharm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../combat_based/longcombat.html">LongComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../combat_based/deepcombat.html">DeepComBat</a></li>
 
-<li class="toctree-l3"><a class="reference internal" href="longcombat.html">LongComBat</a></li>
-<li class="toctree-l3"><a class="reference internal" href="deepcombat.html">DeepComBat</a></li>
-
-<li class="toctree-l3"><a class="reference internal" href="prettyharmony.html">PrettYharmonize</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../combat_based/prettyharmony.html">PrettYharmonize</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../interpolation_based/index.html">📈 Interpolation-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -174,6 +172,11 @@
 
 
 <li class="toctree-l3"><a class="reference internal" href="../interpolation_based/intra_site_interpolation.html">Intra Site Interpolation</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">🔬 IQM-based Harmonization</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="bartharm.html">BARTharm</a></li>
 
 </ul>
 </details></li>
@@ -307,7 +310,7 @@
       
       
       
-      <li><a href="../../_sources/methods/combat_based/bartharm.md" target="_blank"
+      <li><a href="../../_sources/methods/iqm_based/index.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -383,7 +386,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>BARTharm</h1>
+    <h1>🔬 IQM-based Harmonization</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -393,10 +396,9 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">BARTharm</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bartharm-harmonization-based-on-iqms-using-bayesian-additive-regression-trees"><span class="xref myst">BARTharm</span>: Harmonization based on IQMs using Bayesian Additive Regression Trees.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods">Methods</a></li>
 </ul>
-
             </nav>
         </div>
     </div>
@@ -407,10 +409,10 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="bartharm">
-<span id="bartharm-long"></span><h1>BARTharm<a class="headerlink" href="#bartharm" title="Link to this heading">#</a></h1>
-<p>BART does not use site but rater Image Quality Metrics (IQMs) to perform the harmonization.</p>
-<p>It can perform harmonization on unseen data.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="iqm-based-harmonization">
+<h1>🔬 IQM-based Harmonization<a class="headerlink" href="#iqm-based-harmonization" title="Link to this heading">#</a></h1>
+<section id="bartharm-harmonization-based-on-iqms-using-bayesian-additive-regression-trees">
+<span id="bartharm-short"></span><h2><a class="reference internal" href="#bartharm-long"><span class="xref myst">BARTharm</span></a>: Harmonization based on IQMs using Bayesian Additive Regression Trees.<a class="headerlink" href="#bartharm-harmonization-based-on-iqms-using-bayesian-additive-regression-trees" title="Link to this heading">#</a></h2>
 <p><strong>Paper</strong></p>
 <p>Prevot E, et al., (2025). BARTharm: MRI Harmonization Using Image Quality Metrics and Bayesian Non-parametric. bioRxiv. Published online 2025. doi:10.1101/2025.06.04.657792 <a class="reference external" href="https://www.biorxiv.org/content/10.1101/2025.06.04.657792v1">https://www.biorxiv.org/content/10.1101/2025.06.04.657792v1</a></p>
 <p><strong>Source code</strong></p>
@@ -418,11 +420,21 @@
 <li><p><a class="github reference external" href="https://github.com/NeuroSML/BARTharm">NeuroSML/BARTharm</a></p></li>
 </ul>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="implementation">
-<h1>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h1>
-<ul class="simple">
-<li><p>To be implemented.</p></li>
+<hr class="docutils" />
+<section id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Link to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="bartharm.html">BARTharm</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="bartharm.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bartharm.html#method-summary">Method Summary</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bartharm.html#key-advantages">Key Advantages</a></li>
 </ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="bartharm.html#implementation">Implementation</a></li>
+</ul>
+</div>
+</section>
 </section>
 
 
@@ -437,20 +449,20 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="neuroharmony.html"
+       href="../interpolation_based/intra_site_interpolation.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Neuroharmony</p>
+        <p class="prev-next-title">Intra Site Interpolation</p>
       </div>
     </a>
     <a class="right-next"
-       href="longcombat.html"
+       href="bartharm.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">LongComBat</p>
+        <p class="prev-next-title">BARTharm</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -472,10 +484,9 @@
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">BARTharm</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bartharm-harmonization-based-on-iqms-using-bayesian-additive-regression-trees"><span class="xref myst">BARTharm</span>: Harmonization based on IQMs using Bayesian Additive Regression Trees.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods">Methods</a></li>
 </ul>
-
   </nav></div>
 
 </div></div>

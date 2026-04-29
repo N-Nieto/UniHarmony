@@ -1,9 +1,7 @@
-(bartharm-long)=
-# BARTharm
+# 🔬 IQM-based Harmonization
 
-BART does not use site but rater Image Quality Metrics (IQMs) to perform the harmonization.
-
-It can perform harmonization on unseen data.
+(bartharm-short)=
+## [BARTharm](#bartharm-long): Harmonization based on IQMs using Bayesian Additive Regression Trees.
 
 **Paper**
 
@@ -13,5 +11,11 @@ Prevot E, et al., (2025). BARTharm: MRI Harmonization Using Image Quality Metric
 
 - https://github.com/NeuroSML/BARTharm
 
-# Implementation
-- To be implemented.
+---
+
+## Methods
+
+```{toctree}
+:maxdepth: 2
+bartharm
+```
