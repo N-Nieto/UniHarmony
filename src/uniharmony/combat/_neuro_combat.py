@@ -14,7 +14,6 @@ import numpy as np
 import numpy.typing as npt
 import structlog
 from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.preprocessing import OneHotEncoder
 from sklearn.utils import Tags
 from sklearn.utils.validation import (
     FLOAT_DTYPES,
@@ -28,9 +27,10 @@ from uniharmony._utils import (
     handle_negative_variance,
     minimum_samples_warning,
     solve_ordinary_least_squares,
-    validate_covariates,
     validate_sites,
 )
+
+from ._design_matrix_mixin import DesignMatrixMixin
 
 
 __all__ = ["NeuroComBat"]
@@ -38,7 +38,7 @@ __all__ = ["NeuroComBat"]
 logger = structlog.get_logger()
 
 
-class NeuroComBat(TransformerMixin, BaseEstimator):
+class NeuroComBat(DesignMatrixMixin, TransformerMixin, BaseEstimator):
     """Harmonize scanner effects in multi-site imaging data.
 
     This transformer performs harmonization using a parametric empirical Bayes
@@ -166,12 +166,10 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         n_samples = sites.shape[0]
         idx_per_site = [list(np.where(sites == s)[0].tolist()) for s in self.sites_]
 
-        logger.debug("Making design matrix")
-        design = self._make_design_matrix(
-            sites,
-            categorical_covariates,
-            continuous_covariates,
-            fitting=True,
+        design = self.fit_design_matrix(
+            sites=sites,
+            categorical_covariates=categorical_covariates,
+            continuous_covariates=continuous_covariates,
         )
         logger.debug("Standardizing data across features")
         standardized_data, _ = self._standardize_across_features(
@@ -273,12 +271,10 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
         n_samples_per_site = np.asarray([np.sum(sites == s) for s in self.sites_])
         idx_per_site = [list(np.where(sites == s)[0].tolist()) for s in self.sites_]
 
-        logger.debug("Making design matrix")
-        design = self._make_design_matrix(
-            sites,
-            categorical_covariates,
-            continuous_covariates,
-            fitting=False,
+        design = self.transform_design_matrix(
+            sites=sites,
+            categorical_covariates=categorical_covariates,
+            continuous_covariates=continuous_covariates,
         )
         logger.debug("Standardizing data across features")
         standardized_data, standardized_mean = self._standardize_across_features(
@@ -325,153 +321,6 @@ class NeuroComBat(TransformerMixin, BaseEstimator):
 
         """
         return self.fit(X, sites, **fit_params).transform(X, sites, **fit_params)
-
-    def _make_design_matrix(
-        self,
-        sites: npt.NDArray,
-        categorical_covariates: npt.NDArray | None,
-        continuous_covariates: npt.NDArray | None,
-        fitting: bool = False,
-    ) -> npt.NDArray:
-        """Create a design matrix for the linear model.
-
-        The design matrix combines:
-        1. One-hot encoded sites (full encoding, all columns kept)
-        2. One-hot encoded categorical covariates (first category dropped per covariate)
-        3. Continuous covariates (used as-is)
-
-        This follows standard ANOVA coding where the design matrix is used to
-        estimate site effects while controlling for covariates.
-
-        Parameters
-        ----------
-        sites : array, shape (n_samples, 1)
-            Site labels for each sample.
-        categorical_covariates : array, shape (n_samples, n_categorical) or None
-            Categorical covariates to preserve (e.g., sex, disease status).
-            Each column is treated as a separate categorical variable.
-        continuous_covariates : array, shape (n_samples, n_continuous) or None
-            Continuous covariates to preserve (e.g., age, clinical scores).
-        fitting : bool, optional (default False)
-            If True, fit encoders on the data and store them as attributes.
-            If False, use previously fitted encoders (must call with fitting=True first).
-
-        Returns
-        -------
-        design : ndarray, shape (n_samples, n_effects)
-            The design matrix where:
-            - First n_sites columns are site indicators
-            - Next columns are categorical covariates (drop-first encoded)
-            - Final columns are continuous covariates
-
-        Raises
-        ------
-        ValueError
-            If fitting=False but encoders haven't been fitted yet.
-            If categorical_covariates shape changes between fit and transform.
-        RuntimeError
-            If encoder classes differ between fit and transform.
-
-        Notes
-        -----
-        The drop-first encoding for categorical covariates avoids co-linearity
-        with the intercept (which is implicit in the site effects). This is
-        standard practice in regression analysis.
-
-        Examples
-        --------
-        >>> sites = np.array([[1], [1], [2], [2]])
-        >>> sex = np.array([['M'], ['F'], ['M'], ['F']])
-        >>> age = np.array([[25], [30], [35], [40]])
-        >>> design = self._make_design_matrix(sites, sex, age, fitting=True)
-        >>> design.shape
-        (4, 4)  # 2 sites + 1 sex (drop-first) + 1 age
-
-        """
-        # =====================================================================
-        # STEP 1: Validate inputs
-        # =====================================================================
-        n_samples = sites.shape[0]
-
-        categorical_covariates = validate_covariates(categorical_covariates, n_samples, "categorical_covariates")
-        continuous_covariates = validate_covariates(continuous_covariates, n_samples, "continuous_covariates")
-        # Validate fitting state
-        if not fitting and not hasattr(self, "_site_encoder"):
-            raise ValueError("Must call _make_design_matrix with fitting=True before using fitting=False")
-
-        # =====================================================================
-        # STEP 2: Fit encoders (if fitting=True)
-        # =====================================================================
-        if fitting:
-            # Fit site encoder
-            self._site_encoder = OneHotEncoder(
-                sparse_output=False,
-                dtype=np.float64,
-                handle_unknown="error",
-            )
-            self._site_encoder.fit(sites.reshape(-1, 1))
-            logger.debug(f"Fitted site encoder: {len(self._site_encoder.categories_[0])} sites")
-
-            # Fit categorical encoders if provided
-            if categorical_covariates is not None:
-                n_cat_covs = categorical_covariates.shape[1]
-                self._categorical_encoders = []
-
-                for i in range(n_cat_covs):
-                    cat_encoder = OneHotEncoder(
-                        sparse_output=False,
-                        dtype=np.float64,
-                        drop="first",
-                        handle_unknown="error",
-                    )
-                    cat_col = categorical_covariates[:, i].reshape(-1, 1)
-                    cat_encoder.fit(cat_col)
-                    self._categorical_encoders.append(cat_encoder)
-
-                    logger.debug(
-                        f"Fitted categorical encoder {i}: "
-                        f"{len(cat_encoder.categories_[0])} categories "
-                        f"(dropped: {cat_encoder.categories_[0][0]})"
-                    )
-
-        # =====================================================================
-        # STEP 3: Transform all features
-        # =====================================================================
-        design_parts = []
-
-        # Transform sites
-        sites_encoded = self._site_encoder.transform(sites.reshape(-1, 1))
-        design_parts.append(sites_encoded)
-        n_sites = sites_encoded.shape[1]
-        logger.debug(f"Sites encoded: {n_samples} samples x {n_sites} sites")
-
-        # Transform categorical covariates
-        if categorical_covariates is not None:
-            for i, cat_encoder in enumerate(self._categorical_encoders):
-                cat_col = categorical_covariates[:, i].reshape(-1, 1)
-                cat_encoded = cat_encoder.transform(cat_col)
-
-                design_parts.append(cat_encoded)
-                n_categories = len(cat_encoder.categories_[0])
-                logger.debug(f"Categorical covariate {i} encoded: {n_categories} categories -> {cat_encoded.shape[1]} columns")
-
-        # Add continuous covariates
-        if continuous_covariates is not None:
-            design_parts.append(continuous_covariates)
-            logger.debug(f"Added {continuous_covariates.shape[1]} continuous covariates")
-
-        # =====================================================================
-        # STEP 4: Assemble design matrix
-        # =====================================================================
-        design = np.hstack(design_parts)
-
-        # Final validation
-        if design.shape[0] != n_samples:
-            raise RuntimeError(f"Design matrix has {design.shape[0]} rows but expected {n_samples}")
-
-        logger.debug(f"Design matrix shape: {design.shape}")
-
-        return design
 
     def _standardize_across_features(
         self,
