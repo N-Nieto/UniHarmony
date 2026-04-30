@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import tempfile
 from pathlib import Path
+from urllib.parse import urljoin
 
 import pandas as pd
 import structlog
@@ -16,7 +17,7 @@ from datalad import api as dl
 
 logger = structlog.get_logger()
 
-__all__ = ["load_onharmony"]
+__all__ = ["_get_onharmony_information_form_idps", "_list_available_files", "_list_available_possibilities", "load_onharmony"]
 
 
 def load_onharmony(
@@ -26,7 +27,7 @@ def load_onharmony(
     target_path: str | Path = ".",
     data_types: str | list[str] = "T1w",
     extensions: str | list[str] = ".json",
-    dataset_source: str | Path = "https://openneuro.org/datasets/ds004712/versions/2.0.1",
+    dataset_source: str = "https://github.com/OpenNeuroDatasets/",
     force_download=False,
     copy=True,
 ) -> None:
@@ -62,7 +63,7 @@ def load_onharmony(
     extensions : str or list[str], default ".json"
         File extensions to download (e.g., '.json', '.nii.gz').
 
-    dataset_source : str or pathlib.Path, default "https://openneuro.org/datasets/ds004712/versions/2.0.1"
+    dataset_source : str, default "https://openneuro.org/datasets/ds004712/versions/2.0.1"
         Source URL or path to the ON-Harmony dataset.
 
     force_download : bool, default False
@@ -166,10 +167,10 @@ def _check_datalad_installed() -> bool:
 
 def _ensure_hidden_dataset(
     dataset_id: str,
-    dataset_source: str | Path = "https://github.com/OpenNeuroDatasets",
+    dataset_source: str,
     extension: str = ".git",
     force_download=False,
-) -> Path:
+) -> str:
     """Ensure that the hidden DataLad dataset exists in /tmp.
 
     If the dataset does not exist or is empty, it is cloned.
@@ -181,6 +182,35 @@ def _ensure_hidden_dataset(
         Path to the hidden DataLad dataset.
 
     """
+    # # Build source URL as string (never use Path on URLs)
+    # dataset_source = str(dataset_source).rstrip("/") + "/"
+    # source_url = f"{dataset_source}{dataset_id}{extension}"
+    # source_url = source_url.replace("https:/", "https://").replace("http:/", "http://")
+
+    # # Local cache path
+    # cache_dir = Path("/tmp/datalad_cache")
+    # hidden_dataset_path = cache_dir / dataset_id
+
+    # # Handle force re-download
+    # if hidden_dataset_path.exists() and force_download:
+    #     shutil.rmtree(hidden_dataset_path)
+
+    # # Clone if not exists
+    # if not hidden_dataset_path.exists():
+    #     logger.info("Cloning DataLad dataset into hidden cache...")
+    #     cache_dir.mkdir(parents=True, exist_ok=True)
+
+    #     # dl.clone returns a Dataset object — we extract the path
+    #     cloned_ds = dl.clone(
+    #         source=source_url,
+    #         path=str(hidden_dataset_path),
+    #         result_renderer="disabled",
+    #     )
+    #     # IMPORTANT: Return the path string, not the Dataset object
+    #     return str(cloned_ds.path)
+
+    # # Return existing path as string
+    # return str(hidden_dataset_path)
     hidden_root = Path(tempfile.gettempdir()) / "datalad_cache"
     hidden_root.mkdir(parents=True, exist_ok=True)
 
@@ -194,13 +224,20 @@ def _ensure_hidden_dataset(
     # Otherwise clone
     if force_download:
         logger.info("Force download dataset")
+        # If the dataset already exists, remove it to ensure a clean clone
+        if hidden_dataset_path.exists():
+            shutil.rmtree(hidden_dataset_path)
     logger.info("Cloning DataLad dataset into hidden cache...")
-    source_path = dataset_source / Path(dataset_id + extension)
-    hidden_dataset_path = dl.clone(
-        source=source_path,
+
+    source_url = urljoin(dataset_source, f"{dataset_id}{extension}")
+    logger.debug(f"Source URL: {source_url}")
+
+    dl.clone(
+        source=source_url,
         path=hidden_dataset_path,
         result_renderer="disabled",
     )
+    logger.debug(f"hidden_dataset_path created: {hidden_dataset_path}")
 
     return hidden_dataset_path
 
