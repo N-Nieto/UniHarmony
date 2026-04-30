@@ -27,6 +27,8 @@ def load_onharmony(
     data_types: str | list[str] = "T1w",
     extensions: str | list[str] = ".json",
     dataset_source: str | Path = "https://openneuro.org/datasets/ds004712/versions/2.0.1",
+    force_download=False,
+    copy=True,
 ) -> None:
     """Download derivatives from the ON-Harmony dataset and store them as files in a user-visible directory.
 
@@ -63,6 +65,12 @@ def load_onharmony(
     dataset_source : str or pathlib.Path, default "https://openneuro.org/datasets/ds004712/versions/2.0.1"
         Source URL or path to the ON-Harmony dataset.
 
+    force_download : bool, default False
+        Whether to force re-download the dataset if it already exists in cache.
+
+    copy : bool, default True
+        Whether to copy the downloaded files to the target directory to make it visible.
+
     Notes
     -----
     - The visible dataset directory will contain only regular files
@@ -81,7 +89,9 @@ def load_onharmony(
     # ------------------------------------------------------------------
     # Ensure hidden DataLad dataset exists
     # ------------------------------------------------------------------
-    hidden_dataset_path = _ensure_hidden_dataset(dataset_id="ds004712", dataset_source=dataset_source)
+    hidden_dataset_path = _ensure_hidden_dataset(
+        dataset_id="ds004712", dataset_source=dataset_source, force_download=force_download
+    )
     # ------------------------------------------------------------------
     # Initialize DataLad dataset
     # ------------------------------------------------------------------
@@ -123,11 +133,11 @@ def load_onharmony(
         # Materialize file
         ds.get(str(rel), on_failure="ignore", result_renderer="disabled")
 
-        # Copy real file (dereference symlink)
-        dest.parent.mkdir(parents=True, exist_ok=True)
-        real_file = hidden_dataset_path / rel
-
-        shutil.copyfile(real_file, dest, follow_symlinks=True)
+        if copy:
+            # Copy real file (dereference symlink)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            real_file = hidden_dataset_path / rel
+            shutil.copyfile(real_file, dest, follow_symlinks=True)
 
         # Drop content from hidden dataset
         ds.drop(
@@ -158,6 +168,7 @@ def _ensure_hidden_dataset(
     dataset_id: str,
     dataset_source: str | Path = "https://github.com/OpenNeuroDatasets",
     extension: str = ".git",
+    force_download=False,
 ) -> Path:
     """Ensure that the hidden DataLad dataset exists in /tmp.
 
@@ -176,11 +187,13 @@ def _ensure_hidden_dataset(
     hidden_dataset_path = hidden_root / dataset_id
 
     # Dataset exists and is non-empty → reuse
-    if hidden_dataset_path.exists() and any(hidden_dataset_path.iterdir()):
+    if hidden_dataset_path.exists() and any(hidden_dataset_path.iterdir()) and not force_download:
         logger.info(f"✓ Reusing cached DataLad dataset at {hidden_dataset_path}")
         return hidden_dataset_path
 
     # Otherwise clone
+    if force_download:
+        logger.info("Force download dataset")
     logger.info("Cloning DataLad dataset into hidden cache...")
     source_path = dataset_source / Path(dataset_id + extension)
     hidden_dataset_path = dl.clone(
