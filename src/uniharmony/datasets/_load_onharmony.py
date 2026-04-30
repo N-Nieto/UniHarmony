@@ -5,19 +5,18 @@ list available files, and explore dataset structure.
 """
 
 import shutil
-import subprocess
-import tempfile
 from pathlib import Path
-from urllib.parse import urljoin
 
 import pandas as pd
 import structlog
 from datalad import api as dl
 
+from uniharmony.datasets._datalad_integration import _check_datalad_installed, _ensure_hidden_dataset, _make_visible_directory
+
 
 logger = structlog.get_logger()
 
-__all__ = ["_get_onharmony_information_form_idps", "_list_available_files", "_list_available_possibilities", "load_onharmony"]
+__all__ = ["_get_onharmony_information_form_idps", "_list_available_possibilities", "load_onharmony"]
 
 
 def load_onharmony(
@@ -63,7 +62,7 @@ def load_onharmony(
     extensions : str or list[str], default ".json"
         File extensions to download (e.g., '.json', '.nii.gz').
 
-    dataset_source : str, default "https://openneuro.org/datasets/ds004712/versions/2.0.1"
+    dataset_source : str, default "https://github.com/OpenNeuroDatasets/
         Source URL or path to the ON-Harmony dataset.
 
     force_download : bool, default False
@@ -81,8 +80,7 @@ def load_onharmony(
     """
     if not _check_datalad_installed():
         raise RuntimeError("datalad not installed!")
-    # ------------------------------------------------------------------
-    # Resolve visible and hidden dataset paths
+
     # ------------------------------------------------------------------
     # Prepare visible directory (empty)
     # ------------------------------------------------------------------
@@ -150,113 +148,6 @@ def load_onharmony(
 
     logger.info("\n✓ Copied files downloaded.")
     return
-
-
-def _check_datalad_installed() -> bool:
-    try:
-        subprocess.run(
-            ["datalad", "--version"],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            check=True,
-        )
-        return True
-    except RuntimeError:
-        return False
-
-
-def _ensure_hidden_dataset(
-    dataset_id: str,
-    dataset_source: str,
-    extension: str = ".git",
-    force_download=False,
-) -> str:
-    """Ensure that the hidden DataLad dataset exists in /tmp.
-
-    If the dataset does not exist or is empty, it is cloned.
-    If it already exists and contains data, it is reused.
-
-    Returns
-    -------
-    hidden_dataset_path : Path
-        Path to the hidden DataLad dataset.
-
-    """
-    # # Build source URL as string (never use Path on URLs)
-    # dataset_source = str(dataset_source).rstrip("/") + "/"
-    # source_url = f"{dataset_source}{dataset_id}{extension}"
-    # source_url = source_url.replace("https:/", "https://").replace("http:/", "http://")
-
-    # # Local cache path
-    # cache_dir = Path("/tmp/datalad_cache")
-    # hidden_dataset_path = cache_dir / dataset_id
-
-    # # Handle force re-download
-    # if hidden_dataset_path.exists() and force_download:
-    #     shutil.rmtree(hidden_dataset_path)
-
-    # # Clone if not exists
-    # if not hidden_dataset_path.exists():
-    #     logger.info("Cloning DataLad dataset into hidden cache...")
-    #     cache_dir.mkdir(parents=True, exist_ok=True)
-
-    #     # dl.clone returns a Dataset object — we extract the path
-    #     cloned_ds = dl.clone(
-    #         source=source_url,
-    #         path=str(hidden_dataset_path),
-    #         result_renderer="disabled",
-    #     )
-    #     # IMPORTANT: Return the path string, not the Dataset object
-    #     return str(cloned_ds.path)
-
-    # # Return existing path as string
-    # return str(hidden_dataset_path)
-    hidden_root = Path(tempfile.gettempdir()) / "datalad_cache"
-    hidden_root.mkdir(parents=True, exist_ok=True)
-
-    hidden_dataset_path = hidden_root / dataset_id
-
-    # Dataset exists and is non-empty → reuse
-    if hidden_dataset_path.exists() and any(hidden_dataset_path.iterdir()) and not force_download:
-        logger.info(f"✓ Reusing cached DataLad dataset at {hidden_dataset_path}")
-        return hidden_dataset_path
-
-    # Otherwise clone
-    if force_download:
-        logger.info("Force download dataset")
-        # If the dataset already exists, remove it to ensure a clean clone
-        if hidden_dataset_path.exists():
-            shutil.rmtree(hidden_dataset_path)
-    logger.info("Cloning DataLad dataset into hidden cache...")
-
-    source_url = urljoin(dataset_source, f"{dataset_id}{extension}")
-    logger.debug(f"Source URL: {source_url}")
-
-    dl.clone(
-        source=source_url,
-        path=hidden_dataset_path,
-        result_renderer="disabled",
-    )
-    logger.debug(f"hidden_dataset_path created: {hidden_dataset_path}")
-
-    return hidden_dataset_path
-
-
-def _make_visible_directory(target_dir: str | Path, dataset_name: str) -> Path:
-    """Prepare an empty visible directory for the datalad dataset.
-
-    This function does NOT download any data and does NOT create any
-    folder structure. Files and directories are created lazily when
-    data is requested via get_data.
-    """
-    target_dir = Path(target_dir).resolve()
-    dataset_path = target_dir / dataset_name
-
-    dataset_path.mkdir(parents=True, exist_ok=True)
-
-    logger.info(f"✓ Visible dataset directory ready at {dataset_path}")
-
-    return dataset_path
 
 
 def _get_candidate_files(
@@ -368,27 +259,6 @@ def _get_onharmony_information_form_idps() -> dict:
         "modalities": ONHARMONY_MODALITY_LIST,
         "data_types": ONHARMONY_DATA_TYPE_LIST,
     }
-
-
-def _list_available_files(hidden_dataset_path: Path) -> list[Path]:
-    """List all available files in the hidden DataLad dataset.
-
-    This function is useful for debugging and exploration purposes. It
-    returns a list of all files that are present in the hidden dataset,
-    regardless of the filtering criteria.
-
-    Parameters
-    ----------
-    hidden_dataset_path : Path
-        Path to the hidden DataLad dataset.
-
-    Returns
-    -------
-    list[Path]
-        A list of paths to all available files in the hidden dataset.
-
-    """
-    return list(hidden_dataset_path.rglob("*.*"))
 
 
 def _list_available_possibilities() -> dict:
