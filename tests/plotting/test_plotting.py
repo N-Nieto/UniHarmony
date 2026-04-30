@@ -39,19 +39,45 @@ def test_plot_2d_projection_default_without_y(multisite_data) -> None:
     plot_2d_projection(X, sites)
 
 
-# TODO: Parametrize this test
+@pytest.mark.parametrize(
+    "method, kwargs, expected_components",
+    [
+        ("pca", {}, 2),
+        ("tsne", {"random_state": 42}, 2),
+        ("kernelpca", {"kernel": "rbf", "random_state": 42}, 2),
+        ("MDS", {"random_state": 42}, 2),
+        ("isomap", {"n_neighbors": 5}, 2),
+    ],
+    ids=[
+        "pca_default",
+        "tsne_with_random_state",
+        "kernelpca_rbf_kernel",
+        "mds_with_random_state",
+        "isomap_neighbors_5",
+    ],
+)
 @pytest.mark.docs
-def test_plot_2d_projection_methods_as_str(multisite_data) -> None:
-    """Plot 2D projection passing method as str."""
+def test_plot_2d_projection_methods_with_params(multisite_data, method, kwargs, expected_components) -> None:
+    """Plot 2D projection with different methods and parameters.
+
+    Parameters
+    ----------
+    multisite_data : tuple
+        Fixture providing (X, y, sites) data.
+    method : str
+        Dimensionality reduction method to test.
+    kwargs : dict
+        Additional keyword arguments for the dimensionality reduction method.
+    expected_components : int
+        Expected number of components after projection.
+
+    """
     from uniharmony.plot import plot_2d_projection
 
     X, y, sites = multisite_data
-    # Using the function as default. The function will use t-SNE as default dimensionality reductor.
-    plot_2d_projection(X, sites, y, method="pca")
-    plot_2d_projection(X, sites, y, method="tsne")
-    plot_2d_projection(X, sites, y, method="kernelpca")
-    plot_2d_projection(X, sites, y, method="MDS")
-    plot_2d_projection(X, sites, y, method="isomap")
+
+    # Using the function with method and additional kwargs
+    plot_2d_projection(X, sites, y, method=method, **kwargs)
 
 
 @pytest.mark.docs
