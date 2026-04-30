@@ -1,5 +1,6 @@
 """Test suite for plotting functionalities."""
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pytest
@@ -8,6 +9,12 @@ from sklearn.decomposition import FastICA
 from sklearn.linear_model import LogisticRegression
 
 from uniharmony import make_multisite_classification
+from uniharmony.plot import (
+    plot_2d_components_by_value,
+    plot_2d_projection,
+    plot_decision_boundary_2d,
+    plot_features_by_site,
+)
 
 
 # Fixtures
@@ -22,8 +29,6 @@ def multisite_data() -> tuple[NDArray[np.float64], NDArray[np.int64], NDArray[np
 @pytest.mark.docs
 def test_plot_2d_projection_default(multisite_data) -> None:
     """Plot 2D projection with default parameters."""
-    from uniharmony.plot import plot_2d_projection
-
     X, y, sites = multisite_data
     # Using the function as default. The function will use t-SNE as default dimensionality reductor.
     plot_2d_projection(X, sites, y)
@@ -33,8 +38,6 @@ def test_plot_2d_projection_default(multisite_data) -> None:
 def test_plot_2d_projection_default_without_y(multisite_data) -> None:
     """Plot 2D projection with default parameters without y."""
     X, _, sites = multisite_data
-    from uniharmony.plot import plot_2d_projection
-
     # Using the function as default. The function will use t-SNE as default dimensionality reductor.
     plot_2d_projection(X, sites)
 
@@ -72,10 +75,7 @@ def test_plot_2d_projection_methods_with_params(multisite_data, method, kwargs, 
         Expected number of components after projection.
 
     """
-    from uniharmony.plot import plot_2d_projection
-
     X, y, sites = multisite_data
-
     # Using the function with method and additional kwargs
     plot_2d_projection(X, sites, y, method=method, **kwargs)
 
@@ -83,8 +83,6 @@ def test_plot_2d_projection_methods_with_params(multisite_data, method, kwargs, 
 @pytest.mark.docs
 def test_plot_2d_projection_methods_as_str_invalid(multisite_data) -> None:
     """Plot 2D projection passing method as str invalid."""
-    from uniharmony.plot import plot_2d_projection
-
     X, y, sites = multisite_data
     # Using the function as default. The function will use t-SNE as default dimensionality reductor.
     with pytest.raises(ValueError):
@@ -94,8 +92,6 @@ def test_plot_2d_projection_methods_as_str_invalid(multisite_data) -> None:
 @pytest.mark.docs
 def test_plot_2d_projection_with_instance(multisite_data) -> None:
     """Plot 2D projection passing instance."""
-    from uniharmony.plot import plot_2d_projection
-
     X, y, sites = multisite_data
     dim_reductor = FastICA(n_components=2)
     # We can also pass directly an instance of the dimensionality reductor that we want to use.
@@ -105,8 +101,6 @@ def test_plot_2d_projection_with_instance(multisite_data) -> None:
 @pytest.mark.docs
 def test_plot_2d_projection_with_invalid_params(multisite_data) -> None:
     """Plot 2D projection passing instance."""
-    from uniharmony.plot import plot_2d_projection
-
     X, y, sites = multisite_data
     dim_reductor = FastICA(n_components=10)
     # We can also pass directly an instance of the dimensionality reductor that we want to use.
@@ -121,8 +115,6 @@ def test_plot_2d_projection_with_invalid_params(multisite_data) -> None:
 @pytest.mark.docs
 def test_plot_features_by_site_with_default(multisite_data) -> None:
     """Test plot features by site with defaults."""
-    from uniharmony.plot import plot_features_by_site
-
     X, _, sites = multisite_data
     # basic functionality
     plot_features_by_site(X, sites)
@@ -131,8 +123,6 @@ def test_plot_features_by_site_with_default(multisite_data) -> None:
 @pytest.mark.docs
 def test_plot_features_by_site(multisite_data) -> None:
     """Plot features by site with with more parameters."""
-    from uniharmony.plot import plot_features_by_site
-
     X, _, sites = multisite_data
     # basic functionality
     _, _ = plot_features_by_site(
@@ -148,10 +138,6 @@ def test_plot_features_by_site(multisite_data) -> None:
 @pytest.mark.docs
 def test_plot_decision_boundary_2d() -> None:
     """Plot decision boundary 2D."""
-    import matplotlib.pyplot as plt
-
-    from uniharmony.plot import plot_decision_boundary_2d
-
     X, y, _ = make_multisite_classification(n_features=2, n_samples=100)
     _, ax = plt.subplots(1, 1, figsize=(10, 8))
 
@@ -165,10 +151,6 @@ def test_plot_decision_boundary_2d() -> None:
 @pytest.mark.docs
 def test_plot_2d_components_by_value() -> None:
     """Test plot 2D components by value."""
-    import matplotlib.pyplot as plt
-
-    from uniharmony.plot import plot_2d_components_by_value
-
     X, y, sites = make_multisite_classification(n_features=2, n_samples=100)
 
     df = pd.DataFrame({"comp1": X[:, 0], "comp2": X[:, 1], "site": sites, "target": y})
