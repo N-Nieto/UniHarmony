@@ -2,9 +2,12 @@
 
 from collections.abc import Callable
 
+import numpy as np
+import pytest
 from sklearn.utils.estimator_checks import parametrize_with_checks
 
 from uniharmony.combat import ComBatGAM
+from uniharmony.datasets import make_multisite_classification
 
 
 def _ex_failed_checks(_) -> dict[str, str]:
@@ -65,3 +68,38 @@ def test_combat_gam_compat_sklearn(estimator: object, check: Callable) -> None:
 
     """
     check(estimator)
+
+
+@pytest.mark.parametrize(
+    "empirical_bayes, parametric_adjustments, mean_only",
+    [
+        (True, True, True),
+        (True, True, False),
+        (True, False, True),
+        (True, False, False),
+        (False, True, True),
+        (False, True, False),
+        (False, False, True),
+        (False, False, False),
+    ],
+)
+def test_combat_gam(empirical_bayes: bool, parametric_adjustments: bool, mean_only: bool) -> None:
+    """Test ComBatGAM.
+
+    Parameters
+    ----------
+    empirical_bayes : bool
+        Parametrized value of empirical_bayes.
+    parametric_adjustments : bool
+        Parametrized value of parametric_adjustments.
+    mean_only : bool
+        Parametrized value of mean_only.
+
+
+    """
+    X, y, sites = make_multisite_classification(n_samples=100)
+
+    combat_gam = ComBatGAM(empirical_bayes=empirical_bayes, parametric_adjustments=parametric_adjustments, mean_only=mean_only)
+    X_corrected = combat_gam.fit_transform(X, sites, smooth_covariates=y.reshape(-1, 1))
+    assert X_corrected.shape == X.shape
+    assert not np.allclose(X, X_corrected)  # Should be different from original
