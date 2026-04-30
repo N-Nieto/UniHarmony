@@ -1,5 +1,7 @@
 """Data simulation module for multi-site data generation."""
 
+from typing import Literal
+
 import numpy as np
 import numpy.typing as npt
 import structlog
@@ -26,10 +28,10 @@ def make_multisite_classification(
     n_features: int = 10,
     n_classes: int = 2,
     balance_per_site: list[float] | list[list[float]] | None = None,
-    signal_type: str = "linear",
+    signal_type: Literal["linear", "circular", "moons", "blobs", "gaussian_quantiles"] = "linear",
     signal_strength: float = 1.0,
     noise_strength: float = 0.1,
-    site_effect_type: str = "location",
+    site_effect_type: Literal["location", "scale", "location+scale"] = "location",
     site_effect_strength: float = 3.0,
     site_effect_homogeneous: bool = True,
     random_state: int | np.random.RandomState = 42,
@@ -423,7 +425,7 @@ def _generate_base_samples(
         logger.warning("signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.")
         signal_strength = 1e-6
 
-    base_samples = int(np.ceil(n_samples * 1.05))  # Generate 5% more samples than needed for sampling
+    base_samples = int(np.ceil(n_samples * 1.1))  # Generate 10% more samples than needed for sampling
     if signal_type == "linear":
         # Replace the default values of sklearn for this variables.
         make_classification_kwargs = {
@@ -455,6 +457,7 @@ def _generate_base_samples(
             n_features=n_features,
             centers=n_classes,
             random_state=random_state,
+            center_box=(-signal_strength, signal_strength),
             return_centers=False,
             **kwargs,
         )
@@ -647,7 +650,6 @@ def _get_site_samples(
             logger.warning(
                 f"Not enough samples of class {class_idx} in global dataset. "
                 f"Requested {n_class_samples}, available {len(available_class_indices)}. "
-                f"Sampling with replacement."
                 f"Consider adjusting balance_per_site or generating more samples."
             )
             selected = random_state.choice(available_class_indices, size=n_class_samples, replace=True)
