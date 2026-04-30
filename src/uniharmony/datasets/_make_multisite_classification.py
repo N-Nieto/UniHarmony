@@ -30,17 +30,21 @@ def make_multisite_classification(
     balance_per_site: list[float] | list[list[float]] | None = None,
     signal_type: Literal["linear", "circular", "moons", "blobs", "gaussian_quantiles"] = "linear",
     signal_strength: float = 1.0,
-    noise_strength: float = 0.1,
+    noise_strength: list[float] | float = 0.1,
     site_effect_type: Literal["location", "scale", "location+scale"] = "location",
-    site_effect_strength: float = 3.0,
+    site_effect_strength: list[float] | float = 3.0,
     site_effect_homogeneous: bool = True,
     random_state: int | np.random.RandomState = 42,
     **kwargs,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """Simulate multi-site data with signal, noise, and site effect components.
 
-    The data generation follows: X = signal + noise + site_effect
-    All components are sampled from Gaussian distributions.
+    In the data generation process, first a 'base' problem is generated using sklearn functions, selected with "signal_type".
+    Then, each site is simulated and a site effect component is added to X, selected with "site_effect_type".
+    The strength of the 'Effect of Site' (EoS) is controlled by `site_effect_strength`.
+    If a list is passed, which element corresponds to the `site_effect_strength` in each site. List len musts be equal to n_sites.
+    If a single value is passed, all sites has the same EoS
+    Finally a gaussian noise  is added to each site, controlled by "noise_strength".
 
     Parameters
     ----------
@@ -57,10 +61,10 @@ def make_multisite_classification(
         Number of features per sample.
     signal_type : str, optional (default "linear")
         Which type of signal to generate the base problem.
-    signal_strength : float, optional (default 1.0)
+    signal_strength : list of float or float, optional (default 1.0)
         Strength of the signal component separating classes. Passed as 'class_sep` to ``sklearn.datasets.make_classification`.
-    noise_strength : float, optional (default 0.1)
-        Strength of the noise component.
+    noise_strength : list of float or float, optional (default 0.1)
+        Strength of the noise component by site. If one component is passed, all sites has the same noise_strength.
     site_effect_type : str, optional (default "location")
         Type of site effect to add to the original data. Options: "location", "scale", "location+scale".
     site_effect_strength : float, optional (default 3.0)
@@ -99,9 +103,10 @@ def make_multisite_classification(
         n_sites=n_sites,
         n_samples=n_samples,
         n_features=n_features,
-        signal_strength=signal_strength,
-        noise_strength=noise_strength,
-        site_effect_strength=site_effect_strength,
+    )
+
+    signal_strength, site_effect_strength, noise_strength = _validate_components(
+        signal_strength, site_effect_strength, noise_strength, n_sites
     )
 
     balance_per_site, overall_balance = _validate_balance_per_site(balance_per_site, n_sites, n_classes)
@@ -124,7 +129,8 @@ def make_multisite_classification(
     # Generate data for each site
     for site_idx in range(n_sites):
         n_site_samples = samples_per_site[site_idx]
-
+        site_eos = site_effect_strength[site_idx]
+        site_noise = noise_strength[site_idx]
         balance = balance_per_site[site_idx]
         logger.info(f"For site {site_idx}")
         logger.info(f"Generating {n_site_samples} samples")
@@ -134,12 +140,12 @@ def make_multisite_classification(
         X_site, y_site = _get_site_samples(X, y, balance, n_classes, n_site_samples, available_indices, random_state)
         # Generate site effect component
         X_site, y_site = _generate_site_effect_component(
-            X_site, y_site, site_effect_type, site_effect_strength, site_effect_homogeneous, random_state
+            X_site, y_site, site_effect_type, site_eos, site_effect_homogeneous, random_state
         )
 
-        if noise_strength != 0:
+        if site_noise != 0:
             # Generate noise component
-            noise = random_state.normal(loc=0.0, scale=noise_strength, size=X_site.shape)
+            noise = random_state.normal(loc=0.0, scale=site_noise, size=X_site.shape)
             X_site = X_site + noise
 
         X_list.append(X_site)
@@ -174,9 +180,6 @@ def _validate_parameters(
     n_sites: int,
     n_samples: int,
     n_features: int,
-    signal_strength: float,
-    noise_strength: float,
-    site_effect_strength: float,
     n_classes: int,
 ) -> None:
     """Validate all input parameters for data simulation.
@@ -189,12 +192,6 @@ def _validate_parameters(
         Total number of samples across all sites.
     n_features : int
         Number of features per sample.
-    signal_strength : float
-        Strength of the signal component separating classes.
-    noise_strength : float
-        Strength of the noise component.
-    site_effect_strength : float
-        Strength of site-specific effects.
     n_classes : int
         Number of classes to simulate (2 for binary, >2 for multi-class).
 
@@ -204,9 +201,6 @@ def _validate_parameters(
         If ``n_sites`` is less than 1 or
         if ``n_features`` is negative or
         if ``n_classes`` is less than 2 or
-        if ``signal_strength`` is negative or
-        if ``noise_strength`` is negative or
-        if ``site_effect_strength`` is negative or
         if ``n_samples`` is less than ``n_sites``.
 
     """
@@ -224,19 +218,51 @@ def _validate_parameters(
     if n_classes < 2:
         raise ValueError(f"n_classes must be at least 2, got {n_classes}")
 
-    if signal_strength < 0:
-        raise ValueError(f"signal_strength must be non-negative, got {signal_strength}")
-
-    if noise_strength < 0:
-        raise ValueError(f"noise_strength must be non-negative, got {noise_strength}")
-
-    if site_effect_strength < 0:
-        raise ValueError(f"site_effect_strength must be non-negative, got {site_effect_strength}")
-
     if n_samples < n_sites:
         raise ValueError(
             f"n_samples ({n_samples}) is less than n_sites ({n_sites}). Some sites will have 0 samples.",
         )
+
+
+def _validate_components(
+    signal_strength: float,
+    site_effect_strength: list[float] | float,
+    noise_strength: list[float] | float,
+    n_sites: int,
+) -> tuple[float, list[float], list[float]]:
+    """Component Validation."""
+    # Check signal_strength
+    signal_strength = float(signal_strength)
+    if signal_strength < 0:
+        raise ValueError(f"signal_strength must be non-negative, got {signal_strength}")
+
+    site_effect_strength = _make_component_list(site_effect_strength, n_sites, "site_effect_strength")
+    noise_strength = _make_component_list(noise_strength, n_sites, "noise_strength")
+
+    return signal_strength, site_effect_strength, noise_strength
+
+
+def _make_component_list(component: float | list[float], n_sites: int, component_name) -> list[float]:
+    # Check site_effect_strength
+    if isinstance(component, (float, int)):
+        if component < 0:
+            raise ValueError(f"{component_name} must be non-negative, got {component}")
+        component_list = [float(component)] * n_sites
+    elif isinstance(component, list):
+        # Check all elements are numeric
+        if len(component) != n_sites:
+            raise ValueError(f"{component_name} must have length n_sites ({n_sites}), got {len(component)}")
+        for i, site_component in enumerate(component):
+            if not isinstance(site_component, (float, int)):
+                raise TypeError(
+                    f"Invalid type for {component_name}[[{i}]]: must be a class proportion (float), got {type(site_component)}"
+                )
+            if not 0 < site_component:
+                raise ValueError(f"{component_name}[{i}] must be non-negative, got {site_component}")
+        component_list = [float(x) for x in component]
+    else:
+        raise TypeError(f"Invalid type for {component_name}: must be a float or list[float], got {type(component)}")
+    return component_list
 
 
 def _get_default_balance_per_site(n_sites: int, n_classes: int) -> list[float] | list[list[float]]:
