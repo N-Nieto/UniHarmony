@@ -82,29 +82,18 @@ def test_combat_gam_compat_sklearn(estimator: object, check: Callable) -> None:
         (False, False, True),
         (False, False, False),
     ],
-    ids=[
-        "ComBatGAM_initialization",
-        "ComBatGAM_initialization",
-        "ComBatGAM_initialization",
-        "ComBatGAM_initialization",
-        "ComBatGAM_initialization",
-        "ComBatGAM_initialization",
-        "ComBatGAM_initialization",
-        "ComBatGAM_initialization",
-    ],
 )
-@pytest.mark.docs
-def test_combat_initialization(empirical_bayes, parametric_adjustments, mean_only) -> None:
-    """Plot 2D projection with different methods and parameters.
+def test_combat_gam(empirical_bayes: bool, parametric_adjustments: bool, mean_only: bool) -> None:
+    """Test ComBatGAM.
 
     Parameters
     ----------
     empirical_bayes : bool
-        empirical_bayes use
+        Parametrized value of empirical_bayes.
     parametric_adjustments : bool
-        parametric_adjustments use
+        Parametrized value of parametric_adjustments.
     mean_only : bool
-        mean_only use
+        Parametrized value of mean_only.
 
 
     """
