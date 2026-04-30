@@ -53,7 +53,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'auto_examples/combat-based/NeuroComBat_binary_classification';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Analasing neuroComBat behaivor when imbalance across sites." href="NeuroComBat_imbalance_across_sites.html" />
+    <link rel="next" title="Analyzing neuroComBat behavior when imbalance across sites." href="NeuroComBat_imbalance_across_sites.html" />
     <link rel="prev" title="ComBat Methods" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -198,6 +198,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../multisite-data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../multisite-data/Generate_multisite_data_example.html">Multisite data generation examples.</a></li>
 
+
 <li class="toctree-l3"><a class="reference internal" href="../multisite-data/Load_mareos_example.html">Load MAREoS dataset tutorial.</a></li>
 
 <li class="toctree-l3"><a class="reference internal" href="../multisite-data/Generate_imbalance_multisite_data_example.html">How to generate imbalance multisite data.</a></li>
@@ -208,7 +209,7 @@
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">ComBat Methods</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">Harmonize data with neuroComBat</a></li>
 
-<li class="toctree-l3"><a class="reference internal" href="NeuroComBat_imbalance_across_sites.html">Analasing neuroComBat behaivor when imbalance across sites.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NeuroComBat_imbalance_across_sites.html">Analyzing neuroComBat behavior when imbalance across sites.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="NeuroComBat_in_MAREoS.html">Benchmark NeuroComBat in MAREoS dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ComBatGAM_binary_classification.html">Harmonize data with neuroComBat</a></li>
 
@@ -443,7 +444,7 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span>
     <span class="n">n_features</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-    <span class="n">site_effect_strength</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">site_effect_strength</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;Target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="s2">&quot;Site&quot;</span><span class="p">:</span> <span class="n">sites</span><span class="p">})</span>
 
@@ -483,7 +484,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/173201a831013e1f133516e83e72fd221f0556f8ab6e1b88d5106ed771401a2b.png" src="../../_images/173201a831013e1f133516e83e72fd221f0556f8ab6e1b88d5106ed771401a2b.png" />
+<img alt="../../_images/b6200f73d67b5d7d7f6e014eaa11deb37cdc8d7d440bf382a8a3f747e5270eae.png" src="../../_images/b6200f73d67b5d7d7f6e014eaa11deb37cdc8d7d440bf382a8a3f747e5270eae.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -500,7 +501,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/44376082d313e04ab38ee33a9729582b50a7ac3e7be7ccfbec025e66fa0d129d.png" src="../../_images/44376082d313e04ab38ee33a9729582b50a7ac3e7be7ccfbec025e66fa0d129d.png" />
+<img alt="../../_images/9767f745c0e311e66a2aaf0b8ff7000ab469a99fdd8af9e08e39edcf1cd04576.png" src="../../_images/9767f745c0e311e66a2aaf0b8ff7000ab469a99fdd8af9e08e39edcf1cd04576.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -515,13 +516,13 @@
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Feature means by site before harmonization:
 Site
-0   -0.134125
-1    0.410179
+0    2.307783
+1    1.932366
 Name: Feature1, dtype: float64
 Feature means by site after harmonization:
 Site
-0    0.152921
-1    0.122821
+0    2.105410
+1    2.134838
 Name: Feature1, dtype: float64
 </pre></div>
 </div>
@@ -541,7 +542,7 @@ Name: Feature1, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/11a40b357eb6446ee329e4c0ca80ab669039a9af22ec405a81a72c49b7fd1010.png" src="../../_images/11a40b357eb6446ee329e4c0ca80ab669039a9af22ec405a81a72c49b7fd1010.png" />
+<img alt="../../_images/238c78fc4c6a621052c91f4967968e79f7be90bdad0d8e585fae9b6e7fa463e2.png" src="../../_images/238c78fc4c6a621052c91f4967968e79f7be90bdad0d8e585fae9b6e7fa463e2.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -556,13 +557,13 @@ Name: Feature1, dtype: float64
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Feature means by site before harmonization:
 Site
-0   -0.131884
-1    0.458163
+0    1.452908
+1    0.906348
 Name: Feature2, dtype: float64
 Feature means by site after harmonization:
 Site
-0    0.148781
-1    0.177800
+0    1.196567
+1    1.162718
 Name: Feature2, dtype: float64
 </pre></div>
 </div>
@@ -600,7 +601,7 @@ Name: Feature2, dtype: float64
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Analasing neuroComBat behaivor when imbalance across sites.</p>
+        <p class="prev-next-title">Analyzing neuroComBat behavior when imbalance across sites.</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

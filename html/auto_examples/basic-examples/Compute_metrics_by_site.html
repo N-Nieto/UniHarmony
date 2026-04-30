@@ -198,6 +198,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../multisite-data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../multisite-data/Generate_multisite_data_example.html">Multisite data generation examples.</a></li>
 
+
 <li class="toctree-l3"><a class="reference internal" href="../multisite-data/Load_mareos_example.html">Load MAREoS dataset tutorial.</a></li>
 
 <li class="toctree-l3"><a class="reference internal" href="../multisite-data/Generate_imbalance_multisite_data_example.html">How to generate imbalance multisite data.</a></li>
@@ -208,7 +209,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../combat-based/index.html">ComBat Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../combat-based/NeuroComBat_binary_classification.html">Harmonize data with neuroComBat</a></li>
 
-<li class="toctree-l3"><a class="reference internal" href="../combat-based/NeuroComBat_imbalance_across_sites.html">Analasing neuroComBat behaivor when imbalance across sites.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../combat-based/NeuroComBat_imbalance_across_sites.html">Analyzing neuroComBat behavior when imbalance across sites.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../combat-based/NeuroComBat_in_MAREoS.html">Benchmark NeuroComBat in MAREoS dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../combat-based/ComBatGAM_binary_classification.html">Harmonize data with neuroComBat</a></li>
 
@@ -438,7 +439,7 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate and split the data</span>
 
-<span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span><span class="n">n_sites</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">signal_strength</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span><span class="n">n_sites</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">signal_strength</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span><span class="p">,</span> <span class="n">sites_train</span><span class="p">,</span> <span class="n">sites_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span><span class="p">)</span>
 
@@ -452,16 +453,16 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>For site 0: bACC 0.5667
-For site 1: bACC 0.5
-For site 2: bACC 0.5769
-For site 3: bACC 0.7778
-For site 4: bACC 0.6667
-For site 5: bACC 0.6818
-For site 6: bACC 0.7917
-For site 7: bACC 0.5312
-For site 8: bACC 0.7
-For site 9: bACC 0.5
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>For site 0: bACC 0.8532
+For site 1: bACC 0.7273
+For site 2: bACC 0.6733
+For site 3: bACC 0.7143
+For site 4: bACC 0.6023
+For site 5: bACC 0.5
+For site 6: bACC 0.7765
+For site 7: bACC 0.7878
+For site 8: bACC 0.6531
+For site 9: bACC 0.7879
 </pre></div>
 </div>
 </div>
@@ -485,8 +486,8 @@ For site 9: bACC 0.5
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overall bACC: 0.6063570466354481
-Overall bACC: 0.6063570466354481
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overall bACC: 0.6996794871794871
+Overall bACC: 0.6996794871794871
 </pre></div>
 </div>
 </div>

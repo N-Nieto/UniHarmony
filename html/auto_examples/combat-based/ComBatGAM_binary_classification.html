@@ -198,6 +198,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../multisite-data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../multisite-data/Generate_multisite_data_example.html">Multisite data generation examples.</a></li>
 
+
 <li class="toctree-l3"><a class="reference internal" href="../multisite-data/Load_mareos_example.html">Load MAREoS dataset tutorial.</a></li>
 
 <li class="toctree-l3"><a class="reference internal" href="../multisite-data/Generate_imbalance_multisite_data_example.html">How to generate imbalance multisite data.</a></li>
@@ -208,7 +209,7 @@
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">ComBat Methods</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="NeuroComBat_binary_classification.html">Harmonize data with neuroComBat</a></li>
 
-<li class="toctree-l3"><a class="reference internal" href="NeuroComBat_imbalance_across_sites.html">Analasing neuroComBat behaivor when imbalance across sites.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NeuroComBat_imbalance_across_sites.html">Analyzing neuroComBat behavior when imbalance across sites.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="NeuroComBat_in_MAREoS.html">Benchmark NeuroComBat in MAREoS dataset</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">Harmonize data with neuroComBat</a></li>
 
@@ -456,6 +457,9 @@
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:44</span> [<span class=" -Color -Color-Bold -Color-Bold-Yellow">warning  </span>] <span class=" -Color -Color-Bold">signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.</span>
+</pre></div>
+</div>
 <img alt="../../_images/fb3289a2ec208e5b0e7055530cc89bb6ef1c7b0288e495217a6356627731b370.png" src="../../_images/fb3289a2ec208e5b0e7055530cc89bb6ef1c7b0288e495217a6356627731b370.png" />
 </div>
 </div>
@@ -485,7 +489,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/b1d89e571f67ca71d2d5a10aba1540c734c85ef7038c89674eaaff5a04bb54c2.png" src="../../_images/b1d89e571f67ca71d2d5a10aba1540c734c85ef7038c89674eaaff5a04bb54c2.png" />
+<img alt="../../_images/3cf013d420bbb8ff05dfc9ea570bd1adf3e2f11ed6952d17ad7cfbaca888b775.png" src="../../_images/3cf013d420bbb8ff05dfc9ea570bd1adf3e2f11ed6952d17ad7cfbaca888b775.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -502,7 +506,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/54bec9225a90bf875d25cb37c96a5ad2774d2437aacf308c604db302480337cd.png" src="../../_images/54bec9225a90bf875d25cb37c96a5ad2774d2437aacf308c604db302480337cd.png" />
+<img alt="../../_images/6c87900010a0c99d2bc0601c254edcc97a27f04a6059ba69d0e3a7a09517f7f9.png" src="../../_images/6c87900010a0c99d2bc0601c254edcc97a27f04a6059ba69d0e3a7a09517f7f9.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -517,13 +521,13 @@
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Feature means by site before harmonization:
 Site
-0   -2.081294
-1    4.389163
+0    3.454432
+1    2.313463
 Name: Feature1, dtype: float64
 Feature means by site after harmonization:
 Site
-0    1.173638
-1    1.134707
+0    2.881748
+1    2.886076
 Name: Feature1, dtype: float64
 </pre></div>
 </div>
@@ -543,7 +547,7 @@ Name: Feature1, dtype: float64
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/081f7ffea70052eeb9bfc62de4428c2be4eb2190623f2b65717c9c02a799271a.png" src="../../_images/081f7ffea70052eeb9bfc62de4428c2be4eb2190623f2b65717c9c02a799271a.png" />
+<img alt="../../_images/65602196af40d5a34a95e0cdaac06810c7dad009779bab725ed7d9fa50eb29ea.png" src="../../_images/65602196af40d5a34a95e0cdaac06810c7dad009779bab725ed7d9fa50eb29ea.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -558,13 +562,13 @@ Name: Feature1, dtype: float64
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Feature means by site before harmonization:
 Site
-0   -2.079053
-1    4.437147
+0    3.599556
+1    2.287443
 Name: Feature2, dtype: float64
 Feature means by site after harmonization:
 Site
-0    1.160154
-1    1.197505
+0    2.944512
+1    2.942473
 Name: Feature2, dtype: float64
 </pre></div>
 </div>

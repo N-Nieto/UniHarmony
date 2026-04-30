@@ -198,6 +198,7 @@
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">Multisite Data</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="Generate_multisite_data_example.html">Multisite data generation examples.</a></li>
 
+
 <li class="toctree-l3"><a class="reference internal" href="Load_mareos_example.html">Load MAREoS dataset tutorial.</a></li>
 
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">How to generate imbalance multisite data.</a></li>
@@ -208,7 +209,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../combat-based/index.html">ComBat Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../combat-based/NeuroComBat_binary_classification.html">Harmonize data with neuroComBat</a></li>
 
-<li class="toctree-l3"><a class="reference internal" href="../combat-based/NeuroComBat_imbalance_across_sites.html">Analasing neuroComBat behaivor when imbalance across sites.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../combat-based/NeuroComBat_imbalance_across_sites.html">Analyzing neuroComBat behavior when imbalance across sites.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../combat-based/NeuroComBat_in_MAREoS.html">Benchmark NeuroComBat in MAREoS dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../combat-based/ComBatGAM_binary_classification.html">Harmonize data with neuroComBat</a></li>
 
@@ -550,6 +551,12 @@ site 1 balance: 0.70
 </div>
 </div>
 <div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:31:54</span> [<span class=" -Color -Color-Bold -Color-Bold-Yellow">warning  </span>] <span class=" -Color -Color-Bold">Not enough samples of class 0 in global dataset. Requested 350, available 330. Consider adjusting balance_per_site or generating more samples.</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:31:54</span> [<span class=" -Color -Color-Bold -Color-Bold-Yellow">warning  </span>] <span class=" -Color -Color-Bold">Not enough samples of class 0 in global dataset. Requested 350, available 330. Consider adjusting balance_per_site or generating more samples.</span>
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The class are imbalanced in general, but have the same imbalance across sites
 General balance: 0.30 
 site 0 balance: 0.30 

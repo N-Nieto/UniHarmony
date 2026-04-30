@@ -198,6 +198,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../multisite-data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../multisite-data/Generate_multisite_data_example.html">Multisite data generation examples.</a></li>
 
+
 <li class="toctree-l3"><a class="reference internal" href="../multisite-data/Load_mareos_example.html">Load MAREoS dataset tutorial.</a></li>
 
 <li class="toctree-l3"><a class="reference internal" href="../multisite-data/Generate_imbalance_multisite_data_example.html">How to generate imbalance multisite data.</a></li>
@@ -208,7 +209,7 @@
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">ComBat Methods</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="NeuroComBat_binary_classification.html">Harmonize data with neuroComBat</a></li>
 
-<li class="toctree-l3"><a class="reference internal" href="NeuroComBat_imbalance_across_sites.html">Analasing neuroComBat behaivor when imbalance across sites.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="NeuroComBat_imbalance_across_sites.html">Analyzing neuroComBat behavior when imbalance across sites.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="NeuroComBat_in_MAREoS.html">Benchmark NeuroComBat in MAREoS dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ComBatGAM_binary_classification.html">Harmonize data with neuroComBat</a></li>
 
@@ -469,7 +470,7 @@
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Note that we are harmonizing the whole dataset, which is not how it would be used in practice.</span>
 <span class="c1"># This is just to illustrate the effect of harmonization.</span>
 <span class="n">combat</span> <span class="o">=</span> <span class="n">ComBatGAM</span><span class="p">()</span>
-<span class="n">combat</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">sites</span><span class="p">,</span> <span class="n">smooth_covariates</span><span class="o">=</span><span class="n">y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">combat</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">sites</span><span class="p">,</span> <span class="n">smooth_covariates</span><span class="o">=</span><span class="n">y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="n">X_harmonized</span> <span class="o">=</span> <span class="n">combat</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">sites</span><span class="p">,</span> <span class="n">smooth_covariates</span><span class="o">=</span><span class="n">y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
 <span class="n">df_orig</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Feature1&quot;</span><span class="p">,</span> <span class="s2">&quot;Feature2&quot;</span><span class="p">])</span>
@@ -496,7 +497,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/69bb6a63e390ee5149537e008f1776705ab987cad7f526cabf17195caf01ef48.png" src="../../_images/69bb6a63e390ee5149537e008f1776705ab987cad7f526cabf17195caf01ef48.png" />
+<img alt="../../_images/9bb72a8bbfa2260a1ee129d6092bc9c61970cb1221c214f5468572034829f976.png" src="../../_images/9bb72a8bbfa2260a1ee129d6092bc9c61970cb1221c214f5468572034829f976.png" />
 </div>
 </div>
 </section>
@@ -510,8 +511,8 @@
 <span class="c1"># This is the key line: we need to include the target variable as a covariate</span>
 <span class="c1"># to preserve its relationship with the features during harmonization.</span>
 
-<span class="n">combat</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">sites</span><span class="p">,</span> <span class="n">smooth_covariates</span><span class="o">=</span><span class="n">y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-<span class="n">X_harmonized</span> <span class="o">=</span> <span class="n">combat</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">sites</span><span class="p">,</span> <span class="n">smooth_covariates</span><span class="o">=</span><span class="n">y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">combat</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">sites</span><span class="p">,</span> <span class="n">smooth_covariates</span><span class="o">=</span><span class="n">y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">X_harmonized</span> <span class="o">=</span> <span class="n">combat</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">sites</span><span class="p">,</span> <span class="n">smooth_covariates</span><span class="o">=</span><span class="n">y</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
 <span class="n">df_orig</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Feature1&quot;</span><span class="p">,</span> <span class="s2">&quot;Feature2&quot;</span><span class="p">])</span>
 <span class="n">df_orig</span><span class="p">[</span><span class="s2">&quot;Site&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">sites</span>
@@ -536,7 +537,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/a68c47a89abf364db9ad1d01d228b8720403070acea24b655f443dce865218f0.png" src="../../_images/a68c47a89abf364db9ad1d01d228b8720403070acea24b655f443dce865218f0.png" />
+<img alt="../../_images/f9ab23a3822a58f6a66b94d0c56fd4c13716b6055aed28584be710f549df78b2.png" src="../../_images/f9ab23a3822a58f6a66b94d0c56fd4c13716b6055aed28584be710f549df78b2.png" />
 </div>
 </div>
 </section>

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Analasing neuroComBat behaivor when imbalance across sites. &#8212; uniharmony 0.1.dev1 documentation</title>
+    <title>Analyzing neuroComBat behavior when imbalance across sites. &#8212; uniharmony 0.1.dev1 documentation</title>
   
   
   
@@ -198,6 +198,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../multisite-data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../multisite-data/Generate_multisite_data_example.html">Multisite data generation examples.</a></li>
 
+
 <li class="toctree-l3"><a class="reference internal" href="../multisite-data/Load_mareos_example.html">Load MAREoS dataset tutorial.</a></li>
 
 <li class="toctree-l3"><a class="reference internal" href="../multisite-data/Generate_imbalance_multisite_data_example.html">How to generate imbalance multisite data.</a></li>
@@ -208,7 +209,7 @@
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">ComBat Methods</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="NeuroComBat_binary_classification.html">Harmonize data with neuroComBat</a></li>
 
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Analasing neuroComBat behaivor when imbalance across sites.</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Analyzing neuroComBat behavior when imbalance across sites.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="NeuroComBat_in_MAREoS.html">Benchmark NeuroComBat in MAREoS dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ComBatGAM_binary_classification.html">Harmonize data with neuroComBat</a></li>
 
@@ -386,7 +387,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Analasing neuroComBat behaivor when imbalance across sites.</h1>
+    <h1>Analyzing neuroComBat behavior when imbalance across sites.</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -419,8 +420,8 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="analasing-neurocombat-behaivor-when-imbalance-across-sites">
-<span id="example-neurocombat-imbalance-across-sites"></span><h1>Analasing neuroComBat behaivor when imbalance across sites.<a class="headerlink" href="#analasing-neurocombat-behaivor-when-imbalance-across-sites" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="analyzing-neurocombat-behavior-when-imbalance-across-sites">
+<span id="example-neurocombat-imbalance-across-sites"></span><h1>Analyzing neuroComBat behavior when imbalance across sites.<a class="headerlink" href="#analyzing-neurocombat-behavior-when-imbalance-across-sites" title="Link to this heading">#</a></h1>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
@@ -442,9 +443,10 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span>
     <span class="n">n_features</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-    <span class="n">signal_strength</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">signal_strength</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
     <span class="n">site_effect_strength</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>  <span class="c1"># NO site effect</span>
     <span class="n">balance_per_site</span><span class="o">=</span><span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">],</span>
+    <span class="n">signal_type</span><span class="o">=</span><span class="s2">&quot;blobs&quot;</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">&quot;Target&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span> <span class="s2">&quot;Site&quot;</span><span class="p">:</span> <span class="n">sites</span><span class="p">})</span>
 
@@ -496,7 +498,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/3bb6ec3829bf99085ea802d707d86f8c66bff240733360fc858d32a00c63a3ae.png" src="../../_images/3bb6ec3829bf99085ea802d707d86f8c66bff240733360fc858d32a00c63a3ae.png" />
+<img alt="../../_images/aef782e6ad602fb3a4ab3da1267391c290faf1b48b1ecb7b90ed72bcd671487e.png" src="../../_images/aef782e6ad602fb3a4ab3da1267391c290faf1b48b1ecb7b90ed72bcd671487e.png" />
 </div>
 </div>
 </section>
@@ -536,10 +538,10 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:09:21</span> [<span class=" -Color -Color-Bold -Color-Bold-Yellow">warning  </span>] <span class=" -Color -Color-Bold">You specified categorical and/or continuous covariates to be preserved. If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model&#39;s target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:31:31</span> [<span class=" -Color -Color-Bold -Color-Bold-Yellow">warning  </span>] <span class=" -Color -Color-Bold">You specified categorical and/or continuous covariates to be preserved. If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model&#39;s target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.</span>
 </pre></div>
 </div>
-<img alt="../../_images/a68c47a89abf364db9ad1d01d228b8720403070acea24b655f443dce865218f0.png" src="../../_images/a68c47a89abf364db9ad1d01d228b8720403070acea24b655f443dce865218f0.png" />
+<img alt="../../_images/40b588b28f5f511b144a5b0903e42a83a66353cf0efca15b5ff7820e84787cb4.png" src="../../_images/40b588b28f5f511b144a5b0903e42a83a66353cf0efca15b5ff7820e84787cb4.png" />
 </div>
 </div>
 </section>

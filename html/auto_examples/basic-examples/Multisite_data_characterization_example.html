@@ -198,6 +198,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../multisite-data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../multisite-data/Generate_multisite_data_example.html">Multisite data generation examples.</a></li>
 
+
 <li class="toctree-l3"><a class="reference internal" href="../multisite-data/Load_mareos_example.html">Load MAREoS dataset tutorial.</a></li>
 
 <li class="toctree-l3"><a class="reference internal" href="../multisite-data/Generate_imbalance_multisite_data_example.html">How to generate imbalance multisite data.</a></li>
@@ -208,7 +209,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../combat-based/index.html">ComBat Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../combat-based/NeuroComBat_binary_classification.html">Harmonize data with neuroComBat</a></li>
 
-<li class="toctree-l3"><a class="reference internal" href="../combat-based/NeuroComBat_imbalance_across_sites.html">Analasing neuroComBat behaivor when imbalance across sites.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../combat-based/NeuroComBat_imbalance_across_sites.html">Analyzing neuroComBat behavior when imbalance across sites.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../combat-based/NeuroComBat_in_MAREoS.html">Benchmark NeuroComBat in MAREoS dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../combat-based/ComBatGAM_binary_classification.html">Harmonize data with neuroComBat</a></li>
 
@@ -425,9 +426,9 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony</span><span class="w"> </span><span class="kn">import</span> <span class="n">verbosity</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_multisite_classification</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.datasets._multisite_data_characterization</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">get_site_data_statistics</span><span class="p">,</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">get_multisite_data_statistics</span><span class="p">,</span>
+    <span class="n">make_multisite_classification</span><span class="p">,</span>
     <span class="n">print_statistics_summary</span><span class="p">,</span>
 <span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.plot</span><span class="w"> </span><span class="kn">import</span> <span class="n">plot_features_by_site</span>
@@ -435,23 +436,6 @@
 
 <span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
 <span class="n">verbosity</span><span class="p">(</span><span class="s2">&quot;warning&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ImportError</span><span class="g g-Whitespace">                               </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">7</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> 
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony</span><span class="w"> </span><span class="kn">import</span> <span class="n">verbosity</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_multisite_classification</span>
-<span class="ne">----&gt; </span><span class="mi">7</span> <span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.datasets._multisite_data_characterization</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span>     <span class="n">get_site_data_statistics</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span>     <span class="n">print_statistics_summary</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="p">)</span>
-
-<span class="ne">ImportError</span>: cannot import name &#39;get_site_data_statistics&#39; from &#39;uniharmony.datasets._multisite_data_characterization&#39; (/home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/_multisite_data_characterization.py)
 </pre></div>
 </div>
 </div>
@@ -492,7 +476,7 @@
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span> <span class="o">*</span> <span class="mi">60</span><span class="p">)</span>
 
 <span class="c1"># Compute statistics</span>
-<span class="n">stats</span> <span class="o">=</span> <span class="n">get_site_data_statistics</span><span class="p">(</span>
+<span class="n">stats</span> <span class="o">=</span> <span class="n">get_multisite_data_statistics</span><span class="p">(</span>
     <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span>
     <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span>
     <span class="n">sites</span><span class="o">=</span><span class="n">sites</span><span class="p">,</span>
@@ -508,55 +492,139 @@
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing statistics...
 ============================================================
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">============================================================</span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">DATASET STATISTICS SUMMARY    </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">============================================================</span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] 
+<span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">============================================================</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">DATASET STATISTICS SUMMARY    </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">============================================================</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] 
 <span class=" -Color -Color-Bold">OVERALL:                     </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  Samples: 1000               </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  Features: 10                </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  Sites: 5                    </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  Classes: 3                  </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  Samples: 1000               </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  Features: 10                </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  Sites: 5                    </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  Classes: 3                  </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] 
 <span class=" -Color -Color-Bold">CLASS DISTRIBUTION:          </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  class_0: 344 samples (34.4%)</span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  class_1: 336 samples (33.6%)</span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  class_2: 320 samples (32.0%)</span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  class_0: 335 samples (33.5%)</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  class_1: 335 samples (33.5%)</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  class_2: 330 samples (33.0%)</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] 
 <span class=" -Color -Color-Bold">SITE DISTRIBUTION:           </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  site_0: 200 samples (20.0%) </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  site_1: 200 samples (20.0%) </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  site_2: 200 samples (20.0%) </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  site_3: 200 samples (20.0%) </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  site_4: 200 samples (20.0%) </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  site_0: 200 samples (20.0%) </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  site_1: 200 samples (20.0%) </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  site_2: 200 samples (20.0%) </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  site_3: 200 samples (20.0%) </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  site_4: 200 samples (20.0%) </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] 
 <span class=" -Color -Color-Bold">SITE STATISTICS (summary):   </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  site_0:                     </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">    Samples: 200              </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">    Class distribution: {&#39;class_0&#39;: 64, &#39;class_1&#39;: 70, &#39;class_2&#39;: 66}</span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  site_1:                     </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">    Samples: 200              </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">    Class distribution: {&#39;class_0&#39;: 86, &#39;class_1&#39;: 61, &#39;class_2&#39;: 53}</span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  site_2:                     </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">    Samples: 200              </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">    Class distribution: {&#39;class_0&#39;: 77, &#39;class_1&#39;: 65, &#39;class_2&#39;: 58}</span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  site_3:                     </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">    Samples: 200              </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">    Class distribution: {&#39;class_0&#39;: 59, &#39;class_1&#39;: 74, &#39;class_2&#39;: 67}</span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  site_4:                     </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">    Samples: 200              </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">    Class distribution: {&#39;class_0&#39;: 58, &#39;class_1&#39;: 66, &#39;class_2&#39;: 76}</span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  site_0:                     </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">    Samples: 200              </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">    Class distribution: {&#39;class_0&#39;: 67, &#39;class_1&#39;: 67, &#39;class_2&#39;: 66}</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  site_1:                     </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">    Samples: 200              </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">    Class distribution: {&#39;class_0&#39;: 67, &#39;class_1&#39;: 67, &#39;class_2&#39;: 66}</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  site_2:                     </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">    Samples: 200              </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">    Class distribution: {&#39;class_0&#39;: 67, &#39;class_1&#39;: 67, &#39;class_2&#39;: 66}</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  site_3:                     </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">    Samples: 200              </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">    Class distribution: {&#39;class_0&#39;: 67, &#39;class_1&#39;: 67, &#39;class_2&#39;: 66}</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  site_4:                     </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">    Samples: 200              </span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">    Class distribution: {&#39;class_0&#39;: 67, &#39;class_1&#39;: 67, &#39;class_2&#39;: 66}</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] 
 <span class=" -Color -Color-Bold">FEATURE STATISTICS (first 5 features):</span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  feat_0: mean=-1.1451, std=1.9152, MAD=1.3194</span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  feat_1: mean=-1.0514, std=1.8368, MAD=1.2526</span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  feat_2: mean=-1.0355, std=1.7620, MAD=1.1633</span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  feat_3: mean=-1.0983, std=1.8031, MAD=1.2254</span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  feat_4: mean=-1.0368, std=1.9083, MAD=1.3964</span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] 
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  feat_0: mean=0.8137, std=1.6804, MAD=1.2405</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  feat_1: mean=-0.2313, std=1.9461, MAD=1.4023</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  feat_2: mean=1.0819, std=2.0994, MAD=1.4588</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  feat_3: mean=0.8475, std=1.6420, MAD=1.2095</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  feat_4: mean=0.7886, std=1.5675, MAD=1.1310</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] 
 <span class=" -Color -Color-Bold">CORRELATIONS:                </span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  Average Inter-Site Correlation: 0.0372</span>
-<span class=" -Color -Color-Faint">2026-04-20 21:23:39</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">============================================================</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">  Average Inter-Site Correlation: 0.9485</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:30:41</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">============================================================</span>
 </pre></div>
 </div>
 </div>
@@ -577,7 +645,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/0c61462c9763a273185aee3801982178481399a51470b87c46971dbf26736891.png" src="../../_images/0c61462c9763a273185aee3801982178481399a51470b87c46971dbf26736891.png" />
+<img alt="../../_images/c1c82765619d838143d72597741c51839592005720d223077a1937d9a124cd88.png" src="../../_images/c1c82765619d838143d72597741c51839592005720d223077a1937d9a124cd88.png" />
 </div>
 </div>
 </section>

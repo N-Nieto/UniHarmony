@@ -198,6 +198,7 @@
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">Multisite Data</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">Multisite data generation examples.</a></li>
 
+
 <li class="toctree-l3"><a class="reference internal" href="Load_mareos_example.html">Load MAREoS dataset tutorial.</a></li>
 
 <li class="toctree-l3"><a class="reference internal" href="Generate_imbalance_multisite_data_example.html">How to generate imbalance multisite data.</a></li>
@@ -208,7 +209,7 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../combat-based/index.html">ComBat Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../combat-based/NeuroComBat_binary_classification.html">Harmonize data with neuroComBat</a></li>
 
-<li class="toctree-l3"><a class="reference internal" href="../combat-based/NeuroComBat_imbalance_across_sites.html">Analasing neuroComBat behaivor when imbalance across sites.</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../combat-based/NeuroComBat_imbalance_across_sites.html">Analyzing neuroComBat behavior when imbalance across sites.</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../combat-based/NeuroComBat_in_MAREoS.html">Benchmark NeuroComBat in MAREoS dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../combat-based/ComBatGAM_binary_classification.html">Harmonize data with neuroComBat</a></li>
 
@@ -401,9 +402,13 @@
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#changing-the-class-balance">Changing the class balance:</a></li>
 </ul>
 </li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#different-implemented-signal-types">Different implemented signal types.</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#let-s-now-see-how-the-signal-looks-like">Let’s now see how the signal looks like</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#effect-of-site-effect">Effect of Site effect</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#noise-effect">Noise effect</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#site-effect-homogeneous">Site effect homogeneous.</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#noise-effect">Noise effect</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -488,9 +493,7 @@
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>For n_sites 2, X has 1000 examples and 10 features
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>For n_sites 4, X has 1000 examples and 10 features
+For n_sites 4, X has 1000 examples and 10 features
 For n_sites 10, X has 1000 examples and 10 features
 </pre></div>
 </div>
@@ -527,7 +530,7 @@ For n_classes 4, X has 1000 examples and 10 features
 For n_classes 10, X has 1000 examples and 10 features
 </pre></div>
 </div>
-<img alt="../../_images/83db0ff9bc9a670a694dcc44a569ffc89b70faf9db1407a0583db2839b74ad79.png" src="../../_images/83db0ff9bc9a670a694dcc44a569ffc89b70faf9db1407a0583db2839b74ad79.png" />
+<img alt="../../_images/4838717e7ccd898282c2ac5d9da484b6dc7fe48717b84aa3770bee77f34e46cf.png" src="../../_images/4838717e7ccd898282c2ac5d9da484b6dc7fe48717b84aa3770bee77f34e46cf.png" />
 </div>
 </div>
 </section>
@@ -574,6 +577,43 @@ For n_classes 10, X has 1000 examples and 10 features
 <p>Now that we changed the balance, we have different occurence in different sites. Note that the total number of classes is still balanced, is the distribution accross sites that changed.</p>
 </section>
 </section>
+<section class="tex2jax_ignore mathjax_ignore" id="different-implemented-signal-types">
+<h1>Different implemented signal types.<a class="headerlink" href="#different-implemented-signal-types" title="Link to this heading">#</a></h1>
+<p>The signal type is used to generate a <code class="docutils literal notranslate"><span class="pre">base</span></code> problem, using sklearn <code class="docutils literal notranslate"><span class="pre">make</span></code> functions. From this generated problem, <code class="docutils literal notranslate"><span class="pre">uniharmony</span></code> adds an Effect of Site and noise on top.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">signal_type</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="s2">&quot;linear&quot;</span><span class="p">,</span> <span class="s2">&quot;moons&quot;</span><span class="p">,</span> <span class="s2">&quot;circles&quot;</span><span class="p">,</span> <span class="s2">&quot;blobs&quot;</span><span class="p">,</span> <span class="s2">&quot;make_gaussian_quantiles&quot;</span><span class="p">]):</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span>
+        <span class="n">n_features</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">signal_type</span><span class="o">=</span><span class="n">signal_type</span><span class="p">,</span>
+        <span class="n">noise_strength</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">site_effect_strength</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">df_plot</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;Class&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span>
+            <span class="s2">&quot;Site&quot;</span><span class="p">:</span> <span class="n">sites</span><span class="p">,</span>
+            <span class="s2">&quot;Feature 1&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="s2">&quot;Feature 2&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+
+    <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">df_plot</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Feature 1&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Feature 2&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;Class&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Signal Type: </span><span class="si">{</span><span class="n">signal_type</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/dafcabb8e8cacf7274bbeb1d82682448c5a161eb9d2e40e57f96df6158c96fce.png" src="../../_images/dafcabb8e8cacf7274bbeb1d82682448c5a161eb9d2e40e57f96df6158c96fce.png" />
+</div>
+</div>
+</section>
 <section class="tex2jax_ignore mathjax_ignore" id="let-s-now-see-how-the-signal-looks-like">
 <h1>Let’s now see how the signal looks like<a class="headerlink" href="#let-s-now-see-how-the-signal-looks-like" title="Link to this heading">#</a></h1>
 <div class="cell docutils container">
@@ -584,7 +624,7 @@ For n_classes 10, X has 1000 examples and 10 features
     <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span>
         <span class="n">n_features</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
         <span class="n">signal_strength</span><span class="o">=</span><span class="n">signal_st</span><span class="p">,</span>
-        <span class="n">noise_strength</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">noise_strength</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
         <span class="n">site_effect_strength</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span>
 
@@ -606,7 +646,10 @@ For n_classes 10, X has 1000 examples and 10 features
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/2018cc4ea6ee86d065bb237f1c459e06f88d8d044c5d4135f7046c58552144be.png" src="../../_images/2018cc4ea6ee86d065bb237f1c459e06f88d8d044c5d4135f7046c58552144be.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:32:00</span> [<span class=" -Color -Color-Bold -Color-Bold-Yellow">warning  </span>] <span class=" -Color -Color-Bold">signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.</span>
+</pre></div>
+</div>
+<img alt="../../_images/f176fa4d9f5b6e9ec5f76558c57d965d0898d7af41cc0d74ab5881ba4663515f.png" src="../../_images/f176fa4d9f5b6e9ec5f76558c57d965d0898d7af41cc0d74ab5881ba4663515f.png" />
 </div>
 </div>
 <section id="effect-of-site-effect">
@@ -617,10 +660,53 @@ For n_classes 10, X has 1000 examples and 10 features
 
 <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">site_st</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]):</span>
     <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span>
+        <span class="n">n_sites</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
         <span class="n">n_features</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-        <span class="n">signal_strength</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">signal_strength</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
         <span class="n">noise_strength</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
         <span class="n">site_effect_strength</span><span class="o">=</span><span class="n">site_st</span><span class="p">,</span>
+        <span class="n">signal_type</span><span class="o">=</span><span class="s2">&quot;circles&quot;</span><span class="p">,</span>
+        <span class="n">site_effect_homogeneous</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">df_plot</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;Class&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span>
+            <span class="s2">&quot;Site&quot;</span><span class="p">:</span> <span class="n">sites</span><span class="p">,</span>
+            <span class="s2">&quot;Feature 1&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="s2">&quot;Feature 2&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+
+    <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">df_plot</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Feature 1&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Feature 2&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;Site&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Effect of Site Strength: </span><span class="si">{</span><span class="n">site_st</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/61fc01339b843bb9b6cf6afab3794f75edda2884853906d0d91cc2d512697942.png" src="../../_images/61fc01339b843bb9b6cf6afab3794f75edda2884853906d0d91cc2d512697942.png" />
+</div>
+</div>
+</section>
+<section id="site-effect-homogeneous">
+<h2>Site effect homogeneous.<a class="headerlink" href="#site-effect-homogeneous" title="Link to this heading">#</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">site_st</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]):</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span>
+        <span class="n">n_sites</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+        <span class="n">n_features</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="n">signal_strength</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
+        <span class="n">noise_strength</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">site_effect_strength</span><span class="o">=</span><span class="n">site_st</span><span class="p">,</span>
+        <span class="n">signal_type</span><span class="o">=</span><span class="s2">&quot;circles&quot;</span><span class="p">,</span>
+        <span class="n">noise</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">site_effect_homogeneous</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">df_plot</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
@@ -637,24 +723,18 @@ For n_classes 10, X has 1000 examples and 10 features
     <span class="n">axes</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="../../_images/b1562743cb98db858ea441a8260d120673d017953fc04871ac3a0cb8fe72c6f6.png" src="../../_images/b1562743cb98db858ea441a8260d120673d017953fc04871ac3a0cb8fe72c6f6.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
-<span class="n">verbosity</span><span class="p">(</span><span class="s2">&quot;debug&quot;</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">homogeneous</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">]):</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">site_st</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]):</span>
     <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span>
+        <span class="n">n_sites</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
         <span class="n">n_features</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-        <span class="n">signal_strength</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">signal_strength</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span>
         <span class="n">noise_strength</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">site_effect_strength</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-        <span class="n">site_effect_homogeneous</span><span class="o">=</span><span class="n">homogeneous</span><span class="p">,</span>
+        <span class="n">site_effect_strength</span><span class="o">=</span><span class="n">site_st</span><span class="p">,</span>
+        <span class="n">signal_type</span><span class="o">=</span><span class="s2">&quot;circles&quot;</span><span class="p">,</span>
+        <span class="n">noise</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+        <span class="n">site_effect_homogeneous</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="p">)</span>
 
     <span class="n">df_plot</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
@@ -667,83 +747,29 @@ For n_classes 10, X has 1000 examples and 10 features
     <span class="p">)</span>
 
     <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">df_plot</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Feature 1&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Feature 2&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;Class&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Effect of Site Strength: </span><span class="si">{</span><span class="mi">10</span><span class="si">}</span><span class="s2"> with homogeneous=</span><span class="si">{</span><span class="n">homogeneous</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Effect of Site Strength: </span><span class="si">{</span><span class="n">site_st</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">axes</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
-
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:09:50</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Using balanced classes: [0.5, 0.5]</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:09:50</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Generating 500 samples for site 0</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:09:50</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Site 0, site effect strength [[-1.08176037 -1.08176037]]</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:09:50</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Generating 500 samples for site 1</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:09:50</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Site 1, site effect strength [[2.21054661 2.21054661]]</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:09:50</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Generated 1000 samples across 2 sites</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:09:50</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Class distribution: [500 500] </span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:09:50</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Site distribution: [500 500]  </span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:09:50</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Using balanced classes: [0.5, 0.5]</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:09:50</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Generating 500 samples for site 0</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:09:50</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Site 0, site effect strength [[  4.76512074 -11.03781863]]</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:09:50</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Generating 500 samples for site 1</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:09:50</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Site 1, site effect strength [[-4.79488122  4.36459174]]</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:09:50</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Generated 1000 samples across 2 sites</span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:09:50</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Class distribution: [500 500] </span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-04-30 09:09:50</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Site distribution: [500 500]  </span>
-</pre></div>
-</div>
-<img alt="../../_images/977a3649ce97682cd64249c63c24df55cd4e037c1120ece87600ed309137830c.png" src="../../_images/977a3649ce97682cd64249c63c24df55cd4e037c1120ece87600ed309137830c.png" />
+<img alt="../../_images/36ff5940bbfb47c4acfb279b579f8549adca6d1604a7c3b4feca30ee0255d676.png" src="../../_images/36ff5940bbfb47c4acfb279b579f8549adca6d1604a7c3b4feca30ee0255d676.png" />
+<img alt="../../_images/b991657ee510ddf01043ccabd680e2d66871019836132d30608e65f75811300f.png" src="../../_images/b991657ee510ddf01043ccabd680e2d66871019836132d30608e65f75811300f.png" />
 </div>
 </div>
-<p>​For the information printed, we can see that for <code class="docutils literal notranslate"><span class="pre">site_effect_homogeneous</span> <span class="pre">=</span> <span class="pre">True</span></code>, the Effect of Site (EoS) is <strong>the same</strong> for all features (in this case, we have 2 features).</p>
-<p>In the first run, we have a strength of EoS of <code class="docutils literal notranslate"><span class="pre">[-1.08176037</span> <span class="pre">-1.08176037]</span></code> for Site 1  and <code class="docutils literal notranslate"><span class="pre">[2.21054661</span> <span class="pre">2.21054661]</span></code> for Site 2.</p>
-<p>While of course different for each site, the simulated each features are <strong>equally affected</strong> by the EoS.</p>
-<p>On the other hand, when using <code class="docutils literal notranslate"><span class="pre">site_effect_homogeneous</span> <span class="pre">=</span> <span class="pre">False</span></code>, the EoS strength for Site 1 is <code class="docutils literal notranslate"><span class="pre">[4.76512074</span> <span class="pre">-11.03781863]</span></code>, and <code class="docutils literal notranslate"><span class="pre">[-4.79488122</span>&#160; <span class="pre">4.36459174]</span></code> for Site 2.</p>
-<p>In this case, we simulate that each feature is affected in a <strong>different way</strong> in each site.</p>
-</section>
 <section id="noise-effect">
-<h2>Noise effect<a class="headerlink" href="#noise-effect" title="Link to this heading">#</a></h2>
+<h3>Noise effect<a class="headerlink" href="#noise-effect" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">verbosity</span><span class="p">(</span><span class="s2">&quot;warning&quot;</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
 
-<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">noise_st</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">]):</span>
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">noise_st</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]):</span>
     <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span>
         <span class="n">n_features</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
-        <span class="n">signal_strength</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">signal_strength</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
         <span class="n">noise_strength</span><span class="o">=</span><span class="n">noise_st</span><span class="p">,</span>
         <span class="n">site_effect_strength</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
     <span class="p">)</span>
@@ -760,17 +786,49 @@ For n_classes 10, X has 1000 examples and 10 features
     <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">df_plot</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Feature 1&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Feature 2&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;Class&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
     <span class="n">axes</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Noise Strength: </span><span class="si">{</span><span class="n">noise_st</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
     <span class="n">axes</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
-    <span class="n">axes</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
 
 <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/dc2da35b6ee7ba39db70444ac239dec96bab87145de8b16260981c55837be6cc.png" src="../../_images/dc2da35b6ee7ba39db70444ac239dec96bab87145de8b16260981c55837be6cc.png" />
+<img alt="../../_images/1c6f6b44c6a30f7d0d0dda500f269932b60e0ef5e5d0e311863543a037d7bed9.png" src="../../_images/1c6f6b44c6a30f7d0d0dda500f269932b60e0ef5e5d0e311863543a037d7bed9.png" />
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">[</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+
+<span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">strength</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">]):</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span>
+        <span class="n">n_sites</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">signal_strength</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">site_effect_strength</span><span class="o">=</span><span class="n">strength</span><span class="p">,</span> <span class="n">signal_type</span><span class="o">=</span><span class="s2">&quot;blobs&quot;</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">23</span>
+    <span class="p">)</span>
+
+    <span class="n">df_plot</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="s2">&quot;Class&quot;</span><span class="p">:</span> <span class="n">y</span><span class="p">,</span>
+            <span class="s2">&quot;Site&quot;</span><span class="p">:</span> <span class="n">sites</span><span class="p">,</span>
+            <span class="s2">&quot;Feature 1&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span>
+            <span class="s2">&quot;Feature 2&quot;</span><span class="p">:</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+
+    <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span><span class="n">df_plot</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s2">&quot;Feature 1&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;Feature 2&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;Site&quot;</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Signal Strength: </span><span class="si">{</span><span class="n">strength</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">axes</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
+
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../../_images/6b021f7112c615ae4cc98954e46f0362ee3c6da62534ecef8a0bcd4ef8b6bac0.png" src="../../_images/6b021f7112c615ae4cc98954e46f0362ee3c6da62534ecef8a0bcd4ef8b6bac0.png" />
+</div>
+</div>
+</section>
 </section>
 </section>
 
@@ -826,9 +884,13 @@ For n_classes 10, X has 1000 examples and 10 features
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#changing-the-class-balance">Changing the class balance:</a></li>
 </ul>
 </li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#different-implemented-signal-types">Different implemented signal types.</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#let-s-now-see-how-the-signal-looks-like">Let’s now see how the signal looks like</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#effect-of-site-effect">Effect of Site effect</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#noise-effect">Noise effect</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#site-effect-homogeneous">Site effect homogeneous.</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#noise-effect">Noise effect</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
