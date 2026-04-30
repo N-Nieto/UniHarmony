@@ -1,7 +1,11 @@
 """Data simulation module for multi-site data generation."""
 
+from typing import Literal
+
 import numpy as np
+import numpy.typing as npt
 import structlog
+from sklearn.datasets import make_blobs, make_circles, make_classification, make_gaussian_quantiles, make_moons
 from sklearn.utils import check_random_state
 from sklearn.utils.validation import (
     check_array,
@@ -19,21 +23,28 @@ logger = structlog.get_logger()
 
 
 def make_multisite_classification(
-    n_classes: int = 2,
     n_sites: int = 2,
     n_samples: int = 1000,
-    balance_per_site: list[float] | list[list[float]] | None = None,
     n_features: int = 10,
+    n_classes: int = 2,
+    balance_per_site: list[float] | list[list[float]] | None = None,
+    signal_type: Literal["linear", "circular", "moons", "blobs", "gaussian_quantiles"] = "linear",
     signal_strength: float = 1.0,
-    noise_strength: float = 1.0,
-    site_effect_strength: float = 3.0,
+    noise_strength: list[float] | float = 0.1,
+    site_effect_type: Literal["location", "scale", "location+scale"] = "location",
+    site_effect_strength: list[float] | float = 3.0,
     site_effect_homogeneous: bool = True,
     random_state: int | np.random.RandomState = 42,
+    **kwargs,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     """Simulate multi-site data with signal, noise, and site effect components.
 
-    The data generation follows: X = signal + noise + site_effect
-    All components are sampled from Gaussian distributions.
+    In the data generation process, first a 'base' problem is generated using sklearn functions, selected with "signal_type".
+    Then, each site is simulated and a site effect component is added to X, selected with "site_effect_type".
+    The strength of the 'Effect of Site' (EoS) is controlled by `site_effect_strength`.
+    If a list is passed, which element corresponds to the `site_effect_strength` in each site. List len musts be equal to n_sites.
+    If a single value is passed, all sites has the same EoS
+    Finally a gaussian noise  is added to each site, controlled by "noise_strength".
 
     Parameters
     ----------
@@ -48,18 +59,23 @@ def make_multisite_classification(
         binary, equal distribution for multi-class).
     n_features : int, optional (default 10)
         Number of features per sample.
-    signal_strength : float, optional (default 1.0)
-        Strength of the signal component separating classes.
-    noise_strength : float, optional (default 1.0)
-        Strength of the noise component.
+    signal_type : str, optional (default "linear")
+        Which type of signal to generate the base problem.
+    signal_strength : list of float or float, optional (default 1.0)
+        Strength of the signal component separating classes. Passed as 'class_sep` to ``sklearn.datasets.make_classification`.
+    noise_strength : list of float or float, optional (default 0.1)
+        Strength of the noise component by site. If one component is passed, all sites has the same noise_strength.
+    site_effect_type : str, optional (default "location")
+        Type of site effect to add to the original data. Options: "location", "scale", "location+scale".
     site_effect_strength : float, optional (default 3.0)
         Strength of site-specific effects.
     site_effect_homogeneous : bool, optional (default True)
         Whether the site effect is homogeneous (same for all samples in a site).
-
     random_state : int or RandomState instance, (default 42)
         The seed of the pseudo random number generator or RandomState for
         reproducibility.
+    kwargs : dict
+        Additional keyword arguments passed to ``sklearn.datasets.make_classification``.
 
     Returns
     -------
@@ -72,10 +88,10 @@ def make_multisite_classification(
 
     Examples
     --------
-    >>> X, y, site_labels = make_multisite_classification(
+    >>> X, y, sites = make_multisite_classification(
     ...     n_sites=3, n_samples=300, n_features=20, n_classes=3
     ... )
-    >>> X.shape, y.shape, site_labels.shape
+    >>> X.shape, y.shape, sites.shape
     ((300, 20), (300,), (300,))
 
     """
@@ -87,53 +103,55 @@ def make_multisite_classification(
         n_sites=n_sites,
         n_samples=n_samples,
         n_features=n_features,
-        signal_strength=signal_strength,
-        noise_strength=noise_strength,
-        site_effect_strength=site_effect_strength,
     )
 
-    balance_per_site = _validate_balance_per_site(balance_per_site, n_sites, n_classes)
+    signal_strength, site_effect_strength, noise_strength = _validate_components(
+        signal_strength, site_effect_strength, noise_strength, n_sites
+    )
+
+    balance_per_site, overall_balance = _validate_balance_per_site(balance_per_site, n_sites, n_classes)
 
     # Allocate samples per site (even distribution)
     samples_per_site = np.full(n_sites, n_samples // n_sites, dtype=int)
     samples_per_site[: n_samples % n_sites] += 1
 
-    # Pre-allocate arrays for better performance
+    # Generate a base dataset with more samples than needed to allow for site-specific sampling
+    # We will sample from this base dataset for each site according to the specified balance and class distribution
+    X, y = _generate_base_samples(
+        n_samples, n_features, overall_balance, n_classes, signal_type, signal_strength, random_state, **kwargs
+    )
+    site_labels_list = []
     X_list = []
     y_list = []
-    site_labels_list = []
 
+    # Create a copy of indices to track available samples
+    available_indices = list(range(len(X)))
     # Generate data for each site
     for site_idx in range(n_sites):
         n_site_samples = samples_per_site[site_idx]
-
-        logger.info(f"Generating {n_site_samples} samples for site {site_idx}")
-
+        site_eos = site_effect_strength[site_idx]
+        site_noise = noise_strength[site_idx]
         balance = balance_per_site[site_idx]
-        y_site = _generate_labels(n_classes, n_site_samples, balance, random_state)
+        logger.info(f"For site {site_idx}")
+        logger.info(f"Generating {n_site_samples} samples")
+        logger.debug(f"Balance {balance} for site {site_idx}")
 
-        # Generate signal component based on class labels
-        signal = _generate_signal_component(
-            y_site,
-            n_features,
-            signal_strength,
-            n_classes,
-            random_state,
+        # Get site-specific samples based on balance and class distribution in the global dataset
+        X_site, y_site = _get_site_samples(X, y, balance, n_classes, n_site_samples, available_indices, random_state)
+        # Generate site effect component
+        X_site, y_site = _generate_site_effect_component(
+            X_site, y_site, site_effect_type, site_eos, site_effect_homogeneous, random_state
         )
 
-        # Generate noise component
-        noise = random_state.normal(loc=0.0, scale=noise_strength, size=(n_site_samples, n_features))
-
-        # Generate site effect component
-        site_effect = _generate_site_effect_component(site_effect_homogeneous, site_effect_strength, n_features, random_state)
-
-        # Combine components: X = signal + noise + site_effect
-        X_site = signal + noise + site_effect
+        if site_noise != 0:
+            # Generate noise component
+            noise = random_state.normal(loc=0.0, scale=site_noise, size=X_site.shape)
+            X_site = X_site + noise
 
         X_list.append(X_site)
         y_list.append(y_site)
         site_labels_list.extend([site_idx] * n_site_samples)
-        logger.debug(f"Site {site_idx}, site effect strength {site_effect}")
+        logger.debug(f"Site {site_idx}, site effect strength {site_effect_strength}")
 
     # Concatenate all sites
     X = np.vstack(X_list)
@@ -162,9 +180,6 @@ def _validate_parameters(
     n_sites: int,
     n_samples: int,
     n_features: int,
-    signal_strength: float,
-    noise_strength: float,
-    site_effect_strength: float,
     n_classes: int,
 ) -> None:
     """Validate all input parameters for data simulation.
@@ -177,12 +192,6 @@ def _validate_parameters(
         Total number of samples across all sites.
     n_features : int
         Number of features per sample.
-    signal_strength : float
-        Strength of the signal component separating classes.
-    noise_strength : float
-        Strength of the noise component.
-    site_effect_strength : float
-        Strength of site-specific effects.
     n_classes : int
         Number of classes to simulate (2 for binary, >2 for multi-class).
 
@@ -192,9 +201,6 @@ def _validate_parameters(
         If ``n_sites`` is less than 1 or
         if ``n_features`` is negative or
         if ``n_classes`` is less than 2 or
-        if ``signal_strength`` is negative or
-        if ``noise_strength`` is negative or
-        if ``site_effect_strength`` is negative or
         if ``n_samples`` is less than ``n_sites``.
 
     """
@@ -212,19 +218,51 @@ def _validate_parameters(
     if n_classes < 2:
         raise ValueError(f"n_classes must be at least 2, got {n_classes}")
 
-    if signal_strength < 0:
-        raise ValueError(f"signal_strength must be non-negative, got {signal_strength}")
-
-    if noise_strength < 0:
-        raise ValueError(f"noise_strength must be non-negative, got {noise_strength}")
-
-    if site_effect_strength < 0:
-        raise ValueError(f"site_effect_strength must be non-negative, got {site_effect_strength}")
-
     if n_samples < n_sites:
         raise ValueError(
             f"n_samples ({n_samples}) is less than n_sites ({n_sites}). Some sites will have 0 samples.",
         )
+
+
+def _validate_components(
+    signal_strength: float,
+    site_effect_strength: list[float] | float,
+    noise_strength: list[float] | float,
+    n_sites: int,
+) -> tuple[float, list[float], list[float]]:
+    """Component Validation."""
+    # Check signal_strength
+    signal_strength = float(signal_strength)
+    if signal_strength < 0:
+        raise ValueError(f"signal_strength must be non-negative, got {signal_strength}")
+
+    site_effect_strength = _make_component_list(site_effect_strength, n_sites, "site_effect_strength")
+    noise_strength = _make_component_list(noise_strength, n_sites, "noise_strength")
+
+    return signal_strength, site_effect_strength, noise_strength
+
+
+def _make_component_list(component: float | list[float], n_sites: int, component_name) -> list[float]:
+    # Check site_effect_strength
+    if isinstance(component, (float, int)):
+        if component < 0:
+            raise ValueError(f"{component_name} must be non-negative, got {component}")
+        component_list = [float(component)] * n_sites
+    elif isinstance(component, list):
+        # Check all elements are numeric
+        if len(component) != n_sites:
+            raise ValueError(f"{component_name} must have length n_sites ({n_sites}), got {len(component)}")
+        for i, site_component in enumerate(component):
+            if not isinstance(site_component, (float, int)):
+                raise TypeError(
+                    f"Invalid type for {component_name}[[{i}]]: must be a class proportion (float), got {type(site_component)}"
+                )
+            if not 0 < site_component:
+                raise ValueError(f"{component_name}[{i}] must be non-negative, got {site_component}")
+        component_list = [float(x) for x in component]
+    else:
+        raise TypeError(f"Invalid type for {component_name}: must be a float or list[float], got {type(component)}")
+    return component_list
 
 
 def _get_default_balance_per_site(n_sites: int, n_classes: int) -> list[float] | list[list[float]]:
@@ -238,191 +276,11 @@ def _get_default_balance_per_site(n_sites: int, n_classes: int) -> list[float] |
         return [[equal_prob] * n_classes] * n_sites
 
 
-def _generate_labels(
-    n_classes: int,
-    n_site_samples: int,
-    balance: float | list[float],
-    random_state: np.random.RandomState,
-) -> np.ndarray:
-    """Generate labels for a single site.
-
-    Parameters
-    ----------
-    n_classes : int
-        Number of classes (2 for binary, >2 for multiclass).
-    n_site_samples : int
-        Number of samples in this site.
-    balance : float or list[float].
-        Class balance for a given site. For binary classification, this is the
-        probability of class 1. For multiclass, this is a list of probabilities
-        for each class (must sum to 1.0).
-    site_idx : int
-        Index of the current site.
-    random_state : RandomState instance
-        The RandomState for reproducibility.
-
-    Returns
-    -------
-    np.ndarray
-        Generated labels of shape (n_site_samples,).
-
-    """
-    if n_classes == 2:
-        return _generate_binary_labels(n_site_samples, balance, random_state)
-    else:
-        return _generate_multiclass_labels(n_site_samples, balance, n_classes, random_state)
-
-
-def _generate_binary_labels(
-    n_samples: int,
-    p_class_1: float,
-    random_state: np.random.RandomState,
-) -> np.ndarray:
-    """Generate binary labels (0 or 1) for given number of samples.
-
-    Parameters
-    ----------
-    n_samples : int
-        Number of samples to generate.
-    p_class_1 : float
-        Probability of class 1.
-    random_state : RandomState instance
-        The RandomState for reproducibility.
-
-    Returns
-    -------
-    np.ndarray
-        Binary labels.
-
-    """
-    n_class_1 = int(np.round(n_samples * p_class_1))
-
-    y = np.zeros(n_samples, dtype=int)
-    y[:n_class_1] = 1  # First n_class_1 samples are class 1
-    random_state.shuffle(y)  # Shuffle to randomize order
-
-    return y
-
-
-def _generate_multiclass_labels(
-    n_samples: int,
-    class_probs: list[float],
-    n_classes: int,
-    random_state: np.random.RandomState,
-) -> np.ndarray:
-    """Generate multi-class labels based on class probabilities.
-
-    Parameters
-    ----------
-    n_samples : int
-        Number of samples to generate.
-    class_probs : list of float
-        Probability for each class (must sum to 1.0).
-    n_classes : int
-        Number of classes.
-    random_state : RandomState instance
-        The RandomState for reproducibility.
-
-    Returns
-    -------
-    np.ndarray
-        Multi-class labels (0 to ``n_classes``-1).
-
-    """
-    # Using multinomial for cleaner and potentially faster generation
-    samples_per_class = random_state.multinomial(n_samples, class_probs)
-
-    # Handle rounding issues by adjusting the largest class if needed
-    diff = n_samples - samples_per_class.sum()
-    if diff != 0:
-        samples_per_class[np.argmax(samples_per_class)] += diff
-
-    # Create labels using repeat (more efficient than loop with extend)
-    y = np.repeat(np.arange(n_classes), samples_per_class)
-    random_state.shuffle(y)
-
-    return y
-
-
-def _generate_signal_component(
-    y: np.ndarray,
-    n_features: int,
-    signal_strength: float,
-    n_classes: int,
-    random_state: np.random.RandomState,
-) -> np.ndarray:
-    """Generate signal component that separates classes.
-
-    For binary classification: class 0 mean = -signal_strength/2,
-                               class 1 mean = +signal_strength/2
-    For multi-class: equally spaced means
-        from -signal_strength/2 to +signal_strength/2
-
-    Parameters
-    ----------
-    y : np.ndarray
-        Class labels.
-    n_features : int
-        Number of features.
-    signal_strength : float
-        Strength of signal separation.
-    n_classes : int
-        Number of classes.
-    random_state : RandomState instance
-        The RandomState for reproducibility.
-
-    Returns
-    -------
-    np.ndarray
-        Signal component matrix.
-
-    """
-    n_samples = len(y)
-    signal = np.zeros((n_samples, n_features))
-
-    if n_classes == 2:
-        # Binary classification
-        mean_class0 = -signal_strength / 2
-        mean_class1 = signal_strength / 2
-
-        mask_class0 = y == 0
-        mask_class1 = y == 1
-
-        if np.any(mask_class0):
-            signal[mask_class0] = random_state.normal(
-                loc=mean_class0,
-                scale=1.0,
-                size=(np.sum(mask_class0), n_features),
-            )
-
-        if np.any(mask_class1):
-            signal[mask_class1] = random_state.normal(
-                loc=mean_class1,
-                scale=1.0,
-                size=(np.sum(mask_class1), n_features),
-            )
-    else:
-        # Multi-class classification
-        # Create equally spaced class means
-        class_means = np.linspace(-signal_strength / 2, signal_strength / 2, n_classes)
-
-        for class_idx in range(n_classes):
-            mask = y == class_idx
-            if np.any(mask):
-                signal[mask] = random_state.normal(
-                    loc=class_means[class_idx],
-                    scale=1.0,
-                    size=(np.sum(mask), n_features),
-                )
-
-    return signal
-
-
 def _validate_balance_per_site(
     balance_per_site: list | list[list] | None,
     n_sites: int,
     n_classes: int,
-) -> list | list[list]:
+) -> tuple[list | list[list], float | list[float]]:
     """Validate balance_per_site parameter for multi-site data generation.
 
     Parameters
@@ -460,7 +318,13 @@ def _validate_balance_per_site(
     else:
         _check_balance_for_multiclass(balance_per_site, n_classes)
 
-    return balance_per_site
+    # Get the overall balance across all sites for logging
+    overall_balance = (
+        np.mean(balance_per_site, axis=0) if n_classes > 2 else [np.mean(balance_per_site), 1 - np.mean(balance_per_site)]
+    )
+    logger.info(f"Overall class balance across sites: {overall_balance}")
+
+    return balance_per_site, overall_balance
 
 
 def _check_balance_for_binary_classification(
@@ -523,7 +387,7 @@ def _check_balance_for_multiclass(balance_per_site: list | list[list] | tuple, n
         # Check all elements are numeric
         for j, class_prob in enumerate(site_balance):
             if not isinstance(class_prob, (float)):
-                raise TypeError(f"balance_per_site[{i}][{j}] must be a class proprtion (int or float), got {type(class_prob)}")
+                raise TypeError(f"balance_per_site[{i}][{j}] must be a class proportion (int or float), got {type(class_prob)}")
             if not 0 <= class_prob <= 1:
                 raise ValueError(f"balance_per_site[{i}] must be between 0 and 1, got {class_prob}")
 
@@ -535,16 +399,126 @@ def _check_balance_for_multiclass(balance_per_site: list | list[list] | tuple, n
             raise ValueError(f"balance_per_site[{i}] must sum to 1.0, got {np.sum(site_balance_array):.6f}")
 
 
-def _generate_site_effect_component(
-    site_effect_homogeneous: bool,
-    site_effect_strength: float,
+def _generate_base_samples(
+    n_samples: int,
     n_features: int,
+    overall_balance: float | list[float],
+    n_classes: int,
+    signal_type: str,
+    signal_strength: float,
     random_state: np.random.RandomState,
-) -> np.ndarray:
+    **kwargs,
+) -> tuple[npt.NDArray, npt.NDArray]:
+    """Generate base samples using specified signal type.
+
+    Parameters
+    ----------
+    n_samples : int
+        Number of samples to generate.
+    n_features : int
+        Number of features per sample.
+    overall_balance : float or list of float
+        Class balance for the base dataset. For binary classification, a float
+        representing proportion of class 1. For multi-class, a list of
+        probabilities for each class.
+    n_classes : int
+        Number of classes.
+    signal_type : str
+        Type of signal to generate. Options: "linear", "circles", "moons",
+        "blobs", "make_gaussian_quantiles".
+    signal_strength : float
+        Strength of the signal component separating classes.
+    random_state : RandomState instance
+        The RandomState for reproducibility.
+    kwargs : dict
+        Additional keyword arguments passed to the signal generation function.
+
+    Returns
+    -------
+    X : np.ndarray of shape (n_samples, n_features)
+        Generated feature matrix.
+    y : np.ndarray of shape (n_samples,)
+        Generated class labels.
+
+    Raises
+    ------
+    ValueError
+        If ``signal_type`` is not supported.
+        If ``signal_type`` is "moons" but n_classes != 2 or n_features < 2.
+
+    """
+    if signal_strength == 0.0:
+        logger.warning("signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.")
+        signal_strength = 1e-6
+
+    base_samples = int(np.ceil(n_samples * 1.1))  # Generate 10% more samples than needed for sampling
+    if signal_type == "linear":
+        # Replace the default values of sklearn for this variables.
+        make_classification_kwargs = {
+            "n_redundant": 0,
+            "flip_y": 0.0,
+            "n_clusters_per_class": 1,
+            "n_informative": min(n_features, n_classes * 2),
+        }
+        make_classification_kwargs.update(kwargs)
+        X, y = make_classification(
+            n_samples=base_samples,
+            n_features=n_features,
+            n_classes=n_classes,
+            return_X_y=True,
+            weights=overall_balance,
+            class_sep=signal_strength,
+            random_state=random_state,
+            **make_classification_kwargs,
+        )
+    elif signal_type == "circles":
+        X, y = make_circles(n_samples=base_samples, random_state=random_state, **kwargs)
+    elif signal_type == "moons":
+        X, y = make_moons(n_samples=base_samples, random_state=random_state, **kwargs)
+        if n_classes != 2 or n_features != 2:
+            raise ValueError("make_moons requires n_classes=2 and n_features>=2")
+    elif signal_type == "blobs":
+        X, y = make_blobs(
+            n_samples=base_samples,
+            n_features=n_features,
+            centers=n_classes,
+            random_state=random_state,
+            center_box=(-signal_strength, signal_strength),
+            return_centers=False,
+            **kwargs,
+        )
+    elif signal_type == "make_gaussian_quantiles":
+        X, y = make_gaussian_quantiles(
+            cov=signal_strength,
+            n_features=n_features,
+            n_samples=base_samples,
+            n_classes=n_classes,
+            random_state=random_state,
+            **kwargs,
+        )
+
+    else:
+        raise ValueError(f"Unsupported signal_type: {signal_type}")
+
+    return X, y
+
+
+def _generate_site_effect_component(
+    X: npt.NDArray,
+    y: npt.NDArray,
+    site_effect_type: str,
+    site_effect_strength: float,
+    site_effect_homogeneous: bool,
+    random_state: np.random.RandomState,
+) -> tuple[npt.NDArray, npt.NDArray]:
     """Generate site effect component for features.
 
     Parameters
     ----------
+    X : npt.NDArray
+        Features for a single site before adding site effect.
+    y : npt.NDArray
+        Target for a single site before adding site effect (not always applied).
     site_effect_homogeneous : bool
         If True, generates same effect for all features in this site.
         If False, generates different effect for each feature.
@@ -553,6 +527,57 @@ def _generate_site_effect_component(
         distributed in [-site_effect_strength, site_effect_strength].
         For heterogeneous case, effects are normally distributed with
         scale = site_effect_strength.
+    random_state : RandomState instance
+        The RandomState for reproducibility.
+    site_effect_type : str, default ("location")
+        Type of effect of site added to the original data.
+
+    Returns
+    -------
+    X = npt.NDArray
+        Features with simulated site effect.
+    y = npt.NDArray
+        Target with simulated site effect (not always applied).
+
+    """
+    n_features = X.shape[1]
+
+    if site_effect_type.lower() in ["location", "l"]:
+        site_effect = _site_effect_value(site_effect_strength, site_effect_homogeneous, n_features, random_state)
+        # Add site component to the signal
+        X = X + site_effect
+    elif site_effect_type.lower() in ["scale", "s"]:
+        site_effect = _site_effect_value(site_effect_strength, site_effect_homogeneous, n_features, random_state)
+        # Add site component to the signal
+        X = X * site_effect
+    elif site_effect_type.lower() in ["location+scale", "l+s"]:
+        site_effect_location = _site_effect_value(site_effect_strength, site_effect_homogeneous, n_features, random_state)
+        site_effect_scale = _site_effect_value(site_effect_strength, site_effect_homogeneous, n_features, random_state)
+        X = (X + site_effect_location) * (site_effect_scale)
+    else:
+        raise ValueError(f"Unsupported site_effect_type: {site_effect_type}")
+
+    return X, y
+
+
+def _site_effect_value(
+    site_effect_strength: float,
+    site_effect_homogeneous: bool,
+    n_features: int,
+    random_state: np.random.RandomState,
+) -> np.ndarray:
+    """Generate site effect values for features.
+
+    Parameters
+    ----------
+    site_effect_strength : float
+        Magnitude of site effect. For homogeneous case, effects are uniformly
+        distributed in [-site_effect_strength, site_effect_strength].
+        For heterogeneous case, effects are normally distributed with
+        scale = site_effect_strength.
+    site_effect_homogeneous : bool
+        If True, generates same effect for all features in this site.
+        If False, generates different effect for each feature.
     n_features : int
         Number of features.
     random_state : RandomState instance
@@ -560,14 +585,113 @@ def _generate_site_effect_component(
 
     Returns
     -------
-    np.ndarray
-        Site effect component of shape (1, n_features).
+    site_effect : np.ndarray of shape (1, n_features)
+        Site effect values to be applied to features.
 
     """
     if site_effect_homogeneous:
         # Single uniform value replicated across all features
         strength = random_state.uniform(-site_effect_strength, site_effect_strength)
-        return np.full((1, n_features), strength)
+        site_effect = np.full((1, n_features), strength)
     else:
         # Different normal value for each feature
-        return random_state.normal(0.0, site_effect_strength, (1, n_features))
+        site_effect = random_state.normal(0.0, site_effect_strength, (1, n_features))
+
+    return site_effect
+
+
+def _get_site_samples(
+    X: npt.NDArray,
+    y: npt.NDArray,
+    balance: float | list[float],
+    n_classes: int,
+    n_site_samples: int,
+    available_indices: list[int],
+    random_state: np.random.RandomState,
+) -> tuple[npt.NDArray, npt.NDArray]:
+    """Sample site-specific data from global dataset according to class balance.
+
+    Parameters
+    ----------
+    X : np.ndarray of shape (n_samples, n_features)
+        Global feature matrix.
+    y : np.ndarray of shape (n_samples,)
+        Global class labels.
+    balance : float or list of float
+        Class balance for this site. For binary classification, a float
+        representing proportion of class 1. For multi-class, a list of
+        probabilities for each class.
+    n_classes : int
+        Number of classes.
+    n_site_samples : int
+        Number of samples to generate for this site.
+    available_indices : list of int
+        List of available indices from the global dataset that haven't been used.
+    random_state : RandomState instance
+        The RandomState for reproducibility.
+
+    Returns
+    -------
+    X_site : np.ndarray of shape (n_site_samples, n_features)
+        Feature matrix for this site.
+    y_site : np.ndarray of shape (n_site_samples,)
+        Class labels for this site.
+
+    Notes
+    -----
+    This function samples from the global dataset without replacement when
+    possible. If not enough samples of a particular class are available,
+    it falls back to sampling with replacement and issues a warning.
+
+    """
+    # Determine how many samples per class for this site
+    if n_classes == 2:
+        # For binary classification
+        p_class1 = balance
+        n_class1 = int(n_site_samples * p_class1)
+        n_class0 = n_site_samples - n_class1
+        samples_per_class = [n_class0, n_class1]
+    else:
+        # For multi-class classification
+        samples_per_class = [int(n_site_samples * prob) for prob in balance]
+        # Adjust for rounding errors by distributing the difference across classes
+        diff = n_site_samples - sum(samples_per_class)
+        if diff != 0:
+            # Distribute the difference evenly, not just to the largest class
+            for i in range(abs(diff)):
+                idx = i % n_classes
+                samples_per_class[idx] += 1 if diff > 0 else -1
+
+    # Randomly select samples for each class
+    selected_indices = []
+    for class_idx, n_class_samples in enumerate(samples_per_class):
+        if n_class_samples == 0:
+            continue
+
+        # Get available indices of current class from the remaining pool
+        available_class_indices = [idx for idx in available_indices if y[idx] == class_idx]
+
+        if len(available_class_indices) < n_class_samples:
+            # Sample with replacement if not enough samples
+            logger.warning(
+                f"Not enough samples of class {class_idx} in global dataset. "
+                f"Requested {n_class_samples}, available {len(available_class_indices)}. "
+                f"Consider adjusting balance_per_site or generating more samples."
+            )
+            selected = random_state.choice(available_class_indices, size=n_class_samples, replace=True)
+        else:
+            # Sample without replacement
+            selected = random_state.choice(available_class_indices, size=n_class_samples, replace=False)
+            # Remove selected indices from available pool
+            for idx in selected:
+                available_indices.remove(idx)
+
+        selected_indices.extend(selected)
+
+    # Shuffle the selected indices
+    random_state.shuffle(selected_indices)
+
+    # Extract the samples
+    X_site = X[selected_indices]
+    y_site = y[selected_indices]
+    return X_site, y_site
