@@ -488,18 +488,32 @@ def test_make_multisite_classification_parametrized(
 @pytest.mark.parametrize("signal_type", ["linear", "circles", "moons", "blobs", "make_gaussian_quantiles"])
 def test_all_signal_types(signal_type):
     """Test that all signal types work without errors."""
-    X, y, sites = make_multisite_classification(
-        n_sites=2,
-        n_samples=200,
-        n_features=10,
-        n_classes=2,
-        signal_type=signal_type,
-        random_state=42,
-    )
+    if signal_type in ["moons", "circles"]:
+        X, y, sites = make_multisite_classification(
+            n_sites=2,
+            n_samples=200,
+            n_features=2,
+            n_classes=2,
+            signal_type=signal_type,
+            random_state=42,
+        )
 
-    assert X.shape[0] == 200
-    assert y.shape == (200,)
-    assert sites.shape == (200,)
+        assert X.shape == (200, 2)
+        assert y.shape == (200,)
+        assert sites.shape == (200,)
+    else:
+        X, y, sites = make_multisite_classification(
+            n_sites=2,
+            n_samples=200,
+            n_features=10,
+            n_classes=2,
+            signal_type=signal_type,
+            random_state=42,
+        )
+
+        assert X.shape == (200, 10)
+        assert y.shape == (200,)
+        assert sites.shape == (200,)
 
 
 @pytest.mark.parametrize("site_effect_type", ["location", "scale", "location+scale"])
