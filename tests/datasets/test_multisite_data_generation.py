@@ -326,13 +326,13 @@ def test_heterogeneous_site_effect() -> None:
     # Just ensure it runs without errors
     make_multisite_classification(
         n_features=2,
-        n_samples=100,
+        n_samples=20,
         site_effect_homogeneous=True,
         random_state=42,
     )
     make_multisite_classification(
         n_features=2,
-        n_samples=100,
+        n_samples=20,
         site_effect_homogeneous=False,
         random_state=42,
     )
@@ -625,7 +625,7 @@ def test_noise_strength_zero():
     """Test that noise_strength=0 produces no additional noise."""
     X_noisy, _, _ = make_multisite_classification(
         n_sites=2,
-        n_samples=200,
+        n_samples=20,
         n_features=10,
         n_classes=2,
         noise_strength=0.1,
@@ -634,7 +634,7 @@ def test_noise_strength_zero():
 
     X_clean, _, _ = make_multisite_classification(
         n_sites=2,
-        n_samples=200,
+        n_samples=20,
         n_features=10,
         n_classes=2,
         noise_strength=0.0,
@@ -677,3 +677,60 @@ def test_site_effect_homogeneous_vs_heterogeneous():
 
     # The feature distributions should differ
     assert not np.allclose(X_homo, X_hetero)
+
+
+@pytest.mark.parametrize(
+    ["site_effect_strength", "n_sites"],
+    [(1, 2), (1.1, 4), ([1, 2], 2), ([1.4, 1.6, 5.4], 3)],
+    ids=["pass integer", "pass float", "pass int list", "pass float list"],
+)
+def test_site_effect_strength_validation(site_effect_strength, n_sites):
+    """Test site_effect_strength options and validations."""
+    _, _, _ = make_multisite_classification(
+        n_sites=n_sites,
+        n_samples=20,
+        n_features=10,
+        n_classes=2,
+        site_effect_strength=site_effect_strength,
+        random_state=42,
+    )
+
+
+@pytest.mark.parametrize(
+    ["noise_strength", "n_sites"],
+    [(1, 2), (1.1, 4), ([1, 2], 2), ([1.4, 1.6, 5.4], 3)],
+    ids=["pass integer", "pass float", "pass int list", "pass float list"],
+)
+def test_noise_strength_validation(noise_strength, n_sites):
+    """Test noise_strength options and validations."""
+    _, _, _ = make_multisite_classification(n_sites=n_sites, n_samples=20, noise_strength=noise_strength)
+
+
+def test_noise_strength_invalid():
+    """Test noise_strength invalid options."""
+    with pytest.raises(TypeError, match="Invalid type for noise_strength"):
+        _, _, _ = make_multisite_classification(n_sites=2, n_samples=20, noise_strength="invalid")
+    with pytest.raises(TypeError, match="Invalid type for noise_strength"):
+        _, _, _ = make_multisite_classification(n_sites=2, n_samples=20, noise_strength=["invalid", "invalid"])
+    with pytest.raises(ValueError, match="noise_strength must have length n_sites"):
+        _, _, _ = make_multisite_classification(n_sites=2, n_samples=20, noise_strength=[1, 2, 3])
+
+
+def test_site_effect_strength_invalid():
+    """Test site_effect_strength invalid options."""
+    with pytest.raises(TypeError, match="Invalid type for site_effect_strength"):
+        _, _, _ = make_multisite_classification(n_sites=2, n_samples=20, site_effect_strength="invalid")
+    with pytest.raises(TypeError, match="Invalid type for site_effect_strength"):
+        _, _, _ = make_multisite_classification(n_sites=2, n_samples=20, site_effect_strength=["invalid", "invalid"])
+    with pytest.raises(ValueError, match="site_effect_strength must have length n_sites"):
+        _, _, _ = make_multisite_classification(n_sites=2, n_samples=20, site_effect_strength=[1, 2, 3])
+    with pytest.raises(ValueError, match=r"site_effect_strength\[0\] must be non-negative"):
+        _, _, _ = make_multisite_classification(n_sites=2, n_samples=20, site_effect_strength=[-1, 2])
+
+
+def test_invalid_moons():
+    """Test moons with invalid options."""
+    with pytest.raises(ValueError, match="make_moons requires n_classes=2 and n_features>=2"):
+        _, _, _ = make_multisite_classification(n_features=10, signal_type="moons")
+    with pytest.raises(ValueError, match="make_moons requires n_classes=2 and n_features>=2"):
+        _, _, _ = make_multisite_classification(n_classes=10, signal_type="moons")
