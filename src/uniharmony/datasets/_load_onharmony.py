@@ -50,7 +50,7 @@ def load_onharmony(
     modalities: str | list[str] | ONHARMONY_MODALITY_LIST,
     target_path: str | Path = ".",
     dataset_name: str = "ONHarmony",
-    tasks: str | list[str] = "T1w",
+    suffixes: str | list[str] = "T1w",
     extensions: str | list[str] = ".json",
     dataset_source: str = "https://github.com/OpenNeuroDatasets/",
     dataset_id: str = "ds004712",
@@ -87,8 +87,8 @@ def load_onharmony(
     dataset_name : str, default "ONHarmony"
         Name for the visible dataset.
 
-    tasks : str or list[str], default "T1w"
-        Data types to download (e.g., 'T1w', 'T2w').
+    suffixes : str or list[str], default "T1w"
+        BIDS suffixes to match in filenames (e.g., 'T1w', 'T2w').
 
     extensions : str or list[str], default ".json"
         File extensions to download (e.g., '.json', '.nii.gz').
@@ -119,7 +119,9 @@ def load_onharmony(
     # ------------------------------------------------------------------
     #  Validate arguments
     # ------------------------------------------------------------------
-    subjects, sessions, modalities, tasks, extensions = validate_arguments(subjects, sessions, modalities, tasks, extensions)
+    subjects, sessions, modalities, suffixes, extensions = validate_arguments(
+        subjects, sessions, modalities, suffixes, extensions
+    )
     # ------------------------------------------------------------------
     #  Initialize the hidden DataLad dataset and the visible directory
     # ------------------------------------------------------------------
@@ -130,7 +132,7 @@ def load_onharmony(
     # ------------------------------------------------------------------
     # Collect candidate files first (for progress bar support)
     # ------------------------------------------------------------------
-    candidate_files = get_candidate_files(hidden_dataset_path, subjects, sessions, modalities, tasks, extensions)
+    candidate_files = get_candidate_files(hidden_dataset_path, subjects, sessions, modalities, suffixes, extensions)
 
     # ------------------------------------------------------------------
     # Download the actual files. Make it visible if copy=True. Drop from cache if cache=False.
