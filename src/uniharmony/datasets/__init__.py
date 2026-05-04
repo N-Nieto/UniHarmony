@@ -1,4 +1,4 @@
-"""Interpolation methods."""
+"""Dataset loading functions."""
 
 import lazy_loader as lazy
 
