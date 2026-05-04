@@ -330,7 +330,7 @@ def _is_probability_like(y: np.ndarray) -> bool:
 
     unique_vals = np.unique(y)
     # If more than 2 unique values and all in [0, 1], likely scores
-    return len(unique_vals) > 2 and np.min(y) >= 0.0 and np.max(y) <= 1.0
+    return bool(len(unique_vals) > 2 and np.min(y) >= 0.0 and np.max(y) <= 1.0)
 
 
 def _validate_prediction_type(
