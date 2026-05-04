@@ -52,7 +52,7 @@ Key contributions:
 ---
 
 (covbat-short)=
-## [CovBat](): Harmonization of covariate matrix
+## [CovBat](#covbat-long): Harmonization of covariate matrix
 
 ComBat assumes that site effects can be fully modeled using **feature-wise mean shifts and variance scaling**. However, more complex scanner differences, such as differences in **feature covariance structure**, are not addressed. While standard ComBat aligns means and variances, differences in **feature correlations** may still remain and affect multivariate analyses.
 
