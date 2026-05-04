@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>🗺️ API Reference &#8212; uniharmony 0.0.3.dev69 documentation</title>
+    <title>🗺️ API Reference &#8212; uniharmony 0.0.3.dev74 documentation</title>
   
   
   
@@ -43,7 +43,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=f76016cf"></script>
+    <script src="../_static/documentation_options.js?v=72f30511"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -53,7 +53,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'api/index';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Utilities" href="utils.html" />
+    <link rel="next" title="uniharmony" href="utils/index.html" />
     <link rel="prev" title="Optimal Transport models for binary classification problem." href="../auto_examples/ot-based/OT_binary_classification_example.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -132,7 +132,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.3.dev69 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.3.dev74 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -231,9 +231,23 @@
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">🗺️ API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="utils.html">Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="combat.html">ComBat</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interpolation.html">Interpolation</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="utils/index.html">uniharmony</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="utils/make_multisite_classification.html">make_multisite_classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils/load_mareos.html">load_MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils/verbosity.html">verbosity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="utils/verbosity_context.html">verbosity_context</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="combat_based/index.html">uniharmony.combat</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="combat_based/combat.html">NeuroComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="combat_based/combat_gam.html">ComBatGAM</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="interpolation_based/index.html">uniharmony.interpolation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="interpolation_based/inter_site_matched_interpolation.html">InterSiteMatchedInterpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="interpolation_based/intra_site_interpolation.html">IntraSiteInterpolation</a></li>
+</ul>
+</details></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../changelog.html">📂 CHANGELOG</a></li>
@@ -403,23 +417,21 @@
 <h1>🗺️ API Reference<a class="headerlink" href="#api-reference" title="Link to this heading">#</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="utils.html">Utilities</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="utils.html#uniharmony.datasets.get_multisite_data_statistics"><code class="docutils literal notranslate"><span class="pre">get_multisite_data_statistics()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="utils.html#uniharmony.datasets.load_MAREoS"><code class="docutils literal notranslate"><span class="pre">load_MAREoS()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="utils.html#uniharmony.datasets.make_multisite_classification"><code class="docutils literal notranslate"><span class="pre">make_multisite_classification()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="utils.html#uniharmony.datasets.print_statistics_summary"><code class="docutils literal notranslate"><span class="pre">print_statistics_summary()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="utils.html#uniharmony._verbose.verbosity"><code class="docutils literal notranslate"><span class="pre">verbosity()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="utils.html#uniharmony._verbose.verbosity_context"><code class="docutils literal notranslate"><span class="pre">verbosity_context()</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils/index.html">uniharmony</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="utils/make_multisite_classification.html">make_multisite_classification</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/load_mareos.html">load_MAREoS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/verbosity.html">verbosity</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils/verbosity_context.html">verbosity_context</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="combat.html">ComBat</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="combat.html#uniharmony.combat.ComBatGAM"><code class="docutils literal notranslate"><span class="pre">ComBatGAM</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="combat.html#uniharmony.combat.NeuroComBat"><code class="docutils literal notranslate"><span class="pre">NeuroComBat</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="combat_based/index.html">uniharmony.combat</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="combat_based/combat.html">NeuroComBat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combat_based/combat_gam.html">ComBatGAM</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="interpolation.html">Interpolation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="interpolation.html#uniharmony.interpolation.InterSiteMatchedInterpolation"><code class="docutils literal notranslate"><span class="pre">InterSiteMatchedInterpolation</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="interpolation.html#uniharmony.interpolation.IntraSiteInterpolation"><code class="docutils literal notranslate"><span class="pre">IntraSiteInterpolation</span></code></a></li>
+<li class="toctree-l1"><a class="reference internal" href="interpolation_based/index.html">uniharmony.interpolation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="interpolation_based/inter_site_matched_interpolation.html">InterSiteMatchedInterpolation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interpolation_based/intra_site_interpolation.html">IntraSiteInterpolation</a></li>
 </ul>
 </li>
 </ul>
@@ -447,11 +459,11 @@
       </div>
     </a>
     <a class="right-next"
-       href="utils.html"
+       href="utils/index.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Utilities</p>
+        <p class="prev-next-title">uniharmony</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

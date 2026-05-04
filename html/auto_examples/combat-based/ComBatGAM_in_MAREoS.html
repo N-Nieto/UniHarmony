@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Benchmark NeuroComBat in MAREoS dataset &#8212; uniharmony 0.0.3.dev69 documentation</title>
+    <title>Benchmark NeuroComBat in MAREoS dataset &#8212; uniharmony 0.0.3.dev74 documentation</title>
   
   
   
@@ -43,7 +43,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=f76016cf"></script>
+    <script src="../../_static/documentation_options.js?v=72f30511"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -132,7 +132,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.3.dev69 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.3.dev74 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -231,9 +231,23 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../api/index.html">🗺️ API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../api/utils.html">Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../api/combat.html">ComBat</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../api/interpolation.html">Interpolation</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/utils/index.html">uniharmony</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/utils/make_multisite_classification.html">make_multisite_classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/utils/load_mareos.html">load_MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/utils/verbosity.html">verbosity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/utils/verbosity_context.html">verbosity_context</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/combat_based/index.html">uniharmony.combat</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/combat_based/combat.html">NeuroComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/combat_based/combat_gam.html">ComBatGAM</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/interpolation_based/index.html">uniharmony.interpolation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/interpolation_based/inter_site_matched_interpolation.html">InterSiteMatchedInterpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/interpolation_based/intra_site_interpolation.html">IntraSiteInterpolation</a></li>
+</ul>
+</details></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../changelog.html">📂 CHANGELOG</a></li>
@@ -474,31 +488,31 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:23:59</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:14:40</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:23:59</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:14:40</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:23:59</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple2_data.csv</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:14:40</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple2_data.csv</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:23:59</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction1_data.csv</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:14:40</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction1_data.csv</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:23:59</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction2_data.csv</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:14:40</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction2_data.csv</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:23:59</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_simple1_data.csv</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:14:40</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_simple1_data.csv</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:23:59</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_simple2_data.csv</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:14:40</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_simple2_data.csv</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:23:59</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_interaction1_data.csv</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:14:40</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_interaction1_data.csv</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:23:59</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_interaction2_data.csv</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:14:40</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_interaction2_data.csv</span>
 </pre></div>
 </div>
 </div>
@@ -616,228 +630,237 @@
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running experiment: true_simple1
-<span class=" -Color -Color-Faint">2026-05-04 14:24:00</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Fitting                       </span>
+<span class=" -Color -Color-Faint">2026-05-04 16:14:40</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Fitting                       </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:00</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model&#39;s target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:14:40</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model&#39;s target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:00</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Making design matrix          </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:14:40</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Making design matrix          </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:00</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Fitted site encoder: 8 sites  </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:14:40</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Fitted site encoder: 8 sites  </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:00</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Sites encoded: 901 samples x 8 sites</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:14:40</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Sites encoded: 901 samples x 8 sites</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:00</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Design matrix shape: (901, 8) </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:14:40</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Design matrix shape: (901, 8) </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:00</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Setting up smoothing using B-Splines</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:14:40</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Setting up smoothing using B-Splines</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:00</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:14:40</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:00</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Standardizing data across features</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:14:40</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Standardizing data across features</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:00</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Smoothing more than 10 variables may take several minutes of computation.</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:14:40</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Smoothing more than 10 variables may take several minutes of computation.</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Standardization stats:        </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Standardization stats:        </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Grand mean range: [1.5774, 3.7007]</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Grand mean range: [1.5774, 3.7007]</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Pooled std range: [0.1476, 0.4787]</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Pooled std range: [0.1476, 0.4787]</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Standardized data mean: 0.000000 (should be ~0)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Standardized data mean: 0.000000 (should be ~0)</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Standardized data std: 1.0036 (should be ~1)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Standardized data std: 1.0036 (should be ~1)</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Fitting L/S model             </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Fitting L/S model             </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">L/S Model estimates:          </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">L/S Model estimates:          </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Gamma hat shape: (8, 68)    </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Gamma hat shape: (8, 68)    </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Gamma hat range: [-0.2719, 0.2311]</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Gamma hat range: [-0.2719, 0.2311]</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Site 0 delta range: [0.7041, 1.4152]</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Site 0 delta range: [0.7041, 1.4152]</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Site 1 delta range: [0.6168, 1.2738]</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Site 1 delta range: [0.6168, 1.2738]</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Site 2 delta range: [0.7613, 1.2790]</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Site 2 delta range: [0.7613, 1.2790]</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Site 3 delta range: [0.6940, 1.3520]</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Site 3 delta range: [0.6940, 1.3520]</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Site 4 delta range: [0.7728, 1.2707]</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Site 4 delta range: [0.7728, 1.2707]</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Site 5 delta range: [0.6689, 1.2866]</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Site 5 delta range: [0.6689, 1.2866]</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Site 6 delta range: [0.7550, 1.2527]</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Site 6 delta range: [0.7550, 1.2527]</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Site 7 delta range: [0.6654, 1.2399]</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Site 7 delta range: [0.6654, 1.2399]</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Finding priors                </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Finding priors                </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Gamma bar (mean location effect): [-0.01574326  0.00117241 -0.01156688  0.01303456  0.00155992 -0.00131986</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Gamma bar (mean location effect): [-0.01574326  0.00117241 -0.01156688  0.01303456  0.00155992 -0.00131986</span>
 <span class=" -Color -Color-Bold">  0.00864478  0.00433077]</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Tau^2 (variance of location effects): [0.00879426 0.00571798 0.00638334 0.00911007 0.00682202 0.00614394</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Tau^2 (variance of location effects): [0.00879426 0.00571798 0.00638334 0.00911007 0.00682202 0.00614394</span>
 <span class=" -Color -Color-Bold"> 0.00718981 0.00763316]</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Mean tau^2: 0.007224 (higher = more heterogeneous effects)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Mean tau^2: 0.007224 (higher = more heterogeneous effects)</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Finding parametric adjustments</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Finding parametric adjustments</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">_iteration_solver converged in 4 iterations (change=0.000002)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">_iteration_solver converged in 4 iterations (change=0.000002)</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">_iteration_solver converged in 4 iterations (change=0.000000)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">_iteration_solver converged in 4 iterations (change=0.000000)</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">_iteration_solver converged in 4 iterations (change=0.000002)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">_iteration_solver converged in 4 iterations (change=0.000002)</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">_iteration_solver converged in 4 iterations (change=0.000001)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">_iteration_solver converged in 4 iterations (change=0.000001)</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">_iteration_solver converged in 4 iterations (change=0.000003)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">_iteration_solver converged in 4 iterations (change=0.000003)</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">_iteration_solver converged in 4 iterations (change=0.000001)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">_iteration_solver converged in 4 iterations (change=0.000001)</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">_iteration_solver converged in 4 iterations (change=0.000001)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">_iteration_solver converged in 4 iterations (change=0.000001)</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">_iteration_solver converged in 4 iterations (change=0.000001)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">_iteration_solver converged in 4 iterations (change=0.000001)</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Transforming                  </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Transforming                  </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Making design matrix          </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Making design matrix          </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Sites encoded: 901 samples x 8 sites</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Sites encoded: 901 samples x 8 sites</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Design matrix shape: (901, 8) </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Design matrix shape: (901, 8) </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Setting up smoothing using B-Splines</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Setting up smoothing using B-Splines</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Standardizing data across features</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Standardizing data across features</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Standardization stats:        </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Standardization stats:        </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Grand mean range: [1.5774, 3.7007]</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Grand mean range: [1.5774, 3.7007]</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Pooled std range: [0.1476, 0.4787]</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Pooled std range: [0.1476, 0.4787]</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Standardized data mean: 0.000000 (should be ~0)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Standardized data mean: 0.000000 (should be ~0)</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Standardized data std: 1.0036 (should be ~1)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Standardized data std: 1.0036 (should be ~1)</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:24</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Harmonizing data              </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Harmonizing data              </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:25</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Transforming                  </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Transforming                  </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:25</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Making design matrix          </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Making design matrix          </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:25</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Sites encoded: 100 samples x 8 sites</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Sites encoded: 100 samples x 8 sites</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:25</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Design matrix shape: (100, 8) </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Design matrix shape: (100, 8) </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:25</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Setting up smoothing using B-Splines</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Setting up smoothing using B-Splines</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:25</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Standardizing data across features</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Standardizing data across features</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:25</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Standardization stats:        </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Standardization stats:        </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:25</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Grand mean range: [1.5774, 3.7007]</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Grand mean range: [1.5774, 3.7007]</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:25</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Pooled std range: [0.1476, 0.4787]</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Pooled std range: [0.1476, 0.4787]</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:25</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Standardized data mean: -0.017655 (should be ~0)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Standardized data mean: -0.017655 (should be ~0)</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:25</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Standardized data std: 1.0128 (should be ~1)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">  Standardized data std: 1.0128 (should be ~1)</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:25</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Harmonizing data              </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Harmonizing data              </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:25</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Fitting                       </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Fitting                       </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:25</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model&#39;s target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model&#39;s target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:25</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Making design matrix          </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:25</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Fitted site encoder: 8 sites  </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Making design matrix          </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:25</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Sites encoded: 901 samples x 8 sites</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Fitted site encoder: 8 sites  </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:25</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Design matrix shape: (901, 8) </span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:25</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Setting up smoothing using B-Splines</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Sites encoded: 901 samples x 8 sites</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:25</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Design matrix shape: (901, 8) </span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:25</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Standardizing data across features</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Setting up smoothing using B-Splines</span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:24:25</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Smoothing more than 10 variables may take several minutes of computation.</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">debug    </span>] <span class=" -Color -Color-Bold">Standardizing data across features</span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:15:08</span> [<span class=" -Color -Color-Bold -Color-Bold-Green">info     </span>] <span class=" -Color -Color-Bold">Smoothing more than 10 variables may take several minutes of computation.</span>
 </pre></div>
 </div>
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
@@ -863,140 +886,65 @@
 <span class="g g-Whitespace">    </span><span class="mi">321</span>             <span class="o">*</span><span class="n">data_to_wrap</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span>
 <span class="g g-Whitespace">    </span><span class="mi">322</span>         <span class="p">)</span>
 
-<span class="nn">File ~/work/UniHarmony/UniHarmony/src/uniharmony/combat/_combat_gam.py:392,</span> in <span class="ni">ComBatGAM.fit_transform</span><span class="nt">(self, X, sites, smooth_covariates, **fit_params)</span>
-<span class="g g-Whitespace">    </span><span class="mi">363</span> <span class="k">def</span><span class="w"> </span><span class="nf">fit_transform</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">364</span>     <span class="bp">self</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">365</span>     <span class="n">X</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>    <span class="mi">368</span>     <span class="o">**</span><span class="n">fit_params</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">369</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">370</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;Fit to data, then transform it.</span>
-<span class="g g-Whitespace">    </span><span class="mi">371</span><span class="sd"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">372</span><span class="sd">     Fits transformer to `X` and `sites` with optional parameters</span>
-<span class="sd">   (...)    390 </span>
-<span class="g g-Whitespace">    </span><span class="mi">391</span><span class="sd">     &quot;&quot;&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">392</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">sites</span><span class="p">,</span> <span class="n">smooth_covariates</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">sites</span><span class="p">,</span> <span class="n">smooth_covariates</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">)</span>
+<span class="nn">File ~/work/UniHarmony/UniHarmony/src/uniharmony/combat/_combat_gam.py:391,</span> in <span class="ni">ComBatGAM.fit_transform</span><span class="nt">(self, X, sites, smooth_covariates, **fit_params)</span>
+<span class="g g-Whitespace">    </span><span class="mi">362</span> <span class="k">def</span><span class="w"> </span><span class="nf">fit_transform</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">363</span>     <span class="bp">self</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">364</span>     <span class="n">X</span><span class="p">:</span> <span class="n">npt</span><span class="o">.</span><span class="n">ArrayLike</span><span class="p">,</span>
+   <span class="p">(</span><span class="o">...</span><span class="p">)</span>    <span class="mi">367</span>     <span class="o">**</span><span class="n">fit_params</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">368</span> <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">npt</span><span class="o">.</span><span class="n">NDArray</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">369</span><span class="w">     </span><span class="sd">&quot;&quot;&quot;Fit to data, then transform it.</span>
+<span class="g g-Whitespace">    </span><span class="mi">370</span><span class="sd"> </span>
+<span class="g g-Whitespace">    </span><span class="mi">371</span><span class="sd">     Fits transformer to `X` and `sites` with optional parameters</span>
+<span class="sd">   (...)    389 </span>
+<span class="g g-Whitespace">    </span><span class="mi">390</span><span class="sd">     &quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">391</span>     <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">sites</span><span class="p">,</span> <span class="n">smooth_covariates</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">sites</span><span class="p">,</span> <span class="n">smooth_covariates</span><span class="p">,</span> <span class="o">**</span><span class="n">fit_params</span><span class="p">)</span>
 
-<span class="nn">File ~/work/UniHarmony/UniHarmony/src/uniharmony/combat/_combat_gam.py:218,</span> in <span class="ni">ComBatGAM.fit</span><span class="nt">(self, X, sites, smooth_covariates, smooth_covariates_bounds, continuous_covariates, df, degree, var_epsilon, delta_epsilon, tau_2_epsilon, max_iter)</span>
-<span class="g g-Whitespace">    </span><span class="mi">215</span> <span class="n">design</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">df_gam</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bsplines</span><span class="o">.</span><span class="n">basis</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">217</span> <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Standardizing data across features&quot;</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">218</span> <span class="n">standardized_data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_standardize_across_features</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">219</span>     <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">220</span>     <span class="n">design</span><span class="o">=</span><span class="n">design</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">221</span>     <span class="n">n_samples</span><span class="o">=</span><span class="n">n_samples</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">222</span>     <span class="n">n_samples_per_site</span><span class="o">=</span><span class="n">n_samples_per_site</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">223</span>     <span class="n">smooth_term_cols</span><span class="o">=</span><span class="n">smooth_covariates_cols</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">224</span>     <span class="n">smooth_formula</span><span class="o">=</span><span class="n">formula</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">225</span>     <span class="n">df_gam</span><span class="o">=</span><span class="n">df_gam</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">226</span>     <span class="n">fitting</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">227</span>     <span class="n">epsilon</span><span class="o">=</span><span class="n">var_epsilon</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">228</span> <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">229</span> <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Fitting L/S model&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">230</span> <span class="n">gamma_hat</span><span class="p">,</span> <span class="n">delta_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit_ls_model</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">231</span>     <span class="n">standardized_data</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">232</span>     <span class="n">design</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">233</span>     <span class="n">idx_per_site</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">234</span> <span class="p">)</span>
+<span class="nn">File ~/work/UniHarmony/UniHarmony/src/uniharmony/combat/_combat_gam.py:217,</span> in <span class="ni">ComBatGAM.fit</span><span class="nt">(self, X, sites, smooth_covariates, smooth_covariates_bounds, continuous_covariates, df, degree, var_epsilon, delta_epsilon, tau_2_epsilon, max_iter)</span>
+<span class="g g-Whitespace">    </span><span class="mi">214</span> <span class="n">design</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">df_gam</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bsplines</span><span class="o">.</span><span class="n">basis</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">216</span> <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Standardizing data across features&quot;</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">217</span> <span class="n">standardized_data</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_standardize_across_features</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">218</span>     <span class="n">X</span><span class="o">=</span><span class="n">X</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">219</span>     <span class="n">design</span><span class="o">=</span><span class="n">design</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">220</span>     <span class="n">n_samples</span><span class="o">=</span><span class="n">n_samples</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">221</span>     <span class="n">n_samples_per_site</span><span class="o">=</span><span class="n">n_samples_per_site</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">222</span>     <span class="n">smooth_term_cols</span><span class="o">=</span><span class="n">smooth_covariates_cols</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">223</span>     <span class="n">smooth_formula</span><span class="o">=</span><span class="n">formula</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">224</span>     <span class="n">df_gam</span><span class="o">=</span><span class="n">df_gam</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">225</span>     <span class="n">fitting</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">226</span>     <span class="n">epsilon</span><span class="o">=</span><span class="n">var_epsilon</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">227</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">228</span> <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot;Fitting L/S model&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">229</span> <span class="n">gamma_hat</span><span class="p">,</span> <span class="n">delta_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit_ls_model</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">230</span>     <span class="n">standardized_data</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">231</span>     <span class="n">design</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">232</span>     <span class="n">idx_per_site</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">233</span> <span class="p">)</span>
 
-<span class="nn">File ~/work/UniHarmony/UniHarmony/src/uniharmony/combat/_combat_gam.py:559,</span> in <span class="ni">ComBatGAM._standardize_across_features</span><span class="nt">(self, X, design, n_samples, n_samples_per_site, smooth_term_cols, smooth_formula, df_gam, fitting, epsilon)</span>
-<span class="g g-Whitespace">    </span><span class="mi">556</span> <span class="n">gam_bs</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">557</span> <span class="c1"># Optimal penalization weights alpha can be obtained through gcv/kfold</span>
-<span class="g g-Whitespace">    </span><span class="mi">558</span> <span class="c1"># Note: kfold is faster, gcv is more robust</span>
-<span class="ne">--&gt; </span><span class="mi">559</span> <span class="n">gam_bs</span><span class="o">.</span><span class="n">alpha</span> <span class="o">=</span> <span class="n">gam_bs</span><span class="o">.</span><span class="n">select_penweight_kfold</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
-<span class="g g-Whitespace">    </span><span class="mi">560</span> <span class="n">res_bs_optim</span> <span class="o">=</span> <span class="n">gam_bs</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">561</span> <span class="bp">self</span><span class="o">.</span><span class="n">_beta_hat</span><span class="p">[:,</span> <span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">res_bs_optim</span><span class="o">.</span><span class="n">params</span>
+<span class="nn">File ~/work/UniHarmony/UniHarmony/src/uniharmony/combat/_combat_gam.py:554,</span> in <span class="ni">ComBatGAM._standardize_across_features</span><span class="nt">(self, X, design, n_samples, n_samples_per_site, smooth_term_cols, smooth_formula, df_gam, fitting, epsilon)</span>
+<span class="g g-Whitespace">    </span><span class="mi">552</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+<span class="g g-Whitespace">    </span><span class="mi">553</span>     <span class="n">df_gam</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s2">&quot;y&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span>
+<span class="ne">--&gt; </span><span class="mi">554</span>     <span class="n">gam_bs</span> <span class="o">=</span> <span class="n">GLMGam</span><span class="o">.</span><span class="n">from_formula</span><span class="p">(</span><span class="n">smooth_formula</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df_gam</span><span class="p">,</span> <span class="n">smoother</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_bsplines</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">555</span>     <span class="n">gam_bs</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">556</span>     <span class="c1"># Optimal penalization weights alpha can be obtained through gcv/kfold</span>
+<span class="g g-Whitespace">    </span><span class="mi">557</span>     <span class="c1"># Note: kfold is faster, gcv is more robust</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/statsmodels/gam/generalized_additive_model.py:914,</span> in <span class="ni">GLMGam.select_penweight_kfold</span><span class="nt">(self, alphas, cv_iterator, cost, k_folds, k_grid)</span>
-<span class="g g-Whitespace">    </span><span class="mi">908</span>     <span class="n">cv_iterator</span> <span class="o">=</span> <span class="n">KFold</span><span class="p">(</span><span class="n">k_folds</span><span class="o">=</span><span class="n">k_folds</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">910</span> <span class="n">gam_cv</span> <span class="o">=</span> <span class="n">MultivariateGAMCVPath</span><span class="p">(</span><span class="n">smoother</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">smoother</span><span class="p">,</span> <span class="n">alphas</span><span class="o">=</span><span class="n">alphas</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">911</span>                                <span class="n">gam</span><span class="o">=</span><span class="n">GLMGam</span><span class="p">,</span> <span class="n">cost</span><span class="o">=</span><span class="n">cost</span><span class="p">,</span> <span class="n">endog</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">endog</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">912</span>                                <span class="n">exog</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">exog_linear</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">913</span>                                <span class="n">cv_iterator</span><span class="o">=</span><span class="n">cv_iterator</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">914</span> <span class="n">gam_cv_res</span> <span class="o">=</span> <span class="n">gam_cv</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">916</span> <span class="k">return</span> <span class="n">gam_cv_res</span><span class="o">.</span><span class="n">alpha_cv</span><span class="p">,</span> <span class="n">gam_cv_res</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/statsmodels/base/model.py:229,</span> in <span class="ni">Model.from_formula</span><span class="nt">(cls, formula, data, subset, drop_cols, *args, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">223</span>         <span class="n">design_info</span> <span class="o">=</span> <span class="n">design_info</span><span class="o">.</span><span class="n">subset</span><span class="p">(</span><span class="n">cols</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">225</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;missing_idx&#39;</span><span class="p">:</span> <span class="n">missing_idx</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">226</span>                <span class="s1">&#39;missing&#39;</span><span class="p">:</span> <span class="n">missing</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">227</span>                <span class="s1">&#39;formula&#39;</span><span class="p">:</span> <span class="n">formula</span><span class="p">,</span>  <span class="c1"># attach formula for unpckling</span>
+<span class="g g-Whitespace">    </span><span class="mi">228</span>                <span class="s1">&#39;design_info&#39;</span><span class="p">:</span> <span class="n">design_info</span><span class="p">})</span>
+<span class="ne">--&gt; </span><span class="mi">229</span> <span class="n">mod</span> <span class="o">=</span> <span class="bp">cls</span><span class="p">(</span><span class="n">endog</span><span class="p">,</span> <span class="n">exog</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">230</span> <span class="n">mod</span><span class="o">.</span><span class="n">formula</span> <span class="o">=</span> <span class="n">formula</span>
+<span class="g g-Whitespace">    </span><span class="mi">231</span> <span class="c1"># since we got a dataframe, attach the original</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/statsmodels/gam/gam_cross_validation/gam_cross_validation.py:202,</span> in <span class="ni">MultivariateGAMCVPath.fit</span><span class="nt">(self, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">194</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">alphas_i</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alphas_grid</span><span class="p">):</span>
-<span class="g g-Whitespace">    </span><span class="mi">195</span>     <span class="n">gam_cv</span> <span class="o">=</span> <span class="n">MultivariateGAMCV</span><span class="p">(</span><span class="n">smoother</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">smoother</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">196</span>                                <span class="n">alphas</span><span class="o">=</span><span class="n">alphas_i</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">197</span>                                <span class="n">gam</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">gam</span><span class="p">,</span>
-   <span class="p">(</span><span class="o">...</span><span class="p">)</span>    <span class="mi">200</span>                                <span class="n">exog</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">exog</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">201</span>                                <span class="n">cv_iterator</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">cv_iterator</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">202</span>     <span class="n">cv_err</span> <span class="o">=</span> <span class="n">gam_cv</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">203</span>     <span class="bp">self</span><span class="o">.</span><span class="n">cv_error</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cv_err</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">204</span>     <span class="bp">self</span><span class="o">.</span><span class="n">cv_std</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">cv_err</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/statsmodels/gam/gam_cross_validation/gam_cross_validation.py:39,</span> in <span class="ni">BaseCV.fit</span><span class="nt">(self, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">36</span> <span class="n">cv_err</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="g g-Whitespace">     </span><span class="mi">38</span> <span class="k">for</span> <span class="n">train_index</span><span class="p">,</span> <span class="n">test_index</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">train_test_cv_indices</span><span class="p">:</span>
-<span class="ne">---&gt; </span><span class="mi">39</span>     <span class="n">cv_err</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_error</span><span class="p">(</span><span class="n">train_index</span><span class="p">,</span> <span class="n">test_index</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
-<span class="g g-Whitespace">     </span><span class="mi">41</span> <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">cv_err</span><span class="p">)</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/statsmodels/gam/gam_cross_validation/gam_cross_validation.py:117,</span> in <span class="ni">MultivariateGAMCV._error</span><span class="nt">(self, train_index, test_index, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">113</span>     <span class="n">exog_linear_test</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="g g-Whitespace">    </span><span class="mi">115</span> <span class="n">gam</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gam</span><span class="p">(</span><span class="n">endog_train</span><span class="p">,</span> <span class="n">exog</span><span class="o">=</span><span class="n">exog_linear_train</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">116</span>                <span class="n">smoother</span><span class="o">=</span><span class="n">train_smoother</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">alphas</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">117</span> <span class="n">gam_res</span> <span class="o">=</span> <span class="n">gam</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">118</span> <span class="c1"># exog_linear_test and test_smoother.basis will be column_stacked</span>
-<span class="g g-Whitespace">    </span><span class="mi">119</span> <span class="c1">#     but not transformed in predict</span>
-<span class="g g-Whitespace">    </span><span class="mi">120</span> <span class="n">endog_est</span> <span class="o">=</span> <span class="n">gam_res</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">exog_linear_test</span><span class="p">,</span> <span class="n">test_smoother</span><span class="o">.</span><span class="n">basis</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">121</span>                             <span class="n">transform</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/statsmodels/gam/generalized_additive_model.py:632,</span> in <span class="ni">GLMGam.fit</span><span class="nt">(self, start_params, maxiter, method, tol, scale, cov_type, cov_kwds, use_t, full_output, disp, max_start_irls, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">628</span> <span class="c1"># TODO: alpha not allowed yet, but is in `_fit_pirls`</span>
-<span class="g g-Whitespace">    </span><span class="mi">629</span> <span class="c1"># alpha = self._check_alpha()</span>
-<span class="g g-Whitespace">    </span><span class="mi">631</span> <span class="k">if</span> <span class="n">method</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;pirls&#39;</span><span class="p">,</span> <span class="s1">&#39;irls&#39;</span><span class="p">]:</span>
-<span class="ne">--&gt; </span><span class="mi">632</span>     <span class="n">res</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_fit_pirls</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span> <span class="n">start_params</span><span class="o">=</span><span class="n">start_params</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">633</span>                           <span class="n">maxiter</span><span class="o">=</span><span class="n">maxiter</span><span class="p">,</span> <span class="n">tol</span><span class="o">=</span><span class="n">tol</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">scale</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">634</span>                           <span class="n">cov_type</span><span class="o">=</span><span class="n">cov_type</span><span class="p">,</span> <span class="n">cov_kwds</span><span class="o">=</span><span class="n">cov_kwds</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">635</span>                           <span class="n">use_t</span><span class="o">=</span><span class="n">use_t</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">636</span> <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">637</span>     <span class="k">if</span> <span class="n">max_start_irls</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="p">(</span><span class="n">start_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/statsmodels/gam/generalized_additive_model.py:721,</span> in <span class="ni">GLMGam._fit_pirls</span><span class="nt">(self, alpha, start_params, maxiter, tol, scale, cov_type, cov_kwds, use_t, weights)</span>
-<span class="g g-Whitespace">    </span><span class="mi">717</span> <span class="n">wlsendog</span> <span class="o">=</span> <span class="p">(</span><span class="n">lin_pred</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">family</span><span class="o">.</span><span class="n">link</span><span class="o">.</span><span class="n">deriv</span><span class="p">(</span><span class="n">mu</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">endog</span> <span class="o">-</span> <span class="n">mu</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">718</span>             <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset_exposure</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">720</span> <span class="c1"># this defines the augmented matrix point 2a on page 136</span>
-<span class="ne">--&gt; </span><span class="mi">721</span> <span class="n">wls_results</span> <span class="o">=</span> <span class="n">penalized_wls</span><span class="p">(</span><span class="n">wlsendog</span><span class="p">,</span> <span class="n">wlsexog</span><span class="p">,</span> <span class="n">spl_s</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">722</span> <span class="n">lin_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">wlsexog</span><span class="p">,</span> <span class="n">wls_results</span><span class="o">.</span><span class="n">params</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">723</span> <span class="n">lin_pred</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_offset_exposure</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/statsmodels/gam/generalized_additive_model.py:963,</span> in <span class="ni">penalized_wls</span><span class="nt">(endog, exog, penalty_matrix, weights)</span>
-<span class="g g-Whitespace">    </span><span class="mi">961</span> <span class="c1"># TODO: I do not understand why I need 2 * s</span>
-<span class="g g-Whitespace">    </span><span class="mi">962</span> <span class="n">aug_y</span><span class="p">,</span> <span class="n">aug_x</span><span class="p">,</span> <span class="n">aug_weights</span> <span class="o">=</span> <span class="n">make_augmented_matrix</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">s</span><span class="p">,</span> <span class="n">weights</span><span class="p">)</span>
-<span class="ne">--&gt; </span><span class="mi">963</span> <span class="n">wls_results</span> <span class="o">=</span> <span class="n">lm</span><span class="o">.</span><span class="n">WLS</span><span class="p">(</span><span class="n">aug_y</span><span class="p">,</span> <span class="n">aug_x</span><span class="p">,</span> <span class="n">aug_weights</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
-<span class="g g-Whitespace">    </span><span class="mi">964</span> <span class="c1"># TODO: use MinimalWLS during iterations, less overhead</span>
-<span class="g g-Whitespace">    </span><span class="mi">965</span> <span class="c1"># However, MinimalWLS does not return normalized_cov_params</span>
-<span class="g g-Whitespace">    </span><span class="mi">966</span> <span class="c1">#   which we need at the end of the iterations</span>
-<span class="g g-Whitespace">    </span><span class="mi">967</span> <span class="c1"># call would be</span>
-<span class="g g-Whitespace">    </span><span class="mi">968</span> <span class="c1"># wls_results = reg_tools._MinimalWLS(aug_y, aug_x, aug_weights).fit()</span>
-<span class="g g-Whitespace">    </span><span class="mi">969</span> <span class="n">wls_results</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">wls_results</span><span class="o">.</span><span class="n">params</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/statsmodels/regression/linear_model.py:746,</span> in <span class="ni">WLS.__init__</span><span class="nt">(self, endog, exog, weights, missing, hasconst, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">744</span> <span class="k">else</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">745</span>     <span class="n">weights</span> <span class="o">=</span> <span class="n">weights</span><span class="o">.</span><span class="n">squeeze</span><span class="p">()</span>
-<span class="ne">--&gt; </span><span class="mi">746</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">endog</span><span class="p">,</span> <span class="n">exog</span><span class="p">,</span> <span class="n">missing</span><span class="o">=</span><span class="n">missing</span><span class="p">,</span>
-<span class="g g-Whitespace">    </span><span class="mi">747</span>                           <span class="n">weights</span><span class="o">=</span><span class="n">weights</span><span class="p">,</span> <span class="n">hasconst</span><span class="o">=</span><span class="n">hasconst</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">748</span> <span class="n">nobs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">exog</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="g g-Whitespace">    </span><span class="mi">749</span> <span class="n">weights</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/statsmodels/regression/linear_model.py:200,</span> in <span class="ni">RegressionModel.__init__</span><span class="nt">(self, endog, exog, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">199</span> <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endog</span><span class="p">,</span> <span class="n">exog</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">200</span>     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">endog</span><span class="p">,</span> <span class="n">exog</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">201</span>     <span class="bp">self</span><span class="o">.</span><span class="n">pinv_wexog</span><span class="p">:</span> <span class="n">Float64Array</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="g g-Whitespace">    </span><span class="mi">202</span>     <span class="bp">self</span><span class="o">.</span><span class="n">_data_attr</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="s1">&#39;pinv_wexog&#39;</span><span class="p">,</span> <span class="s1">&#39;wendog&#39;</span><span class="p">,</span> <span class="s1">&#39;wexog&#39;</span><span class="p">,</span> <span class="s1">&#39;weights&#39;</span><span class="p">])</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/statsmodels/base/model.py:270,</span> in <span class="ni">LikelihoodModel.__init__</span><span class="nt">(self, endog, exog, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">269</span> <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endog</span><span class="p">,</span> <span class="n">exog</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="ne">--&gt; </span><span class="mi">270</span>     <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">endog</span><span class="p">,</span> <span class="n">exog</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">271</span>     <span class="bp">self</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
-
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/statsmodels/base/model.py:95,</span> in <span class="ni">Model.__init__</span><span class="nt">(self, endog, exog, **kwargs)</span>
-<span class="g g-Whitespace">     </span><span class="mi">93</span> <span class="n">missing</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;missing&#39;</span><span class="p">,</span> <span class="s1">&#39;none&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">94</span> <span class="n">hasconst</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;hasconst&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
-<span class="ne">---&gt; </span><span class="mi">95</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_data</span><span class="p">(</span><span class="n">endog</span><span class="p">,</span> <span class="n">exog</span><span class="p">,</span> <span class="n">missing</span><span class="p">,</span> <span class="n">hasconst</span><span class="p">,</span>
-<span class="g g-Whitespace">     </span><span class="mi">96</span>                               <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">97</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_constant</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">k_constant</span>
-<span class="g g-Whitespace">     </span><span class="mi">98</span> <span class="bp">self</span><span class="o">.</span><span class="n">exog</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">exog</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/statsmodels/gam/generalized_additive_model.py:526,</span> in <span class="ni">GLMGam.__init__</span><span class="nt">(self, endog, exog, smoother, alpha, family, offset, exposure, missing, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">522</span> <span class="n">is_pandas</span> <span class="o">=</span> <span class="n">_is_using_pandas</span><span class="p">(</span><span class="n">exog</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">524</span> <span class="c1"># TODO: handle data is experimental, see #5469</span>
+<span class="g g-Whitespace">    </span><span class="mi">525</span> <span class="c1"># This is a bit wasteful because we need to `handle_data twice`</span>
+<span class="ne">--&gt; </span><span class="mi">526</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_linear</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_data</span><span class="p">(</span><span class="n">endog</span><span class="p">,</span> <span class="n">exog</span><span class="p">,</span> <span class="n">missing</span><span class="p">,</span> <span class="n">hasconst</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">527</span> <span class="k">if</span> <span class="n">xnames_linear</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">    </span><span class="mi">528</span>     <span class="n">xnames_linear</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_linear</span><span class="o">.</span><span class="n">xnames</span>
 
 <span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/statsmodels/base/model.py:135,</span> in <span class="ni">Model._handle_data</span><span class="nt">(self, endog, exog, missing, hasconst, **kwargs)</span>
 <span class="g g-Whitespace">    </span><span class="mi">134</span> <span class="k">def</span><span class="w"> </span><span class="nf">_handle_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">endog</span><span class="p">,</span> <span class="n">exog</span><span class="p">,</span> <span class="n">missing</span><span class="p">,</span> <span class="n">hasconst</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -1016,16 +964,30 @@
 <span class="g g-Whitespace">     </span><span class="mi">91</span> <span class="bp">self</span><span class="o">.</span><span class="n">_check_integrity</span><span class="p">()</span>
 <span class="g g-Whitespace">     </span><span class="mi">92</span> <span class="bp">self</span><span class="o">.</span><span class="n">_cache</span> <span class="o">=</span> <span class="p">{}</span>
 
-<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/statsmodels/base/data.py:180,</span> in <span class="ni">ModelData._handle_constant</span><span class="nt">(self, hasconst)</span>
-<span class="g g-Whitespace">    </span><span class="mi">175</span>     <span class="k">pass</span>
-<span class="g g-Whitespace">    </span><span class="mi">177</span> <span class="k">if</span> <span class="n">check_implicit</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">hasconst</span><span class="p">:</span>
-<span class="g g-Whitespace">    </span><span class="mi">178</span>     <span class="c1"># look for implicit constant</span>
-<span class="g g-Whitespace">    </span><span class="mi">179</span>     <span class="c1"># Compute rank of augmented matrix</span>
-<span class="ne">--&gt; </span><span class="mi">180</span>     <span class="n">augmented_exog</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">181</span>         <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exog</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">exog</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">182</span>     <span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">183</span>     <span class="n">rank_augm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">augmented_exog</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">184</span>     <span class="n">rank_orig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exog</span><span class="p">)</span>
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/statsmodels/base/data.py:184,</span> in <span class="ni">ModelData._handle_constant</span><span class="nt">(self, hasconst)</span>
+<span class="g g-Whitespace">    </span><span class="mi">180</span> <span class="n">augmented_exog</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">column_stack</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">181</span>     <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exog</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="bp">self</span><span class="o">.</span><span class="n">exog</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">182</span> <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">183</span> <span class="n">rank_augm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="n">augmented_exog</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">184</span> <span class="n">rank_orig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">matrix_rank</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exog</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">185</span> <span class="bp">self</span><span class="o">.</span><span class="n">k_constant</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">rank_orig</span> <span class="o">==</span> <span class="n">rank_augm</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">186</span> <span class="bp">self</span><span class="o">.</span><span class="n">const_idx</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/numpy/linalg/_linalg.py:2133,</span> in <span class="ni">matrix_rank</span><span class="nt">(A, tol, hermitian, rtol)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2131</span> <span class="k">if</span> <span class="n">A</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">2132</span>     <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">A</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span>
+<span class="ne">-&gt; </span><span class="mi">2133</span> <span class="n">S</span> <span class="o">=</span> <span class="n">svd</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">compute_uv</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">hermitian</span><span class="o">=</span><span class="n">hermitian</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2135</span> <span class="k">if</span> <span class="n">tol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+<span class="g g-Whitespace">   </span><span class="mi">2136</span>     <span class="k">if</span> <span class="n">rtol</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+
+<span class="nn">File /opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/numpy/linalg/_linalg.py:1851,</span> in <span class="ni">svd</span><span class="nt">(a, full_matrices, compute_uv, hermitian)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1847</span> <span class="n">signature</span> <span class="o">=</span> <span class="s1">&#39;D-&gt;d&#39;</span> <span class="k">if</span> <span class="n">isComplexType</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;d-&gt;d&#39;</span>
+<span class="g g-Whitespace">   </span><span class="mi">1848</span> <span class="k">with</span> <span class="n">errstate</span><span class="p">(</span><span class="n">call</span><span class="o">=</span><span class="n">_raise_linalgerror_svd_nonconvergence</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1849</span>               <span class="n">invalid</span><span class="o">=</span><span class="s1">&#39;call&#39;</span><span class="p">,</span> <span class="n">over</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">divide</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">1850</span>               <span class="n">under</span><span class="o">=</span><span class="s1">&#39;ignore&#39;</span><span class="p">):</span>
+<span class="ne">-&gt; </span><span class="mi">1851</span>     <span class="n">s</span> <span class="o">=</span> <span class="n">_umath_linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">signature</span><span class="o">=</span><span class="n">signature</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1852</span> <span class="n">s</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">_realType</span><span class="p">(</span><span class="n">result_t</span><span class="p">),</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1853</span> <span class="k">return</span> <span class="n">s</span>
 
 <span class="ne">KeyboardInterrupt</span>: 
 </pre></div>

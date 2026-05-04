@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>How to desegregate the metrics by site. &#8212; uniharmony 0.0.3.dev69 documentation</title>
+    <title>How to desegregate the metrics by site. &#8212; uniharmony 0.0.3.dev74 documentation</title>
   
   
   
@@ -43,7 +43,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=f76016cf"></script>
+    <script src="../../_static/documentation_options.js?v=72f30511"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -132,7 +132,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.3.dev69 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.3.dev74 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -231,9 +231,23 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../api/index.html">🗺️ API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../api/utils.html">Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../api/combat.html">ComBat</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../api/interpolation.html">Interpolation</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/utils/index.html">uniharmony</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/utils/make_multisite_classification.html">make_multisite_classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/utils/load_mareos.html">load_MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/utils/verbosity.html">verbosity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/utils/verbosity_context.html">verbosity_context</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/combat_based/index.html">uniharmony.combat</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/combat_based/combat.html">NeuroComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/combat_based/combat_gam.html">ComBatGAM</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/interpolation_based/index.html">uniharmony.interpolation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/interpolation_based/inter_site_matched_interpolation.html">InterSiteMatchedInterpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/interpolation_based/intra_site_interpolation.html">IntraSiteInterpolation</a></li>
+</ul>
+</details></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../changelog.html">📂 CHANGELOG</a></li>
@@ -453,16 +467,16 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>For site 0: bACC 0.5437
-For site 1: bACC 0.5962
-For site 2: bACC 0.484
-For site 3: bACC 0.7662
-For site 4: bACC 0.7727
-For site 5: bACC 0.6333
-For site 6: bACC 0.8221
-For site 7: bACC 0.5369
-For site 8: bACC 0.6577
-For site 9: bACC 0.5577
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>For site 0: bACC 0.5357
+For site 1: bACC 0.6846
+For site 2: bACC 0.5779
+For site 3: bACC 0.8045
+For site 4: bACC 0.4643
+For site 5: bACC 0.5972
+For site 6: bACC 0.8175
+For site 7: bACC 0.5779
+For site 8: bACC 0.7143
+For site 9: bACC 0.5505
 </pre></div>
 </div>
 </div>
@@ -486,8 +500,8 @@ For site 9: bACC 0.5577
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overall bACC: 0.6269484893193918
-Overall bACC: 0.6269484893193918
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Overall bACC: 0.6262107896593752
+Overall bACC: 0.6262107896593752
 </pre></div>
 </div>
 </div>

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Exploring EoS with dimensionality reduction techniques &#8212; uniharmony 0.0.3.dev69 documentation</title>
+    <title>Exploring EoS with dimensionality reduction techniques &#8212; uniharmony 0.0.3.dev74 documentation</title>
   
   
   
@@ -43,7 +43,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=f76016cf"></script>
+    <script src="../../_static/documentation_options.js?v=72f30511"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -132,7 +132,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.3.dev69 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.3.dev74 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -231,9 +231,23 @@
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../api/index.html">🗺️ API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../api/utils.html">Utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../api/combat.html">ComBat</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../api/interpolation.html">Interpolation</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/utils/index.html">uniharmony</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/utils/make_multisite_classification.html">make_multisite_classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/utils/load_mareos.html">load_MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/utils/verbosity.html">verbosity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/utils/verbosity_context.html">verbosity_context</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/combat_based/index.html">uniharmony.combat</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/combat_based/combat.html">NeuroComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/combat_based/combat_gam.html">ComBatGAM</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/interpolation_based/index.html">uniharmony.interpolation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/interpolation_based/inter_site_matched_interpolation.html">InterSiteMatchedInterpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/interpolation_based/intra_site_interpolation.html">IntraSiteInterpolation</a></li>
+</ul>
+</details></li>
 </ul>
 </details></li>
 <li class="toctree-l1"><a class="reference internal" href="../../changelog.html">📂 CHANGELOG</a></li>
@@ -457,7 +471,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:22:54</span> [<span class=" -Color -Color-Bold -Color-Bold-Yellow">warning  </span>] <span class=" -Color -Color-Bold">signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:13:32</span> [<span class=" -Color -Color-Bold -Color-Bold-Yellow">warning  </span>] <span class=" -Color -Color-Bold">signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.</span>
 </pre></div>
 </div>
 <img alt="../../_images/2cb9404894fe7df0b31cbdc86c1368bd402a3a2b46fb5c71fe5cfb7662c3b25a.png" src="../../_images/2cb9404894fe7df0b31cbdc86c1368bd402a3a2b46fb5c71fe5cfb7662c3b25a.png" />
@@ -484,11 +498,11 @@ This is because tSNE used the target information to get the clusters, as there w
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:22:58</span> [<span class=" -Color -Color-Bold -Color-Bold-Yellow">warning  </span>] <span class=" -Color -Color-Bold">signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:13:36</span> [<span class=" -Color -Color-Bold -Color-Bold-Yellow">warning  </span>] <span class=" -Color -Color-Bold">signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.</span>
 </pre></div>
 </div>
-<img alt="../../_images/3c20f0e5d24c0ef4e6b504f2372e9310c0174985b2c0cf3a4d9a669af1a2e20b.png" src="../../_images/3c20f0e5d24c0ef4e6b504f2372e9310c0174985b2c0cf3a4d9a669af1a2e20b.png" />
-<img alt="../../_images/53318c26d120338371105b4610a5ecc192a8e481f5633e2a7d09123a21befe33.png" src="../../_images/53318c26d120338371105b4610a5ecc192a8e481f5633e2a7d09123a21befe33.png" />
+<img alt="../../_images/3b1aff2df423e40f4b1c2dcf2a875d66db9d141b30a3a987ed6646bc2feb8c4f.png" src="../../_images/3b1aff2df423e40f4b1c2dcf2a875d66db9d141b30a3a987ed6646bc2feb8c4f.png" />
+<img alt="../../_images/8577197d648514d7925f13f95f707d43710e03edc2b0f9a2854dd5987ba97368.png" src="../../_images/8577197d648514d7925f13f95f707d43710e03edc2b0f9a2854dd5987ba97368.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -506,11 +520,11 @@ This is because tSNE used the target information to get the clusters, as there w
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 14:22:59</span> [<span class=" -Color -Color-Bold -Color-Bold-Yellow">warning  </span>] <span class=" -Color -Color-Bold">signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Faint">2026-05-04 16:13:38</span> [<span class=" -Color -Color-Bold -Color-Bold-Yellow">warning  </span>] <span class=" -Color -Color-Bold">signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.</span>
 </pre></div>
 </div>
-<img alt="../../_images/515807e131d58fb65c6d7d213586922ef62be1baf21405889c9e4471bbd79276.png" src="../../_images/515807e131d58fb65c6d7d213586922ef62be1baf21405889c9e4471bbd79276.png" />
-<img alt="../../_images/9f970ff11e449fa74ffe97e3bd2610a820c14ad83502a76a1deea6a3b211a435.png" src="../../_images/9f970ff11e449fa74ffe97e3bd2610a820c14ad83502a76a1deea6a3b211a435.png" />
+<img alt="../../_images/dfd93446d26a0484c21f3d4338ab6d6f0b11ff5e4b7f2a0c5e385d4019302ba2.png" src="../../_images/dfd93446d26a0484c21f3d4338ab6d6f0b11ff5e4b7f2a0c5e385d4019302ba2.png" />
+<img alt="../../_images/66138e320c0730e0b1bfc6d6279ea2d90a144224b6c7a5a95c7e03076b670f0d.png" src="../../_images/66138e320c0730e0b1bfc6d6279ea2d90a144224b6c7a5a95c7e03076b670f0d.png" />
 </div>
 </div>
 <p>We found similar behavior using PCA os FastICA, but different clusters were generated.</p>
