@@ -3,24 +3,6 @@
 Provides functions to clone datalad datasets, get specific files,
 list available files, and explore dataset structure.
 
-Expected structlog configuration::
-
-    import structlog
-    structlog.configure(
-        processors=[
-            structlog.stdlib.filter_by_level,
-            structlog.stdlib.add_logger_name,
-            structlog.stdlib.add_log_level,
-            structlog.processors.TimeStamper(fmt="iso"),
-            structlog.processors.StackInfoRenderer(),
-            structlog.processors.format_exc_info,
-            structlog.dev.ConsoleRenderer(),
-        ],
-        context_class=dict,
-        logger_factory=structlog.stdlib.LoggerFactory(),
-        wrapper_class=structlog.stdlib.BoundLogger,
-        cache_logger_on_first_use=True,
-    )
 """
 
 import shutil
@@ -37,185 +19,262 @@ from datalad import api as dl
 logger = structlog.get_logger()
 
 __all__ = [
-    "_list_available_files",
+    "clean_tmp_folder",
     "get_candidate_files",
-    "get_files",
+    "get_derivative_files",
+    "get_root_files",
     "initialize_dl_dataset",
+    "list_available_files",
+    "load_bids_dataset",
     "validate_arguments",
 ]
 
 
-def _check_datalad_installed() -> bool:
-    """Check if the datalad command-line tool is available.
-
-    Returns
-    -------
-    bool
-        True if datalad is installed and callable, False otherwise.
-
-    """
-    try:
-        subprocess.run(
-            ["datalad", "--version"],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            check=True,
-        )
-        return True
-    except (RuntimeError, FileNotFoundError, subprocess.CalledProcessError):
-        return False
-
-
-def _ensure_hidden_dataset(
+def load_bids_dataset(
+    subjects: str | list[str],
+    sessions: str | list[str],
+    modalities: str | list[str],
+    target_path: str | Path,
+    suffixes: str | list[str],
+    extensions: str | list[str],
     dataset_source: str,
     dataset_id: str,
-    extension: str = ".git",
+    dataset_extension: str,
+    root_files: str | list[str],
     force_download: bool = False,
-) -> Path:
-    """Ensure that a hidden DataLad dataset exists in a temporary cache.
+    copy: bool = True,
+    hidden: bool = True,
+    tmp_clean: bool = False,
+    tmp_dir_name: str = "datalad_cache",
+) -> None:
+    """Download derivatives and root files from a BIDS-compatible dataset.
 
-    If the dataset does not exist or is empty, it is cloned from the
-    remote source. If it already exists and contains data, it is reused
-    unless ``force_download`` is True.
+    This function transparently uses a hidden DataLad dataset (stored in
+    a temporary location) to retrieve files from a repository. All DataLad
+    operations happen in the background. The user-visible directory
+    contains only regular files (no symbolic links, Git metadata, or
+    DataLad traces).
+
+    Only the requested files are downloaded. Each file is copied as a
+    real file (not symbolic) into the visible dataset directory and immediately dropped
+    from the hidden DataLad cache to minimize disk usage.
 
     Parameters
     ----------
+    subjects : str or list[str]
+        Subject identifiers to download.
+
+    sessions : str or list[str]
+        Session identifiers to download.
+
+    modalities : str or list[str]
+        Modalities to download ("all", "anat", "dwi", "fmap", "func", "swi").
+
+    target_path : str or pathlib.Path
+        Path to the visible dataset directory where files will be stored.
+
+    suffixes : str or list[str]
+        BIDS suffixes to match in filenames (e.g., 'T1w', 'T2w').
+
+    extensions : str or list[str], default ".json"
+        File extensions to download (e.g., '.json', '.nii.gz').
+
     dataset_source : str
-        Base URL for the DataLad dataset repository (e.g.
-        ``"https://github.com/OpenNeuroDatasets/"``).
+        Source URL or path to the BIDS-compatible dataset.
+
     dataset_id : str
-        Dataset identifier (e.g. ``"ds004712"``).
-    extension : str, optional
-        File extension appended to ``dataset_id`` when building the clone
-        URL. Defaults to ``".git"``.
-    force_download : bool, optional
-        If True, remove any existing cached copy and re-clone. Defaults to
-        False.
+        Identifier for the dataset to download (e.g., "ds004215" for ON-Harmony).
+
+    dataset_extension : str
+        Web extension. For example .git.
+
+    root_files : str or list[str]
+        Name of the file list of files to get from the dataset's root.
+
+    force_download : bool, default False
+        Whether to force re-download the dataset if it already exists in tmp.
+
+    hidden : bool, default True
+        Whether to use a hidden directory or not.
+        If hidden=False, no hidden folder is made and the target directory acts as hidden.
+        This will avoid getting the files in ``/tmp/{tmp_dir_name}`` and then copying them
+        to the target directory.
+
+    copy : bool, default True
+        Whether to copy the downloaded files from the hidden cache to the target directory.
+        Ignored when ``hidden=False`` (files are already in the target directory).
+
+    tmp_clean : bool, default False
+        Whether to drop the downloaded files from the hidden DataLad dataset after copying.
+        If True, files are dropped immediately after copying to the target directory
+        (if copy=True), to minimize disk usage. Ignored when ``hidden=False``.
+
+    tmp_dir_name : str, default "datalad_cache"
+        Name of the temporary directory to store the hidden dataset.
+
+    Notes
+    -----
+    - The visible dataset directory will contain only regular files
+      following the BIDS derivatives structure.
+    - Repeated calls are safe and will only download missing files.
+
+    """
+    # ------------------------------------------------------------------
+    #  Validate arguments
+    # ------------------------------------------------------------------
+    subjects, sessions, modalities, suffixes, extensions, root_files = validate_arguments(
+        subjects, sessions, modalities, suffixes, extensions, root_files
+    )
+
+    # ------------------------------------------------------------------
+    #  Prepare directories
+    # ------------------------------------------------------------------
+    dataset_path = _make_visible_directory(target_path)
+
+    if hidden:
+        hidden_dataset_path = _make_hidden_dataset(
+            tmp_dir_name=tmp_dir_name,
+            force_download=force_download,
+        )
+        logger.debug(f"Using hidden folder at {hidden_dataset_path}")
+    else:
+        hidden_dataset_path = dataset_path
+        logger.debug(f"Using target folder as working directory at {hidden_dataset_path}")
+        # When not using hidden mode, we must NOT drop files from the target
+        if tmp_clean:
+            logger.warning("tmp_clean=True is ignored when hidden=False (would delete target files)")
+            tmp_clean = False
+
+    # ------------------------------------------------------------------
+    #  Initialize the DataLad dataset
+    # ------------------------------------------------------------------
+    source_url = urljoin(dataset_source.rstrip("/") + "/", f"{dataset_id}{dataset_extension}")
+    logger.debug(f"Source URL: {source_url}")
+    ds = initialize_dl_dataset(hidden_dataset_path, source_url)
+
+    # ------------------------------------------------------------------
+    # Collect candidate files
+    # ------------------------------------------------------------------
+    candidate_files = get_candidate_files(hidden_dataset_path, subjects, sessions, modalities, suffixes, extensions)
+
+    # ------------------------------------------------------------------
+    # Download files
+    # ------------------------------------------------------------------
+    get_derivative_files(ds, candidate_files, hidden_dataset_path, dataset_path, copy, tmp_clean, hidden)
+
+    get_root_files(ds, root_files, hidden_dataset_path, dataset_path, copy, tmp_clean, hidden)
+
+    return
+
+
+def validate_arguments(
+    subjects: str | list[str],
+    sessions: str | list[str],
+    modalities: str | list[str],
+    suffixes: str | list[str],
+    extensions: str | list[str],
+    root_files: str | list[str],
+) -> tuple[list[str] | str, ...]:
+    """Normalize filtering arguments to lists or the string ``"all"``.
+
+    Parameters
+    ----------
+    subjects, sessions, modalities, suffixes, extensions, root_files : str or list[str]
+        Raw filtering arguments. The string ``"all"`` is kept as-is;
+        any other string is wrapped in a single-element list.
 
     Returns
     -------
-    Path
-        Absolute path to the cached DataLad dataset directory.
+    tuple
+        Normalized ``(subjects, sessions, modalities, suffixes, extensions, root_files)``.
+
+    Raises
+    ------
+    ValueError
+        If any argument is neither a string nor a list.
+
+    """
+    logger.debug("Validating arguments")
+
+    def _validate(arg: str | list[str]) -> str | list[str]:
+        if isinstance(arg, list):
+            return arg
+        if isinstance(arg, str):
+            return "all" if arg == "all" else [arg]
+        raise ValueError(f"Argument should be a string or a list of strings. Got {arg!r} (type: {type(arg).__name__})")
+
+    return (
+        _validate(subjects),
+        _validate(sessions),
+        _validate(modalities),
+        _validate(suffixes),
+        _validate(extensions),
+        _validate(root_files),
+    )
+
+
+def initialize_dl_dataset(
+    dataset_path: str | Path,
+    source_url: str,
+):
+    """Initialize the full DataLad dataset workflow.
+
+    Clones the remote repository into the given path and installs
+    subdataset metadata.
+
+    Parameters
+    ----------
+    dataset_path : str or Path
+        Directory where the dataset will be cloned.
+    source_url : str
+        URL for the remote DataLad repository.
+
+    Returns
+    -------
+    Dataset
+        DataLad dataset instance.
 
     Raises
     ------
     RuntimeError
-        If the DataLad clone operation fails.
+        If datalad is not installed on the system or cloning fails.
 
     """
-    hidden_root = Path(tempfile.gettempdir()) / "datalad_cache"
-    hidden_root.mkdir(parents=True, exist_ok=True)
+    if not _check_datalad_installed():
+        raise RuntimeError("datalad not installed!")
 
-    hidden_dataset_path = hidden_root / dataset_id
+    dataset_path = Path(dataset_path)
 
-    # Dataset exists and is non-empty → reuse
-    if hidden_dataset_path.exists() and any(hidden_dataset_path.iterdir()) and not force_download:
-        logger.info(f"Reusing cached DataLad dataset at {hidden_dataset_path}")
-        return hidden_dataset_path
+    # Only clone if directory is empty or doesn't exist
+    if not dataset_path.exists() or not any(dataset_path.iterdir()):
+        logger.info("Cloning DataLad dataset...")
 
-    # Otherwise clone
-    if force_download:
-        logger.info("Force download dataset")
-        if hidden_dataset_path.exists():
-            shutil.rmtree(hidden_dataset_path)
+        try:
+            dl.clone(
+                source=source_url,
+                path=str(dataset_path),
+                result_renderer="disabled",
+            )
+        except Exception as e:
+            raise RuntimeError(f"Clone failed for {source_url}: {e}") from e
 
-    logger.info("Cloning DataLad dataset into hidden cache...")
+        # Verify the dataset was actually created
+        if not dataset_path.exists() or not any(dataset_path.iterdir()):
+            raise RuntimeError(f"Clone failed for {source_url}: directory is empty or missing")
 
-    source_url = urljoin(dataset_source.rstrip("/") + "/", f"{dataset_id}{extension}")
-    logger.debug(f"Source URL: {source_url}")
+    # Initialize DataLad dataset
+    ds = dl.Dataset(str(dataset_path))
 
-    # dl.clone() returns a Dataset object on success, raises on failure
-    try:
-        dl.clone(
-            source=source_url,
-            path=str(hidden_dataset_path),
-            result_renderer="disabled",
-        )
-    except Exception as e:
-        raise RuntimeError(f"Clone failed for {dataset_id}: {e}") from e
+    # Install subdataset metadata
+    ds.get(
+        ".",
+        recursive=True,
+        get_data=False,
+        on_failure="ignore",
+        result_renderer="disabled",
+    )
 
-    # Verify the dataset was actually created
-    if not hidden_dataset_path.exists() or not any(hidden_dataset_path.iterdir()):
-        raise RuntimeError(f"Clone failed for {dataset_id}: directory is empty or missing")
-
-    logger.debug(f"hidden_dataset_path created: {hidden_dataset_path}")
-    return hidden_dataset_path
-
-
-def _make_visible_directory(target_dir: str | Path, dataset_name: str) -> Path:
-    """Prepare an empty visible directory for the datalad dataset.
-
-    This function does NOT download any data and does NOT create any
-    folder structure. Files and directories are created lazily when
-    data is requested via ``get_data``.
-
-    Parameters
-    ----------
-    target_dir : str or Path
-        Parent directory where the visible dataset folder will be created.
-    dataset_name : str
-        Name of the dataset folder.
-
-    Returns
-    -------
-    Path
-        Absolute path to the newly created (or existing) visible directory.
-
-    """
-    target_dir = Path(target_dir).resolve()
-    dataset_path = target_dir / dataset_name
-
-    dataset_path.mkdir(parents=True, exist_ok=True)
-
-    logger.info(f"Visible dataset directory ready at {dataset_path}")
-
-    return dataset_path
-
-
-def _list_available_files(hidden_dataset_path: Path) -> list[Path]:
-    """List all available files in the hidden DataLad dataset.
-
-    This function is useful for debugging and exploration purposes. It
-    returns a list of all files that are present in the hidden dataset,
-    regardless of the filtering criteria.
-
-    Parameters
-    ----------
-    hidden_dataset_path : Path
-        Path to the hidden DataLad dataset.
-
-    Returns
-    -------
-    list[Path]
-        A list of paths to all available files in the hidden dataset.
-
-    """
-    return list(hidden_dataset_path.rglob("*.*"))
-
-
-def _resolve_child_dirs(
-    parent_path: Path,
-    values: str | list[str],
-    path_template: str,
-    glob_pattern: str,
-) -> list[Path]:
-    if values == "all":
-        return list(parent_path.glob(glob_pattern))
-    return [parent_path / path_template.format(value) for value in values]
-
-
-def _resolve_modality_dirs(session_path: Path, modalities: str | list[str]) -> list[Path]:
-    if modalities == "all":
-        return [entry for entry in session_path.iterdir() if entry.is_dir()]
-    return [session_path / modality for modality in modalities]
-
-
-def _build_search_patterns(
-    suffixes: str | list[str],
-    extensions: str | list[str],
-) -> list[str]:
-    suffix_patterns = ["*"] if suffixes == "all" else [f"*{suffix}" for suffix in suffixes]
-    return [f"{suffix_pattern}{extension}" for suffix_pattern in suffix_patterns for extension in extensions]
+    return ds
 
 
 def get_candidate_files(
@@ -231,7 +290,7 @@ def get_candidate_files(
     Parameters
     ----------
     hidden_dataset_path : Path
-        Root path of the hidden DataLad dataset.
+        Root path of the DataLad dataset.
     subjects : str or list[str]
         Subject identifiers to include, or ``"all"`` for every subject.
     sessions : str or list[str]
@@ -283,49 +342,6 @@ def get_candidate_files(
     return candidate_files
 
 
-def validate_arguments(
-    subjects: str | list[str],
-    sessions: str | list[str],
-    modalities: str | list[str],
-    suffixes: str | list[str],
-    extensions: str | list[str],
-) -> tuple[list[str] | str, ...]:
-    """Normalize filtering arguments to lists or the string ``"all"``.
-
-    Parameters
-    ----------
-    subjects, sessions, modalities, suffixes, extensions : str or list[str]
-        Raw filtering arguments. The string ``"all"`` is kept as-is;
-        any other string is wrapped in a single-element list.
-
-    Returns
-    -------
-    tuple
-        Normalized ``(subjects, sessions, modalities, suffixes, extensions)``.
-
-    Raises
-    ------
-    ValueError
-        If any argument is neither a string nor a list.
-
-    """
-
-    def _validate(arg: str | list[str]) -> str | list[str]:
-        if isinstance(arg, list):
-            return arg
-        if isinstance(arg, str):
-            return "all" if arg == "all" else [arg]
-        raise ValueError(f"Argument should be a string or a list of strings. Got {arg!r} (type: {type(arg).__name__})")
-
-    return (
-        _validate(subjects),
-        _validate(sessions),
-        _validate(modalities),
-        _validate(suffixes),
-        _validate(extensions),
-    )
-
-
 @dataclass
 class GetResult:
     """Result of a single file retrieval operation."""
@@ -337,13 +353,14 @@ class GetResult:
     error: str | None = None
 
 
-def get_files(
+def get_derivative_files(
     ds,
     candidate_files: list[Path],
     hidden_dataset_path: Path,
     dataset_path: Path,
     copy: bool,
-    cache: bool,
+    tmp_clean: bool,
+    hidden: bool,
 ) -> list[GetResult]:
     """Materialize candidate files and optionally copy them to a visible directory.
 
@@ -354,36 +371,31 @@ def get_files(
     candidate_files : list[Path]
         List of file paths to materialize (relative to ``hidden_dataset_path``).
     hidden_dataset_path : Path
-        Root path of the hidden DataLad cache.
+        Root path of the DataLad dataset (hidden cache or target directory).
     dataset_path : Path
         Root path of the visible output directory.
     copy : bool
-        If True, copy the materialized files from the hidden cache to
-        ``dataset_path``.
-    cache : bool
-        If False, drop the file content from the hidden cache after
-        processing to save space.
+        If True and ``hidden=True``, copy the materialized files from the
+        hidden cache to ``dataset_path``. Ignored when ``hidden=False``.
+    tmp_clean : bool
+        If True and ``hidden=True``, drop the file content from the hidden
+        cache after processing to save space. Ignored when ``hidden=False``.
+    hidden : bool
+        Whether a hidden cache is being used. When False, files are
+        materialized directly in ``dataset_path`` and neither copy nor
+        drop operations are performed.
 
     Returns
     -------
     list[GetResult]
         Results for each file operation.
 
-    Raises
-    ------
-    ValueError
-        If ``copy=False`` and ``cache=False`` (would materialize and
-        immediately drop files).
-
     """
-    # FIX: Guard against invalid copy/cache combination
-    if not copy and not cache:
-        logger.warning(
-            "Combination copy=False and cache=False would materialize "
-            "files and immediately drop them. Use copy=True or cache=True to retain files."
-        )
-
     results: list[GetResult] = []
+
+    # When hidden=False, source and destination are the same
+    should_copy = copy and hidden
+    should_drop = tmp_clean and hidden
 
     for file in candidate_files:
         rel = file.relative_to(hidden_dataset_path)
@@ -400,13 +412,13 @@ def get_files(
         # Materialize file
         ds.get(str(rel), on_failure="ignore", result_renderer="disabled")
 
-        if copy:
+        if should_copy:
             # Copy real file (dereference symlink)
             dest.parent.mkdir(parents=True, exist_ok=True)
             real_file = hidden_dataset_path / rel
             shutil.copyfile(real_file, dest, follow_symlinks=True)
 
-        if not cache:
+        if should_drop:
             # Drop content from hidden dataset
             ds.drop(
                 str(rel),
@@ -416,83 +428,328 @@ def get_files(
             )
             logger.debug(f"Dropped {rel} from hidden dataset to save space.")
 
-        results.append(GetResult(path=rel, success=True, copied=copy, dropped=not cache))
+        results.append(GetResult(path=rel, success=True, copied=should_copy, dropped=should_drop))
 
-    if copy:
-        logger.info("Copied files downloaded.")
+    if should_copy:
+        logger.info("Copied derivative files to target directory.")
     else:
-        logger.info(
-            "Files are available in the hidden dataset cache if cache=True. Set copy=True to copy them to the target directory."
-        )
+        logger.info("Derivative files are available in the dataset directory.")
 
     return results
 
 
-def initialize_dl_dataset(
-    target_path: str | Path,
-    dataset_name: str,
-    dataset_source: str,
-    dataset_id: str,
-    force_download: bool,
-    install_subdatasets: bool = True,
-):
-    """Initialize the full DataLad dataset workflow.
-
-    Creates a visible directory, ensures the hidden cache exists, and
-    optionally installs subdataset metadata.
+def get_root_files(
+    ds,
+    root_files: str | list[str],
+    hidden_dataset_path: Path,
+    dataset_path: Path,
+    copy: bool,
+    tmp_clean: bool,
+    hidden: bool,
+) -> list[GetResult]:
+    """Materialize root-level files and optionally copy them to a visible directory.
 
     Parameters
     ----------
-    target_path : str or Path
-        Parent directory for the visible dataset copy.
-    dataset_name : str
-        Name of the visible dataset folder.
-    dataset_source : str
-        Base URL for the remote DataLad repository.
-    dataset_id : str
-        Dataset identifier (e.g. ``"ds004712"``).
-    force_download : bool
-        If True, force a fresh clone of the hidden dataset.
-    install_subdatasets : bool, optional
-        If True, recursively install subdataset metadata. Defaults to True.
-        Set to False for large datasets where only root-level files are needed.
+    ds
+        DataLad dataset instance (returned by ``dl.Dataset``).
+    root_files : str or list[str]
+        Files to materialize from the dataset root. Use ``"all"`` to
+        include all root-level files, or a list of specific filenames
+        (e.g. ``["dataset_description.json", "README"]``).
+    hidden_dataset_path : Path
+        Root path of the DataLad dataset (hidden cache or target directory).
+    dataset_path : Path
+        Root path of the visible output directory.
+    copy : bool
+        If True and ``hidden=True``, copy the materialized files from the
+        hidden cache to ``dataset_path``. Ignored when ``hidden=False``.
+    tmp_clean : bool
+        If True and ``hidden=True``, drop the file content from the hidden
+        cache after processing to save space. Ignored when ``hidden=False``.
+    hidden : bool
+        Whether a hidden cache is being used. When False, files are
+        materialized directly in ``dataset_path`` and neither copy nor
+        drop operations are performed.
 
     Returns
     -------
-    tuple
-        ``(ds, hidden_dataset_path, dataset_path)`` where ``ds`` is the
-        DataLad dataset instance.
+    list[GetResult]
+        Results for each file operation.
+
+    """
+    results: list[GetResult] = []
+
+    # When hidden=False, source and destination are the same
+    should_copy = copy and hidden
+    should_drop = tmp_clean and hidden
+
+    # Resolve candidate files
+    if root_files == "all":
+        candidate_files = [f for f in hidden_dataset_path.glob("*") if f.is_file()]
+    else:
+        root_files = [root_files] if isinstance(root_files, str) else root_files
+        candidate_files = [hidden_dataset_path / filename for filename in root_files]
+
+    for file in candidate_files:
+        rel = file.relative_to(hidden_dataset_path)
+        dest = dataset_path / rel
+
+        # Skip if file already exists in destination
+        if dest.exists():
+            logger.info(f"Skipping, file already in destination: {rel}")
+            results.append(GetResult(path=rel, success=True, copied=False, dropped=False))
+            continue
+
+        # Skip if file does not exist in source (e.g. typo in filename)
+        if not file.exists():
+            logger.warning(f"Skipping, file not found: {rel}")
+            results.append(GetResult(path=rel, success=False, copied=False, dropped=False))
+            continue
+
+        logger.info(f"Getting: {rel}")
+
+        # Materialize file
+        ds.get(str(rel), on_failure="ignore", result_renderer="disabled")
+
+        if should_copy:
+            # Copy real file (dereference symlink)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(file, dest, follow_symlinks=True)
+
+        if should_drop:
+            # Drop content from hidden dataset
+            ds.drop(
+                str(rel),
+                reckless="availability",
+                on_failure="ignore",
+                result_renderer="disabled",
+            )
+            logger.debug(f"Dropped {rel} from hidden dataset to save space.")
+
+        results.append(GetResult(path=rel, success=True, copied=should_copy, dropped=should_drop))
+
+    if should_copy:
+        logger.info("Copied root files to target directory.")
+    else:
+        logger.info("Root files are available in the dataset directory.")
+
+    return results
+
+
+def _make_hidden_dataset(
+    tmp_dir_name: str = "datalad_cache",
+    force_download: bool = False,
+) -> Path:
+    """Create or reuse a hidden DataLad dataset cache directory.
+
+    Parameters
+    ----------
+    tmp_dir_name : str, optional
+        Name of the temporary directory to store the hidden dataset.
+        Defaults to ``"datalad_cache"``.
+    force_download : bool, optional
+        If True, remove any existing cached copy. Defaults to False.
+
+    Returns
+    -------
+    Path
+        Absolute path to the hidden dataset cache directory.
+
+    """
+    hidden_root = Path(tempfile.gettempdir()) / tmp_dir_name
+    hidden_root.mkdir(parents=True, exist_ok=True)
+
+    # Dataset exists and is non-empty → reuse
+    if hidden_root.exists() and any(hidden_root.iterdir()) and not force_download:
+        logger.info(f"Reusing cached DataLad dataset at {hidden_root}")
+        return hidden_root
+
+    # Otherwise clean and prepare for fresh clone
+    if force_download and hidden_root.exists():
+        logger.info("Force download: clearing existing cache")
+        shutil.rmtree(hidden_root)
+        hidden_root.mkdir(parents=True, exist_ok=True)
+
+    logger.debug(f"Hidden dataset path prepared: {hidden_root}")
+    return hidden_root
+
+
+def _make_visible_directory(target_dir: str | Path) -> Path:
+    """Prepare an empty visible directory for the dataset.
+
+    This function does NOT download any data and does NOT create any
+    folder structure. Files and directories are created lazily when
+    data is requested.
+
+    Parameters
+    ----------
+    target_dir : str or Path
+        Parent directory where the visible dataset folder will be created.
+
+    Returns
+    -------
+    Path
+        Absolute path to the newly created (or existing) visible directory.
+
+    """
+    target_path = Path(target_dir).resolve()
+    target_path.mkdir(parents=True, exist_ok=True)
+
+    logger.info(f"Visible dataset directory ready at {target_path}")
+
+    return target_path
+
+
+def list_available_files(hidden_dataset_path: Path) -> list[Path]:
+    """List all available files in the DataLad dataset.
+
+    This function is useful for debugging and exploration purposes. It
+    returns a list of all files that are present in the dataset,
+    regardless of the filtering criteria.
+
+    Parameters
+    ----------
+    hidden_dataset_path : Path
+        Path to the DataLad dataset.
+
+    Returns
+    -------
+    list[Path]
+        A list of paths to all available files in the dataset.
+
+    """
+    return list(hidden_dataset_path.rglob("*.*"))
+
+
+def _resolve_child_dirs(
+    parent_path: Path,
+    values: str | list[str],
+    path_template: str,
+    glob_pattern: str,
+) -> list[Path]:
+    """Resolve child directories based on filter values.
+
+    Parameters
+    ----------
+    parent_path : Path
+        Parent directory to search in.
+    values : str or list[str]
+        ``"all"`` or list of specific values.
+    path_template : str
+        Format string for constructing specific paths (e.g. ``"sub-{}"``).
+    glob_pattern : str
+        Glob pattern for discovering all children (e.g. ``"sub-*"``).
+
+    Returns
+    -------
+    list[Path]
+        List of resolved child directory paths.
+
+    """
+    if values == "all":
+        return list(parent_path.glob(glob_pattern))
+    return [parent_path / path_template.format(value) for value in values]
+
+
+def _resolve_modality_dirs(session_path: Path, modalities: str | list[str]) -> list[Path]:
+    """Resolve modality directories within a session.
+
+    Parameters
+    ----------
+    session_path : Path
+        Path to the session directory.
+    modalities : str or list[str]
+        ``"all"`` or list of modality folder names.
+
+    Returns
+    -------
+    list[Path]
+        List of modality directory paths.
+
+    """
+    if modalities == "all":
+        return [entry for entry in session_path.iterdir() if entry.is_dir()]
+    return [session_path / modality for modality in modalities]
+
+
+def _build_search_patterns(
+    suffixes: str | list[str],
+    extensions: str | list[str],
+) -> list[str]:
+    """Build glob search patterns from suffixes and extensions.
+
+    Parameters
+    ----------
+    suffixes : str or list[str]
+        ``"all"`` or list of BIDS suffixes.
+    extensions : str or list[str]
+        List of file extensions.
+
+    Returns
+    -------
+    list[str]
+        List of glob patterns (e.g. ``"*T1w.nii.gz"``, ``"*.json"``).
+
+    """
+    suffix_patterns = ["*"] if suffixes == "all" else [f"*{suffix}" for suffix in suffixes]
+    return [f"{suffix_pattern}{extension}" for suffix_pattern in suffix_patterns for extension in extensions]
+
+
+def _check_datalad_installed() -> bool:
+    """Check if the datalad command-line tool is available.
+
+    Returns
+    -------
+    bool
+        True if datalad is installed and callable, False otherwise.
+
+    """
+    try:
+        subprocess.run(
+            ["datalad", "--version"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            check=True,
+        )
+        return True
+    except (RuntimeError, FileNotFoundError, subprocess.CalledProcessError):
+        return False
+
+
+def clean_tmp_folder(tmp_dir_name: str = "datalad_cache") -> None:
+    """Remove a temporary DataLad cache folder from /tmp.
+
+    This function deletes the specified folder from the system temporary
+    directory, including all its contents (files, subdirectories, and
+    DataLad metadata).
+
+    Parameters
+    ----------
+    tmp_dir_name : str, default "datalad_cache"
+        Name of the temporary directory to remove.
 
     Raises
     ------
-    RuntimeError
-        If datalad is not installed on the system.
+    FileNotFoundError
+        If the temporary directory does not exist.
+    PermissionError
+        If the process lacks permission to delete the directory.
+
+    Examples
+    --------
+    >>> clean_tmp_folder("datalad_cache")
+    INFO     Removed temporary cache: /tmp/datalad_cache
+
+    >>> clean_tmp_folder("my_custom_cache")
+    INFO     Removed temporary cache: /tmp/my_custom_cache
 
     """
-    if not _check_datalad_installed():
-        raise RuntimeError("datalad not installed!")
+    tmp_path = Path(tempfile.gettempdir()) / tmp_dir_name
 
-    # Prepare visible directory (empty)
-    dataset_path = _make_visible_directory(target_path, dataset_name)
+    if not tmp_path.exists():
+        logger.warning(f"Temporary directory not found: {tmp_path}\nNothing to clean.")
 
-    # Ensure hidden DataLad dataset exists
-    hidden_dataset_path = _ensure_hidden_dataset(
-        dataset_source=dataset_source,
-        dataset_id=dataset_id,
-        force_download=force_download,
-    )
-
-    # Initialize DataLad dataset
-    ds = dl.Dataset(str(hidden_dataset_path))
-
-    # Optionally install subdataset metadata
-    if install_subdatasets:
-        ds.get(
-            ".",
-            recursive=True,
-            get_data=False,
-            on_failure="ignore",
-            result_renderer="disabled",
-        )
-
-    return ds, hidden_dataset_path, dataset_path
+    logger.info(f"Removing temporary files: {tmp_path}")
+    shutil.rmtree(tmp_path)
+    logger.info("Temporary cache removed successfully.")
