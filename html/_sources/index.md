@@ -1,6 +1,6 @@
 # 🎉 Welcome to uniharmony
 
-![PyPI](https://img.shields.io/pypi/v/uniharmony?style=for-the-badge)
+[![PyPI](https://img.shields.io/pypi/v/uniharmony?style=for-the-badge)](https://pypi.org/project/uniharmony/)
 
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/uniharmony?style=for-the-badge)
 
