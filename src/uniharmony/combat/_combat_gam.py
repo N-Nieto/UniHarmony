@@ -54,11 +54,10 @@ class ComBatGAM(TransformerMixin, BaseEstimator):
 
     References
     ----------
-    [^1]:
-        Pomponio, R., Shou, H., Davatzikos, C., et al., (2019).
-        "Harmonization of large MRI datasets for the analysis of brain imaging patterns throughout the lifespan."
-        Neuroimage 208.
-        https://doi.org/10.1016/j.neuroimage.2019.116450.
+    .. [1] Pomponio, R., Shou, H., Davatzikos, C., et al., (2019).
+           "Harmonization of large MRI datasets for the analysis of brain imaging patterns throughout the lifespan."
+           Neuroimage 208.
+           https://doi.org/10.1016/j.neuroimage.2019.116450.
 
     """
 
