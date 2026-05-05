@@ -42,6 +42,7 @@ extensions = [
     "numpydoc",  # support for NumPy style docstrings
     "sphinx_copybutton",  # copy button for code blocks
     "myst_parser",  # md to rst parser
+    "sphinx_gallery.gen_gallery",  # example gallery
 ]
 
 templates_path = ["_templates"]
@@ -79,4 +80,13 @@ myst_enable_extensions = [
     "fieldlist",
 ]
 
+# sphinx_gallery configuration
 
+sphinx_gallery_conf = {
+    "filename_pattern": "/*-(plot|run)_",
+    "examples_dirs": "../examples",
+    "gallery_dirs": "auto_examples",
+    "parallel": 10,
+    "doc_module": "uniharmony",
+    "backreferences_dir": "gen_modules/backreferences",
+}

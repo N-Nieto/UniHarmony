@@ -25,7 +25,7 @@ UniHarmony is released under the AGPL v3 license unless otherwise stated.
 getting_started
 utilities/index
 methods/index
-auto_examples/index
+examples/index
 api/index
 changelog
 ```
