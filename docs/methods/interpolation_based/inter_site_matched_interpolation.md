@@ -31,7 +31,7 @@ y_{\text{synth}} = y_k \quad \text{(classification)}
 
 $$
 
-Where $\alpha \in (0, 1)$ controls interpolation strength (default: 0.3). An alpha of aproximately 0 will generate a interpolated sample more similar to the *base* sample. On the other hand, a value closer to 1 will generate an interpolated sample more similar to the *target* sample.
+Where $\alpha \in (0, 1)$ controls interpolation strength (default: 0.3). An alpha of approximately 0 will generate a interpolated sample more similar to the *base* sample. On the other hand, a value closer to 1 will generate an interpolated sample more similar to the *target* sample.
 
 For **regression**, targets are interpolated continuously. For **classification**, targets remain discrete while features are interpolated.
 
