@@ -1,9 +1,29 @@
-"""Provide IntraSiteInterpolation transformer."""
+"""Intra-site interpolation-based harmonization.
+
+This module provides the ``IntraSiteInterpolation`` transformer, a sampler
+designed to mitigate site-induced bias by enforcing class balance within each
+site independently.
+
+Key features
+------------
+- Site-wise class balancing using interpolation-based oversampling.
+- Optional stratification via categorical and/or continuous covariates.
+- Support for both classification and regression problems.
+- Regression targets are discretized into bins for balancing purposes.
+- Compatible with imbalanced-learn samplers.
+
+Design principles
+-----------------
+- Preserve covariate distributions when requested.
+- Guarantee exact class balance per site (or globally).
+- Provide robust fallbacks when interpolation is insufficient.
+"""
 
 from collections import Counter
 from typing import Literal
 
 import numpy as np
+import numpy.typing as npt
 import structlog
 from imblearn.base import SamplerMixin
 from sklearn.base import BaseEstimator, clone
@@ -18,6 +38,7 @@ from uniharmony._utils import validate_sites
 from uniharmony.interpolation._utils import (
     create_interpolator,
     validate_class_representation,
+    validate_covariates,
 )
 
 
@@ -34,11 +55,17 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
 
     For each site independently:
     - The target class count is determined by ``balance_strategy``.
-    - All classes below the target are oversampled to match the target.
+    - All minority classes are oversampled to match the target count.
     - Any imblearn-compatible oversampling strategy may be used.
+    - Alternatively, all classes in the smaller sites are oversampled to matched the biggest site.
 
-    The method supports both binary and multi-class classification and
-    returns a globally concatenated, site-harmonized dataset.
+    When covariates are provided, balancing is performed within each
+    covariate stratum (unique combination of covariate values) within
+    each site, preserving the joint distribution of covariates and
+    target labels.
+
+    For regression tasks, the continuous target is binned into discrete
+    intervals and each bin is treated as a class for balancing purposes.
 
     Parameters
     ----------
@@ -56,314 +83,394 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
 
     interpolator_kwargs : dict or None, optional (default None)
         Additional keyword arguments passed to ``interpolator``.
+
     random_state : int or RandomState instance or None, optional (default None)
         The seed of the pseudo random number generator or RandomState for
         reproducibility.
+
     balance_strategy : {"per_site", "global_max"}, optional (default "per_site")
         Strategy to determine the target count for oversampling:
 
         - "per_site": Each site is balanced independently to its own majority
-          class count (original behavior).
+          class count.
         - "global_max": All sites are balanced to the global maximum class
-          count across all sites. The target is the largest class count found
-          in any single site.
+          count across all sites.
+
+    n_bins : int or None, optional (default None)
+        Number of bins for regression target binning. If ``None`` and the task
+        is detected as regression, a default of 10 bins is used.
+
+    binning_strategy : {"uniform", "quantile"}, optional (default "uniform")
+        Strategy for creating bins when the task is regression:
+
+        - "uniform": Bins of equal width covering the target range.
+        - "quantile": Bins with approximately equal number of samples.
+
+    task : {"auto", "classification", "regression"}, optional (default "auto")
+        Task type. If ``"auto"``, inferred from ``y`` dtype (integer types
+        imply classification, floating types imply regression).
 
     Attributes
     ----------
     samples_created_ : dict
         A nested dictionary mapping ``{site: {class_label: n_created}}``,
         where ``n_created`` is the number of synthetic samples generated
-        for that class in that site. Classes that were not oversampled
-        have a value of ``0``.
+        for that class in that site. For regression, ``class_label`` is
+        the bin index.
     sites_resampled_ : ndarray of shape (n_samples_new,)
         Site identifiers for the resampled dataset.
     target_count_ : int or None
         The target sample count per class used for balancing. Set to the
         global maximum when ``balance_strategy="global_max"``, otherwise
         ``None`` (targets are per-site).
+    bins_ : ndarray or None
+        Bin edges used for regression target binning. ``None`` for
+        classification tasks.
+    task_ : str
+        Inferred or specified task type ("classification" or "regression").
 
     """
 
     def __init__(
         self,
-        interpolator: str | SamplerMixin = "smote",
+        interpolator: str
+        | Literal["smote", "borderline-smote", "svm-smote", "adasyn", "kmeans-smote", "random"]
+        | SamplerMixin = "smote",
         interpolator_kwargs: dict | None = None,
         random_state: int | np.random.RandomState | None = None,
         balance_strategy: str | Literal["per_site", "global_max"] = "per_site",
+        n_bins: int | None = None,
+        binning_strategy: str | Literal["uniform", "quantile"] = "uniform",
+        task: str | Literal["auto", "classification", "regression"] = "auto",
     ) -> None:
         self.interpolator = interpolator
         self.interpolator_kwargs = interpolator_kwargs
         self.random_state = random_state
         self.balance_strategy = balance_strategy
+        self.n_bins = n_bins
+        self.binning_strategy = binning_strategy
+        self.task = task
 
     def fit_resample(
         self,
-        X: np.ndarray,
-        y: np.ndarray,
-        sites: np.ndarray,
-    ):
+        X: npt.ArrayLike,
+        y: npt.ArrayLike,
+        sites: npt.ArrayLike,
+        *,
+        categorical_covariate: npt.ArrayLike | None = None,
+        continuous_covariate: npt.ArrayLike | None = None,
+        covariate_tolerance: npt.ArrayLike | None = None,
+    ) -> tuple[npt.NDArray, npt.NDArray]:
         """Fit and resample the dataset using site-wise harmonization.
 
         Parameters
         ----------
-        X : numpy.ndarray of shape (n_samples, n_features)
+        X : array-like of shape (n_samples, n_features)
             Feature matrix containing the input samples.
-        y : numpy.ndarray of shape (n_samples,)
-            Target class labels associated with each sample in ``X``.
-        sites : numpy.ndarray of shape (n_samples,)
+
+        y : array-like of shape (n_samples,)
+            Target values. Integer labels for classification, continuous
+            values for regression.
+
+        sites : array-like of shape (n_samples,)
             Site or domain identifiers indicating the origin of each sample.
             Resampling is performed independently within each site.
+
+        categorical_covariate : array-like of shape (n_samples, n_categorical), default=None
+            Categorical covariates used for stratified balancing. When
+            provided, classes are balanced within each unique covariate
+            combination within each site.
+
+        continuous_covariate : array-like of shape (n_samples, n_continuous), default=None
+            Continuous covariates used for stratified balancing. Samples
+            are grouped by approximate matching within ``covariate_tolerance``.
+
+        covariate_tolerance : array-like of shape (n_continuous,), default=None
+            Maximum allowed absolute difference for continuous covariate
+            grouping. Must have one value per continuous covariate column.
+            If ``None``, exact matching is required.
 
         Returns
         -------
         X_resampled : numpy.ndarray of shape (n_samples_new, n_features)
             The feature matrix after site-wise oversampling.
+
         y_resampled : numpy.ndarray of shape (n_samples_new,)
-            The corresponding class labels after resampling.
+            The corresponding targets after resampling.
 
         Raises
         ------
         ValueError
             If ``X``, ``y``, and ``sites`` have incompatible shapes, if fewer
-            than two unique sites are present, if any site contains samples
-            from only a single class, if ``balance_strategy`` is invalid,
-            or if a site is missing a class required for ``global_max``
-            balancing.
+            than two unique sites are present, if any site is missing any
+            class, or if ``balance_strategy`` is invalid.
+
 
         Notes
         -----
-        For each site, the target class count is determined by
-        ``balance_strategy``:
-
-        - ``per_site``: the majority class count within that site.
-        - ``global_max``: the maximum class count found across all sites.
-
-        All classes within each site that are below the target count are
-        oversampled to match the target using the configured interpolator.
+        Sites can be retrieved from IntraSiteInterpolation.sites_resampled_
 
         """
-        X, y = check_X_y(X, y, estimator=self)
-        sites = check_array(sites, dtype=None, ensure_2d=False, estimator=self)
-        check_consistent_length(X, y, sites)
-        validate_sites(sites)
-        validate_class_representation(y, sites)
+        logger.info("[ISI] Starting fit_resample")
 
-        if self.balance_strategy not in ("per_site", "global_max"):
-            raise ValueError(f"balance_strategy must be 'per_site' or 'global_max', got {self.balance_strategy!r}.")
+        (
+            X,
+            y,
+            sites,
+            y_work,
+            cat_cov,
+            cont_cov,
+            cov_tol,
+        ) = self._validate_input(
+            X,
+            y,
+            sites,
+            categorical_covariate,
+            continuous_covariate,
+            covariate_tolerance,
+        )
 
-        random_state = check_random_state(self.random_state)
+        interpolator_template = self._resolve_interpolator()
 
-        # Resolve interpolator to an instance we can clone later
-        if isinstance(self.interpolator, str):
-            interpolator_template = create_interpolator(
-                self.interpolator,
-                random_state=random_state,
-                **self.interpolator_kwargs if self.interpolator_kwargs is not None else {},
-            )
-        elif isinstance(self.interpolator, SamplerMixin):
-            if self.interpolator.sampling_strategy not in ["auto", "not majority"]:
-                raise ValueError("IntraSiteInterpolation requires the interpolator to have `sampling_strategy='not majority'`.")
-            interpolator_template = self.interpolator
-        else:
-            raise ValueError("interpolator must be either a string or an instance of SamplerMixin.")
-
-        # ------------------------------------------------------------------ #
-        # Compute target count based on balance_strategy
-        # ------------------------------------------------------------------ #
         unique_sites = np.unique(sites)
-        unique_classes = np.unique(y)
+        unique_classes = np.unique(y_work)
 
+        # Global target
         if self.balance_strategy == "global_max":
-            self.target_count_ = max(np.sum((sites == site) & (y == cls)) for site in unique_sites for cls in unique_classes)
-            logger.info(f"[ISI] Global max target count: {self.target_count_}")
+            self.target_count_ = max(np.sum((sites == site) & (y_work == cls)) for site in unique_sites for cls in unique_classes)
+            logger.debug(f"N target for global_max strategy = {self.target_count_}")
         else:
             self.target_count_ = None
 
-        # ------------------------------------------------------------------ #
-        # Resample each site
-        # ------------------------------------------------------------------ #
         X_out, y_out, sites_out = [], [], []
         self.samples_created_ = {}
 
         for site in unique_sites:
+            logger.info(f"[ISI] Processing site {site}")
+
             mask = sites == site
-            X_site, y_site = X[mask], y[mask]
-            site_counts = Counter(y_site)
-            logger.info(f"[ISI] Site {site}: {site_counts}")
+            Xs, ys, yw = X[mask], y[mask], y_work[mask]
 
-            # Determine target count for this site
-            if self.balance_strategy == "per_site":
-                target = max(site_counts.values())
-            else:  # global_max
-                target = self.target_count_
+            cat_s = cat_cov[mask] if cat_cov is not None else None
+            cont_s = cont_cov[mask] if cont_cov is not None else None
 
-            # Track how many samples will be created per class
-            self.samples_created_[site] = {}
-            for cls in unique_classes:
-                n_cls = site_counts.get(cls, 0)
-                self.samples_created_[site][cls] = max(0, target - n_cls)
+            target_N = max(Counter(yw).values()) if self.balance_strategy == "per_site" else self.target_count_
+            logger.debug(f"for site {site}, N target for per_site strategy = {target_N}")
 
-            # Resample this site so every class has exactly `target` samples
-            X_rs, y_rs = self._resample_site(X_site, y_site, target, unique_classes, interpolator_template)
+            Xr, yr = self._resample_site(
+                Xs,
+                ys,
+                yw,
+                target_N,
+                unique_classes,
+                interpolator_template,
+                cat_s,
+                cont_s,
+                cov_tol,
+            )
 
-            X_out.append(X_rs)
-            y_out.append(y_rs)
-            sites_out.append(np.full(len(X_rs), site))
+            self.samples_created_[site] = {
+                c: max(
+                    0,
+                    np.sum((self._bin_target(yr)[0] if self.task_ == "regression" else yr) == c) - np.sum(yw == c),
+                )
+                for c in unique_classes
+            }
+
+            X_out.append(Xr)
+            y_out.append(yr)
+            sites_out.append(np.full(len(Xr), site))
 
         self.sites_resampled_ = np.concatenate(sites_out)
-        X_resampled = np.vstack(X_out)
-        y_resampled = np.concatenate(y_out)
 
-        # ------------------------------------------------------------------ #
-        # Post-hoc assertion: verify balancing
-        # ------------------------------------------------------------------ #
-        self._assert_balanced(y_resampled, self.sites_resampled_, unique_classes)
+        return np.vstack(X_out), np.concatenate(y_out)
 
-        return X_resampled, y_resampled
+    # ------------------------------------------------------------------ #
+    # Validation
+    # ------------------------------------------------------------------ #
+    def _validate_input(
+        self,
+        X: npt.ArrayLike,
+        y: npt.ArrayLike,
+        sites: npt.ArrayLike,
+        categorical_covariate: npt.ArrayLike | None,
+        continuous_covariate: npt.ArrayLike | None,
+        covariate_tolerance: npt.ArrayLike | None,
+    ) -> tuple[
+        npt.NDArray,
+        npt.NDArray,
+        npt.NDArray,
+        npt.NDArray,
+        npt.NDArray | None,
+        npt.NDArray | None,
+        npt.NDArray | None,
+    ]:
+        """Validate and preprocess all inputs."""
+        X, y = check_X_y(X, y, estimator=self)
+        sites = check_array(sites, ensure_2d=False)
+        check_consistent_length(X, y, sites)
 
-    def _resample_site(self, X_site, y_site, target, unique_classes, interpolator_template):
-        """Resample a single site so that every class has exactly ``target`` samples.
+        validate_sites(sites)
 
-        Parameters
-        ----------
-        X_site : ndarray of shape (n_site_samples, n_features)
-            Feature matrix for the samples in this site.
-        y_site : ndarray of shape (n_site_samples,)
-            Class labels for the samples in this site.
-        target : int
-            Desired number of samples per class.
-        unique_classes: ndarray
-            All class labels present in the full dataset.
-        interpolator_template : SamplerMixin
-            The base interpolator instance to clone and configure.
+        cat_cov, cont_cov, cov_tol = validate_covariates(
+            X.shape[0],
+            categorical_covariate,
+            continuous_covariate,
+            covariate_tolerance,
+            allow_nan=True,
+        )
 
-        Returns
-        -------
-        X_rs : ndarray of shape (n_classes * target, n_features)
-        y_rs : ndarray of shape (n_classes * target,)
+        self.task_ = self._infer_task(y)
 
-        Raises
-        ------
-        ValueError
-            If a required class is missing from the site and cannot be
-            oversampled (only possible with ``global_max`` strategy).
+        if self.task_ == "regression":
+            if self.n_bins is None:
+                raise ValueError("n_bins must be provided for regression.")
+            y_work, self.bins_ = self._bin_target(y)
+        else:
+            y_work = y
+            self.bins_ = None
 
-        """
-        site_counts = Counter(y_site)
+        validate_class_representation(y_work, sites)
+
+        return X, y, sites, y_work, cat_cov, cont_cov, cov_tol
+
+    def _resolve_interpolator(self) -> SamplerMixin:
+        """Create or validate interpolator instance."""
+        random_state = check_random_state(self.random_state)
+
+        if isinstance(self.interpolator, str):
+            return create_interpolator(
+                self.interpolator,
+                random_state=random_state,
+                **(self.interpolator_kwargs or {}),
+            )
+
+        if isinstance(self.interpolator, SamplerMixin):
+            return self.interpolator
+
+        raise ValueError("Invalid interpolator")
+
+    # ------------------------------------------------------------------ #
+    # Core function
+    # ------------------------------------------------------------------ #
+    def _resample_site(
+        self,
+        X: np.ndarray,
+        y: np.ndarray,
+        y_work: np.ndarray,
+        target: int,
+        classes: np.ndarray,
+        interpolator_template: SamplerMixin,
+        cat: np.ndarray | None,
+        cont: np.ndarray | None,
+        cov_tol: np.ndarray | None,
+    ) -> tuple[np.ndarray, np.ndarray]:
+        """Resample a single site."""
+        if cat is None and cont is None:
+            group_labels = np.zeros(len(X), dtype=int)
+        else:
+            group_labels = self._create_group_labels(cat, cont, cov_tol)
+
         X_parts, y_parts = [], []
 
-        # Check for missing classes (only an issue with global_max)
-        for cls in unique_classes:
-            if site_counts.get(cls, 0) == 0:
-                raise ValueError(
-                    f"Site has 0 samples for class {cls}, cannot oversample to "
-                    f"target {target}. Ensure all classes are present in every "
-                    f"site when using balance_strategy='global_max'."
-                )
+        for g in np.unique(group_labels):
+            m = group_labels == g
+            Xg, yg, yw = X[m], y[m], y_work[m]
 
-        # Build sampling_strategy dict: only list classes that need oversampling
-        sampling_strategy = {}
-        for cls in unique_classes:
-            n_cls = site_counts[cls]
-            if n_cls < target:
-                sampling_strategy[cls] = target
+            if len(Xg) == 0:
+                continue
 
-        if not sampling_strategy:
-            # No oversampling needed - trim to exact target if needed
-            for cls in unique_classes:
-                mask = y_site == cls
-                X_cls = X_site[mask]
-                X_parts.append(X_cls[:target])
-                y_parts.append(np.full(target, cls))
-            return np.vstack(X_parts), np.concatenate(y_parts)
+            counts = Counter(yw)
+            group_target = max(counts.values()) if self.balance_strategy == "per_site" else target
 
-        # Clone the interpolator and set the custom sampling strategy
-        interpolator = clone(interpolator_template)
-        interpolator.set_params(sampling_strategy=sampling_strategy)
+            sampling_strategy = {c: group_target for c in classes if counts.get(c, 0) < group_target}
 
-        # Run the interpolator on the site's data
-        X_temp, y_temp = interpolator.fit_resample(X_site, y_site)
+            if not sampling_strategy:
+                for c in classes:
+                    mc = yw == c
+                    if np.any(mc):
+                        X_parts.append(Xg[mc][:group_target])
+                        y_parts.append(yg[mc][:group_target])
+                continue
 
-        # Extract exactly `target` samples per class
-        for cls in unique_classes:
-            mask = y_temp == cls
-            X_cls = X_temp[mask]
-            n_have = len(X_cls)
-            if n_have < target:
-                raise RuntimeError(
-                    f"Interpolator failed to produce enough samples for class {cls} "
-                    f"in site: needed {target}, got {n_have}. "
-                    f"Original count was {site_counts[cls]}. "
-                    f"This can happen with ADASYN when a class has too few "
-                    f"samples to generate meaningful synthetic neighbors."
-                )
-            X_parts.append(X_cls[:target])
-            y_parts.append(np.full(target, cls))
+            interp = clone(interpolator_template)
+            interp.set_params(sampling_strategy=sampling_strategy)
+
+            X_tmp, y_tmp = interp.fit_resample(Xg, yg)
+
+            y_tmp_work = self._bin_target(y_tmp)[0] if self.task_ == "regression" else y_tmp
+
+            for c in classes:
+                mc = y_tmp_work == c
+                Xc, yc = X_tmp[mc], y_tmp[mc]
+
+                if len(Xc) < group_target:
+                    idx = np.random.choice(len(Xc), group_target - len(Xc), True)
+                    Xc = np.vstack([Xc, Xc[idx]])
+                    yc = np.concatenate([yc, yc[idx]])
+
+                X_parts.append(Xc[:group_target])
+                y_parts.append(yc[:group_target])
 
         return np.vstack(X_parts), np.concatenate(y_parts)
 
-    def _assert_balanced(self, y_resampled, sites_resampled, unique_classes):
-        """Assert that the resampled dataset is correctly balanced.
-
-        For ``balance_strategy="per_site"``, each site must have the same
-        count for every class (within-site balance).
-        For ``balance_strategy="global_max"``, every site must have the
-        same count for every class, and that count must equal the global
-        maximum (cross-site balance).
-
-        """
-        unique_sites = np.unique(sites_resampled)
-
-        if self.balance_strategy == "per_site":
-            for site in unique_sites:
-                mask = sites_resampled == site
-                counts = Counter(y_resampled[mask])
-                counts_values = list(counts.values())
-                assert all(c == counts_values[0] for c in counts_values), f"Site {site} is not balanced: {dict(counts)}"
-        else:  # global_max
-            site_counts = {}
-            for site in unique_sites:
-                mask = sites_resampled == site
-                counts = Counter(y_resampled[mask])
-                site_counts[site] = counts
-
-            # Check within-site balance
-            for site, counts in site_counts.items():
-                counts_values = list(counts.values())
-                assert all(c == counts_values[0] for c in counts_values), f"Site {site} is not balanced: {dict(counts)}"
-
-            # Check cross-site balance (all sites have same counts)
-            first_counts = next(iter(site_counts.values()))
-            for site, counts in site_counts.items():
-                assert counts == first_counts, (
-                    f"Site {site} counts {dict(counts)} do not match first site counts {dict(first_counts)}"
-                )
-
-            # Check that the count equals the global target
-            for site, counts in site_counts.items():
-                actual = next(iter(counts.values()))
-                assert actual == self.target_count_, (
-                    f"Site {site} has {actual} samples per class, but global target is {self.target_count_}"
-                )
-
-        logger.info("[ISI] Balance assertion passed.")
-
     # ------------------------------------------------------------------ #
-    # Compatibility
+    # Utilities
     # ------------------------------------------------------------------ #
-    def _fit_resample(self, X, y, **params):
-        """No-use implementation required by SamplerMixin.
+    def _infer_task(self, y: np.ndarray) -> str:
+        """Infer task type."""
+        if self.task != "auto":
+            return self.task
+        return "classification" if y.dtype.kind in "biu" else "regression"
 
-        This sampler overrides ``fit_resample`` directly because it
-        requires the additional ``sites`` argument.
-        """
+    def _bin_target(self, y: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+        """Bin continuous targets."""
+        bins = (
+            np.linspace(y.min(), y.max(), self.n_bins + 1)
+            if self.binning_strategy == "uniform"
+            else np.quantile(y, np.linspace(0, 1, self.n_bins + 1))
+        )
+
+        yb = np.digitize(y, bins[1:-1])
+        return np.clip(yb, 0, len(bins) - 2), bins
+
+    def _create_group_labels(
+        self,
+        cat: np.ndarray | None,
+        cont: np.ndarray | None,
+        cov_tol: np.ndarray | None,
+    ) -> np.ndarray:
+        """Create group labels using covariates and tolerance."""
+        n = len(cat) if cat is not None else len(cont)
+        labels = np.zeros(n, dtype=int)
+
+        if cat is not None:
+            _, labels = np.unique(cat, axis=0, return_inverse=True)
+
+        if cont is not None:
+            cont_labels = np.zeros(n, dtype=int)
+
+            for i in range(cont.shape[1]):
+                col = cont[:, i]
+                tol = cov_tol[i] if cov_tol is not None else 0.0
+
+                if tol > 0:
+                    bins = np.floor((col - col.min()) / tol)
+                else:
+                    _, bins = np.unique(col, return_inverse=True)
+
+                cont_labels = cont_labels * (bins.max() + 1) + bins
+
+            labels = labels * (cont_labels.max() + 1) + cont_labels
+
+        return labels
+
+    def _fit_resample(self, X, y, **params) -> None:
+        """Unused method required by sklearn."""
         pass
 
     def __sklearn_tags__(self) -> Tags:
+        """Return sklearn compatibility tags."""
         tags = super().__sklearn_tags__()
         tags.estimator_type = "sampler"
-        tags.input_tags.two_d_array = True
-        tags.input_tags.sparse = False
-        tags.input_tags.allow_nan = True
-        tags.requires_fit = False
         return tags
