@@ -64,9 +64,7 @@ dev = [
     "towncrier>=25.8.0",
 ]
 docs = [
-    "myst-nb>=1.4.0",
     "myst-parser[linkify]>=4.0.1",
-    "myst-sphinx-gallery>=0.3.0",
     "numpydoc>=1.10.0",
     "seaborn>=0.13.2",
     "setuptools-scm>=10.0.5",

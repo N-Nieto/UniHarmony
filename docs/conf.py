@@ -4,7 +4,6 @@ import datetime
 from functools import partial
 from pathlib import Path
 
-from myst_sphinx_gallery import GalleryConfig
 from setuptools_scm import get_version
 
 
@@ -42,15 +41,8 @@ extensions = [
     # Third-party extensions:
     "numpydoc",  # support for NumPy style docstrings
     "sphinx_copybutton",  # copy button for code blocks
-    "myst_nb",  # md + ipynb to rst parser
-    "myst_sphinx_gallery",  # HTML gallery of examples
+    "myst_parser",  # md to rst parser
 ]
-
-source_suffix = {
-    ".rst": "restructuredtext",
-    ".md": "myst-nb",
-    ".myst": "myst-nb",
-}
 
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
@@ -79,7 +71,7 @@ extlinks = {
     "gh": (f"{github_repo_url}/issues/%s", "#%s"),
 }
 
-# myst_parser (myst_nb) configuration
+# myst_parser configuration
 
 myst_enable_extensions = [
     "dollarmath",
@@ -87,11 +79,4 @@ myst_enable_extensions = [
     "fieldlist",
 ]
 
-# myst_sphinx_gallery configuration
 
-myst_sphinx_gallery_config = GalleryConfig(
-    examples_dirs="../examples",
-    gallery_dirs="auto_examples",
-    root_dir=Path(__file__).parent,
-    notebook_thumbnail_strategy="code",
-)
