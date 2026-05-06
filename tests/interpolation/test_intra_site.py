@@ -6,7 +6,7 @@ import pytest
 from imblearn.over_sampling import SMOTE
 from sklearn.linear_model import LogisticRegression
 
-from uniharmony import make_multisite_classification
+from uniharmony.datasets import make_multisite_classification
 from uniharmony.interpolation import IntraSiteInterpolation
 
 

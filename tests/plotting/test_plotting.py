@@ -8,7 +8,7 @@ from numpy.typing import NDArray
 from sklearn.decomposition import FastICA
 from sklearn.linear_model import LogisticRegression
 
-from uniharmony import make_multisite_classification
+from uniharmony.datasets import make_multisite_classification
 from uniharmony.plot import (
     plot_2d_components_by_value,
     plot_2d_projection,
