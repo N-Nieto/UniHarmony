@@ -1,31 +1,22 @@
-"""Datalad integration functions.
-
-Provides functions to clone datalad datasets, get specific files,
-list available files, and explore dataset structure.
-
-"""
+"""Provide datalad integration functions."""
 
 import shutil
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 
+import datalad.api as dl
 import structlog
-from datalad import api as dl
+from datalad.support.exceptions import IncompleteResultsError
 
-
-logger = structlog.get_logger()
 
 __all__ = [
-    "clean_tmp_folder",
+    "clean_tmp",
     "download_bids_dataset",
-    "get_candidate_files",
-    "get_files",
-    "get_root_files",
-    "initialize_dl_dataset",
     "list_available_files",
-    "validate_arguments",
 ]
+
+logger = structlog.get_logger()
 
 
 def download_bids_dataset(
@@ -37,7 +28,7 @@ def download_bids_dataset(
     suffixes: str | list[str],
     extensions: str | list[str],
     target_path: str | Path,
-    dataset_source_URL: str,
+    dataset_url: str,
     root_files: str | list[str],
     force_download: bool = False,
     copy: bool = True,
@@ -59,55 +50,41 @@ def download_bids_dataset(
 
     Parameters
     ----------
-    subjects : str or list[str]
+    subjects : str or list
         Subject identifiers to download.
-
-    sessions : str or list[str]
+    sessions : str or list
         Session identifiers to download.
-
-    modalities : str or list[str]
+    modalities : str or list
         Modalities to download ("all", "anat", "dwi", "fmap", "func", "swi").
-
-    tasks : str or list[str]
+    tasks : str or list
         Tasks to download.
-
-    runs : str or list[str]
+    runs : str or list
         Runs to download.
-
+    suffixes : str or list
+        BIDS suffixes to match in filenames (e.g., 'T1w', 'T2w').
+    extensions : str or list, optional (default ".json")
+        File extensions to download (e.g., '.json', '.nii.gz').
     target_path : str or pathlib.Path
         Path to the visible dataset directory where files will be stored.
-
-    suffixes : str or list[str]
-        BIDS suffixes to match in filenames (e.g., 'T1w', 'T2w').
-
-    extensions : str or list[str], default ".json"
-        File extensions to download (e.g., '.json', '.nii.gz').
-
-    dataset_source_URL : str
+    dataset_url : str
         Source URL to the BIDS-compatible dataset.
-
-    root_files : str or list[str]
+    root_files : str or list
         Name of the file list of files to get from the dataset's root.
-
-    force_download : bool, default False
+    force_download : bool, optional (default False)
         Whether to force re-download the dataset if it already exists in tmp.
-
-    hidden : bool, default True
+    copy : bool, optional (default True)
+        Whether to copy the downloaded files from the hidden cache to the target directory.
+        Ignored when ``hidden=False`` (files are already in the target directory).
+    hidden : bool, optional (default True)
         Whether to use a hidden directory or not.
         If hidden=False, no hidden folder is made and the target directory acts as hidden.
         This will avoid getting the files in ``/tmp/{tmp_dir_name}`` and then copying them
         to the target directory.
-
-    copy : bool, default True
-        Whether to copy the downloaded files from the hidden cache to the target directory.
-        Ignored when ``hidden=False`` (files are already in the target directory).
-
-    tmp_clean : bool, default False
+    tmp_clean : bool, optional (default False)
         Whether to drop the downloaded files from the hidden DataLad dataset after copying.
         If True, files are dropped immediately after copying to the target directory
         (if copy=True), to minimize disk usage. Ignored when ``hidden=False``.
-
-    tmp_dir_name : str, default "datalad_cache"
+    tmp_dir_name : str, optional (default "datalad_cache")
         Name of the temporary directory to store the hidden dataset.
 
     Notes
@@ -117,16 +94,11 @@ def download_bids_dataset(
     - Repeated calls are safe and will only download missing files.
 
     """
-    # ------------------------------------------------------------------
     #  Validate arguments
-    # ------------------------------------------------------------------
-    subjects, sessions, modalities, suffixes, extensions, root_files = validate_arguments(
+    subjects, sessions, modalities, suffixes, extensions, root_files = _validate_arguments(
         subjects, sessions, modalities, suffixes, extensions, root_files
     )
-
-    # ------------------------------------------------------------------
     #  Prepare directories
-    # ------------------------------------------------------------------
     dataset_path = _make_visible_directory(target_path)
 
     if hidden:
@@ -143,28 +115,22 @@ def download_bids_dataset(
             logger.warning("tmp_clean=True is ignored when hidden=False (would delete target files)")
             tmp_clean = False
 
-    # ------------------------------------------------------------------
     #  Initialize the DataLad dataset
-    # ------------------------------------------------------------------
-    logger.debug(f"Source URL: {dataset_source_URL}")
-    ds = initialize_dl_dataset(hidden_dataset_path, dataset_source_URL)
+    logger.debug(f"Source URL: {dataset_url}")
+    ds = _initialize_dl_dataset(hidden_dataset_path, dataset_url)
 
-    # ------------------------------------------------------------------
     # Collect candidate files
-    # ------------------------------------------------------------------
-    candidate_files = get_candidate_files(hidden_dataset_path, subjects, sessions, modalities, tasks, runs, suffixes, extensions)
+    candidate_files = _get_candidate_files(hidden_dataset_path, subjects, sessions, modalities, tasks, runs, suffixes, extensions)
 
-    # ------------------------------------------------------------------
     # Download files
-    # ------------------------------------------------------------------
-    get_files(ds, candidate_files, hidden_dataset_path, dataset_path, copy, tmp_clean, hidden)
+    _get_files(ds, candidate_files, hidden_dataset_path, dataset_path, copy, tmp_clean, hidden)
 
-    get_root_files(ds, root_files, hidden_dataset_path, dataset_path, copy, tmp_clean, hidden)
+    _get_root_files(ds, root_files, hidden_dataset_path, dataset_path, copy, tmp_clean, hidden)
 
     return
 
 
-def validate_arguments(
+def _validate_arguments(
     subjects: str | list[str],
     sessions: str | list[str],
     modalities: str | list[str],
@@ -176,7 +142,7 @@ def validate_arguments(
 
     Parameters
     ----------
-    subjects, sessions, modalities, suffixes, extensions, root_files : str or list[str]
+    subjects, sessions, modalities, suffixes, extensions, root_files : str or list
         Raw filtering arguments. The string ``"all"`` is kept as-is;
         any other string is wrapped in a single-element list.
 
@@ -210,10 +176,10 @@ def validate_arguments(
     )
 
 
-def initialize_dl_dataset(
-    dataset_path: str | Path,
+def _initialize_dl_dataset(
+    dataset_path: Path,
     source_url: str,
-):
+) -> dl.Dataset:
     """Initialize the full DataLad dataset workflow.
 
     Clones the remote repository into the given path and installs
@@ -221,7 +187,7 @@ def initialize_dl_dataset(
 
     Parameters
     ----------
-    dataset_path : str or Path
+    dataset_path : Path
         Directory where the dataset will be cloned.
     source_url : str
         URL for the remote DataLad repository.
@@ -234,35 +200,29 @@ def initialize_dl_dataset(
     Raises
     ------
     RuntimeError
-        If datalad is not installed on the system or cloning fails.
+        If there is a problem cloning the datalad dataset.
 
     """
-    dataset_path = Path(dataset_path)
-
     # Only clone if directory is empty or doesn't exist
     if not dataset_path.exists() or not any(dataset_path.iterdir()):
         logger.info("Cloning DataLad dataset...")
-
         try:
-            dl.clone(
+            ds = dl.clone(
                 source=source_url,
                 path=dataset_path,
                 result_renderer="disabled",
             )
-        except Exception as e:
+        except IncompleteResultsError as e:
             raise RuntimeError(f"Clone failed for {source_url}: {e}") from e
-
-        # Verify the dataset was actually created
-        if not dataset_path.exists() or not any(dataset_path.iterdir()):
-            raise RuntimeError(f"Clone failed for {source_url}: directory is empty or missing")
-
-    # Initialize DataLad dataset
-    ds = dl.Dataset(dataset_path)
+        else:
+            logger.info("DataLad dataset cloned successfully")
+    else:
+        ds = dl.Dataset(dataset_path)
 
     return ds
 
 
-def get_candidate_files(
+def _get_candidate_files(
     hidden_dataset_path: Path,
     subjects: str | list[str],
     sessions: str | list[str],
@@ -280,26 +240,26 @@ def get_candidate_files(
         Root path of the DataLad dataset.
     subjects : str or list[str]
         Subject identifiers to include, or ``"all"`` for every subject.
-    sessions : str or list[str]
+    sessions : str or list
         Session identifiers to include, or ``"all"`` for every session.
-    modalities : str or list[str]
+    modalities : str or list
         Modality folder names (e.g. ``"anat"``, ``"func"``) to include,
         or ``"all"`` for every modality.
-    tasks : str or list[str]
+    tasks : str or list
         tasks  (e.g. ``"eeg"``) to include,
         or ``"all"`` for every task.
-    runs : str or list[str]
+    runs : str or list
         runs  (e.g. ``"1"``) to include,
         or ``"all"`` for every run.
-    suffixes : str or list[str]
+    suffixes : str or list
         BIDS suffixes to match in filenames (e.g. ``"bold"``,
         ``"T1w"``, ``"dwi"``), or ``"all"`` for every suffix.
-    extensions : str or list[str]
+    extensions : str or list
         File extensions to match (e.g. ``".nii.gz"``, ``".json"``).
 
     Returns
     -------
-    list[Path]
+    list of Path
         List of matching file paths.
 
     Raises
@@ -346,7 +306,7 @@ class GetResult:
     error: str | None = None
 
 
-def get_files(
+def _get_files(
     ds,
     candidate_files: list[Path],
     hidden_dataset_path: Path,
@@ -359,9 +319,9 @@ def get_files(
 
     Parameters
     ----------
-    ds
-        DataLad dataset instance (returned by ``dl.Dataset``).
-    candidate_files : list[Path]
+    ds : dl.Dataset
+        DataLad dataset instance.
+    candidate_files : list of Path
         List of file paths to materialize (relative to ``hidden_dataset_path``).
     hidden_dataset_path : Path
         Root path of the DataLad dataset (hidden cache or target directory).
@@ -431,7 +391,7 @@ def get_files(
     return results
 
 
-def get_root_files(
+def _get_root_files(
     ds,
     root_files: str | list[str],
     hidden_dataset_path: Path,
@@ -444,9 +404,9 @@ def get_root_files(
 
     Parameters
     ----------
-    ds
-        DataLad dataset instance (returned by ``dl.Dataset``).
-    root_files : str or list[str]
+    ds : dl.Dataset
+        DataLad dataset instance.
+    root_files : str or list
         Files to materialize from the dataset root. Use ``"all"`` to
         include all root-level files, or a list of specific filenames
         (e.g. ``["dataset_description.json", "README"]``).
@@ -538,16 +498,15 @@ def _make_hidden_dataset(
 
     Parameters
     ----------
-    tmp_dir_name : str, optional
+    tmp_dir_name : str, optional (default "datalad_cache")
         Name of the temporary directory to store the hidden dataset.
-        Defaults to ``"datalad_cache"``.
-    force_download : bool, optional
-        If True, remove any existing cached copy. Defaults to False.
+    force_download : bool, optional (default False)
+        If True, remove any existing cached copy.
 
     Returns
     -------
     Path
-        Absolute path to the hidden dataset cache directory.
+        Path to the hidden dataset cache directory.
 
     """
     hidden_root = Path(tempfile.gettempdir()) / tmp_dir_name
@@ -583,7 +542,7 @@ def _make_visible_directory(target_dir: str | Path) -> Path:
     Returns
     -------
     Path
-        Absolute path to the newly created (or existing) visible directory.
+        Path to the newly created (or existing) visible directory.
 
     """
     target_path = Path(target_dir).resolve()
@@ -608,7 +567,7 @@ def list_available_files(hidden_dataset_path: Path) -> list[Path]:
 
     Returns
     -------
-    list[Path]
+    list of Path
         A list of paths to all available files in the dataset.
 
     """
@@ -627,7 +586,7 @@ def _resolve_child_dirs(
     ----------
     parent_path : Path
         Parent directory to search in.
-    values : str or list[str]
+    values : str or list
         ``"all"`` or list of specific values.
     path_template : str
         Format string for constructing specific paths (e.g. ``"sub-{}"``).
@@ -636,7 +595,7 @@ def _resolve_child_dirs(
 
     Returns
     -------
-    list[Path]
+    list of Path
         List of resolved child directory paths.
 
     """
@@ -652,12 +611,12 @@ def _resolve_modality_dirs(session_path: Path, modalities: str | list[str]) -> l
     ----------
     session_path : Path
         Path to the session directory.
-    modalities : str or list[str]
+    modalities : str or list
         ``"all"`` or list of modality folder names.
 
     Returns
     -------
-    list[Path]
+    list of Path
         List of modality directory paths.
 
     """
@@ -676,20 +635,20 @@ def _build_search_patterns(
 
     Parameters
     ----------
-    tasks : str or list[str]
+    tasks : str or list
         tasks  (e.g. ``"eeg"``) to include,
         or ``"all"`` for every task.
-    runs : str or list[str]
+    runs : str or list
         runs  (e.g. ``"01"``) to include,
         or ``"all"`` for every runs.
-    suffixes : str or list[str]
+    suffixes : str or list
         ``"all"`` or list of BIDS suffixes.
-    extensions : str or list[str]
+    extensions : str or list
         List of file extensions.
 
     Returns
     -------
-    list[str]
+    list
         List of glob patterns (e.g. ``"*T1w.nii.gz"``, ``"*.json"``).
 
     """
@@ -707,8 +666,8 @@ def _build_search_patterns(
     ]
 
 
-def clean_tmp_folder(tmp_dir_name: str = "datalad_cache") -> None:
-    """Remove a temporary DataLad cache folder from /tmp.
+def clean_tmp(tmp_dir_name: str = "datalad_cache") -> None:
+    """Remove a temporary DataLad cache folder.
 
     This function deletes the specified folder from the system temporary
     directory, including all its contents (files, subdirectories, and
