@@ -97,11 +97,10 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
           count across all sites. Both minority and majority classes are samples
           to match the N for the majority class across sites.
 
-    n_bins : int or None, optional (default None)
-        Number of bins for regression target binning. If ``None`` and the task
-        is detected as regression, a default of 10 bins is used.
+    n_bins : int or None, optional (default 10)
+        Number of bins for regression target binning.
 
-    binning_strategy : {"uniform", "quantile"}, optional (default "uniform")
+    binning_strategy : {"uniform", "quantile"}, optional (default "quantile")
         Strategy for creating bins when the task is regression:
 
         - "uniform": Bins of equal width covering the target range.
@@ -145,8 +144,8 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         interpolator_kwargs: dict | None = None,
         random_state: int | np.random.RandomState | None = None,
         balance_strategy: str | Literal["per_site", "global_max"] = "per_site",
-        n_bins: int | None = None,
-        binning_strategy: str | Literal["uniform", "quantile"] = "uniform",
+        n_bins: int | None = 10,
+        binning_strategy: str | Literal["uniform", "quantile"] = "quantile",
         task: str | Literal["auto", "classification", "regression"] = "auto",
     ) -> None:
         self.interpolator = interpolator
@@ -244,8 +243,8 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         # For continuos covariates
         if continuous_covariate is not None:
             if n_bins_cont_cov is None:
-                raise ValueError("Binning of continuous covariates is not implemented yet.")
-            if binning_strategy_cont_cov not in {"uniform", "quantile"}:
+                raise ValueError("n_bins_cont_cov must be provided when continuous_covariate are also provided.")
+            if binning_strategy_cont_cov not in ["uniform", "quantile"]:
                 raise ValueError("binning_strategy_cont_cov must be 'uniform' or 'quantile'")
         self.n_bins_cont_cov = n_bins_cont_cov
         self.binning_strategy_cont_cov = binning_strategy_cont_cov
@@ -409,11 +408,6 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
 
         # Step 7: Handle regression-specific preprocessing
         if self.task_ == "regression":
-            # Regression requires binning continuous targets into discrete classes
-            if self.n_bins is None:
-                raise ValueError(
-                    "n_bins must be provided for regression. Cannot perform class-based resampling without target binning."
-                )
             # Convert continuous targets to bin indices
             # Stores bin edges in self.bins_ for later use (e.g., inverse transform)
             y_binnarized, self.bins_ = self._bin_target(y)
@@ -728,11 +722,13 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
             # Strategy A: Equal-width bins spanning the full data range
             # Example: y=[0, 10], n_bins=5 -> edges=[0, 2, 4, 6, 8, 10]
             bins = np.linspace(y.min(), y.max(), self.n_bins + 1)
-        else:
+        elif self.binning_strategy == "quantile":
             # Strategy B: Equal-frequency bins using quantiles
             # Ensures roughly equal number of samples per bin
             # Example: 4 bins -> edges at 0%, 25%, 50%, 75%, 100% quantiles
             bins = np.quantile(y, np.linspace(0, 1, self.n_bins + 1))
+        else:
+            raise ValueError(f"binning_strategy must be 'uniform' or 'quantile', got {self.binning_strategy}")
 
         # Step 2: Assign each target value to a bin index
         # bins[1:-1] excludes first and last edges to handle boundary values correctly
@@ -809,28 +805,24 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
             raise ValueError("At least one of 'cat' or 'cont' must be provided.")
 
         n_samples = len(cat) if cat is not None else len(cont)
-        labels = np.zeros(n_samples, dtype=int)
 
-        # ------------------------------------------------------------------
-        # Categorical covariates (exact matching)
-        # ------------------------------------------------------------------
+        # FIX: always compute both parts independently
+        cat_labels = None
+        cont_labels = None
+
         if cat is not None:
-            _, labels = np.unique(cat, axis=0, return_inverse=True)
+            _, cat_labels = np.unique(cat, axis=0, return_inverse=True)
 
-            # ------------------------------------------------------------------
-            # Continuous covariates (binning-based discretization)
-            # ------------------------------------------------------------------
+        if cont is not None:
             cont_labels = self._resolve_continuous_covariate(cont, n_samples, n_bins_cont_cov, binning_strategy_cont_cov)
 
-            # ------------------------------------------------------------------
-            # Combine categorical + continuous
-            # ------------------------------------------------------------------
-            if cat is not None:
-                labels = labels * (cont_labels.max() + 1) + cont_labels
-            else:
-                labels = cont_labels
-
-        return labels
+        # FIX: correct combination logic
+        if cat_labels is not None and cont_labels is not None:
+            return cat_labels * (cont_labels.max() + 1) + cont_labels
+        elif cat_labels is not None:
+            return cat_labels
+        else:
+            return cont_labels
 
     def _fit_resample(self, X, y, **params) -> None:
         """Unused method required by sklearn."""
