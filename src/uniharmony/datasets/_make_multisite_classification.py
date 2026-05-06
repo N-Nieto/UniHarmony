@@ -24,7 +24,7 @@ logger = structlog.get_logger()
 
 def make_multisite_classification(
     n_sites: int = 2,
-    n_samples: int = 1000,
+    n_samples: int | list[int] = 1000,
     n_features: int = 10,
     n_classes: int = 2,
     balance_per_site: list[float] | list[list[float]] | None = None,
@@ -52,8 +52,9 @@ def make_multisite_classification(
         Number of classes to simulate (2 for binary, >2 for multi-class).
     n_sites : int, optional (default 2)
         Number of sites to simulate.
-    n_samples : int, optional (default 1000)
-        Total number of samples across all sites.
+    n_samples : int | list[int], optional (default 1000)
+        If an int is provided, total number of samples across all sites.
+        If a list is provided, N for each site, must have the same len as n_sites.
     balance_per_site : list of float, list of list of float or None, optional (default None)
         Class balance for each site. If None, uses balanced classes (0.5 for
         binary, equal distribution for multi-class).
@@ -111,14 +112,21 @@ def make_multisite_classification(
 
     balance_per_site, overall_balance = _validate_balance_per_site(balance_per_site, n_sites, n_classes)
 
-    # Allocate samples per site (even distribution)
-    samples_per_site = np.full(n_sites, n_samples // n_sites, dtype=int)
-    samples_per_site[: n_samples % n_sites] += 1
+    if isinstance(n_samples, list):
+        samples_per_site = np.array(n_samples)
+        n_samples_total = np.array(samples_per_site).sum()
+    else:
+        n_samples_total = n_samples
+        # Allocate samples per site (even distribution)
+        samples_per_site = np.full(n_sites, n_samples // n_sites, dtype=int)
+        samples_per_site[: n_samples % n_sites] += 1
+    logger.debug(f"Total Samples to generate {n_samples_total}")
+    logger.debug(f"Total Samples to generate per site {samples_per_site}")
 
     # Generate a base dataset with more samples than needed to allow for site-specific sampling
     # We will sample from this base dataset for each site according to the specified balance and class distribution
     X, y = _generate_base_samples(
-        n_samples, n_features, overall_balance, n_classes, signal_type, signal_strength, random_state, **kwargs
+        n_samples_total, n_features, overall_balance, n_classes, signal_type, signal_strength, random_state, **kwargs
     )
     site_labels_list = []
     X_list = []
@@ -178,7 +186,7 @@ def make_multisite_classification(
 
 def _validate_parameters(
     n_sites: int,
-    n_samples: int,
+    n_samples: int | list[int],
     n_features: int,
     n_classes: int,
 ) -> None:
@@ -218,9 +226,19 @@ def _validate_parameters(
     if n_classes < 2:
         raise ValueError(f"n_classes must be at least 2, got {n_classes}")
 
-    if n_samples < n_sites:
-        raise ValueError(
-            f"n_samples ({n_samples}) is less than n_sites ({n_sites}). Some sites will have 0 samples.",
+    if isinstance(n_samples, int):
+        if n_samples < n_sites:
+            raise ValueError(
+                f"n_samples ({n_samples}) is less than n_sites ({n_sites}). Some sites will have 0 samples.",
+            )
+    elif isinstance(n_samples, list):
+        if np.array(n_samples).sum() < n_sites:
+            raise ValueError(
+                f"n_samples ({n_samples}) is less than n_sites ({n_sites}). Some sites will have 0 samples.",
+            )
+    else:
+        raise TypeError(
+            f"n_samples must be int or list[int], got {type(n_samples)}.",
         )
 
 
