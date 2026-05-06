@@ -140,6 +140,8 @@ def load_onharmony(
         tmp_clean=tmp_clean,
         tmp_dir_name=tmp_dir_name,
         hidden=hidden,
+        tasks="all",  # this dataset does not have any task
+        runs="all",  # this dataset does not have any run
     )
 
     return
