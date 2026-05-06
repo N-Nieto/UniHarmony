@@ -8,7 +8,7 @@ import numpy as np
 import pytest
 from numpy.typing import NDArray
 
-from uniharmony import make_multisite_classification
+from uniharmony.datasets import make_multisite_classification
 from uniharmony.interpolation import InterSiteMatchedInterpolation
 
 

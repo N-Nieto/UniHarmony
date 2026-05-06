@@ -1,16 +1,15 @@
 (simulate-multisite-data)=
-# 🧪 Multisite Data Simulation
+# Multisite Data Simulation
 
-## What's this?
+## Overview
 
-[uniharmony.make_multisite_classification][] helps researchers generate synthetic datasets that mimic real-world multi-center studies.
+``uniharmony.datasets.make_multisite_classfication`` helps researchers generate synthetic datasets that mimic real-world multi-center studies.
 Whether you're testing machine learning algorithms, developing statistical methods, or teaching data science concepts,
 this simulator creates realistic data with built-in complexities that mirror actual research scenarios.
 
-## Quick Start
+## Usage
 
 ```python
-# Import the simulator
 from uniharmony import make_multisite_classification
 
 # Generate data with 3 sites, 500 samples total

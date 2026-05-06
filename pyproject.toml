@@ -38,6 +38,7 @@ classifiers = [
     "Topic :: Utilities",
 ]
 dependencies = [
+    "datalad>=1.4.1",
     "imblearn>=0.0",
     "lazy_loader==0.4",
     "matplotlib>=3.10.8",

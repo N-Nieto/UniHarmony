@@ -11,8 +11,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
-from uniharmony import make_multisite_classification
-from uniharmony._verbose import verbosity
+from uniharmony import verbosity
+from uniharmony.datasets import make_multisite_classification
 
 
 sns.set_theme(style="whitegrid")

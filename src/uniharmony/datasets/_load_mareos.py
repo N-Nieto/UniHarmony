@@ -14,7 +14,7 @@ import structlog
 from pooch import HTTPDownloader, Unzip
 
 
-__all__ = ["_ensure_mareos_data", "load_MAREoS"]
+__all__ = ["load_MAREoS"]
 
 logger = structlog.get_logger()
 

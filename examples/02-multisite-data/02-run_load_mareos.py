@@ -11,7 +11,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from uniharmony import load_MAREoS
+from uniharmony.datasets import load_MAREoS
 
 
 # %%

@@ -1,9 +1,8 @@
 __all__ = [
     "combat",
+    "datasets",
     "dl",
     "interpolation",
-    "load_MAREoS",
-    "make_multisite_classification",
     "normative",
     "plot",
     "prettyharmonize",
@@ -11,6 +10,5 @@ __all__ = [
     "verbosity_context",
 ]
 
-from . import combat, dl, interpolation, normative, plot, prettyharmonize
+from . import combat, datasets, dl, interpolation, normative, plot, prettyharmonize
 from ._verbose import verbosity, verbosity_context
-from .datasets import load_MAREoS, make_multisite_classification

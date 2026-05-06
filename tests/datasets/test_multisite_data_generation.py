@@ -3,7 +3,7 @@
 import numpy as np
 import pytest
 
-from uniharmony import make_multisite_classification
+from uniharmony.datasets import make_multisite_classification
 
 
 def test_basic_functionality() -> None:

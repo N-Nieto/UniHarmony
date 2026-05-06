@@ -18,6 +18,15 @@ jobs:
           - "3.14"
 
     steps:
+      - name: Install system dependencies
+        run: |
+          sudo apt-get -qq update
+          sudo apt-get -qq install -y \
+          git-annex
+      - name: Configure Git for DataLad
+        run: |
+          git config --global user.email "runner@github.com"
+          git config --global user.name "GitHub Runner"
       - uses: actions/checkout@v6
       - name: Install Python ${{ matrix.python-version }}
         uses: actions/setup-python@v6

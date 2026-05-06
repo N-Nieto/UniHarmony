@@ -10,7 +10,7 @@ from sklearn.utils.validation import check_is_fitted
 
 from uniharmony.datasets import make_multisite_classification
 from uniharmony.interpolation import IntraSiteInterpolation
-from uniharmony.ot._otda import OptimalTransportDomainAdaptation
+from uniharmony.ot import OptimalTransportDomainAdaptation
 
 
 # =============================================================================
