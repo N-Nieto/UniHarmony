@@ -2,7 +2,7 @@
 
 import pytest
 
-from uniharmony.datasets import load_onharmony
+from uniharmony.datasets import load_ONharmony
 
 
 @pytest.mark.parametrize(
@@ -17,7 +17,7 @@ from uniharmony.datasets import load_onharmony
 )
 def test_load_onharmony_success(subjects, sessions, modalities, suffixes, extensions, copy, force_download) -> None:
     """Test basic functionality."""
-    load_onharmony(
+    load_ONharmony(
         subjects=subjects,
         sessions=sessions,
         modalities=modalities,
