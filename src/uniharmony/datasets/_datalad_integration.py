@@ -19,6 +19,7 @@ logger = structlog.get_logger()
 __all__ = [
     "clean_tmp_folder",
     "download_derivatives_bids_dataset",
+    "download_raw_data_bids_dataset",
     "get_candidate_files",
     "get_derivative_files",
     "get_root_files",
@@ -158,6 +159,141 @@ def download_derivatives_bids_dataset(
     # Download files
     # ------------------------------------------------------------------
     get_derivative_files(ds, candidate_files, hidden_dataset_path, dataset_path, copy, tmp_clean, hidden)
+
+    get_root_files(ds, root_files, hidden_dataset_path, dataset_path, copy, tmp_clean, hidden)
+
+    return
+
+
+def download_raw_data_bids_dataset(
+    subjects: str | list[str],
+    sessions: str | list[str],
+    modalities: str | list[str],
+    tasks: str | list[str],
+    runs: str | list[str],
+    target_path: str | Path,
+    suffixes: str | list[str],
+    extensions: str | list[str],
+    dataset_source_URL: str,
+    root_files: str | list[str],
+    force_download: bool = False,
+    copy: bool = True,
+    hidden: bool = True,
+    tmp_clean: bool = False,
+    tmp_dir_name: str = "datalad_cache",
+) -> None:
+    """Download derivatives and root files from a BIDS-compatible dataset.
+
+    This function transparently uses a hidden DataLad dataset (stored in
+    a temporary location) to retrieve files from a repository. All DataLad
+    operations happen in the background. The user-visible directory
+    contains only regular files (no symbolic links, Git metadata, or
+    DataLad traces).
+
+    Only the requested files are downloaded. Each file is copied as a
+    real file (not symbolic) into the visible dataset directory and immediately dropped
+    from the hidden DataLad cache to minimize disk usage.
+
+    Parameters
+    ----------
+    subjects : str or list[str]
+        Subject identifiers to download.
+
+    sessions : str or list[str]
+        Session identifiers to download.
+
+    modalities : str or list[str]
+        Modalities to download ("all", "anat", "dwi", "fmap", "func", "swi").
+
+    tasks : str or list[str]
+        Tasks to download.
+
+    runs : str or list[str]
+        Runs to download.
+
+    suffixes : str or list[str]
+        BIDS suffixes to match in filenames (e.g., 'T1w', 'T2w').
+
+    extensions : str or list[str], default ".json"
+        File extensions to download (e.g., '.json', '.nii.gz').
+
+    target_path : str or pathlib.Path
+        Path to the visible dataset directory where files will be stored.
+    dataset_source_URL : str
+        Source URL to the BIDS-compatible dataset.
+
+    root_files : str or list[str]
+        Name of the file list of files to get from the dataset's root.
+
+    force_download : bool, default False
+        Whether to force re-download the dataset if it already exists in tmp.
+
+    hidden : bool, default True
+        Whether to use a hidden directory or not.
+        If hidden=False, no hidden folder is made and the target directory acts as hidden.
+        This will avoid getting the files in ``/tmp/{tmp_dir_name}`` and then copying them
+        to the target directory.
+
+    copy : bool, default True
+        Whether to copy the downloaded files from the hidden cache to the target directory.
+        Ignored when ``hidden=False`` (files are already in the target directory).
+
+    tmp_clean : bool, default False
+        Whether to drop the downloaded files from the hidden DataLad dataset after copying.
+        If True, files are dropped immediately after copying to the target directory
+        (if copy=True), to minimize disk usage. Ignored when ``hidden=False``.
+
+    tmp_dir_name : str, default "datalad_cache"
+        Name of the temporary directory to store the hidden dataset.
+
+    Notes
+    -----
+    - The visible dataset directory will contain only regular files
+      following the BIDS derivatives structure.
+    - Repeated calls are safe and will only download missing files.
+
+    """
+    # ------------------------------------------------------------------
+    #  Validate arguments
+    # ------------------------------------------------------------------
+    subjects, sessions, modalities, suffixes, extensions, root_files = validate_arguments(
+        subjects, sessions, modalities, suffixes, extensions, root_files
+    )
+
+    # ------------------------------------------------------------------
+    #  Prepare directories
+    # ------------------------------------------------------------------
+    dataset_path = _make_visible_directory(target_path)
+
+    if hidden:
+        hidden_dataset_path = _make_hidden_dataset(
+            tmp_dir_name=tmp_dir_name,
+            force_download=force_download,
+        )
+        logger.debug(f"Using hidden folder at {hidden_dataset_path}")
+    else:
+        hidden_dataset_path = dataset_path
+        logger.debug(f"Using target folder as working directory at {hidden_dataset_path}")
+        # When not using hidden mode, we must NOT drop files from the target
+        if tmp_clean:
+            logger.warning("tmp_clean=True is ignored when hidden=False (would delete target files)")
+            tmp_clean = False
+
+    # ------------------------------------------------------------------
+    #  Initialize the DataLad dataset
+    # ------------------------------------------------------------------
+    logger.debug(f"Source URL: {dataset_source_URL}")
+    ds = initialize_dl_dataset(hidden_dataset_path, dataset_source_URL)
+
+    # ------------------------------------------------------------------
+    # Collect candidate files
+    # ------------------------------------------------------------------
+    candidate_files = get_candidate_files(hidden_dataset_path, subjects, sessions, modalities, tasks, runs, suffixes, extensions)
+
+    # ------------------------------------------------------------------
+    # Download files
+    # ------------------------------------------------------------------
+    get_raw_files(ds, candidate_files, hidden_dataset_path, dataset_path, copy, tmp_clean, hidden)
 
     get_root_files(ds, root_files, hidden_dataset_path, dataset_path, copy, tmp_clean, hidden)
 
@@ -392,6 +528,91 @@ def get_derivative_files(
 
     for file in candidate_files:
         rel = file.relative_to(hidden_dataset_path)
+        dest = dataset_path / rel
+
+        # Skip if file already exists in destination
+        if dest.exists():
+            logger.info(f"Skipping, file already in destination: {rel}")
+            results.append(GetResult(path=rel, success=True, copied=False, dropped=False))
+            continue
+
+        logger.info(f"Getting: {rel}")
+
+        # Materialize file
+        ds.get(str(rel), on_failure="ignore", result_renderer="disabled")
+
+        if should_copy:
+            # Copy real file (dereference symlink)
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            real_file = hidden_dataset_path / rel
+            shutil.copyfile(real_file, dest, follow_symlinks=True)
+
+        if should_drop:
+            # Drop content from hidden dataset
+            ds.drop(
+                str(rel),
+                reckless="availability",
+                on_failure="ignore",
+                result_renderer="disabled",
+            )
+            logger.debug(f"Dropped {rel} from hidden dataset to save space.")
+
+        results.append(GetResult(path=rel, success=True, copied=should_copy, dropped=should_drop))
+
+    if should_copy:
+        logger.info("Copied derivative files to target directory.")
+    else:
+        logger.info("Derivative files are available in the dataset directory.")
+
+    return results
+
+
+def get_raw_files(
+    ds,
+    candidate_files: list[Path],
+    hidden_dataset_path: Path,
+    dataset_path: Path,
+    copy: bool,
+    tmp_clean: bool,
+    hidden: bool,
+) -> list[GetResult]:
+    """Materialize candidate files and optionally copy them to a visible directory.
+
+    Parameters
+    ----------
+    ds
+        DataLad dataset instance (returned by ``dl.Dataset``).
+    candidate_files : list[Path]
+        List of file paths to materialize (relative to ``hidden_dataset_path``).
+    hidden_dataset_path : Path
+        Root path of the DataLad dataset (hidden cache or target directory).
+    dataset_path : Path
+        Root path of the visible output directory.
+    copy : bool
+        If True and ``hidden=True``, copy the materialized files from the
+        hidden cache to ``dataset_path``. Ignored when ``hidden=False``.
+    tmp_clean : bool
+        If True and ``hidden=True``, drop the file content from the hidden
+        cache after processing to save space. Ignored when ``hidden=False``.
+    hidden : bool
+        Whether a hidden cache is being used. When False, files are
+        materialized directly in ``dataset_path`` and neither copy nor
+        drop operations are performed.
+
+    Returns
+    -------
+    list[GetResult]
+        Results for each file operation.
+
+    """
+    results: list[GetResult] = []
+
+    # When hidden=False, source and destination are the same
+    should_copy = copy and hidden
+    should_drop = tmp_clean and hidden
+
+    for file in candidate_files:
+        rel = hidden_dataset_path / file
         dest = dataset_path / rel
 
         # Skip if file already exists in destination
