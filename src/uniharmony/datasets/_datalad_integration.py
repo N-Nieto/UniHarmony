@@ -6,11 +6,9 @@ list available files, and explore dataset structure.
 """
 
 import shutil
-import subprocess
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
-from urllib.parse import urljoin
 
 import structlog
 from datalad import api as dl
@@ -20,26 +18,24 @@ logger = structlog.get_logger()
 
 __all__ = [
     "clean_tmp_folder",
+    "download_bids_dataset",
     "get_candidate_files",
     "get_derivative_files",
     "get_root_files",
     "initialize_dl_dataset",
     "list_available_files",
-    "load_bids_dataset",
     "validate_arguments",
 ]
 
 
-def load_bids_dataset(
+def download_bids_dataset(
     subjects: str | list[str],
     sessions: str | list[str],
     modalities: str | list[str],
     target_path: str | Path,
     suffixes: str | list[str],
     extensions: str | list[str],
-    dataset_source: str,
-    dataset_id: str,
-    dataset_extension: str,
+    dataset_source_URL: str,
     root_files: str | list[str],
     force_download: bool = False,
     copy: bool = True,
@@ -79,14 +75,8 @@ def load_bids_dataset(
     extensions : str or list[str], default ".json"
         File extensions to download (e.g., '.json', '.nii.gz').
 
-    dataset_source : str
-        Source URL or path to the BIDS-compatible dataset.
-
-    dataset_id : str
-        Identifier for the dataset to download (e.g., "ds004215" for ON-Harmony).
-
-    dataset_extension : str
-        Web extension. For example .git.
+    dataset_source_URL : str
+        Source URL to the BIDS-compatible dataset.
 
     root_files : str or list[str]
         Name of the file list of files to get from the dataset's root.
@@ -148,9 +138,8 @@ def load_bids_dataset(
     # ------------------------------------------------------------------
     #  Initialize the DataLad dataset
     # ------------------------------------------------------------------
-    source_url = urljoin(dataset_source.rstrip("/") + "/", f"{dataset_id}{dataset_extension}")
-    logger.debug(f"Source URL: {source_url}")
-    ds = initialize_dl_dataset(hidden_dataset_path, source_url)
+    logger.debug(f"Source URL: {dataset_source_URL}")
+    ds = initialize_dl_dataset(hidden_dataset_path, dataset_source_URL)
 
     # ------------------------------------------------------------------
     # Collect candidate files
@@ -240,9 +229,6 @@ def initialize_dl_dataset(
         If datalad is not installed on the system or cloning fails.
 
     """
-    if not _check_datalad_installed():
-        raise RuntimeError("datalad not installed!")
-
     dataset_path = Path(dataset_path)
 
     # Only clone if directory is empty or doesn't exist
@@ -252,7 +238,7 @@ def initialize_dl_dataset(
         try:
             dl.clone(
                 source=source_url,
-                path=str(dataset_path),
+                path=dataset_path,
                 result_renderer="disabled",
             )
         except Exception as e:
@@ -263,16 +249,7 @@ def initialize_dl_dataset(
             raise RuntimeError(f"Clone failed for {source_url}: directory is empty or missing")
 
     # Initialize DataLad dataset
-    ds = dl.Dataset(str(dataset_path))
-
-    # Install subdataset metadata
-    ds.get(
-        ".",
-        recursive=True,
-        get_data=False,
-        on_failure="ignore",
-        result_renderer="disabled",
-    )
+    ds = dl.Dataset(dataset_path)
 
     return ds
 
@@ -694,27 +671,6 @@ def _build_search_patterns(
     """
     suffix_patterns = ["*"] if suffixes == "all" else [f"*{suffix}" for suffix in suffixes]
     return [f"{suffix_pattern}{extension}" for suffix_pattern in suffix_patterns for extension in extensions]
-
-
-def _check_datalad_installed() -> bool:
-    """Check if the datalad command-line tool is available.
-
-    Returns
-    -------
-    bool
-        True if datalad is installed and callable, False otherwise.
-
-    """
-    try:
-        subprocess.run(
-            ["datalad", "--version"],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL,
-            check=True,
-        )
-        return True
-    except (RuntimeError, FileNotFoundError, subprocess.CalledProcessError):
-        return False
 
 
 def clean_tmp_folder(tmp_dir_name: str = "datalad_cache") -> None:
