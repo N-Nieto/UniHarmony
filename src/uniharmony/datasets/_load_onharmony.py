@@ -46,7 +46,7 @@ def load_ONharmony(  # noqa: N802
     suffixes: str | list[str] = "T1w",
     extensions: str | list[str] = ".json",
     target_path: str | Path = "./ON-Harmony",
-    dataset_source: str = "https://github.com/OpenNeuroDatasets/ds004712.git",
+    dataset_source_URL: str = "https://github.com/OpenNeuroDatasets/ds004712.git",
     root_files: str | list[str] = "participants.tsv",
     force_download: bool = False,
     copy: bool = True,
@@ -86,7 +86,7 @@ def load_ONharmony(  # noqa: N802
     target_path : str or pathlib.Path, default "./ONHarmony"
         Path to the visible dataset directory where files will be stored.
 
-    dataset_source : str, default "https://github.com/OpenNeuroDatasets/"
+    dataset_source_URL : str, default "https://github.com/OpenNeuroDatasets/"
         Source URL or path to the ON-Harmony dataset.
 
     dataset_id : str, default "ds004215"
@@ -133,7 +133,7 @@ def load_ONharmony(  # noqa: N802
         suffixes=suffixes,
         extensions=extensions,
         target_path=target_path,
-        dataset_source_URL=dataset_source,
+        dataset_source_URL=dataset_source_URL,
         root_files=root_files,
         force_download=force_download,
         copy=copy,
