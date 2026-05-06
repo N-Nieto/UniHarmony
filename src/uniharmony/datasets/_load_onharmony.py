@@ -5,12 +5,12 @@ from typing import Literal
 
 import structlog
 
-from uniharmony.datasets import download_derivatives_bids_dataset
+from uniharmony.datasets import download_bids_dataset
 
 
 logger = structlog.get_logger()
 
-__all__ = ["_list_available_possibilities", "load_onharmony"]
+__all__ = ["_list_available_possibilities", "load_ONharmony"]
 
 ONHARMONY_MODALITY_LIST = Literal["all", "anat", "dwi", "fmap", "func", "swi"]
 
@@ -39,7 +39,7 @@ ONHARMONY_SUBJECTS_LIST = Literal[
 ]
 
 
-def load_onharmony(
+def load_ONharmony(  # noqa: N802
     subjects: str | list[str] | ONHARMONY_SUBJECTS_LIST,
     sessions: str | list[str],
     modalities: str | list[str] | ONHARMONY_MODALITY_LIST,
@@ -126,7 +126,7 @@ def load_onharmony(
 
     """
     # Use the generic function to load a BIDS-compatible dataset.
-    download_derivatives_bids_dataset(
+    download_bids_dataset(
         subjects=subjects,
         sessions=sessions,
         modalities=modalities,
