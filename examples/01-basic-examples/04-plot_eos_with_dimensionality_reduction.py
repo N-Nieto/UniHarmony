@@ -19,7 +19,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.decomposition import FastICA
 
-from uniharmony import make_multisite_classification, verbosity
+from uniharmony import verbosity
+from uniharmony.datasets import make_multisite_classification
 from uniharmony.plot import plot_2d_projection
 
 
