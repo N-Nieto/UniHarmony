@@ -696,12 +696,14 @@ def _build_search_patterns(
     tasks_patters = ["*"] if tasks == "all" else [f"*task-{task}" for task in tasks]
     runs_patters = ["*"] if runs == "all" else [f"*run-{run}" for run in runs]
     suffix_patterns = ["*"] if suffixes == "all" else [f"*{suffix}" for suffix in suffixes]
+    extensions_patterns = ["*"] if extensions == "all" else [f"*{extension}" for extension in extensions]
+
     return [
-        f"{tasks_patter}{run_patter}{suffix_pattern}{extension}"
+        f"{tasks_patter}{run_patter}{suffix_pattern}{extension_patter}"
         for tasks_patter in tasks_patters
         for run_patter in runs_patters
         for suffix_pattern in suffix_patterns
-        for extension in extensions
+        for extension_patter in extensions_patterns
     ]
 
 
