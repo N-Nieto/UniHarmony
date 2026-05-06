@@ -739,7 +739,7 @@ def clean_tmp_folder(tmp_dir_name: str = "datalad_cache") -> None:
 
     if not tmp_path.exists():
         logger.warning(f"Temporary directory not found: {tmp_path}\nNothing to clean.")
-
-    logger.info(f"Removing temporary files: {tmp_path}")
-    shutil.rmtree(tmp_path)
-    logger.info("Temporary cache removed successfully.")
+    else:
+        logger.info(f"Removing temporary files: {tmp_path}")
+        shutil.rmtree(tmp_path)
+        logger.info("Temporary cache removed successfully.")
