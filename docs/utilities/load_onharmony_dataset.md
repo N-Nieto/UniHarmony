@@ -1,27 +1,26 @@
-# UniHarmony Helper function for downloading ON-Harmony dataset.
+(load-onharmony-dataset)=
+# ON-Harmony Dataset
 
 ## Overview
 
-This module provides a high-level interface for downloading the ON-Harmony dataset using datalad.
-
-The function allows to download specific files from the OpenNeuro repository.
-
-Note: Not all files exist for all sessions.
-
-
-### Understanding File Availability
-
-The ON-Harmony dataset (~58 GB) contains [^18^]:
+The ON-Harmony dataset (~58 GB) contains:
 
 - **20 participants** × **6 scanners** each
 - **9 participants** with additional **5 within-scanner repeats**
 - **5 modalities**: T1w, T2w, SWI, dMRI, rfMRI
 - Defaced anatomical images with defacing masks
 
+## Usage
 
-## Complete Examples
+```python
+from uniharmony.datasets import load_ONharmony
 
-### Example 1: Download All files from a subject and a session
+datasets = load_ONharmony()
+```
+
+## Examples
+
+### Download all files for a subject and a session
 
 ```python
 from uniharmony.datasets import load_ONharmony
@@ -59,7 +58,7 @@ load_ONharmony(
 )
 ```
 
-### Example 2: Direct Download (No Hidden Cache)
+### Direct Download (No hidden cache)
 
 ```python
 from uniharmony.datasets import (
@@ -82,7 +81,7 @@ load_ONharmony(
 
 ```
 
-### Example 4: Download Diffusion MRI with All Sidecars
+### Download diffusion MRI
 
 ```python
 from uniharmony.datasets import load_ONharmony
@@ -109,7 +108,7 @@ load_ONharmony(
 
 ### Working with ON-Harmony Session Names
 
-The ON-Harmony dataset uses session codes that encode scanner information [^18^]:
+The ON-Harmony dataset uses session codes that encode scanner information:
 
 | Session Code | Scanner | Site |
 |-------------|---------|------|
