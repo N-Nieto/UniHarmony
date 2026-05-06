@@ -5,7 +5,7 @@ from typing import Literal
 
 import structlog
 
-from uniharmony.datasets import download_bids_dataset
+from uniharmony.datasets import download_derivatives_bids_dataset
 
 
 logger = structlog.get_logger()
@@ -126,7 +126,7 @@ def load_onharmony(
 
     """
     # Use the generic function to load a BIDS-compatible dataset.
-    download_bids_dataset(
+    download_derivatives_bids_dataset(
         subjects=subjects,
         sessions=sessions,
         modalities=modalities,

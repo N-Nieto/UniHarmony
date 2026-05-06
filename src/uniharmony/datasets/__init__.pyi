@@ -1,7 +1,7 @@
 __all__ = [
     "_list_available_possibilities",
     "clean_tmp_folder",
-    "download_bids_dataset",
+    "download_derivatives_bids_dataset",
     "get_candidate_files",
     "get_derivative_files",
     "get_multisite_data_statistics",
@@ -17,7 +17,7 @@ __all__ = [
 
 from ._datalad_integration import (
     clean_tmp_folder,
-    download_bids_dataset,
+    download_derivatives_bids_dataset,
     get_candidate_files,
     get_derivative_files,
     initialize_dl_dataset,

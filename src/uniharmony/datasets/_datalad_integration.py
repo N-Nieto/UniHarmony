@@ -18,7 +18,7 @@ logger = structlog.get_logger()
 
 __all__ = [
     "clean_tmp_folder",
-    "download_bids_dataset",
+    "download_derivatives_bids_dataset",
     "get_candidate_files",
     "get_derivative_files",
     "get_root_files",
@@ -28,7 +28,7 @@ __all__ = [
 ]
 
 
-def download_bids_dataset(
+def download_derivatives_bids_dataset(
     subjects: str | list[str],
     sessions: str | list[str],
     modalities: str | list[str],
