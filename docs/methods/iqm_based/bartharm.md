@@ -1,3 +1,4 @@
+(bartharm-long)=
 # BARTharm
 
 **Paper**
@@ -45,14 +46,14 @@ $$
 y = \mu(\text{IQMs}) + \tau(\text{biological covariates}) + \epsilon
 $$
 
-- **μ(·)** → scanner-related effects (learned from IQMs)  
-- **τ(·)** → biological signal  
-- **ε** → noise  
+- **μ(·)** → scanner-related effects (learned from IQMs)
+- **τ(·)** → biological signal
+- **ε** → noise
 
 Both components are modeled using **independent BART ensembles**, allowing:
-- non-linear effects  
-- high-order interactions  
-- fully data-driven learning  
+- non-linear effects
+- high-order interactions
+- fully data-driven learning
 
 Harmonized data is obtained by removing the estimated scanner component:
 
