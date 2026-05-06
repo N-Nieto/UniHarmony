@@ -32,6 +32,8 @@ def download_bids_dataset(
     subjects: str | list[str],
     sessions: str | list[str],
     modalities: str | list[str],
+    tasks: str | list[str],
+    runs: str | list[str],
     target_path: str | Path,
     suffixes: str | list[str],
     extensions: str | list[str],
@@ -65,6 +67,12 @@ def download_bids_dataset(
 
     modalities : str or list[str]
         Modalities to download ("all", "anat", "dwi", "fmap", "func", "swi").
+
+    tasks : str or list[str]
+        Tasks to download.
+
+    runs : str or list[str]
+        Runs to download.
 
     target_path : str or pathlib.Path
         Path to the visible dataset directory where files will be stored.
@@ -144,7 +152,7 @@ def download_bids_dataset(
     # ------------------------------------------------------------------
     # Collect candidate files
     # ------------------------------------------------------------------
-    candidate_files = get_candidate_files(hidden_dataset_path, subjects, sessions, modalities, suffixes, extensions)
+    candidate_files = get_candidate_files(hidden_dataset_path, subjects, sessions, modalities, tasks, runs, suffixes, extensions)
 
     # ------------------------------------------------------------------
     # Download files
@@ -259,6 +267,8 @@ def get_candidate_files(
     subjects: str | list[str],
     sessions: str | list[str],
     modalities: str | list[str],
+    tasks: str | list[str],
+    runs: str | list[str],
     suffixes: str | list[str],
     extensions: str | list[str],
 ) -> list[Path]:
@@ -275,6 +285,12 @@ def get_candidate_files(
     modalities : str or list[str]
         Modality folder names (e.g. ``"anat"``, ``"func"``) to include,
         or ``"all"`` for every modality.
+    tasks : str or list[str]
+        tasks  (e.g. ``"eeg"``) to include,
+        or ``"all"`` for every task.
+    runs : str or list[str]
+        runs  (e.g. ``"1"``) to include,
+        or ``"all"`` for every run.
     suffixes : str or list[str]
         BIDS suffixes to match in filenames (e.g. ``"bold"``,
         ``"T1w"``, ``"dwi"``), or ``"all"`` for every suffix.
@@ -306,7 +322,7 @@ def get_candidate_files(
                 if not mod_dir.exists():
                     continue
 
-                for pattern in _build_search_patterns(suffixes, extensions):
+                for pattern in _build_search_patterns(tasks, runs, suffixes, extensions):
                     candidate_files.extend(mod_dir.glob(pattern))
 
     if not candidate_files:
@@ -651,6 +667,8 @@ def _resolve_modality_dirs(session_path: Path, modalities: str | list[str]) -> l
 
 
 def _build_search_patterns(
+    tasks: str | list[str],
+    runs: str | list[str],
     suffixes: str | list[str],
     extensions: str | list[str],
 ) -> list[str]:
@@ -658,6 +676,12 @@ def _build_search_patterns(
 
     Parameters
     ----------
+    tasks : str or list[str]
+        tasks  (e.g. ``"eeg"``) to include,
+        or ``"all"`` for every task.
+    runs : str or list[str]
+        runs  (e.g. ``"01"``) to include,
+        or ``"all"`` for every runs.
     suffixes : str or list[str]
         ``"all"`` or list of BIDS suffixes.
     extensions : str or list[str]
@@ -669,8 +693,16 @@ def _build_search_patterns(
         List of glob patterns (e.g. ``"*T1w.nii.gz"``, ``"*.json"``).
 
     """
+    tasks_patters = ["*"] if tasks == "all" else [f"*task-{task}" for task in tasks]
+    runs_patters = ["*"] if runs == "all" else [f"*run-{run}" for run in runs]
     suffix_patterns = ["*"] if suffixes == "all" else [f"*{suffix}" for suffix in suffixes]
-    return [f"{suffix_pattern}{extension}" for suffix_pattern in suffix_patterns for extension in extensions]
+    return [
+        f"{tasks_patter}{run_patter}{suffix_pattern}{extension}"
+        for tasks_patter in tasks_patters
+        for run_patter in runs_patters
+        for suffix_pattern in suffix_patterns
+        for extension in extensions
+    ]
 
 
 def clean_tmp_folder(tmp_dir_name: str = "datalad_cache") -> None:
