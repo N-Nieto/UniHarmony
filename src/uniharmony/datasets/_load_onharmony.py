@@ -8,9 +8,9 @@ import structlog
 from uniharmony.datasets import download_bids_dataset
 
 
-logger = structlog.get_logger()
+__all__ = ["load_ONharmony"]
 
-__all__ = ["_list_available_possibilities", "load_ONharmony"]
+logger = structlog.get_logger()
 
 ONHARMONY_MODALITY_LIST = Literal["all", "anat", "dwi", "fmap", "func", "swi"]
 
@@ -46,7 +46,7 @@ def load_ONharmony(  # noqa: N802
     suffixes: str | list[str] = "T1w",
     extensions: str | list[str] = ".json",
     target_path: str | Path = "./ON-Harmony",
-    dataset_source_URL: str = "https://github.com/OpenNeuroDatasets/ds004712.git",
+    dataset_url: str = "https://github.com/OpenNeuroDatasets/ds004712.git",
     root_files: str | list[str] = "participants.tsv",
     force_download: bool = False,
     copy: bool = True,
@@ -68,54 +68,36 @@ def load_ONharmony(  # noqa: N802
 
     Parameters
     ----------
-    subjects : str or list[str]
+    subjects : str or list
         Subject identifiers to download.
-
-    sessions : str or list[str]
+    sessions : str or list
         Session identifiers to download.
-
-    modalities : str or list[str]
+    modalities : str or list
         Modalities to download ("all", "anat", " dwi", "fmap", "func", "swi").
-
-    suffixes : str or list[str], default "T1w"
+    suffixes : str or list, optional (default "T1w")
         BIDS suffixes to match in filenames (e.g., 'T1w', 'T2w').
-
-    extensions : str or list[str], default ".json"
+    extensions : str or list, optional (default ".json")
         File extensions to download (e.g., '.json', '.nii.gz').
-
-    target_path : str or pathlib.Path, default "./ONHarmony"
+    target_path : str or pathlib.Path, optional (default "./ONHarmony")
         Path to the visible dataset directory where files will be stored.
-
-    dataset_source_URL : str, default "https://github.com/OpenNeuroDatasets/"
+    dataset_url : str, optional (default "https://github.com/OpenNeuroDatasets/")
         Source URL or path to the ON-Harmony dataset.
-
-    dataset_id : str, default "ds004215"
-        Identifier for the dataset to download (e.g., "ds004215" for ON-Harmony).
-
-    dataset_extension : str
-        Web extension. For example .git.
-
-    root_files: str | list[str].
+    root_files: str or list, optional (default "participants.tsv")
         Name of the file list of files to get from the dataset's root.
-
-    force_download : bool, default False
+    force_download : bool, optional (default False)
         Whether to force re-download the dataset if it already exists in cache.
-
-    copy : bool, default True
+    copy : bool, optional (default True)
         Whether to copy the downloaded files to the target directory to make it visible.
-
-    hidden : bool, default True
+    hidden : bool, optional (default True)
         Whether to use a hidden directory or not.
         If hidden=False, no hidden folder is made and the target directory acts as hidden.
         This will avoid getting the files in ``/tmp/{tmp_dir_name}`` and then copying them
         to the target directory.
-
-    tmp_clean : bool, default False
+    tmp_clean : bool, optional (default False)
         Whether to drop the downloaded files from the hidden DataLad dataset after copying.
         If True, files are dropped immediately after copying to the target directory
         (if copy=True), to minimize disk usage. Ignored when ``hidden=False``.
-
-    tmp_dir_name : str, default "datalad_cache"
+    tmp_dir_name : str, optional (default "datalad_cache")
         Name of the temporary directory to store the hidden dataset. Ignored when ``hidden=False``.
 
     Notes
@@ -125,7 +107,6 @@ def load_ONharmony(  # noqa: N802
      - Repeated calls are safe and will only download missing files.
 
     """
-    # Use the generic function to load a BIDS-compatible dataset.
     download_bids_dataset(
         subjects=subjects,
         sessions=sessions,
@@ -133,7 +114,7 @@ def load_ONharmony(  # noqa: N802
         suffixes=suffixes,
         extensions=extensions,
         target_path=target_path,
-        dataset_source_URL=dataset_source_URL,
+        dataset_url=dataset_url,
         root_files=root_files,
         force_download=force_download,
         copy=copy,
@@ -143,8 +124,6 @@ def load_ONharmony(  # noqa: N802
         tasks="all",  # this dataset does not have any task
         runs="all",  # this dataset does not have any run
     )
-
-    return
 
 
 def _list_available_possibilities() -> dict:
@@ -156,7 +135,7 @@ def _list_available_possibilities() -> dict:
         A dictionary with the possible combinations of modalities, data type and extension.
 
     """
-    onharmony_posibilities = {
+    return {
         "anat": {"T1w": [".nii.gz", ".json"], "T2w": [".nii.gz", ".json"], "mod-T1w_defacemask": [".nii.gz"]},
         "dwi": {"dir-AP_dwi": [".nii.gz", ".json", ".bval", ".bvec"], "dir-PA": [".nii.gz", ".json", ".bval", ".bvec"]},
         "fmap": {
@@ -173,4 +152,3 @@ def _list_available_possibilities() -> dict:
             "echo-2_part-phase_GRE": [".nii.gz", ".json"],
         },
     }
-    return onharmony_posibilities
