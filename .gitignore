@@ -75,6 +75,8 @@ docs/jupyter_execute
 docs/jupyter_execute/auto_examples
 docs/generated
 docs/make.bat
+docs/gen_modules/
+docs/sg_execution_times.rst
 
 # PyBuilder
 .pybuilder/

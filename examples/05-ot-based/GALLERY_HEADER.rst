@@ -1,2 +1,2 @@
-Optimal Transport for Domain Adaptation Methods
-===============================================
+Optimal Transport based Domain Adaptation
+=========================================

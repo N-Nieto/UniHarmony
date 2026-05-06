@@ -17,7 +17,7 @@ format-lint:
     uv run -- ruff format . && ruff check --fix .
 
 serve-docs:
-    uv run -- sphinx-autobuild docs docs/_build
+    uv run -- sphinx-autobuild --watch examples --ignore sg_execution_times.rst docs docs/_build
 
 lint:
     uv run -- tox -e ruff
