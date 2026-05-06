@@ -1,6 +1,7 @@
 __all__ = [
     "_list_available_possibilities",
     "clean_tmp_folder",
+    "download_bids_dataset",
     "get_candidate_files",
     "get_derivative_files",
     "get_multisite_data_statistics",
@@ -8,7 +9,6 @@ __all__ = [
     "list_available_files",
     "list_available_files",
     "load_MAREoS",
-    "load_bids_dataset",
     "load_onharmony",
     "make_multisite_classification",
     "print_statistics_summary",
@@ -17,11 +17,11 @@ __all__ = [
 
 from ._datalad_integration import (
     clean_tmp_folder,
+    download_bids_dataset,
     get_candidate_files,
     get_derivative_files,
     initialize_dl_dataset,
     list_available_files,
-    load_bids_dataset,
     validate_arguments,
 )
 from ._load_mareos import load_MAREoS

@@ -5,7 +5,7 @@ from typing import Literal
 
 import structlog
 
-from uniharmony.datasets import load_bids_dataset
+from uniharmony.datasets import download_bids_dataset
 
 
 logger = structlog.get_logger()
@@ -46,9 +46,7 @@ def load_onharmony(
     suffixes: str | list[str] = "T1w",
     extensions: str | list[str] = ".json",
     target_path: str | Path = "./ON-Harmony",
-    dataset_source: str = "https://github.com/OpenNeuroDatasets/",
-    dataset_id: str = "ds004712",
-    dataset_extension: str = ".git",
+    dataset_source: str = "https://github.com/OpenNeuroDatasets/ds004712.git",
     root_files: str | list[str] = "participants.tsv",
     force_download: bool = False,
     copy: bool = True,
@@ -128,16 +126,14 @@ def load_onharmony(
 
     """
     # Use the generic function to load a BIDS-compatible dataset.
-    load_bids_dataset(
+    download_bids_dataset(
         subjects=subjects,
         sessions=sessions,
         modalities=modalities,
         suffixes=suffixes,
         extensions=extensions,
         target_path=target_path,
-        dataset_source=dataset_source,
-        dataset_id=dataset_id,
-        dataset_extension=dataset_extension,
+        dataset_source_URL=dataset_source,
         root_files=root_files,
         force_download=force_download,
         copy=copy,
