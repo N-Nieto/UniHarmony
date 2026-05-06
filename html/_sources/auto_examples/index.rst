@@ -1,369 +1,482 @@
-.. _example_auto_examples_header:
+:orphan:
 
-🎛️ Examples
-============
+Examples
+========
 
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+Basic examples
+==============
+
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Characterise a multisite problem">
+
+.. only:: html
+
+  .. image:: /auto_examples/01-basic-examples/images/thumb/sphx_glr_05-plot_multisite_data_characterization_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/01-basic-examples/05-plot_multisite_data_characterization`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Characterise a multisite problem</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Compute metrics by site">
+
+.. only:: html
+
+  .. image:: /auto_examples/01-basic-examples/images/thumb/sphx_glr_02-run_metrics_by_site_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/01-basic-examples/02-run_metrics_by_site`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Compute metrics by site</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The first step before applying any harmonization technique is to understand and characterize our data.">
+
+.. only:: html
+
+  .. image:: /auto_examples/01-basic-examples/images/thumb/sphx_glr_04-plot_eos_with_dimensionality_reduction_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/01-basic-examples/04-plot_eos_with_dimensionality_reduction`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Explore EoS with dimensionality reduction techniques</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Characterise a multisite problem with MAREoS">
+
+.. only:: html
+
+  .. image:: /auto_examples/01-basic-examples/images/thumb/sphx_glr_06-plot_mareos_with_tsne_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/01-basic-examples/06-plot_mareos_with_tsne`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Characterise a multisite problem with MAREoS</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="uniharmony allows you to stratify the performance metrics by site, unraveling hidden patterns. In this example, we will not simulate site effects.">
+
+.. only:: html
+
+  .. image:: /auto_examples/01-basic-examples/images/thumb/sphx_glr_03-plot_biases_in_metrics_by_site_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/01-basic-examples/03-plot_biases_in_metrics_by_site`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Discover biases in metrics by site</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="EoS can have two rather opposite effects to ML pipelines.">
+
+.. only:: html
+
+  .. image:: /auto_examples/01-basic-examples/images/thumb/sphx_glr_01-plot_eos_in_ml_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/01-basic-examples/01-plot_eos_in_ml`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Impact of Effects of Site in ML</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+Multisite Data
+==============
+
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Load MAREoS dataset">
+
+.. only:: html
+
+  .. image:: /auto_examples/02-multisite-data/images/thumb/sphx_glr_02-run_load_mareos_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/02-multisite-data/02-run_load_mareos`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Load MAREoS dataset</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This example shows how to generate an unbalanced multisite dataset using the balance_per_site parameter of the make_multisite_classification function.">
+
+.. only:: html
+
+  .. image:: /auto_examples/02-multisite-data/images/thumb/sphx_glr_03-plot_generate_imbalance_multisite_data_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/02-multisite-data/03-plot_generate_imbalance_multisite_data`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Generate imbalance multisite data</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Multisite data generation">
+
+.. only:: html
+
+  .. image:: /auto_examples/02-multisite-data/images/thumb/sphx_glr_01-plot_generate_multisite_data_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/02-multisite-data/01-plot_generate_multisite_data`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Multisite data generation</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+ComBat Methods
+==============
+
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Analysing NeuroComBat behaviour with imbalance across sites">
+
+.. only:: html
+
+  .. image:: /auto_examples/03-combat-based/images/thumb/sphx_glr_02-plot_neurocombat_imbalance_across_sites_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/03-combat-based/02-plot_neurocombat_imbalance_across_sites`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Analysing NeuroComBat behaviour with imbalance across sites</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Binary classification with NeuroComBat">
+
+.. only:: html
+
+  .. image:: /auto_examples/03-combat-based/images/thumb/sphx_glr_01-plot_neurocombat_binary_classification_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/03-combat-based/01-plot_neurocombat_binary_classification`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Binary classification with NeuroComBat</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Analysing ComBatGAM behaviour with imbalance across sites">
+
+.. only:: html
+
+  .. image:: /auto_examples/03-combat-based/images/thumb/sphx_glr_05-plot_combatgam_imbalance_across_sites_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/03-combat-based/05-plot_combatgam_imbalance_across_sites`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Analysing ComBatGAM behaviour with imbalance across sites</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Binary classification with ComBatGAM">
+
+.. only:: html
+
+  .. image:: /auto_examples/03-combat-based/images/thumb/sphx_glr_04-plot_combatgam_binary_classification_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/03-combat-based/04-plot_combatgam_binary_classification`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Binary classification with ComBatGAM</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Using NeuroComBat with MAREoS dataset">
+
+.. only:: html
+
+  .. image:: /auto_examples/03-combat-based/images/thumb/sphx_glr_03-plot_neurocombat_with_mareos_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/03-combat-based/03-plot_neurocombat_with_mareos`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Using NeuroComBat with MAREoS dataset</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Using ComBatGAM with MAREoS dataset">
+
+.. only:: html
+
+  .. image:: /auto_examples/03-combat-based/images/thumb/sphx_glr_06-plot_combatgam_with_mareos_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/03-combat-based/06-plot_combatgam_with_mareos`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Using ComBatGAM with MAREoS dataset</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+Interpolation Methods
+=====================
+
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Binary classification using ISI">
+
+.. only:: html
+
+  .. image:: /auto_examples/04-interpolation-based/images/thumb/sphx_glr_01-plot_isi_binary_classification_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/04-interpolation-based/01-plot_isi_binary_classification`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Binary classification using ISI</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Multiclass classification using ISI">
+
+.. only:: html
+
+  .. image:: /auto_examples/04-interpolation-based/images/thumb/sphx_glr_02-plot_isi_multiclass_classification_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/04-interpolation-based/02-plot_isi_multiclass_classification`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Multiclass classification using ISI</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="This notebook demonstrates the use of .InterSiteMatchedInterpolation for harmonizing multi-site neuroimaging data.">
+
+.. only:: html
+
+  .. image:: /auto_examples/04-interpolation-based/images/thumb/sphx_glr_03-plot_ismi_binary_classification_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/04-interpolation-based/03-plot_ismi_binary_classification`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Multisite Harmonization using Inter-Site Matched Interpolation (ISMI)</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
+
+Optimal Transport based Domain Adaptation
+=========================================
+
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbnails">
+
+.. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Binary classification using OTDA">
+
+.. only:: html
+
+  .. image:: /auto_examples/05-ot-based/images/thumb/sphx_glr_01-plot_binary_classification_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/05-ot-based/01-plot_binary_classification`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Binary classification using OTDA</div>
+    </div>
+
+
+.. thumbnail-parent-div-close
+
+.. raw:: html
+
+    </div>
 
 
 .. toctree::
-    :hidden:
+   :hidden:
+   :includehidden:
 
-    basic-examples/index
-    multisite-data/index
-    combat-based/index
-    interpolation-based/index
-    ot-based/index
 
+   /auto_examples/01-basic-examples/index.rst
+   /auto_examples/02-multisite-data/index.rst
+   /auto_examples/03-combat-based/index.rst
+   /auto_examples/04-interpolation-based/index.rst
+   /auto_examples/05-ot-based/index.rst
 
-Basic examples
---------------
 
+.. only:: html
 
-.. grid::
-    :class-container: msg-sd-container
-    :class-row: msg-sd-row
+  .. container:: sphx-glr-footer sphx-glr-footer-gallery
 
-    
-    .. grid-item-card:: :ref:`example_eos_in_ml`
-        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/01-EoS_in_ML.webp
-        :link: example_eos_in_ml
-        :link-type: ref
-        :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
-        :class-item: msg-sd-card-hover
-        :class-title: msg-sd-card-title
-        :class-img-top: msg-sd-card-img-top
-        :class-header: msg-sd-card-header
-        :class-body: msg-sd-card-body
-        :class-footer: msg-sd-card-footer
-        :text-align: center
+    .. container:: sphx-glr-download sphx-glr-download-python
 
+      :download:`Download all examples in Python source code: auto_examples_python.zip </auto_examples/auto_examples_python.zip>`
 
-    
-    .. grid-item-card:: :ref:`example_compute_metrics_by_site`
-        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/no_image.webp
-        :link: example_compute_metrics_by_site
-        :link-type: ref
-        :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
-        :class-item: msg-sd-card-hover
-        :class-title: msg-sd-card-title
-        :class-img-top: msg-sd-card-img-top
-        :class-header: msg-sd-card-header
-        :class-body: msg-sd-card-body
-        :class-footer: msg-sd-card-footer
-        :text-align: center
+    .. container:: sphx-glr-download sphx-glr-download-jupyter
 
+      :download:`Download all examples in Jupyter notebooks: auto_examples_jupyter.zip </auto_examples/auto_examples_jupyter.zip>`
 
-    
-    .. grid-item-card:: :ref:`example_found_biases_in_metrics_by_site`
-        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/03-Found_biases_in_metrics_by_site.webp
-        :link: example_found_biases_in_metrics_by_site
-        :link-type: ref
-        :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
-        :class-item: msg-sd-card-hover
-        :class-title: msg-sd-card-title
-        :class-img-top: msg-sd-card-img-top
-        :class-header: msg-sd-card-header
-        :class-body: msg-sd-card-body
-        :class-footer: msg-sd-card-footer
-        :text-align: center
 
+.. only:: html
 
-    
-    .. grid-item-card:: :ref:`example_explore_eos_with_dimensionality_reduction`
-        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/04-Explore_EoS_with_dimensionality_reduction.webp
-        :link: example_explore_eos_with_dimensionality_reduction
-        :link-type: ref
-        :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
-        :class-item: msg-sd-card-hover
-        :class-title: msg-sd-card-title
-        :class-img-top: msg-sd-card-img-top
-        :class-header: msg-sd-card-header
-        :class-body: msg-sd-card-body
-        :class-footer: msg-sd-card-footer
-        :text-align: center
+ .. rst-class:: sphx-glr-signature
 
-
-    
-    .. grid-item-card:: :ref:`example_multisite_data_characterization_example`
-        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/05-Multisite_data_characterization_example.webp
-        :link: example_multisite_data_characterization_example
-        :link-type: ref
-        :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
-        :class-item: msg-sd-card-hover
-        :class-title: msg-sd-card-title
-        :class-img-top: msg-sd-card-img-top
-        :class-header: msg-sd-card-header
-        :class-body: msg-sd-card-body
-        :class-footer: msg-sd-card-footer
-        :text-align: center
-
-
-    
-    .. grid-item-card:: :ref:`example_explore_mareos_with_tsne`
-        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/06-Explore_MAREoS_with_tSNE.webp
-        :link: example_explore_mareos_with_tsne
-        :link-type: ref
-        :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
-        :class-item: msg-sd-card-hover
-        :class-title: msg-sd-card-title
-        :class-img-top: msg-sd-card-img-top
-        :class-header: msg-sd-card-header
-        :class-body: msg-sd-card-body
-        :class-footer: msg-sd-card-footer
-        :text-align: center
-
-
-
-
-Multisite Data
---------------
-
-
-.. grid::
-    :class-container: msg-sd-container
-    :class-row: msg-sd-row
-
-    
-    .. grid-item-card:: :ref:`example_generate_multisite_data_example`
-        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/01-Generate_multisite_data_example.webp
-        :link: example_generate_multisite_data_example
-        :link-type: ref
-        :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
-        :class-item: msg-sd-card-hover
-        :class-title: msg-sd-card-title
-        :class-img-top: msg-sd-card-img-top
-        :class-header: msg-sd-card-header
-        :class-body: msg-sd-card-body
-        :class-footer: msg-sd-card-footer
-        :text-align: center
-
-
-    
-    .. grid-item-card:: :ref:`example_load_mareos_example`
-        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/no_image.webp
-        :link: example_load_mareos_example
-        :link-type: ref
-        :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
-        :class-item: msg-sd-card-hover
-        :class-title: msg-sd-card-title
-        :class-img-top: msg-sd-card-img-top
-        :class-header: msg-sd-card-header
-        :class-body: msg-sd-card-body
-        :class-footer: msg-sd-card-footer
-        :text-align: center
-
-
-    
-    .. grid-item-card:: :ref:`example_generate_imbalance_multisite_data_example`
-        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/03-Generate_imbalance_multisite_data_example.webp
-        :link: example_generate_imbalance_multisite_data_example
-        :link-type: ref
-        :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
-        :class-item: msg-sd-card-hover
-        :class-title: msg-sd-card-title
-        :class-img-top: msg-sd-card-img-top
-        :class-header: msg-sd-card-header
-        :class-body: msg-sd-card-body
-        :class-footer: msg-sd-card-footer
-        :text-align: center
-
-
-
-
-ComBat Methods
---------------
-
-
-.. grid::
-    :class-container: msg-sd-container
-    :class-row: msg-sd-row
-
-    
-    .. grid-item-card:: :ref:`example_neurocombat_binary_classification`
-        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/01-NeuroComBat_binary_classification.webp
-        :link: example_neurocombat_binary_classification
-        :link-type: ref
-        :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
-        :class-item: msg-sd-card-hover
-        :class-title: msg-sd-card-title
-        :class-img-top: msg-sd-card-img-top
-        :class-header: msg-sd-card-header
-        :class-body: msg-sd-card-body
-        :class-footer: msg-sd-card-footer
-        :text-align: center
-
-
-    
-    .. grid-item-card:: :ref:`example_neurocombat_imbalance_across_sites`
-        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/02-NeuroComBat_imbalance_across_sites.webp
-        :link: example_neurocombat_imbalance_across_sites
-        :link-type: ref
-        :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
-        :class-item: msg-sd-card-hover
-        :class-title: msg-sd-card-title
-        :class-img-top: msg-sd-card-img-top
-        :class-header: msg-sd-card-header
-        :class-body: msg-sd-card-body
-        :class-footer: msg-sd-card-footer
-        :text-align: center
-
-
-    
-    .. grid-item-card:: :ref:`example_neurocombat_in_mareos`
-        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/03-NeuroComBat_in_MAREoS.webp
-        :link: example_neurocombat_in_mareos
-        :link-type: ref
-        :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
-        :class-item: msg-sd-card-hover
-        :class-title: msg-sd-card-title
-        :class-img-top: msg-sd-card-img-top
-        :class-header: msg-sd-card-header
-        :class-body: msg-sd-card-body
-        :class-footer: msg-sd-card-footer
-        :text-align: center
-
-
-    
-    .. grid-item-card:: :ref:`example_combatgam_binary_classification`
-        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/04-ComBatGAM_binary_classification.webp
-        :link: example_combatgam_binary_classification
-        :link-type: ref
-        :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
-        :class-item: msg-sd-card-hover
-        :class-title: msg-sd-card-title
-        :class-img-top: msg-sd-card-img-top
-        :class-header: msg-sd-card-header
-        :class-body: msg-sd-card-body
-        :class-footer: msg-sd-card-footer
-        :text-align: center
-
-
-    
-    .. grid-item-card:: :ref:`example_combatgam_imbalance_across_sites`
-        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/05-ComBatGAM_imbalance_across_sites.webp
-        :link: example_combatgam_imbalance_across_sites
-        :link-type: ref
-        :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
-        :class-item: msg-sd-card-hover
-        :class-title: msg-sd-card-title
-        :class-img-top: msg-sd-card-img-top
-        :class-header: msg-sd-card-header
-        :class-body: msg-sd-card-body
-        :class-footer: msg-sd-card-footer
-        :text-align: center
-
-
-    
-    .. grid-item-card:: :ref:`example_combatgam_in_mareos`
-        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/06-ComBatGAM_in_MAREoS.webp
-        :link: example_combatgam_in_mareos
-        :link-type: ref
-        :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
-        :class-item: msg-sd-card-hover
-        :class-title: msg-sd-card-title
-        :class-img-top: msg-sd-card-img-top
-        :class-header: msg-sd-card-header
-        :class-body: msg-sd-card-body
-        :class-footer: msg-sd-card-footer
-        :text-align: center
-
-
-
-
-Interpolation Methods
----------------------
-
-
-.. grid::
-    :class-container: msg-sd-container
-    :class-row: msg-sd-row
-
-    
-    .. grid-item-card:: :ref:`example_isi_binary_classification_example`
-        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/01-ISI_binary_classification_example.webp
-        :link: example_isi_binary_classification_example
-        :link-type: ref
-        :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
-        :class-item: msg-sd-card-hover
-        :class-title: msg-sd-card-title
-        :class-img-top: msg-sd-card-img-top
-        :class-header: msg-sd-card-header
-        :class-body: msg-sd-card-body
-        :class-footer: msg-sd-card-footer
-        :text-align: center
-
-
-    
-    .. grid-item-card:: :ref:`example_isi_multiclass_classification_example`
-        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/02-ISI_multiclass_classification_example.webp
-        :link: example_isi_multiclass_classification_example
-        :link-type: ref
-        :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
-        :class-item: msg-sd-card-hover
-        :class-title: msg-sd-card-title
-        :class-img-top: msg-sd-card-img-top
-        :class-header: msg-sd-card-header
-        :class-body: msg-sd-card-body
-        :class-footer: msg-sd-card-footer
-        :text-align: center
-
-
-    
-    .. grid-item-card:: :ref:`example_ismi_binary_classification_example`
-        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/03-ISMI_binary_classification_example.webp
-        :link: example_ismi_binary_classification_example
-        :link-type: ref
-        :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
-        :class-item: msg-sd-card-hover
-        :class-title: msg-sd-card-title
-        :class-img-top: msg-sd-card-img-top
-        :class-header: msg-sd-card-header
-        :class-body: msg-sd-card-body
-        :class-footer: msg-sd-card-footer
-        :text-align: center
-
-
-
-
-Optimal Transport for Domain Adaptation Methods
------------------------------------------------
-
-
-.. grid::
-    :class-container: msg-sd-container
-    :class-row: msg-sd-row
-
-    
-    .. grid-item-card:: :ref:`example_ot_binary_classification_example`
-        :img-top: /auto_examples/myst_sphinx_gallery_thumbs/01-OT_binary_classification_example.webp
-        :link: example_ot_binary_classification_example
-        :link-type: ref
-        :shadow: md
-        :class-card: msg-sd-card sd-border-0 sd-rounded-2
-        :class-item: msg-sd-card-hover
-        :class-title: msg-sd-card-title
-        :class-img-top: msg-sd-card-img-top
-        :class-header: msg-sd-card-header
-        :class-body: msg-sd-card-body
-        :class-footer: msg-sd-card-footer
-        :text-align: center
-
-
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.github.io>`_

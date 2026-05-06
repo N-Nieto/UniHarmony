@@ -1,0 +1,904 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>OptimalTransportDomainAdaptation &#8212; uniharmony 0.0.3.dev89 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=3c74b3bc" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=ce92ff0e"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/ot_based/otda';</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="📂 CHANGELOG" href="../../changelog.html" />
+    <link rel="prev" title="uniharmony.ot" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">uniharmony 0.0.3.dev89 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">▶️ Getting Started</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../utilities/index.html">🛠️ Utilities</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/simulate_multisite_data.html">🧪 Multisite Data Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/load_mareos_datasets.html">📊 MAREoS Benchmark Datasets for Harmonization Method Evaluation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../methods/index.html">🧮 Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../methods/combat_based/index.html">🤺 ComBat-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/combat.html">ComBat and neuroComBat</a></li>
+
+
+
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/combat_gam.html">ComBat-GAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/covbat.html">CovBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/neuroharmony.html">Neuroharmony</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/longcombat.html">LongComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/deepcombat.html">DeepComBat</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/prettyharmony.html">PrettYharmonize</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../methods/interpolation_based/index.html">📈 Interpolation-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/interpolation_based/inter_site_matched_interpolation.html">Inter-Site Matched Interpolation (ISMI)</a></li>
+
+
+<li class="toctree-l3"><a class="reference internal" href="../../methods/interpolation_based/intra_site_interpolation.html">Intra Site Interpolation</a></li>
+
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../methods/iqm_based/index.html">🔬 IQM-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/iqm_based/bartharm.html">BARTharm</a></li>
+
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../examples/index.html">🎛️ Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/basic/index.html">Basic examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/05-plot_multisite_data_characterization.html">Characterise a multisite problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/02-run_metrics_by_site.html">Compute metrics by site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/04-plot_eos_with_dimensionality_reduction.html">Explore EoS with dimensionality reduction techniques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/06-plot_mareos_with_tsne.html">Characterise a multisite problem with MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/03-plot_biases_in_metrics_by_site.html">Discover biases in metrics by site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/01-plot_eos_in_ml.html">Impact of Effects of Site in ML</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/multisite_data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/02-run_load_mareos.html">Load MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/03-plot_generate_imbalance_multisite_data.html">Generate imbalance multisite data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/01-plot_generate_multisite_data.html">Multisite data generation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/combat/index.html">ComBat Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/02-plot_neurocombat_imbalance_across_sites.html">Analysing NeuroComBat behaviour with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/01-plot_neurocombat_binary_classification.html">Binary classification with NeuroComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/05-plot_combatgam_imbalance_across_sites.html">Analysing ComBatGAM behaviour with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/04-plot_combatgam_binary_classification.html">Binary classification with ComBatGAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/03-plot_neurocombat_with_mareos.html">Using NeuroComBat with MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/06-plot_combatgam_with_mareos.html">Using ComBatGAM with MAREoS dataset</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/interpolation/index.html">Interpolation Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/01-plot_isi_binary_classification.html">Binary classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/02-plot_isi_multiclass_classification.html">Multiclass classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/03-plot_ismi_binary_classification.html">Multisite Harmonization using Inter-Site Matched Interpolation (ISMI)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/ot/index.html">Optimal Transport based Domain Adaptation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/05-ot-based/01-plot_binary_classification.html">Binary classification using OTDA</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">🗺️ API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../utils/index.html">uniharmony</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../utils/make_multisite_classification.html">make_multisite_classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../utils/load_mareos.html">load_MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../utils/verbosity.html">verbosity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../utils/verbosity_context.html">verbosity_context</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../combat_based/index.html">uniharmony.combat</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../combat_based/combat.html">NeuroComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../combat_based/combat_gam.html">ComBatGAM</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../interpolation_based/index.html">uniharmony.interpolation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../interpolation_based/inter_site_matched_interpolation.html">InterSiteMatchedInterpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interpolation_based/intra_site_interpolation.html">IntraSiteInterpolation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">uniharmony.ot</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">OptimalTransportDomainAdaptation</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">📂 CHANGELOG</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/N-Nieto/uniharmony" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/api/ot_based/otda.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>OptimalTransportDomainAdaptation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.ot.OptimalTransportDomainAdaptation"><code class="docutils literal notranslate"><span class="pre">OptimalTransportDomainAdaptation</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.ot.OptimalTransportDomainAdaptation.fit"><code class="docutils literal notranslate"><span class="pre">OptimalTransportDomainAdaptation.fit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.ot.OptimalTransportDomainAdaptation.fit_transform"><code class="docutils literal notranslate"><span class="pre">OptimalTransportDomainAdaptation.fit_transform()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.ot.OptimalTransportDomainAdaptation.inverse_transform"><code class="docutils literal notranslate"><span class="pre">OptimalTransportDomainAdaptation.inverse_transform()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.ot.OptimalTransportDomainAdaptation.set_fit_request"><code class="docutils literal notranslate"><span class="pre">OptimalTransportDomainAdaptation.set_fit_request()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.ot.OptimalTransportDomainAdaptation.set_inverse_transform_request"><code class="docutils literal notranslate"><span class="pre">OptimalTransportDomainAdaptation.set_inverse_transform_request()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.ot.OptimalTransportDomainAdaptation.set_transform_request"><code class="docutils literal notranslate"><span class="pre">OptimalTransportDomainAdaptation.set_transform_request()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.ot.OptimalTransportDomainAdaptation.transform"><code class="docutils literal notranslate"><span class="pre">OptimalTransportDomainAdaptation.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="optimaltransportdomainadaptation">
+<h1>OptimalTransportDomainAdaptation<a class="headerlink" href="#optimaltransportdomainadaptation" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="uniharmony.ot.OptimalTransportDomainAdaptation">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">uniharmony.ot.</span></span><span class="sig-name descname"><span class="pre">OptimalTransportDomainAdaptation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ot_method</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">BaseTransport</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'emd'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'sqeuclidean'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'euclidean'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'braycurtis'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'canberra'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'chebyshev'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'cityblock'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'correlation'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'cosine'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'dice'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'hamming'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'jaccard'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'kulsinski'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'mahalanobis'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'matching'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'minkowski'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'rogerstanimoto'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'russellrao'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'seuclidean'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'sokalmichener'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'sokalsneath'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'wminkowski'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'yule'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'euclidean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">eta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cost_norm</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.14)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'median'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'max'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'log'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'loglog'</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">limit_max</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">copy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#uniharmony.ot.OptimalTransportDomainAdaptation" title="Link to this definition">#</a></dt>
+<dd><p>Optimal Transport for Domain Adaptation with reference site handling.</p>
+<p>This class extends POT’s BaseTransport to provide a harmonization interface
+where data from multiple sites is aligned to a reference site(s) using optimal
+transport. The implementation supports both string-based OT method selection
+and direct injection of pre-configured OT instances.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ot_method</strong><span class="classifier">str or BaseTransport instance, optional (default “emd”)</span></dt><dd><p>Optimal transport method to use. Can be either:</p>
+<ul class="simple">
+<li><p>A string: “emd”, “sinkhorn”/”s”, “sinkhorn_gl”/”s_gl”, “emd_laplace”/”emd_l”</p></li>
+<li><p>A pre-configured BaseTransport instance (e.g., ot.da.SinkhornTransport(reg_e=0.1))</p></li>
+</ul>
+</dd>
+<dt><strong>metric</strong><span class="classifier">str, optional (default “euclidean”)</span></dt><dd><p>Distance metric for cost matrix computation. Supports all metrics from
+scipy.spatial.distance.cdist and POT’s backend implementations.</p>
+</dd>
+<dt><strong>reg</strong><span class="classifier">float or None, optional (default 1.0)</span></dt><dd><p>Entropic regularization parameter. Used for Sinkhorn-based methods.</p>
+</dd>
+<dt><strong>eta</strong><span class="classifier">float or None, optional (default 0.1)</span></dt><dd><p>Regularization parameter for Laplace or group Lasso regularization.</p>
+</dd>
+<dt><strong>max_iter</strong><span class="classifier">int or None, optional (default 10)</span></dt><dd><p>Maximum number of iterations for iterative solvers.</p>
+</dd>
+<dt><strong>cost_norm</strong><span class="classifier">str or None, optional (default None)</span></dt><dd><p>Cost matrix normalization method: “median”, “max”, “log”, “loglog”.</p>
+</dd>
+<dt><strong>limit_max</strong><span class="classifier">int or None, optional (default 10)</span></dt><dd><p>Semi-supervised mode control. Sets infinite cost (10 * max(cost))
+for transport between different classes.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>ot_obj_</strong><span class="classifier">BaseTransport</span></dt><dd><p>The fitted underlying OT object (set during fit).</p>
+</dd>
+<dt><strong>ref_site_</strong><span class="classifier">str or list of str</span></dt><dd><p>The reference site(s) used for alignment.</p>
+</dd>
+<dt><strong>coupling_</strong><span class="classifier">array, shape (n_source_samples, n_target_samples)</span></dt><dd><p>The optimal coupling matrix (forwarded from <a href="#id1"><span class="problematic" id="id2">ot_obj_</span></a>).</p>
+</dd>
+<dt><strong>cost_</strong><span class="classifier">array</span></dt><dd><p>The computed cost matrix (forwarded from <a href="#id3"><span class="problematic" id="id4">ot_obj_</span></a>).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony.ot.OptimalTransportDomainAdaptation.fit" title="uniharmony.ot.OptimalTransportDomainAdaptation.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X, sites, ref_site[, y])</p></td>
+<td><p>Fit optimal transport from non-reference sites to reference site(s).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#uniharmony.ot.OptimalTransportDomainAdaptation.fit_transform" title="uniharmony.ot.OptimalTransportDomainAdaptation.fit_transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code></a>(X, sites, ref_site[, y, ...])</p></td>
+<td><p>Fit and transform in one step.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_metadata_routing</span></code>()</p></td>
+<td><p>Get metadata routing of this object.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</p></td>
+<td><p>Get parameters for this estimator.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony.ot.OptimalTransportDomainAdaptation.inverse_transform" title="uniharmony.ot.OptimalTransportDomainAdaptation.inverse_transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform</span></code></a>(X[, sites, y, batch_size])</p></td>
+<td><p>Transform data from reference back to original source domain.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_transform_labels</span></code>([yt])</p></td>
+<td><p>Propagate target labels <span class="math notranslate nohighlight">\(\mathbf{y_t}\)</span> to obtain estimated source labels <span class="math notranslate nohighlight">\(\mathbf{y_s}\)</span></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony.ot.OptimalTransportDomainAdaptation.set_fit_request" title="uniharmony.ot.OptimalTransportDomainAdaptation.set_fit_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_fit_request</span></code></a>(*[, ref_site, sites])</p></td>
+<td><p>Configure whether metadata should be requested to be passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#uniharmony.ot.OptimalTransportDomainAdaptation.set_inverse_transform_request" title="uniharmony.ot.OptimalTransportDomainAdaptation.set_inverse_transform_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_inverse_transform_request</span></code></a>(*[, ...])</p></td>
+<td><p>Configure whether metadata should be requested to be passed to the <code class="docutils literal notranslate"><span class="pre">inverse_transform</span></code> method.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_output</span></code>(*[, transform])</p></td>
+<td><p>Set output container.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_params</span></code>(**params)</p></td>
+<td><p>Set the parameters of this estimator.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony.ot.OptimalTransportDomainAdaptation.set_transform_request" title="uniharmony.ot.OptimalTransportDomainAdaptation.set_transform_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_transform_request</span></code></a>(*[, batch_size, sites])</p></td>
+<td><p>Configure whether metadata should be requested to be passed to the <code class="docutils literal notranslate"><span class="pre">transform</span></code> method.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#uniharmony.ot.OptimalTransportDomainAdaptation.transform" title="uniharmony.ot.OptimalTransportDomainAdaptation.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X[, sites, y, batch_size])</p></td>
+<td><p>Transform data using the fitted OT plan.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform_labels</span></code>([ys])</p></td>
+<td><p>Propagate source labels <span class="math notranslate nohighlight">\(\mathbf{y_s}\)</span> to obtain estimated target labels as in <span class="xref std std-ref">[27]</span>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Using string-based method selection</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">otda</span> <span class="o">=</span> <span class="n">OptimalTransportDomainAdaptation</span><span class="p">(</span><span class="n">ot_method</span><span class="o">=</span><span class="s2">&quot;sinkhorn&quot;</span><span class="p">,</span> <span class="n">reg</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">metric</span><span class="o">=</span><span class="s2">&quot;sqeuclidean&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">otda</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">sites_train</span><span class="p">,</span> <span class="n">ref_site</span><span class="o">=</span><span class="s2">&quot;site_A&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">labels</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_aligned</span> <span class="o">=</span> <span class="n">otda</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">sites_test</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Using pre-configured OT instance</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">ot.da</span><span class="w"> </span><span class="kn">import</span> <span class="n">SinkhornTransport</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ot_solver</span> <span class="o">=</span> <span class="n">SinkhornTransport</span><span class="p">(</span><span class="n">reg_e</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="s2">&quot;median&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">otda</span> <span class="o">=</span> <span class="n">OptimalTransportDomainAdaptation</span><span class="p">(</span><span class="n">ot_method</span><span class="o">=</span><span class="n">ot_solver</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">otda</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">sites_train</span><span class="p">,</span> <span class="n">ref_site</span><span class="o">=</span><span class="s2">&quot;site_A&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_aligned</span> <span class="o">=</span> <span class="n">otda</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">sites_test</span><span class="p">))</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="uniharmony.ot.OptimalTransportDomainAdaptation.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sites</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_site</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#uniharmony.ot.OptimalTransportDomainAdaptation" title="uniharmony.ot._otda.OptimalTransportDomainAdaptation"><span class="pre">OptimalTransportDomainAdaptation</span></a></span></span><a class="headerlink" href="#uniharmony.ot.OptimalTransportDomainAdaptation.fit" title="Link to this definition">#</a></dt>
+<dd><p>Fit optimal transport from non-reference sites to reference site(s).</p>
+<p>This method separates the data into reference (target) and non-reference
+(source) domains, then fits the optimal transport plan to map source
+distributions onto the reference distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>Input data from all sites.</p>
+</dd>
+<dt><strong>sites</strong><span class="classifier">array-like, shape (n_samples,)</span></dt><dd><p>Site labels for each sample. Must align with X.</p>
+</dd>
+<dt><strong>ref_site</strong><span class="classifier">str, int or list of str or list of int</span></dt><dd><p>Site identifier(s) to use as reference (target domain).
+If list, combines all specified sites as the reference distribution.</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">array-like, shape (n_samples,) or (n_samples, n_classes), optional (default None)</span></dt><dd><p>Labels for supervised/semi-supervised transport. Used for cost
+matrix computation. Must align with X if provided.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>self</strong><span class="classifier">OptimalTransportDomainAdaptation</span></dt><dd><p>Fitted instance.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="uniharmony.ot.OptimalTransportDomainAdaptation.fit_transform">
+<span class="sig-name descname"><span class="pre">fit_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sites</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_site</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.4)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">_ScalarT</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#uniharmony.ot.OptimalTransportDomainAdaptation.fit_transform" title="Link to this definition">#</a></dt>
+<dd><p>Fit and transform in one step.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>Input data.</p>
+</dd>
+<dt><strong>sites</strong><span class="classifier">array-like, shape (n_samples,)</span></dt><dd><p>Site labels.</p>
+</dd>
+<dt><strong>ref_site</strong><span class="classifier">str or list of str</span></dt><dd><p>Reference site(s).</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">array-like, optional (default None)</span></dt><dd><p>Labels for supervised transport.</p>
+</dd>
+<dt><strong>batch_size</strong><span class="classifier">int, optional (default 128)</span></dt><dd><p>Batch size for transformation.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>X_transformed</strong><span class="classifier">ndarray</span></dt><dd><p>Data aligned to reference distribution.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="uniharmony.ot.OptimalTransportDomainAdaptation.inverse_transform">
+<span class="sig-name descname"><span class="pre">inverse_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sites</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.4)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">_ScalarT</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#uniharmony.ot.OptimalTransportDomainAdaptation.inverse_transform" title="Link to this definition">#</a></dt>
+<dd><p>Transform data from reference back to original source domain.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>Reference domain data to map back.</p>
+</dd>
+<dt><strong>sites</strong><span class="classifier">array-like, shape (n_samples,), optional (default None)</span></dt><dd><p>Site labels for X. If provided, only reference site samples are
+inverse transformed. Non-reference samples are returned as-is.</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">array-like, shape (n_samples,) or (n_samples, n_classes), optional (default None)</span></dt><dd><dl class="simple">
+<dt>Labels for supervised transport. Must align with X if provided.</dt><dd><p>Used to ensure consistent handling of supervised transformations.</p>
+</dd>
+</dl>
+</dd>
+<dt><strong>batch_size</strong><span class="classifier">int, optional (default 128)</span></dt><dd><p>Batch size for transformation.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>X_inv_transformed</strong><span class="classifier">ndarray</span></dt><dd><p>Data mapped back to source distribution.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="uniharmony.ot.OptimalTransportDomainAdaptation.set_fit_request">
+<span class="sig-name descname"><span class="pre">set_fit_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_site</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sites</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#uniharmony.ot.OptimalTransportDomainAdaptation" title="uniharmony.ot._otda.OptimalTransportDomainAdaptation"><span class="pre">OptimalTransportDomainAdaptation</span></a></span></span><a class="headerlink" href="#uniharmony.ot.OptimalTransportDomainAdaptation.set_fit_request" title="Link to this definition">#</a></dt>
+<dd><p>Configure whether metadata should be requested to be passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method.</p>
+<p>Note that this method is only relevant when this estimator is used as a
+sub-estimator within a <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-meta-estimator" title="(in scikit-learn v1.8)"><span class="xref std std-term">meta-estimator</span></a> and metadata routing is enabled
+with <code class="docutils literal notranslate"><span class="pre">enable_metadata_routing=True</span></code> (see <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.set_config.html#sklearn.set_config" title="(in scikit-learn v1.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.set_config()</span></code></a>).
+Please check the <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(in scikit-learn v1.8)"><span class="xref std std-ref">User Guide</span></a> on how the routing
+mechanism works.</p>
+<p>The options for each parameter are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code>: metadata is requested, and passed to <code class="docutils literal notranslate"><span class="pre">fit</span></code> if provided. The request is ignored if metadata is not provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code>: metadata is not requested and the meta-estimator will not pass it to <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code>: metadata is not requested, and the meta-estimator will raise an error if the user provides it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: metadata should be passed to the meta-estimator with this given alias instead of the original name.</p></li>
+</ul>
+<p>The default (<code class="docutils literal notranslate"><span class="pre">sklearn.utils.metadata_routing.UNCHANGED</span></code>) retains the
+existing request. This allows you to change the request for some
+parameters and not others.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 1.3.</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ref_site</strong><span class="classifier">str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED</span></dt><dd><p>Metadata routing for <code class="docutils literal notranslate"><span class="pre">ref_site</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</p>
+</dd>
+<dt><strong>sites</strong><span class="classifier">str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED</span></dt><dd><p>Metadata routing for <code class="docutils literal notranslate"><span class="pre">sites</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">fit</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>self</strong><span class="classifier">object</span></dt><dd><p>The updated object.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="uniharmony.ot.OptimalTransportDomainAdaptation.set_inverse_transform_request">
+<span class="sig-name descname"><span class="pre">set_inverse_transform_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sites</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#uniharmony.ot.OptimalTransportDomainAdaptation" title="uniharmony.ot._otda.OptimalTransportDomainAdaptation"><span class="pre">OptimalTransportDomainAdaptation</span></a></span></span><a class="headerlink" href="#uniharmony.ot.OptimalTransportDomainAdaptation.set_inverse_transform_request" title="Link to this definition">#</a></dt>
+<dd><p>Configure whether metadata should be requested to be passed to the <code class="docutils literal notranslate"><span class="pre">inverse_transform</span></code> method.</p>
+<p>Note that this method is only relevant when this estimator is used as a
+sub-estimator within a <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-meta-estimator" title="(in scikit-learn v1.8)"><span class="xref std std-term">meta-estimator</span></a> and metadata routing is enabled
+with <code class="docutils literal notranslate"><span class="pre">enable_metadata_routing=True</span></code> (see <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.set_config.html#sklearn.set_config" title="(in scikit-learn v1.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.set_config()</span></code></a>).
+Please check the <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(in scikit-learn v1.8)"><span class="xref std std-ref">User Guide</span></a> on how the routing
+mechanism works.</p>
+<p>The options for each parameter are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code>: metadata is requested, and passed to <code class="docutils literal notranslate"><span class="pre">inverse_transform</span></code> if provided. The request is ignored if metadata is not provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code>: metadata is not requested and the meta-estimator will not pass it to <code class="docutils literal notranslate"><span class="pre">inverse_transform</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code>: metadata is not requested, and the meta-estimator will raise an error if the user provides it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: metadata should be passed to the meta-estimator with this given alias instead of the original name.</p></li>
+</ul>
+<p>The default (<code class="docutils literal notranslate"><span class="pre">sklearn.utils.metadata_routing.UNCHANGED</span></code>) retains the
+existing request. This allows you to change the request for some
+parameters and not others.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 1.3.</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>batch_size</strong><span class="classifier">str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED</span></dt><dd><p>Metadata routing for <code class="docutils literal notranslate"><span class="pre">batch_size</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">inverse_transform</span></code>.</p>
+</dd>
+<dt><strong>sites</strong><span class="classifier">str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED</span></dt><dd><p>Metadata routing for <code class="docutils literal notranslate"><span class="pre">sites</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">inverse_transform</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>self</strong><span class="classifier">object</span></dt><dd><p>The updated object.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="uniharmony.ot.OptimalTransportDomainAdaptation.set_transform_request">
+<span class="sig-name descname"><span class="pre">set_transform_request</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sites</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'$UNCHANGED$'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#uniharmony.ot.OptimalTransportDomainAdaptation" title="uniharmony.ot._otda.OptimalTransportDomainAdaptation"><span class="pre">OptimalTransportDomainAdaptation</span></a></span></span><a class="headerlink" href="#uniharmony.ot.OptimalTransportDomainAdaptation.set_transform_request" title="Link to this definition">#</a></dt>
+<dd><p>Configure whether metadata should be requested to be passed to the <code class="docutils literal notranslate"><span class="pre">transform</span></code> method.</p>
+<p>Note that this method is only relevant when this estimator is used as a
+sub-estimator within a <a class="reference external" href="https://scikit-learn.org/stable/glossary.html#term-meta-estimator" title="(in scikit-learn v1.8)"><span class="xref std std-term">meta-estimator</span></a> and metadata routing is enabled
+with <code class="docutils literal notranslate"><span class="pre">enable_metadata_routing=True</span></code> (see <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.set_config.html#sklearn.set_config" title="(in scikit-learn v1.8)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.set_config()</span></code></a>).
+Please check the <a class="reference external" href="https://scikit-learn.org/stable/metadata_routing.html#metadata-routing" title="(in scikit-learn v1.8)"><span class="xref std std-ref">User Guide</span></a> on how the routing
+mechanism works.</p>
+<p>The options for each parameter are:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">True</span></code>: metadata is requested, and passed to <code class="docutils literal notranslate"><span class="pre">transform</span></code> if provided. The request is ignored if metadata is not provided.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">False</span></code>: metadata is not requested and the meta-estimator will not pass it to <code class="docutils literal notranslate"><span class="pre">transform</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code>: metadata is not requested, and the meta-estimator will raise an error if the user provides it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">str</span></code>: metadata should be passed to the meta-estimator with this given alias instead of the original name.</p></li>
+</ul>
+<p>The default (<code class="docutils literal notranslate"><span class="pre">sklearn.utils.metadata_routing.UNCHANGED</span></code>) retains the
+existing request. This allows you to change the request for some
+parameters and not others.</p>
+<div class="versionadded">
+<p><span class="versionmodified added">Added in version 1.3.</span></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>batch_size</strong><span class="classifier">str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED</span></dt><dd><p>Metadata routing for <code class="docutils literal notranslate"><span class="pre">batch_size</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">transform</span></code>.</p>
+</dd>
+<dt><strong>sites</strong><span class="classifier">str, True, False, or None,                     default=sklearn.utils.metadata_routing.UNCHANGED</span></dt><dd><p>Metadata routing for <code class="docutils literal notranslate"><span class="pre">sites</span></code> parameter in <code class="docutils literal notranslate"><span class="pre">transform</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>self</strong><span class="classifier">object</span></dt><dd><p>The updated object.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="uniharmony.ot.OptimalTransportDomainAdaptation.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sites</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.14)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.4)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">_ScalarT</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#uniharmony.ot.OptimalTransportDomainAdaptation.transform" title="Link to this definition">#</a></dt>
+<dd><p>Transform data using the fitted OT plan.</p>
+<p>Transports samples from the source domain (non-reference sites) to the
+target domain (reference site). If sites are provided, only transforms
+non-reference samples; reference samples are returned unchanged.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>Input data to transform.</p>
+</dd>
+<dt><strong>sites</strong><span class="classifier">array-like, shape (n_samples,), optional (default None)</span></dt><dd><p>Site labels for X. If provided, only non-reference sites are
+transformed. Reference site samples are returned as-is.</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">array-like, shape (n_samples,) or (n_samples, n_classes), optional (default None)</span></dt><dd><dl class="simple">
+<dt>Labels for supervised transport. Must align with X if provided.</dt><dd><p>Used to ensure consistent handling of supervised transformations.</p>
+</dd>
+</dl>
+</dd>
+<dt><strong>batch_size</strong><span class="classifier">int, optional (default 128)</span></dt><dd><p>Batch size for out-of-sample transformation.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>X_transformed</strong><span class="classifier">ndarray, shape (n_samples, n_features)</span></dt><dd><p>Transformed data aligned to reference distribution.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Binary classification using OTDA"><img alt="" src="../../_images/sphx_glr_01-plot_binary_classification_thumb.png" />
+<p><a class="reference internal" href="../../auto_examples/05-ot-based/01-plot_binary_classification.html"><span class="doc">Binary classification using OTDA</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Binary classification using OTDA</div>
+</div></div></section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">uniharmony.ot</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../changelog.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">📂 CHANGELOG</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.ot.OptimalTransportDomainAdaptation"><code class="docutils literal notranslate"><span class="pre">OptimalTransportDomainAdaptation</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.ot.OptimalTransportDomainAdaptation.fit"><code class="docutils literal notranslate"><span class="pre">OptimalTransportDomainAdaptation.fit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.ot.OptimalTransportDomainAdaptation.fit_transform"><code class="docutils literal notranslate"><span class="pre">OptimalTransportDomainAdaptation.fit_transform()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.ot.OptimalTransportDomainAdaptation.inverse_transform"><code class="docutils literal notranslate"><span class="pre">OptimalTransportDomainAdaptation.inverse_transform()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.ot.OptimalTransportDomainAdaptation.set_fit_request"><code class="docutils literal notranslate"><span class="pre">OptimalTransportDomainAdaptation.set_fit_request()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.ot.OptimalTransportDomainAdaptation.set_inverse_transform_request"><code class="docutils literal notranslate"><span class="pre">OptimalTransportDomainAdaptation.set_inverse_transform_request()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.ot.OptimalTransportDomainAdaptation.set_transform_request"><code class="docutils literal notranslate"><span class="pre">OptimalTransportDomainAdaptation.set_transform_request()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.ot.OptimalTransportDomainAdaptation.transform"><code class="docutils literal notranslate"><span class="pre">OptimalTransportDomainAdaptation.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By uniharmony Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026, uniharmony Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
