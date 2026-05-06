@@ -20,8 +20,8 @@ jobs:
     steps:
       - name: Install system dependencies
         run: |
-          apt-get -qq update
-          apt-get -qq install -y \
+          sudo apt-get -qq update
+          sudo apt-get -qq install -y \
           git-annex
       - name: Configure Git for DataLad
         run: |
