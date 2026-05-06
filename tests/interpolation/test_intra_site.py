@@ -4,6 +4,8 @@ import numbers
 
 import numpy as np
 import pytest
+from imblearn.over_sampling import SMOTE
+from sklearn.linear_model import LogisticRegression
 
 from uniharmony.datasets import make_multisite_classification
 from uniharmony.interpolation import IntraSiteInterpolation
@@ -75,13 +77,40 @@ def test_basic_run(binary_data):
     assert yr.ndim == 1
 
 
+def test_basic_run_invalid_instance(binary_data):
+    """Model should run and return valid shapes."""
+    X, y, sites = binary_data
+    interpolator = LogisticRegression()
+    isi = IntraSiteInterpolation(interpolator=interpolator)
+    with pytest.raises(ValueError):
+        _, _ = isi.fit_resample(X, y, sites=sites)
+
+
+def test_basic_run_no_balance():
+    """Model should run but no resampling."""
+    X, y, sites = make_multisite_classification()
+    interpolator = SMOTE()
+
+    isi = IntraSiteInterpolation(interpolator=interpolator)
+    _, _ = isi.fit_resample(X, y, sites=sites)
+
+
+def test_basic_run_no_balance_small():
+    """Model should run but no resampling with small data."""
+    X, y, sites = make_multisite_classification(n_samples=[2, 19])
+    interpolator = SMOTE()
+
+    isi = IntraSiteInterpolation(interpolator=interpolator)
+    _, _ = isi.fit_resample(X, y, sites=sites)
+
+
 # ==============================================================================
 # Balance correctness
 # ==============================================================================
 
 
 @pytest.mark.parametrize("strategy", ["per_site", "global_max"])
-def test_balance(strategy, binary_data):
+def test_balance_strategy(strategy, binary_data):
     """Each site must be class-balanced after resampling."""
     X, y, sites = binary_data
     isi = IntraSiteInterpolation("random", balance_strategy=strategy)
@@ -92,6 +121,58 @@ def test_balance(strategy, binary_data):
     for site in np.unique(sr):
         counts = np.unique(yr[sr == site], return_counts=True)[1]
         assert len(set(counts)) == 1
+
+
+## Binning strategies
+@pytest.mark.parametrize("strategy", ["uniform", "quantile"])
+def test_binning_strategy(strategy, regression_data):
+    """Each strategies for binning_strategy."""
+    X, y, sites = regression_data
+    isi = IntraSiteInterpolation("random", binning_strategy=strategy)
+
+    _, _ = isi.fit_resample(X, y, sites=sites)
+
+
+def test_binning_strategy_invalid(regression_data):
+    """Invalid strategies for binning."""
+    X, y, sites = regression_data
+    isi = IntraSiteInterpolation("random", binning_strategy="invalid")
+    with pytest.raises(ValueError):
+        _, _ = isi.fit_resample(X, y, sites=sites)
+
+
+## continuos Binning strategies
+@pytest.mark.parametrize("strategy", ["uniform", "quantile"])
+def test_binning_strategy_cont_cov(strategy, covariate_data):
+    """Each strategies for binning_strategy_cont_cov(."""
+    X, y, sites, sex, age = covariate_data
+    isi = IntraSiteInterpolation("random")
+
+    _, _ = isi.fit_resample(
+        X,
+        y,
+        sites=sites,
+        categorical_covariate=sex,
+        continuous_covariate=age,
+        n_bins_cont_cov=2,
+        binning_strategy_cont_cov=strategy,
+    )
+
+
+def test_binning_strategy_invalid_cont_cov(covariate_data):
+    """Invalid strategies for binning_strategy_cont_cov."""
+    X, y, sites, sex, age = covariate_data
+    isi = IntraSiteInterpolation("random")
+    with pytest.raises(ValueError):
+        _, _ = isi.fit_resample(
+            X,
+            y,
+            sites=sites,
+            categorical_covariate=sex,
+            continuous_covariate=age,
+            n_bins_cont_cov=2,
+            binning_strategy_cont_cov="invalid",
+        )
 
 
 # ==============================================================================
@@ -165,6 +246,39 @@ def test_covariates(strategy, covariate_data):
     assert len(Xr) == len(yr)
 
 
+def test___sklearn_tags__():
+    """Test __sklearn_tags__."""
+    isi = IntraSiteInterpolation(
+        interpolator="random",
+    )
+    isi.__sklearn_tags__()
+
+
+def test_compatibility(binary_data):
+    """Test compatibility."""
+    X, y, _ = binary_data
+    isi = IntraSiteInterpolation()
+    isi._fit_resample(X, y)
+
+
+def test_covariates_categorical(covariate_data):
+    """Covariate stratification should work with binning-based grouping."""
+    X, y, sites, sex, _ = covariate_data
+
+    isi = IntraSiteInterpolation(
+        interpolator="random",
+    )
+
+    Xr, yr = isi.fit_resample(
+        X,
+        y,
+        sites=sites,
+        categorical_covariate=sex,
+    )
+
+    assert len(Xr) == len(yr)
+
+
 def test_covariates_requires_bins(covariate_data):
     """Continuous covariates without n_bins_cont_cov must raise ValueError."""
     X, y, sites, _, age = covariate_data
@@ -185,16 +299,6 @@ def test_covariates_requires_bins(covariate_data):
 # ==============================================================================
 # Regression
 # ==============================================================================
-
-
-def test_regression_requires_bins(regression_data):
-    """Regression without n_bins must raise ValueError."""
-    X, y, sites = regression_data
-
-    isi = IntraSiteInterpolation(task="regression")
-
-    with pytest.raises(ValueError):
-        isi.fit_resample(X, y, sites=sites)
 
 
 @pytest.mark.parametrize("strategy", ["per_site", "global_max"])
