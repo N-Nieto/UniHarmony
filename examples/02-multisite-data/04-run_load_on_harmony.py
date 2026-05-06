@@ -8,7 +8,7 @@ Load ON-Harmony dataset
 # -------
 
 from uniharmony import verbosity
-from uniharmony.datasets import clean_tmp_folder, load_ONharmony
+from uniharmony.datasets import clean_tmp, load_ONharmony
 
 
 verbosity("debug")
@@ -32,4 +32,4 @@ load_ONharmony(
 # --------
 
 # Later, clean up the temporary cache
-clean_tmp_folder("datalad_cache")
+clean_tmp("datalad_cache")
