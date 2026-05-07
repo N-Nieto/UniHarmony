@@ -14,7 +14,7 @@ from sklearn.model_selection import train_test_split
 
 from uniharmony import verbosity
 from uniharmony.datasets import make_multisite_classification
-from uniharmony.metrics import report_metric_by_site
+from uniharmony.metrics import report_metrics_by_site
 
 
 sns.set_theme(style="whitegrid")
@@ -37,15 +37,15 @@ X_train, X_test, y_train, y_test, sites_train, sites_test = train_test_split(X, 
 
 clf.fit(X_train, y_train)
 y_pred = clf.predict(X_test)
-metrics = report_metric_by_site(y_test, y_pred, sites_test, balanced_accuracy_score)
+metrics = report_metrics_by_site(y_test, y_pred, sites_test, balanced_accuracy_score)
 
-for key in metrics.keys():
-    print(f"For site {key}: bACC {metrics[key]:.4}")
+# for key in metrics.keys():
+#     print(f"For site {key}: bACC {metrics[key]:.4}")
 
 # %%
 
 # Compute metrics but now request the overall
-metrics = report_metric_by_site(y_test, y_pred, sites_test, balanced_accuracy_score, overall_performance=True)
+metrics = report_metrics_by_site(y_test, y_pred, sites_test, balanced_accuracy_score, overall_performance=True)
 
 # Compute the metric outside the function to compare.
 bacc = balanced_accuracy_score(y_true=y_test, y_pred=y_pred)
