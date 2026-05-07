@@ -128,15 +128,14 @@ class NeuroComBat(DesignMatrixMixin, LocationAndScaleMixin, TransformerMixin, Ba
         """
         logger.debug("Fitting")
 
-        # ######## Set up and check data ########
-        # Check that X and sites have correct shape and type, and convert sites if they are strings
+        # Check that X and sites have correct shape and type
         X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
         sites = check_array(sites, copy=self.copy, dtype=None, ensure_2d=False, estimator=self)
         check_consistent_length(X, sites)
         validate_sites(sites)
 
         # Check that categorical_covariates and continuous_covariates have correct shape and type if they are not None.
-        # Track of whether they were used during fit to check during transform
+        # Also, track whether they were used during fit to check during transform
         self._categorical_covariates_used = False
         if categorical_covariates is not None:
             self._categorical_covariates_used = True
@@ -259,10 +258,10 @@ class NeuroComBat(DesignMatrixMixin, LocationAndScaleMixin, TransformerMixin, Ba
         )
         logger.debug("Standardizing data across features")
         standardized_data, standardized_mean = self._standardize_across_features(
-            X,
-            design,
-            n_samples,
-            n_samples_per_site,
+            X=X,
+            design=design,
+            n_samples=n_samples,
+            n_samples_per_site=n_samples_per_site,
             fitting=False,
         )
 

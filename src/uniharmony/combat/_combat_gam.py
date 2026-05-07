@@ -50,6 +50,11 @@ class ComBatGAM(DesignMatrixMixin, LocationAndScaleMixin, TransformerMixin, Base
     copy : bool, optional (default True)
         Whether to copy objects when doing `check_array`.
 
+    Attributes
+    ----------
+    sites_ : array, shape (n_samples,)
+        Fitted site names.
+
     References
     ----------
     .. [1] Pomponio, R., Shou, H., Davatzikos, C., et al., (2019).
@@ -119,13 +124,14 @@ class ComBatGAM(DesignMatrixMixin, LocationAndScaleMixin, TransformerMixin, Base
 
         """
         logger.debug("Fitting")
-        # ######## Set up and check data ########
-        # Check that X and sites have correct shape and type, and convert sites if they are strings
+
+        # Check that X and sites have correct shape and type
         X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
         sites = check_array(sites, copy=self.copy, dtype=None, ensure_2d=False, estimator=self)
         check_consistent_length(X, sites)
         validate_sites(sites)
 
+        # Check smooth_covariates and its bounds if passed
         smooth_covariates = check_array(smooth_covariates, dtype=FLOAT_DTYPES, estimator=self)
         if smooth_covariates_bounds is None:
             smooth_covariates_bounds = (None, None)
@@ -138,7 +144,7 @@ class ComBatGAM(DesignMatrixMixin, LocationAndScaleMixin, TransformerMixin, Base
         )
 
         # Check that continuous_covariates has correct shape and type if it is not None.
-        # Track of whether it was used during fit to check during transform
+        # Also, track whether it was used during fit to check during transform
         self._continuous_covariates_used = False
         if continuous_covariates is not None:
             self._continuous_covariates_used = True
@@ -161,7 +167,6 @@ class ComBatGAM(DesignMatrixMixin, LocationAndScaleMixin, TransformerMixin, Base
         n_samples = sites.shape[0]
         idx_per_site = [list(np.where(sites == s)[0].tolist()) for s in self.sites_]
 
-        logger.debug("Making design matrix")
         design = self.fit_design_matrix(
             sites=sites,
             categorical_covariates=None,
