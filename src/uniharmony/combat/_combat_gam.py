@@ -133,6 +133,7 @@ class ComBatGAM(DesignMatrixMixin, LocationAndScaleMixin, TransformerMixin, Base
 
         # Check smooth_covariates and its bounds if passed
         smooth_covariates = check_array(smooth_covariates, dtype=FLOAT_DTYPES, estimator=self)
+        check_consistent_length(smooth_covariates, sites)
         if smooth_covariates_bounds is None:
             smooth_covariates_bounds = (None, None)
         logger.info(
@@ -149,6 +150,7 @@ class ComBatGAM(DesignMatrixMixin, LocationAndScaleMixin, TransformerMixin, Base
         if continuous_covariates is not None:
             self._continuous_covariates_used = True
             continuous_covariates = check_array(continuous_covariates, dtype=FLOAT_DTYPES, estimator=self)
+            check_consistent_length(continuous_covariates, sites)
 
             logger.warning(
                 "You specified continuous covariates to be preserved. "

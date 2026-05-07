@@ -140,11 +140,13 @@ class NeuroComBat(DesignMatrixMixin, LocationAndScaleMixin, TransformerMixin, Ba
         if categorical_covariates is not None:
             self._categorical_covariates_used = True
             categorical_covariates = check_array(categorical_covariates, dtype=None, estimator=self)
+            check_consistent_length(categorical_covariates, sites)
 
         self._continuous_covariates_used = False
         if continuous_covariates is not None:
             self._continuous_covariates_used = True
             continuous_covariates = check_array(continuous_covariates, dtype=FLOAT_DTYPES, estimator=self)
+            check_consistent_length(continuous_covariates, sites)
 
         if self._categorical_covariates_used or self._continuous_covariates_used:
             logger.warning(
