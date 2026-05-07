@@ -1,23 +1,4 @@
-"""Intra-site interpolation-based harmonization.
-
-This module provides the ``IntraSiteInterpolation`` transformer, a sampler
-designed to mitigate site-induced bias by enforcing class balance within each
-site independently.
-
-Key features
-------------
-- Site-wise class balancing using interpolation-based oversampling.
-- Optional stratification via categorical and/or continuous covariates.
-- Support for both classification and regression problems.
-- Regression targets are discretized into bins for balancing purposes.
-- Compatible with imbalanced-learn samplers.
-
-Design principles
------------------
-- Preserve covariate distributions when requested.
-- Guarantee exact class balance per site (or globally).
-- Provide robust fallbacks when interpolation is insufficient.
-"""
+"""Intra-site interpolation-based harmonization."""
 
 from collections import Counter
 from typing import Literal
