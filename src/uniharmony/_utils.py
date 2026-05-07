@@ -10,7 +10,6 @@ __all__ = [
     "handle_negative_variance",
     "minimum_samples_warning",
     "solve_ordinary_least_squares",
-    "validate_covariates",
     "validate_sites",
 ]
 
@@ -209,37 +208,6 @@ def minimum_samples_warning(n_samples_per_site: list[list[int]] | npt.NDArray, m
             f"Specified minimum is {min_samples_limit}. "
             "Results may be unstable or overfit."
         )
-
-
-def validate_covariates(covariates: npt.NDArray | None, n_samples: int, name: str) -> npt.NDArray | None:
-    """Validate covariates.
-
-    Parameters
-    ----------
-    covariates : array or None
-        The covariates.
-    n_samples : int
-        Sample count.
-    name : str
-        Covariate name.
-
-    Returns
-    -------
-    array or None
-        Validated covariates or None.
-
-    Raises
-    ------
-    ValueError
-        If covariates has incorrect shape.
-
-    """
-    if covariates is not None:
-        if covariates.ndim == 1:
-            covariates = covariates.reshape(-1, 1)
-        if covariates.shape[0] != n_samples:
-            raise ValueError(f"{name} has {covariates.shape[0]} samples but sites has {n_samples}")
-        return covariates
 
 
 def validate_sites(sites: npt.NDArray) -> None:
