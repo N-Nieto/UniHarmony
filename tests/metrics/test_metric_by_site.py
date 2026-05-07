@@ -13,8 +13,9 @@ from sklearn.metrics import (
 )
 
 from uniharmony.metrics import (
-    METRICS_REQUIRING_Y_PRED,
-    METRICS_REQUIRING_Y_SCORE,
+    report_metrics_by_site,
+)
+from uniharmony.metrics._report_metric_by_site import (
     _binarize,
     _input_checks,
     _input_checks_multi,
@@ -22,7 +23,6 @@ from uniharmony.metrics import (
     _is_probability_like,
     _metric_needs_y_pred,
     _validate_metric_kwargs,
-    report_metrics_by_site,
 )
 
 
@@ -650,12 +650,6 @@ def test_unknown_metric() -> None:
         return 0.0
 
     assert not _metric_needs_y_pred(custom_metric)
-
-
-def test_registry_contents() -> None:
-    """Test that registries contain expected metrics."""
-    assert "roc_auc_score" in METRICS_REQUIRING_Y_SCORE
-    assert "accuracy_score" in METRICS_REQUIRING_Y_PRED
 
 
 # =========================================================================

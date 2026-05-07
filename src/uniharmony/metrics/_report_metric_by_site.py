@@ -13,8 +13,6 @@ import numpy as np
 
 
 __all__ = [
-    "METRICS_REQUIRING_Y_PRED",
-    "METRICS_REQUIRING_Y_SCORE",
     "report_metrics_by_site",
 ]
 
@@ -77,24 +75,30 @@ def report_metrics_by_site(
     ----------
     y_true : np.ndarray
         Ground-truth (correct) target values.
+
     y_pred : np.ndarray
         Estimated targets as returned by a classifier, or probability
         estimates / decision function outputs.
+
     sites : np.ndarray
         Site identifiers for stratification. Can be strings or integers.
-    metrics : Callable | Sequence[Callable]
+
+    metrics : Callable or Sequence[Callable]
         Metric function or list of metric functions to compute (e.g., from
         ``sklearn.metrics``). Pass a single callable for one metric, or
         a sequence for multiple metrics.
+
     metric_kwargs : dict[str, Any] | Sequence[dict[str, Any]] | None, default=None
         Keyword arguments for each metric. If a single dict, it is passed
         to all metrics. If a sequence, ``metric_kwargs[i]`` is passed to
         ``metrics[i]``. Must have the same length as ``metrics``. Include
         ``threshold`` (default: 0.5) for metrics that require discrete
         predictions when ``y_pred`` contains continuous scores.
+
     overall_performance : bool, default=False
         If True, include an ``"overall"`` key for each metric computed
         across all sites.
+
     skip_empty_sites : bool, default=True
         If True, skip sites with no samples.
 
