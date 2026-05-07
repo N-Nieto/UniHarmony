@@ -12,6 +12,23 @@ This method is particularly effective when:
 - Covariate distributions (age, sex, disease severity) must be preserved during balancing
 - Working with regression tasks where the target is continuous and requires binning before balancing
 
+This module provides the ``IntraSiteInterpolation`` transformer, a sampler
+designed to mitigate site-induced bias by enforcing class balance within each
+site independently.
+
+Key features
+------------
+- Site-wise class balancing using interpolation-based oversampling.
+- Optional stratification via categorical and/or continuous covariates.
+- Support for both classification and regression problems.
+- Regression targets are discretized into bins for balancing purposes.
+- Compatible with imbalanced-learn samplers.
+
+Design principles
+-----------------
+- Preserve covariate distributions when requested.
+- Guarantee exact class balance per site (or globally).
+- Provide robust fallbacks when interpolation is insufficient.
 ---
 
 ## Mathematical Formulation
@@ -47,46 +64,17 @@ $$
 
 ---
 
-## Parameters
-
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `interpolator` | str or SamplerMixin | `"smote"` | Interpolator for non-stratified classification. Options: `"smote"`, `"borderline-smote"`, `"svm-smote"`, `"adasyn"`, `"kmeans-smote"`, `"random"`. Ignored when covariates are provided or task is regression. |
-| `interpolator_kwargs` | dict or None | None | Additional keyword arguments passed to `interpolator`. |
-| `random_state` | int or None | None | Random seed for reproducibility. |
-| `balance_strategy` | `"per_site"` or `"global_max"` | `"per_site"` | Target count strategy. `per_site`: each site's majority. `global_max`: largest class count across all sites. |
-| `alpha` | float or tuple | 0.3 | Interpolation weight for stratified mode. If float, constant. If tuple `(min, max)`, sampled uniformly per sample. Range [0, 1]. |
-| `n_bins` | int or None | None | Number of bins for regression target discretization. Default 10 if `task="regression"`. |
-| `binning_strategy` | `"uniform"` or `"quantile"` | `"uniform"` | How to create regression bins: equal width or equal frequency. |
-| `task` | `"auto"`, `"classification"`, or `"regression"` | `"auto"` | Task type. Auto-inferred from `y` dtype (integer → classification, float → regression). |
-
----
-
-## Attributes
-
-| Attribute | Type | Description |
-|-----------|------|-------------|
-| `samples_created_` | dict | Nested dict `{site: {class_label: n_created}}` tracking synthetic samples per class per site. |
-| `sites_resampled_` | ndarray | Site identifiers for the resampled dataset. |
-| `target_count_` | int or None | Target samples per class. Set for `global_max`; `None` for `per_site`. |
-| `bins_` | ndarray or None | Bin edges for regression. `None` for classification. |
-| `task_` | str | Inferred task type (`"classification"` or `"regression"`). |
-| `covariate_tolerance_` | ndarray or None | Validated tolerance array for continuous covariates. |
-
----
-
 ## Basic Usage
 
-### Classification (Default)
-
 ```python
-from uniharmony.interpolation import IntraSiteInterpolation
 import numpy as np
 
+from uniharmony.datasets import make_multisite_classification
+from uniharmony.interpolation import IntraSiteInterpolation
+
 # Your multi-site data
-X = np.random.randn(300, 50)          # Features
-y = np.random.randint(0, 2, 300)      # Binary targets
-sites = np.array(["Site_A"]*100 + ["Site_B"]*100 + ["Site_C"]*100)
+X, y, sites = make_multisite_classification(balance_per_site=[0.3, 0.7])
+
 
 # Initialize and fit
 isi = IntraSiteInterpolation(
@@ -102,46 +90,6 @@ print(f"Balanced: {len(X_balanced)} samples")
 print(f"Samples created: {isi.samples_created_}")
 ```
 
-### Global Maximum Balancing
-
-Balance all sites to the single largest class count found anywhere:
-
-```python
-isi = IntraSiteInterpolation(
-    balance_strategy="global_max",
-    interpolator="random",
-    random_state=42
-)
-
-X_balanced, y_balanced = isi.fit_resample(X, y, sites=sites)
-print(f"Global target count: {isi.target_count_}")
-```
-
----
-
-## Advanced Usage
-
-### Stratified Interpolation with Covariates
-
-Preserve demographic distributions while balancing classes. Synthetic samples are interpolated only between participants matching on all covariates:
-
-```python
-sex = np.array([["M"], ["F"], ...])      # Categorical covariate
-age = np.array([[25], [67], ...])        # Continuous covariate
-
-isi = IntraSiteInterpolation(
-    balance_strategy="per_site",
-    alpha=0.3,                           # Keep synthetic samples close to real
-    random_state=42
-)
-
-X_balanced, y_balanced = isi.fit_resample(
-    X, y, sites=sites,
-    categorical_covariate=sex,
-    continuous_covariate=age,
-    covariate_tolerance=np.array([5.0])  # Age within ±5 years
-)
-```
 
 **Matching hierarchy:**
 1. **Class/bin match**: Donor must belong to the same class (or regression bin)
@@ -153,43 +101,6 @@ If no matching donor is found, a random donor from the same class is used as fal
 ### Regression Support
 
 For continuous targets (e.g., disease severity scores, brain age), ISI automatically bins the target, balances bins intra-site, and interpolates synthetic targets continuously:
-
-```python
-# Continuous target
-y_reg = np.random.normal(50, 10, 300)
-
-isi = IntraSiteInterpolation(
-    task="regression",
-    n_bins=5,                # Discretize into 5 bins
-    binning_strategy="quantile",  # Equal-frequency bins
-    alpha=0.3,
-    random_state=42
-)
-
-X_balanced, y_balanced = isi.fit_resample(X, y_reg, sites=sites)
-
-print(f"Bin edges: {isi.bins_}")
-print(f"Target range preserved: [{y_balanced.min():.1f}, {y_balanced.max():.1f}]")
-```
-
-### Combined: Regression + Stratified + Global Max
-
-```python
-isi = IntraSiteInterpolation(
-    balance_strategy="global_max",
-    task="regression",
-    n_bins=5,
-    alpha=(0.2, 0.5),
-    random_state=42
-)
-
-X_balanced, y_balanced = isi.fit_resample(
-    X, y_reg, sites=sites,
-    categorical_covariate=sex,
-    continuous_covariate=age,
-    covariate_tolerance=np.array([3.0])
-)
-```
 
 ---
 
@@ -239,11 +150,9 @@ All sites are balanced to the single largest class count found across all sites.
 
 ## Implementation Notes
 
-- **Classification with covariates**: The `interpolator` parameter is ignored; covariate-matched interpolation is used instead.
-- **Regression without covariates**: Uses random duplication with alpha-based feature perturbation and continuous target interpolation.
 - **Post-hoc assertions**: After resampling, ISI verifies that all sites are correctly balanced. If the interpolator fails to produce enough samples (e.g., ADASYN with very small classes), a `RuntimeError` is raised.
 - **Memory**: Synthetic samples are generated per-site and concatenated. Memory scales linearly with the number of sites and the oversampling ratio.
-- **Missing classes**: With `global_max`, if a site lacks any class entirely, a `ValueError` is raised. Ensure all classes are present at all sites when using this strategy.
+- **Missing classes**:  Ensure all classes are present at all sites.
 
 ---
 
@@ -258,4 +167,4 @@ Source code: - https://github.com/N-Nieto/IntraSiteInterpolator.git
 
 ## Citation
 
-Paper under review.
+Paper under review
