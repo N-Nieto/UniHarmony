@@ -186,7 +186,12 @@ def report_metrics_by_site(
             y_pred_metric = _binarize(y_pred, threshold)
 
         if overall_performance:
-            results[metric_name]["overall"] = metric(y_true, y_pred_metric, **kwargs)
+            if _metric_needs_y_pred(metric) and y_is_scores:
+                threshold = kwargs.pop("threshold", 0.5)
+                y_pred_metric = _binarize(y_pred, threshold)
+                results[metric_name]["overall"] = metric(y_true, y_pred_metric, **kwargs)
+            else:
+                results[metric_name]["overall"] = metric(y_true, y_pred_metric, **kwargs)
 
         for site in np.unique(sites):
             mask = sites == site
