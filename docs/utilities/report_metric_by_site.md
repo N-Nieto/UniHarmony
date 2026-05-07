@@ -59,49 +59,6 @@ results = report_metrics_by_site(
 ```
 
 ---
-
-## API Reference
-
-### `report_metrics_by_site`
-
-Compute one or more metrics stratified by site.
-
-```python
-def report_metrics_by_site(
-    y_true: np.ndarray,
-    y_pred: np.ndarray,
-    sites: np.ndarray,
-    metrics: Callable | Sequence[Callable],
-    metric_kwargs: dict[str, Any] | Sequence[dict[str, Any]] | None = None,
-    overall_performance: bool = False,
-    skip_empty_sites: bool = True,
-) -> dict[str, dict[str | int, float]]
-```
-
-**Parameters**
-
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `y_true` | `np.ndarray` | Ground-truth (correct) target values |
-| `y_pred` | `np.ndarray` | Estimated targets, probability scores, or decision function outputs |
-| `sites` | `np.ndarray` | Site identifiers for stratification (strings or integers) |
-| `metrics` | `Callable \| Sequence[Callable]` | Metric function or list of metric functions to compute (e.g., from `sklearn.metrics`). Pass a single callable for one metric, or a sequence for multiple. |
-| `metric_kwargs` | `dict \| Sequence[dict] \| None` | Keyword arguments for metrics (see below) |
-| `overall_performance` | `bool` | Include `"overall"` key with aggregate metric |
-| `skip_empty_sites` | `bool` | Skip sites with no samples (if `False`, raises error) |
-
-**`metric_kwargs` Formats**
-
-| Format | Behavior |
-|--------|----------|
-| `None` | No kwargs for any metric (empty dicts) |
-| `dict` | Same kwargs applied to **all** metrics |
-| `Sequence[dict]` | `metric_kwargs[i]` passed to `metrics[i]` |
-
-**Returns**
-
-`dict[str, dict[str | int, float]]` — Dictionary mapping metric names to site-wise results. Each inner dictionary maps site identifiers to metric values. When a single metric is passed, the result contains one top-level key (the metric's `__name__`).
-
 **Auto-Binarization**
 
 If `y_pred` contains continuous scores but the metric requires discrete predictions, the scores are automatically binarized:
@@ -111,39 +68,6 @@ If `y_pred` contains continuous scores but the metric requires discrete predicti
 
 The `threshold` key is consumed during binarization and not passed to the metric itself.
 
-**Examples**
-
-```python
-from sklearn.metrics import accuracy_score, roc_auc_score, f1_score
-
-# Single metric (simplest case)
-report_metrics_by_site(y_true, y_scores, sites, accuracy_score)
-# {'accuracy_score': {'A': 1.0, 'B': 0.5}}
-
-# Single metric with kwargs
-report_metrics_by_site(
-    y_true, y_scores, sites, f1_score,
-    metric_kwargs={"threshold": 0.5, "average": "macro"}
-)
-
-# Multiple metrics
-report_metrics_by_site(
-    y_true, y_scores, sites,
-    metrics=[roc_auc_score, accuracy_score],
-    metric_kwargs=[{}, {"threshold": 0.5}],
-)
-
-# With overall performance
-report_metrics_by_site(
-    y_true, y_scores, sites,
-    metrics=[accuracy_score, roc_auc_score],
-    overall_performance=True,
-)
-# {'accuracy_score': {'overall': 0.75, 'A': 1.0, ...},
-#  'roc_auc_score': {'overall': 0.82, 'A': 1.0, ...}}
-```
-
----
 
 ## Prediction-Type Handling
 
