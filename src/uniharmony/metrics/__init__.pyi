@@ -1,6 +1,7 @@
 __all__ = [
     "METRICS_REQUIRING_Y_PRED",
     "METRICS_REQUIRING_Y_SCORE",
+    "_binarize",
     "_input_checks",
     "_input_checks_multi",
     "_is_binary_or_multiclass",
@@ -8,15 +9,13 @@ __all__ = [
     "_metric_needs_y_pred",
     "_metric_needs_y_score",
     "_validate_metric_kwargs",
-    "_validate_prediction_type",
-    "report_metric_by_site",
-    "report_metric_by_site",
-    "report_multimetrics_by_site",
+    "report_metrics_by_site",
 ]
 
 from ._report_metric_by_site import (
     METRICS_REQUIRING_Y_PRED,
     METRICS_REQUIRING_Y_SCORE,
+    _binarize,
     _input_checks,
     _input_checks_multi,
     _is_binary_or_multiclass,
@@ -24,7 +23,5 @@ from ._report_metric_by_site import (
     _metric_needs_y_pred,
     _metric_needs_y_score,
     _validate_metric_kwargs,
-    _validate_prediction_type,
-    report_metric_by_site,
-    report_multimetrics_by_site,
+    report_metrics_by_site,
 )
