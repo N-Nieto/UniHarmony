@@ -16,17 +16,13 @@ from sklearn.utils.validation import (
     check_consistent_length,
     check_is_fitted,
 )
-from statsmodels.gam.api import BSplines, GLMGam
+from statsmodels.gam.api import BSplines
 
-from uniharmony._utils import (
-    handle_near_zero_values,
-    handle_negative_variance,
-    minimum_samples_warning,
-    validate_sites,
-)
+from uniharmony._utils import validate_sites
 
 from ._design_matrix_mixin import DesignMatrixMixin
 from ._ls_mixin import LocationAndScaleMixin
+from ._standardization_mixin import StandardizationMixin
 
 
 __all__ = ["ComBatGAM"]
@@ -34,7 +30,7 @@ __all__ = ["ComBatGAM"]
 logger = structlog.get_logger()
 
 
-class ComBatGAM(DesignMatrixMixin, LocationAndScaleMixin, TransformerMixin, BaseEstimator):
+class ComBatGAM(DesignMatrixMixin, StandardizationMixin, LocationAndScaleMixin, TransformerMixin, BaseEstimator):
     """Harmonize multi-site scanner effects controlling for non-linear age effects.
 
     This is an improvement on NeuroComBat allowing for non-linear effects to be controlled by Generalized Additive Models (GAMs).
@@ -218,16 +214,14 @@ class ComBatGAM(DesignMatrixMixin, LocationAndScaleMixin, TransformerMixin, Base
         # For matrix operations, a modified design matrix is required
         design = np.concatenate((df_gam, self._bsplines.basis), axis=1)
 
-        logger.debug("Standardizing data across features")
-        standardized_data, _ = self._standardize_across_features(
+        standardized_data = self.fit_standardize(
             X=X,
             design=design,
             n_samples=n_samples,
             n_samples_per_site=n_samples_per_site,
-            smooth_term_cols=smooth_covariates_cols,
+            n_smooth_cols=smooth_covariates_cols,
             smooth_formula=formula,
             df_gam=df_gam,
-            fitting=True,
             epsilon=var_epsilon,
         )
 
@@ -298,7 +292,6 @@ class ComBatGAM(DesignMatrixMixin, LocationAndScaleMixin, TransformerMixin, Base
             raise ValueError("There is a site unseen during the fit method in the data.")
 
         n_samples = sites.shape[0]
-        n_samples_per_site = np.asarray([np.sum(sites == s) for s in self.sites_])
         idx_per_site = [list(np.where(sites == s)[0].tolist()) for s in self.sites_]
 
         design = self.transform_design_matrix(
@@ -326,22 +319,16 @@ class ComBatGAM(DesignMatrixMixin, LocationAndScaleMixin, TransformerMixin, Base
         # For matrix operations, a modified design matrix is required
         design = np.concatenate((df_gam, bs_basis), axis=1)
 
-        logger.debug("Standardizing data across features")
-        standardized_data, standardized_mean = self._standardize_across_features(
+        standardized_data, standardized_mean = self.transform_standardize(
             X=X,
             design=design,
             n_samples=n_samples,
-            n_samples_per_site=n_samples_per_site,
-            smooth_term_cols=None,
-            smooth_formula=None,
-            df_gam=None,
-            fitting=False,
         )
 
         bayes_data = self.harmonize(
-            standardized_data,
-            standardized_mean,
-            idx_per_site,
+            data=standardized_data,
+            mean=standardized_mean,
+            idx_per_site=idx_per_site,
         )
 
         return bayes_data.T
@@ -377,154 +364,6 @@ class ComBatGAM(DesignMatrixMixin, LocationAndScaleMixin, TransformerMixin, Base
 
         """
         return self.fit(X, sites, smooth_covariates, **fit_params).transform(X, sites, smooth_covariates, **fit_params)
-
-    def _standardize_across_features(
-        self,
-        X: npt.ArrayLike,
-        design: npt.NDArray,
-        n_samples: int,
-        n_samples_per_site: npt.NDArray,
-        smooth_term_cols: int | None,
-        smooth_formula: str | None,
-        df_gam: pd.DataFrame | None,
-        fitting: bool = False,
-        epsilon: float = 1e-8,
-    ) -> tuple[npt.NDArray, npt.NDArray]:
-        """Standardization of the features.
-
-        The magnitude of the features could create bias in the empirical
-        Bayes estimates of the prior distribution. To avoid this, the features
-        are standardized to all of them have similar overall mean and variance.
-        If smoothing is requested, ``beta_hat`` is calculated by smoothing with GAMs.
-
-        Parameters
-        ----------
-        X : array-like, shape (n_samples, n_features)
-            Features.
-        design : array
-            Design matrix.
-        n_samples : int
-            Sample count.
-        n_samples_per_site : array
-            Sample count per site.
-        smooth_term_cols : int or None
-            Smoothing terms count.
-        smooth_formula : str or None
-            Smoothing formula.
-        df_gam : pd.DataFrame or None
-            Dataframe for GAM.
-        bsplines : statsmodels.gam.api.BSplines or None
-            BSplines for GAM.
-        fitting : bool, optional (default False)
-            Whether fitting or not.
-        epsilon : float, optional (default 1e-8)
-            Small constant to add to variance to avoid division by zero.
-
-        Returns
-        -------
-        Standardized data : array, shape (n_features, n_samples)
-            Standardized data.
-        Standardized mean : array, shape (n_features, n_samples)
-            Standardized mean used during the process.
-
-        """
-        if fitting:
-            # =====================================================================
-            # STEP 1: Smoothing with GAMs
-            # =====================================================================
-            if X.shape[0] > 10:
-                logger.info("Smoothing more than 10 variables may take several minutes of computation.")
-            # Penalization weight (not the final weight)
-            alpha = np.array([1.0] * smooth_term_cols)
-            # Empty matrix for beta
-            self._beta_hat = np.zeros((design.shape[1], X.shape[0]))
-            # Estimate beta for each variable to be harmonized
-            for i in range(0, X.shape[0]):
-                df_gam.loc[:, "y"] = X[i, :]
-                gam_bs = GLMGam.from_formula(smooth_formula, data=df_gam, smoother=self._bsplines, alpha=alpha)
-                gam_bs.fit()
-                # Optimal penalization weights alpha can be obtained through gcv/kfold
-                # Note: kfold is faster, gcv is more robust
-                gam_bs.alpha = gam_bs.select_penweight_kfold()[0]
-                res_bs_optim = gam_bs.fit()
-                self._beta_hat[:, i] = res_bs_optim.params
-
-            # =====================================================================
-            # STEP 2: Compute weighted grand mean across sites
-            # =====================================================================
-            # PURPOSE: Create a reference mean representing the "average site"
-            # This becomes our harmonization target - all sites will be aligned to this
-            minimum_samples_warning(n_samples_per_site)
-
-            # Weighted average: each site's intercept weighted by sample proportion
-            site_weights = np.array(n_samples_per_site) / float(n_samples)
-            self._grand_mean = site_weights.T @ self._beta_hat[: self._n_sites, :]
-
-            # =====================================================================
-            # STEP 3: Compute pooled residual variance
-            # =====================================================================
-            # PURPOSE: Estimate variance after removing site/covariate effects
-            # This captures biological + noise variance, excluding batch effects
-            X_predicted = (design @ self._beta_hat).T  # Shape: (n_features, n_samples)
-            residuals = X - X_predicted
-            if n_samples < 30:
-                # Use sample variance for small datasets
-                self._var_pooled = np.sum(residuals**2, axis=1, keepdims=True) / (n_samples - 1)
-            else:
-                # Population variance for larger datasets (matches original behavior)
-                self._var_pooled = np.mean(residuals**2, axis=1, keepdims=True)
-
-            # Handle near-zero variance features
-            # Features with ~0 variance cause division by zero in standardization
-            # This can happen with constant features or features with very small range
-            self._var_pooled = handle_near_zero_values(self._var_pooled, epsilon=epsilon)
-        # End Fitting
-
-        # =====================================================================
-        # STEP 4: Construct target mean for each sample (harmonization target)
-        # =====================================================================
-        # The standardized_mean represents what each sample's mean SHOULD be
-        # after harmonization: grand_mean + covariate_effects (site effects REMOVED)
-        # STRUCTURE: standardized_mean = grand_mean (site-harmonized) + covariate_adjustment
-        # Component A: Grand mean replicated for all samples
-        # Shape: (n_features, n_samples) - same target mean for all samples
-        standardized_mean = self._grand_mean.T[:, np.newaxis] @ np.ones((1, n_samples))
-
-        # Component B: Add covariate effects (preserved biological variation)
-        # We create a modified design matrix with site columns zeroed out
-        # This removes site-specific intercepts but keeps covariate columns
-        design_covariates_only = design.copy()
-        design_covariates_only[:, : self._n_sites] = 0  # Zero out site effect columns
-
-        # Add covariate contributions: design_no_site @ beta_hat
-        # Only covariate rows of beta_hat contribute since site columns are zeroed
-        covariate_adjustment = (design_covariates_only @ self._beta_hat).T
-        standardized_mean += covariate_adjustment
-
-        # =====================================================================
-        # STEP 5: Standardize data to common scale
-        # =====================================================================
-        # FORMULA: Z = (X - target_mean) / pooled_std
-        #
-        # RESULT:
-        #   - Mean is centered relative to grand_mean + covariates (site effects removed)
-        #   - Variance normalized to ~1 across all features
-        #   - Features now on comparable scale for Empirical Bayes estimation
-
-        # Make sure the variance is not negative due to numerical issues before taking sqrt
-        self._var_pooled = handle_negative_variance(self._var_pooled)
-        pooled_std = np.sqrt(self._var_pooled)
-        standardized_data = (X - standardized_mean) / (pooled_std @ np.ones((1, n_samples)))
-
-        # =====================================================================
-        # STEP 6: Standardization stats for debugging
-        # =====================================================================
-        logger.debug("Standardization stats:")
-        logger.debug(f"  Grand mean range: [{self._grand_mean.min():.4f}, {self._grand_mean.max():.4f}]")
-        logger.debug(f"  Pooled std range: [{pooled_std.min():.4f}, {pooled_std.max():.4f}]")
-        logger.debug(f"  Standardized data mean: {standardized_data.mean():.6f} (should be ~0)")
-        logger.debug(f"  Standardized data std: {standardized_data.std():.4f} (should be ~1)")
-        return standardized_data, standardized_mean
 
     # Overridden for check_is_fitted() usage
     def __sklearn_is_fitted__(self) -> bool:

@@ -20,16 +20,11 @@ from sklearn.utils.validation import (
     check_is_fitted,
 )
 
-from uniharmony._utils import (
-    handle_near_zero_values,
-    handle_negative_variance,
-    minimum_samples_warning,
-    solve_ordinary_least_squares,
-    validate_sites,
-)
+from uniharmony._utils import validate_sites
 
 from ._design_matrix_mixin import DesignMatrixMixin
 from ._ls_mixin import LocationAndScaleMixin
+from ._standardization_mixin import StandardizationMixin
 
 
 __all__ = ["NeuroComBat"]
@@ -37,7 +32,7 @@ __all__ = ["NeuroComBat"]
 logger = structlog.get_logger()
 
 
-class NeuroComBat(DesignMatrixMixin, LocationAndScaleMixin, TransformerMixin, BaseEstimator):
+class NeuroComBat(DesignMatrixMixin, StandardizationMixin, LocationAndScaleMixin, TransformerMixin, BaseEstimator):
     """Harmonize scanner effects in multi-site imaging data.
 
     This transformer performs harmonization using a parametric empirical Bayes
@@ -171,13 +166,15 @@ class NeuroComBat(DesignMatrixMixin, LocationAndScaleMixin, TransformerMixin, Ba
             categorical_covariates=categorical_covariates,
             continuous_covariates=continuous_covariates,
         )
-        logger.debug("Standardizing data across features")
-        standardized_data, _ = self._standardize_across_features(
-            X,
-            design,
-            n_samples,
-            n_samples_per_site,
-            fitting=True,
+
+        standardized_data = self.fit_standardize(
+            X=X,
+            design=design,
+            n_samples=n_samples,
+            n_samples_per_site=n_samples_per_site,
+            n_smooth_cols=None,
+            smooth_formula=None,
+            df_gam=None,
             epsilon=var_epsilon,
         )
 
@@ -250,7 +247,6 @@ class NeuroComBat(DesignMatrixMixin, LocationAndScaleMixin, TransformerMixin, Ba
             raise ValueError("There is a site unseen during the fit method in the data.")
 
         n_samples = sites.shape[0]
-        n_samples_per_site = np.asarray([np.sum(sites == s) for s in self.sites_])
         idx_per_site = [list(np.where(sites == s)[0].tolist()) for s in self.sites_]
 
         design = self.transform_design_matrix(
@@ -258,19 +254,17 @@ class NeuroComBat(DesignMatrixMixin, LocationAndScaleMixin, TransformerMixin, Ba
             categorical_covariates=categorical_covariates,
             continuous_covariates=continuous_covariates,
         )
-        logger.debug("Standardizing data across features")
-        standardized_data, standardized_mean = self._standardize_across_features(
+
+        standardized_data, standardized_mean = self.transform_standardize(
             X=X,
             design=design,
             n_samples=n_samples,
-            n_samples_per_site=n_samples_per_site,
-            fitting=False,
         )
 
         bayes_data = self.harmonize(
-            standardized_data,
-            standardized_mean,
-            idx_per_site,
+            data=standardized_data,
+            mean=standardized_mean,
+            idx_per_site=idx_per_site,
         )
 
         return bayes_data.T
@@ -303,137 +297,6 @@ class NeuroComBat(DesignMatrixMixin, LocationAndScaleMixin, TransformerMixin, Ba
 
         """
         return self.fit(X, sites, **fit_params).transform(X, sites, **fit_params)
-
-    def _standardize_across_features(
-        self,
-        X: npt.ArrayLike,
-        design: npt.NDArray,
-        n_samples: int,
-        n_samples_per_site: npt.NDArray,
-        fitting: bool = False,
-        epsilon: float = 1e-8,
-    ) -> tuple[npt.NDArray, npt.NDArray]:
-        """Standardization of the features.
-
-        The magnitude of the features could create bias in the empirical
-        Bayes estimates of the prior distribution. To avoid this, the features
-        are standardized to all of them have similar overall mean and variance.
-
-        Parameters
-        ----------
-        X : array-like, shape (n_samples, n_features)
-            Features.
-        design : array
-            Design matrix.
-        n_samples : int
-            Sample count.
-        n_samples_per_site : array
-            Sample count per site.
-        fitting : bool, optional (default False)
-            Whether fitting or not.
-        epsilon : float, optional (default 1e-8)
-            Small constant to add to variance to avoid division by zero.
-
-        Returns
-        -------
-        Standardized data : array, shape (n_features, n_samples)
-            Standardized data.
-        Standardized mean : array, shape (n_features, n_samples)
-            Standardized mean used during the process.
-
-        """
-        if fitting:
-            # =====================================================================
-            # STEP 1: Fit OLS model to estimate site and covariate effects (fitting only)
-            # =====================================================================
-            # SOLVES: beta_hat = (X_design^T * X_design)^(-1) * X_design^T * X_data
-            # This is Ordinary Least Squares (OLS) - finds coefficients that minimize residuals
-            #
-            # beta_hat structure: [site_intercepts | covariate_effects] per feature
-            #   - Rows 0 to _n_sites-1: intercept for each site (location effect)
-            #   - Rows _n_sites+: effects of categorical/continuous covariates
-            # Solve OLS is the same as fitting a linear model: X = design @ beta_hat + error
-            # The step preservs the biological signal by modeling it as part of the residuals (error term)
-
-            gram_matrix = design.T @ design
-            self._beta_hat = solve_ordinary_least_squares(gram_matrix, X, design)
-
-            # =====================================================================
-            # STEP 2: Compute weighted grand mean across sites
-            # =====================================================================
-            # PURPOSE: Create a reference mean representing the "average site"
-            # This becomes our harmonization target - all sites will be aligned to this
-            minimum_samples_warning(n_samples_per_site)
-
-            # Weighted average: each site's intercept weighted by sample proportion
-            site_weights = np.array(n_samples_per_site) / float(n_samples)
-            self._grand_mean = site_weights.T @ self._beta_hat[: self._n_sites, :]
-
-            # =====================================================================
-            # STEP 3: Compute pooled residual variance
-            # =====================================================================
-            # PURPOSE: Estimate variance after removing site/covariate effects
-            # This captures biological + noise variance, excluding batch effects
-            X_predicted = (design @ self._beta_hat).T  # Shape: (n_features, n_samples)
-            residuals = X - X_predicted
-            if n_samples < 30:
-                # Use sample variance for small datasets
-                self._var_pooled = np.sum(residuals**2, axis=1, keepdims=True) / (n_samples - 1)
-            else:
-                # Population variance for larger datasets (matches original behavior)
-                self._var_pooled = np.mean(residuals**2, axis=1, keepdims=True)
-
-            # Handle near-zero variance features
-            # Features with ~0 variance cause division by zero in standardization
-            # This can happen with constant features or features with very small range
-            self._var_pooled = handle_near_zero_values(self._var_pooled, epsilon=epsilon)
-        # End Fitting
-
-        # =====================================================================
-        # STEP 4: Construct target mean for each sample (harmonization target)
-        # =====================================================================
-        # The standardized_mean represents what each sample's mean SHOULD be
-        # after harmonization: grand_mean + covariate_effects (site effects REMOVED)
-        # STRUCTURE: standardized_mean = grand_mean (site-harmonized) + covariate_adjustment
-        # Component A: Grand mean replicated for all samples
-        # Shape: (n_features, n_samples) - same target mean for all samples
-        standardized_mean = self._grand_mean.T[:, np.newaxis] @ np.ones((1, n_samples))
-
-        # Component B: Add covariate effects (preserved biological variation)
-        # We create a modified design matrix with site columns zeroed out
-        # This removes site-specific intercepts but keeps covariate columns
-        design_covariates_only = design.copy()
-        design_covariates_only[:, : self._n_sites] = 0  # Zero out site effect columns
-
-        # Add covariate contributions: design_no_site @ beta_hat
-        # Only covariate rows of beta_hat contribute since site columns are zeroed
-        covariate_adjustment = (design_covariates_only @ self._beta_hat).T
-        standardized_mean += covariate_adjustment
-
-        # =====================================================================
-        # STEP 5: Standardize data to common scale
-        # =====================================================================
-        # FORMULA: Z = (X - target_mean) / pooled_std
-        #
-        # RESULT:
-        #   - Mean is centered relative to grand_mean + covariates (site effects removed)
-        #   - Variance normalized to ~1 across all features
-        #   - Features now on comparable scale for Empirical Bayes estimation
-
-        # Make sure the variance is not negative due to numerical issues before taking sqrt
-        self._var_pooled = handle_negative_variance(self._var_pooled)
-        pooled_std = np.sqrt(self._var_pooled)
-        standardized_data = (X - standardized_mean) / (pooled_std @ np.ones((1, n_samples)))
-
-        # =====================================================================
-        # STEP 6: Standardization stats for debugging
-        # =====================================================================
-        logger.debug("Standardization stats:")
-        logger.debug(f"  Grand mean range: [{self._grand_mean.min():.4f}, {self._grand_mean.max():.4f}]")
-        logger.debug(f"  Pooled std range: [{pooled_std.min():.4f}, {pooled_std.max():.4f}]")
-        logger.debug(f"  Standardized data mean: {standardized_data.mean():.6f} (should be ~0)")
-        logger.debug(f"  Standardized data std: {standardized_data.std():.4f} (should be ~1)")
-        return standardized_data, standardized_mean
 
     # Overridden for check_is_fitted() usage
     def __sklearn_is_fitted__(self) -> bool:
