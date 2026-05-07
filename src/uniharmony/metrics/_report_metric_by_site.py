@@ -59,7 +59,7 @@ def report_metrics_by_site(
     sites: np.ndarray,
     metrics: Callable | Sequence[Callable],
     metric_kwargs: dict[str, Any] | Sequence[dict[str, Any]] | None = None,
-    overall_performance: bool = False,
+    overall_performance: bool = True,
     skip_empty_sites: bool = True,
 ) -> dict[str, dict[str | int, float]]:
     """Compute one or more metrics stratified by site.
@@ -95,7 +95,7 @@ def report_metrics_by_site(
         ``threshold`` (default: 0.5) for metrics that require discrete
         predictions when ``y_pred`` contains continuous scores.
 
-    overall_performance : bool, default=False
+    overall_performance : bool, default=True
         If True, include an ``"overall"`` key for each metric computed
         across all sites.
 
