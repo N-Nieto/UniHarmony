@@ -25,7 +25,7 @@ from uniharmony.metrics import (
     _validate_metric_kwargs,
     _validate_prediction_type,
     report_metric_by_site,
-    report_metrics_by_site,
+    report_multimetrics_by_site,
 )
 
 
@@ -344,7 +344,7 @@ def test_multiclass_predictions_accepted(multiclass_data) -> None:
 
 
 # =============================================================================
-# report_metrics_by_site — Multi-metric functionality
+# report_multimetrics_by_site — Multi-metric functionality
 # =============================================================================
 
 
@@ -353,7 +353,7 @@ def test_multiple_metrics_basic(binary_classification_data) -> None:
     y_true, y_pred, sites = binary_classification_data
     metrics = [accuracy_score, precision_score, recall_score]
 
-    results = report_metrics_by_site(y_true, y_pred, sites, metrics)
+    results = report_multimetrics_by_site(y_true, y_pred, sites, metrics)
 
     assert isinstance(results, dict)
     assert len(results) == 3
@@ -374,7 +374,7 @@ def test_multiple_metrics_with_overall(binary_classification_data) -> None:
     y_true, y_pred, sites = binary_classification_data
     metrics = [accuracy_score, f1_score]
 
-    results = report_metrics_by_site(y_true, y_pred, sites, metrics, overall_performance=True)
+    results = report_multimetrics_by_site(y_true, y_pred, sites, metrics, overall_performance=True)
 
     assert "overall" in results["accuracy_score"]
     assert "overall" in results["f1_score"]
@@ -385,7 +385,7 @@ def test_multiple_metrics_with_none_kwargs(binary_classification_data) -> None:
     y_true, y_pred, sites = binary_classification_data
     metrics = [accuracy_score, balanced_accuracy_score]
 
-    results = report_metrics_by_site(y_true, y_pred, sites, metrics, metric_kwargs=None)
+    results = report_multimetrics_by_site(y_true, y_pred, sites, metrics, metric_kwargs=None)
     assert len(results) == 2
 
 
@@ -394,7 +394,7 @@ def test_multiple_metrics_with_shared_kwargs(binary_classification_data) -> None
     y_true, y_pred, sites = binary_classification_data
     metrics = [f1_score, precision_score]
 
-    results = report_metrics_by_site(
+    results = report_multimetrics_by_site(
         y_true,
         y_pred,
         sites,
@@ -411,7 +411,7 @@ def test_multiple_metrics_with_individual_kwargs(binary_classification_data) -> 
     metrics = [f1_score, precision_score]
     kwargs = [{"average": "binary"}, {"zero_division": 0.0}]
 
-    results = report_metrics_by_site(y_true, y_pred, sites, metrics, metric_kwargs=kwargs)
+    results = report_multimetrics_by_site(y_true, y_pred, sites, metrics, metric_kwargs=kwargs)
     assert len(results) == 2
 
 
@@ -421,7 +421,7 @@ def test_multiple_metrics_kwargs_length_mismatch(binary_classification_data) -> 
     metrics = [accuracy_score, f1_score]
 
     with pytest.raises(ValueError, match="same length as metrics"):
-        report_metrics_by_site(
+        report_multimetrics_by_site(
             y_true,
             y_pred,
             sites,
@@ -437,7 +437,7 @@ def test_multiple_metrics_empty_list() -> None:
     sites = np.array([1, 1])
 
     with pytest.raises(ValueError, match="at least one callable"):
-        report_metrics_by_site(y_true, y_pred, sites, [])
+        report_multimetrics_by_site(y_true, y_pred, sites, [])
 
 
 def test_multiple_metrics_non_callable_in_list() -> None:
@@ -447,7 +447,7 @@ def test_multiple_metrics_non_callable_in_list() -> None:
     sites = np.array([1, 1])
 
     with pytest.raises(TypeError, match="metrics\\[1\\] must be callable"):
-        report_metrics_by_site(y_true, y_pred, sites, [accuracy_score, "not_callable"])
+        report_multimetrics_by_site(y_true, y_pred, sites, [accuracy_score, "not_callable"])
 
 
 def test_multiple_metrics_mixed_pred_and_score(binary_classification_data, binary_scores_data) -> None:
@@ -457,7 +457,7 @@ def test_multiple_metrics_mixed_pred_and_score(binary_classification_data, binar
 
     metrics = [accuracy_score, roc_auc_score]
     with pytest.raises(ValueError, match="requires continuous scores"):
-        report_metrics_by_site(y_true, y_pred, sites, metrics)
+        report_multimetrics_by_site(y_true, y_pred, sites, metrics)
 
 
 def test_multiple_metrics_with_scores(binary_scores_data) -> None:
@@ -465,7 +465,7 @@ def test_multiple_metrics_with_scores(binary_scores_data) -> None:
     y_true, y_scores, sites = binary_scores_data
     metrics = [roc_auc_score, average_precision_score]
 
-    results = report_metrics_by_site(y_true, y_scores, sites, metrics)
+    results = report_multimetrics_by_site(y_true, y_scores, sites, metrics)
     assert set(results.keys()) == {"roc_auc_score", "average_precision_score"}
 
 

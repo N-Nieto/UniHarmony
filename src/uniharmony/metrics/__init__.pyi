@@ -11,7 +11,7 @@ __all__ = [
     "_validate_prediction_type",
     "report_metric_by_site",
     "report_metric_by_site",
-    "report_metrics_by_site",
+    "report_multimetrics_by_site",
 ]
 
 from ._report_metric_by_site import (
@@ -26,5 +26,5 @@ from ._report_metric_by_site import (
     _validate_metric_kwargs,
     _validate_prediction_type,
     report_metric_by_site,
-    report_metrics_by_site,
+    report_multimetrics_by_site,
 )

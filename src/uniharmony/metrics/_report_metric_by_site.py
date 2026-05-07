@@ -17,7 +17,7 @@ __all__ = [
     "METRICS_REQUIRING_Y_PRED",
     "METRICS_REQUIRING_Y_SCORE",
     "report_metric_by_site",
-    "report_metrics_by_site",
+    "report_multimetrics_by_site",
 ]
 
 
@@ -143,7 +143,7 @@ def report_metric_by_site(
     return results
 
 
-def report_metrics_by_site(
+def report_multimetrics_by_site(
     y_true: np.ndarray,
     y_pred: np.ndarray,
     sites: np.ndarray,
