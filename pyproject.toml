@@ -90,6 +90,7 @@ line-length = 130
 extend-exclude = [
     "__init__.py",
     "_version.py",
+    "examples/**",
 ]
 
 [tool.ruff.lint]
