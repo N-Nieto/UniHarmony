@@ -17,7 +17,8 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-from uniharmony import make_multisite_classification, verbosity
+from uniharmony import verbosity
+from uniharmony.datasets import make_multisite_classification
 from uniharmony.interpolation import InterSiteMatchedInterpolation
 
 

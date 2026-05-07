@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>🧪 Multisite Data Simulation &#8212; uniharmony 0.0.3.dev89 documentation</title>
+    <title>Multisite Data Simulation &#8212; uniharmony 0.0.3.dev146 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=ce92ff0e"></script>
+    <script src="../_static/documentation_options.js?v=eaaf177c"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -54,7 +54,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'utilities/simulate_multisite_data';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="📊 MAREoS Benchmark Datasets for Harmonization Method Evaluation" href="load_mareos_datasets.html" />
+    <link rel="next" title="MAREoS Benchmark Datasets" href="load_mareos_datasets.html" />
     <link rel="prev" title="🛠️ Utilities" href="index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.3.dev89 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.3.dev146 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -148,8 +148,10 @@
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">▶️ Getting Started</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">🛠️ Utilities</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">🧪 Multisite Data Simulation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="load_mareos_datasets.html">📊 MAREoS Benchmark Datasets for Harmonization Method Evaluation</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Multisite Data Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_mareos_datasets.html">MAREoS Benchmark Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_onharmony_dataset.html">ON-Harmony Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datalad_integration.html">Datalad Integration</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../methods/index.html">🧮 Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -194,6 +196,7 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../examples/multisite_data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/04-run_load_on_harmony.html">Load ON-Harmony dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/02-run_load_mareos.html">Load MAREoS dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/03-plot_generate_imbalance_multisite_data.html">Generate imbalance multisite data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/01-plot_generate_multisite_data.html">Multisite data generation</a></li>
@@ -222,10 +225,17 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">🗺️ API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/utils/index.html">uniharmony</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../api/utils/make_multisite_classification.html">make_multisite_classification</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/utils/load_mareos.html">load_MAREoS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/utils/verbosity.html">verbosity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/utils/verbosity_context.html">verbosity_context</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/datasets/index.html">uniharmony.datasets</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/make_multisite_classification.html">make_multisite_classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/load_mareos.html">load_MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/load_on_harmony.html">load_ONharmony</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/download_bids_dataset.html">download_bids_dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/clean_tmp.html">clean_tmp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/list_available_files.html">list_available_files</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/combat_based/index.html">uniharmony.combat</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -395,7 +405,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>🧪 Multisite Data Simulation</h1>
+    <h1>Multisite Data Simulation</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -405,8 +415,8 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-s-this">What’s this?</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start">Quick Start</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#behind-the-scenes">Behind the Scenes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flexible-configuration">Flexible Configuration</a></li>
 </ul>
@@ -421,17 +431,16 @@
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="multisite-data-simulation">
-<span id="simulate-multisite-data"></span><h1>🧪 Multisite Data Simulation<a class="headerlink" href="#multisite-data-simulation" title="Link to this heading">#</a></h1>
-<section id="what-s-this">
-<h2>What’s this?<a class="headerlink" href="#what-s-this" title="Link to this heading">#</a></h2>
-<p>[uniharmony.make_multisite_classification][] helps researchers generate synthetic datasets that mimic real-world multi-center studies.
+<span id="simulate-multisite-data"></span><h1>Multisite Data Simulation<a class="headerlink" href="#multisite-data-simulation" title="Link to this heading">#</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">uniharmony.datasets.make_multisite_classfication</span></code> helps researchers generate synthetic datasets that mimic real-world multi-center studies.
 Whether you’re testing machine learning algorithms, developing statistical methods, or teaching data science concepts,
 this simulator creates realistic data with built-in complexities that mirror actual research scenarios.</p>
 </section>
-<section id="quick-start">
-<h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the simulator</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_multisite_classification</span>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_multisite_classification</span>
 
 <span class="c1"># Generate data with 3 sites, 500 samples total</span>
 <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span>
@@ -483,7 +492,7 @@ Work with binary classification (yes/no) or multi-class problems.</p>
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">📊 MAREoS Benchmark Datasets for Harmonization Method Evaluation</p>
+        <p class="prev-next-title">MAREoS Benchmark Datasets</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -505,8 +514,8 @@ Work with binary classification (yes/no) or multi-class problems.</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#what-s-this">What’s this?</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start">Quick Start</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#behind-the-scenes">Behind the Scenes</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#flexible-configuration">Flexible Configuration</a></li>
 </ul>

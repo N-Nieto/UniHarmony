@@ -12,7 +12,8 @@ import pandas as pd
 import seaborn as sns
 from sklearn.manifold import TSNE
 
-from uniharmony import load_MAREoS, verbosity
+from uniharmony import verbosity
+from uniharmony.datasets import load_MAREoS
 from uniharmony.plot import plot_2d_components_by_value, plot_2d_projection
 
 

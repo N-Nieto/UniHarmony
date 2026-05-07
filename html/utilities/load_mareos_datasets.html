@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>📊 MAREoS Benchmark Datasets for Harmonization Method Evaluation &#8212; uniharmony 0.0.3.dev89 documentation</title>
+    <title>MAREoS Benchmark Datasets &#8212; uniharmony 0.0.3.dev146 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=ce92ff0e"></script>
+    <script src="../_static/documentation_options.js?v=eaaf177c"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -54,8 +54,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'utilities/load_mareos_datasets';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="🧮 Methods" href="../methods/index.html" />
-    <link rel="prev" title="🧪 Multisite Data Simulation" href="simulate_multisite_data.html" />
+    <link rel="next" title="ON-Harmony Dataset" href="load_onharmony_dataset.html" />
+    <link rel="prev" title="Multisite Data Simulation" href="simulate_multisite_data.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.3.dev89 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.3.dev146 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -148,8 +148,10 @@
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">▶️ Getting Started</a></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">🛠️ Utilities</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="simulate_multisite_data.html">🧪 Multisite Data Simulation</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">📊 MAREoS Benchmark Datasets for Harmonization Method Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulate_multisite_data.html">Multisite Data Simulation</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">MAREoS Benchmark Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_onharmony_dataset.html">ON-Harmony Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datalad_integration.html">Datalad Integration</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../methods/index.html">🧮 Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -194,6 +196,7 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../examples/multisite_data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/04-run_load_on_harmony.html">Load ON-Harmony dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/02-run_load_mareos.html">Load MAREoS dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/03-plot_generate_imbalance_multisite_data.html">Generate imbalance multisite data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/01-plot_generate_multisite_data.html">Multisite data generation</a></li>
@@ -222,10 +225,17 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">🗺️ API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/utils/index.html">uniharmony</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../api/utils/make_multisite_classification.html">make_multisite_classification</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/utils/load_mareos.html">load_MAREoS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/utils/verbosity.html">verbosity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/utils/verbosity_context.html">verbosity_context</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/datasets/index.html">uniharmony.datasets</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/make_multisite_classification.html">make_multisite_classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/load_mareos.html">load_MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/load_on_harmony.html">load_ONharmony</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/download_bids_dataset.html">download_bids_dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/clean_tmp.html">clean_tmp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/list_available_files.html">list_available_files</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/combat_based/index.html">uniharmony.combat</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -395,7 +405,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>📊 MAREoS Benchmark Datasets for Harmonization Method Evaluation</h1>
+    <h1>MAREoS Benchmark Datasets</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -405,8 +415,8 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-and-purpose">Overview and Purpose</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start">Quick Start</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-structure-and-experimental-design">Dataset Structure and Experimental Design</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#effect">Effect</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#effect-type">Effect Type</a></li>
@@ -427,10 +437,10 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="mareos-benchmark-datasets-for-harmonization-method-evaluation">
-<span id="load-mareos-datasets"></span><h1>📊 MAREoS Benchmark Datasets for Harmonization Method Evaluation<a class="headerlink" href="#mareos-benchmark-datasets-for-harmonization-method-evaluation" title="Link to this heading">#</a></h1>
-<section id="overview-and-purpose">
-<h2>Overview and Purpose<a class="headerlink" href="#overview-and-purpose" title="Link to this heading">#</a></h2>
+  <section class="tex2jax_ignore mathjax_ignore" id="mareos-benchmark-datasets">
+<span id="load-mareos-datasets"></span><h1>MAREoS Benchmark Datasets<a class="headerlink" href="#mareos-benchmark-datasets" title="Link to this heading">#</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>The MAREoS (Methods Aiming to Remove Effect of Site) datasets constitute a standardized benchmark
 suite specifically designed for rigorous evaluation and comparison of data harmonization methods.
 Developed by
@@ -438,10 +448,10 @@ Developed by
 synthetic datasets provide controlled experimental conditions that enable systematic comparision of
 harmonization algorithm performance.</p>
 </section>
-<section id="quick-start">
-<h2>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading">#</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Import the helper function</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_MAREoS</span>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_MAREoS</span>
+
 <span class="c1"># Load the 8 datasets as a dictionary. Use the dictionary `keys` to access each dataset</span>
 <span class="n">datasets</span> <span class="o">=</span> <span class="n">load_MAREoS</span><span class="p">()</span>
 <span class="c1"># Each dataset contains X, y, sites, covs, folds</span>
@@ -488,15 +498,15 @@ The harmonization methods should remove this relationship, thus an ML model shou
 <section id="citation">
 <h2>Citation<a class="headerlink" href="#citation" title="Link to this heading">#</a></h2>
 <p>If you are using these datasets in your research, please cite the original publication:</p>
-<div class="highlight-biblatex notranslate"><div class="highlight"><pre><span></span>@article{solanes2023removing,
-  title={Removing the effects of the site in brain imaging machine-learning--Measurement and extendable benchmark},
-  author={Solanes, Aleix and Gosling, Corentin J and Fortea, Lydia and Ortu{\~n}o, Mar{\&#39;\i}a and Lopez-Soley, Elisabet and Llufriu, Sara and Madero, Santiago and Martinez-Heras, Eloy and Pomarol-Clotet, Edith and Solana, Elisabeth and others},
-  journal={NeuroImage},
-  volume={265},
-  pages={119800},
-  year={2023},
-  publisher={Elsevier}
-}
+<div class="highlight-bibtex notranslate"><div class="highlight"><pre><span></span><span class="nc">@article</span><span class="p">{</span><span class="nl">solanes2023removing</span><span class="p">,</span>
+<span class="w">  </span><span class="na">title</span><span class="p">=</span><span class="s">{Removing the effects of the site in brain imaging machine-learning--Measurement and extendable benchmark}</span><span class="p">,</span>
+<span class="w">  </span><span class="na">author</span><span class="p">=</span><span class="s">{Solanes, Aleix and Gosling, Corentin J and Fortea, Lydia and Ortu{\~n}o, Mar{\&#39;\i}a and Lopez-Soley, Elisabet and Llufriu, Sara and Madero, Santiago and Martinez-Heras, Eloy and Pomarol-Clotet, Edith and Solana, Elisabeth and others}</span><span class="p">,</span>
+<span class="w">  </span><span class="na">journal</span><span class="p">=</span><span class="s">{NeuroImage}</span><span class="p">,</span>
+<span class="w">  </span><span class="na">volume</span><span class="p">=</span><span class="s">{265}</span><span class="p">,</span>
+<span class="w">  </span><span class="na">pages</span><span class="p">=</span><span class="s">{119800}</span><span class="p">,</span>
+<span class="w">  </span><span class="na">year</span><span class="p">=</span><span class="s">{2023}</span><span class="p">,</span>
+<span class="w">  </span><span class="na">publisher</span><span class="p">=</span><span class="s">{Elsevier}</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </section>
@@ -519,15 +529,15 @@ The harmonization methods should remove this relationship, thus an ML model shou
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">🧪 Multisite Data Simulation</p>
+        <p class="prev-next-title">Multisite Data Simulation</p>
       </div>
     </a>
     <a class="right-next"
-       href="../methods/index.html"
+       href="load_onharmony_dataset.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">🧮 Methods</p>
+        <p class="prev-next-title">ON-Harmony Dataset</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -549,8 +559,8 @@ The harmonization methods should remove this relationship, thus an ML model shou
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview-and-purpose">Overview and Purpose</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start">Quick Start</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#dataset-structure-and-experimental-design">Dataset Structure and Experimental Design</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#effect">Effect</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#effect-type">Effect Type</a></li>

@@ -161,6 +161,23 @@ Multisite Data
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Load ON-Harmony dataset">
+
+.. only:: html
+
+  .. image:: /auto_examples/02-multisite-data/images/thumb/sphx_glr_04-run_load_on_harmony_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/02-multisite-data/04-run_load_on_harmony`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Load ON-Harmony dataset</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Load MAREoS dataset">
 
 .. only:: html

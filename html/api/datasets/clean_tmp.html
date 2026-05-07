@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>load_MAREoS &#8212; uniharmony 0.0.3.dev89 documentation</title>
+    <title>clean_tmp &#8212; uniharmony 0.0.3.dev146 documentation</title>
   
   
   
@@ -44,18 +44,18 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=ce92ff0e"></script>
+    <script src="../../_static/documentation_options.js?v=eaaf177c"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'api/utils/load_mareos';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/datasets/clean_tmp';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="verbosity" href="verbosity.html" />
-    <link rel="prev" title="make_multisite_classification" href="make_multisite_classification.html" />
+    <link rel="next" title="list_available_files" href="list_available_files.html" />
+    <link rel="prev" title="download_bids_dataset" href="download_bids_dataset.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.3.dev89 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.3.dev146 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -148,8 +148,10 @@
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">▶️ Getting Started</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../utilities/index.html">🛠️ Utilities</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../utilities/simulate_multisite_data.html">🧪 Multisite Data Simulation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../utilities/load_mareos_datasets.html">📊 MAREoS Benchmark Datasets for Harmonization Method Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/simulate_multisite_data.html">Multisite Data Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/load_mareos_datasets.html">MAREoS Benchmark Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/load_onharmony_dataset.html">ON-Harmony Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/datalad_integration.html">Datalad Integration</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../methods/index.html">🧮 Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -194,6 +196,7 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/multisite_data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/04-run_load_on_harmony.html">Load ON-Harmony dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/02-run_load_mareos.html">Load MAREoS dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/03-plot_generate_imbalance_multisite_data.html">Generate imbalance multisite data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/01-plot_generate_multisite_data.html">Multisite data generation</a></li>
@@ -221,11 +224,18 @@
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">🗺️ API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">uniharmony</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../utils/index.html">uniharmony</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../utils/verbosity.html">verbosity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../utils/verbosity_context.html">verbosity_context</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">uniharmony.datasets</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="make_multisite_classification.html">make_multisite_classification</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">load_MAREoS</a></li>
-<li class="toctree-l3"><a class="reference internal" href="verbosity.html">verbosity</a></li>
-<li class="toctree-l3"><a class="reference internal" href="verbosity_context.html">verbosity_context</a></li>
+<li class="toctree-l3"><a class="reference internal" href="load_mareos.html">load_MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="load_on_harmony.html">load_ONharmony</a></li>
+<li class="toctree-l3"><a class="reference internal" href="download_bids_dataset.html">download_bids_dataset</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">clean_tmp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="list_available_files.html">list_available_files</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../combat_based/index.html">uniharmony.combat</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -319,7 +329,7 @@
       
       
       
-      <li><a href="../../_sources/api/utils/load_mareos.md" target="_blank"
+      <li><a href="../../_sources/api/datasets/clean_tmp.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -395,7 +405,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>load_MAREoS</h1>
+    <h1>clean_tmp</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -405,8 +415,7 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.load_MAREoS"><code class="docutils literal notranslate"><span class="pre">load_MAREoS()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets.clean_tmp"><code class="docutils literal notranslate"><span class="pre">clean_tmp()</span></code></a></li>
 </ul>
             </nav>
         </div>
@@ -418,80 +427,42 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="load-mareos">
-<h1>load_MAREoS<a class="headerlink" href="#load-mareos" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="clean-tmp">
+<h1>clean_tmp<a class="headerlink" href="#clean-tmp" title="Link to this heading">#</a></h1>
 <dl class="py function">
-<dt class="sig sig-object py" id="uniharmony.load_MAREoS">
-<span class="sig-prename descclassname"><span class="pre">uniharmony.</span></span><span class="sig-name descname"><span class="pre">load_MAREoS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">effects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">effect_types</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">effect_examples</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.14)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_numpy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_dir</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><span class="pre">Path</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">force_download</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.14)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.14)"><span class="pre">dict</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://pandas.pydata.org/pandas-docs/dev/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas)"><span class="pre">DataFrame</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#uniharmony.load_MAREoS" title="Link to this definition">#</a></dt>
-<dd><p>Load multiple MAREoS datasets.</p>
+<dt class="sig sig-object py" id="uniharmony.datasets.clean_tmp">
+<span class="sig-prename descclassname"><span class="pre">uniharmony.datasets.</span></span><span class="sig-name descname"><span class="pre">clean_tmp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tmp_dir_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'datalad_cache'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span></span><a class="headerlink" href="#uniharmony.datasets.clean_tmp" title="Link to this definition">#</a></dt>
+<dd><p>Remove a temporary DataLad cache folder.</p>
+<p>This function deletes the specified folder from the system temporary
+directory, including all its contents (files, subdirectories, and
+DataLad metadata).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>effects</strong><span class="classifier">list of str, str or None, optional (default None)</span></dt><dd><p>List of effects to load. If None, loads all [“eos”, “true”]</p>
-</dd>
-<dt><strong>effect_types</strong><span class="classifier">list of str, str or None, optional (default None)</span></dt><dd><p>List of effect types to load.
-If None, loads all [“simple”, “interaction”]</p>
-</dd>
-<dt><strong>effect_examples</strong><span class="classifier">list of str, str or None, optional (default None)</span></dt><dd><p>List of examples to load.
-If None, loads all [“1”, “2”].</p>
-</dd>
-<dt><strong>as_numpy</strong><span class="classifier">bool, optional (default True)</span></dt><dd><p>If True, return <code class="docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>, else <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>.</p>
-</dd>
-<dt><strong>data_dir</strong><span class="classifier">Path | None, optional (default None)</span></dt><dd><p>Directory containing MAREoS data files. If None, downloads to cache.</p>
-</dd>
-<dt><strong>force_download</strong><span class="classifier">bool, optional (default False)</span></dt><dd><p>Force to download again the dataset in case of corrupt files.</p>
+<dt><strong>tmp_dir_name</strong><span class="classifier">str, default “datalad_cache”</span></dt><dd><p>Name of the temporary directory to remove.</p>
 </dd>
 </dl>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
 <dd class="field-even"><dl class="simple">
-<dt>dict of str and dict</dt><dd><p>Nested dictionary where keys are dataset names
-containing:</p>
-<ul class="simple">
-<li><p>“X”: Feature matrix</p></li>
-<li><p>“y”: Target labels</p></li>
-<li><p>“sites”: Site labels</p></li>
-<li><p>“covs”: Covariates</p></li>
-<li><p>“folds”: Cross-validation folds</p></li>
-</ul>
+<dt>FileNotFoundError</dt><dd><p>If the temporary directory does not exist.</p>
 </dd>
-</dl>
-</dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt>ValueError</dt><dd><p>If any parameter contains invalid values.</p>
+<dt>PermissionError</dt><dd><p>If the process lacks permission to delete the directory.</p>
 </dd>
 </dl>
 </dd>
 </dl>
 <p class="rubric">Examples</p>
-<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">datasets</span> <span class="o">=</span> <span class="n">load_MAREoS</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">datasets</span><span class="p">)</span>
-<span class="go">8</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">datasets</span> <span class="o">=</span> <span class="n">load_MAREoS</span><span class="p">(</span><span class="n">effects</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;eos&quot;</span><span class="p">],</span> <span class="n">effect_types</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;simple&quot;</span><span class="p">])</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">datasets</span><span class="p">)</span>
-<span class="go">2</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="nb">list</span><span class="p">(</span><span class="n">datasets</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
-<span class="go">[&#39;eos_simple1&#39;, &#39;eos_simple2&#39;]</span>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clean_tmp_folder</span><span class="p">(</span><span class="s2">&quot;datalad_cache&quot;</span><span class="p">)</span>
+<span class="go">INFO     Removed temporary cache: /tmp/datalad_cache</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">clean_tmp_folder</span><span class="p">(</span><span class="s2">&quot;my_custom_cache&quot;</span><span class="p">)</span>
+<span class="go">INFO     Removed temporary cache: /tmp/my_custom_cache</span>
 </pre></div>
 </div>
 </dd></dl>
 
-<section id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
-<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Characterise a multisite problem with MAREoS"><img alt="" src="../../_images/sphx_glr_06-plot_mareos_with_tsne_thumb.png" />
-<p><a class="reference internal" href="../../auto_examples/01-basic-examples/06-plot_mareos_with_tsne.html"><span class="doc">Characterise a multisite problem with MAREoS</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Characterise a multisite problem with MAREoS</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Load MAREoS dataset"><img alt="" src="../../_images/sphx_glr_02-run_load_mareos_thumb.png" />
-<p><a class="reference internal" href="../../auto_examples/02-multisite-data/02-run_load_mareos.html"><span class="doc">Load MAREoS dataset</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Load MAREoS dataset</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Using NeuroComBat with MAREoS dataset"><img alt="" src="../../_images/sphx_glr_03-plot_neurocombat_with_mareos_thumb.png" />
-<p><a class="reference internal" href="../../auto_examples/03-combat-based/03-plot_neurocombat_with_mareos.html"><span class="doc">Using NeuroComBat with MAREoS dataset</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Using NeuroComBat with MAREoS dataset</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Using ComBatGAM with MAREoS dataset"><img alt="" src="../../_images/sphx_glr_06-plot_combatgam_with_mareos_thumb.png" />
-<p><a class="reference internal" href="../../auto_examples/03-combat-based/06-plot_combatgam_with_mareos.html"><span class="doc">Using ComBatGAM with MAREoS dataset</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Using ComBatGAM with MAREoS dataset</div>
-</div></div></section>
 </section>
 
 
@@ -506,20 +477,20 @@ containing:</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="make_multisite_classification.html"
+       href="download_bids_dataset.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">make_multisite_classification</p>
+        <p class="prev-next-title">download_bids_dataset</p>
       </div>
     </a>
     <a class="right-next"
-       href="verbosity.html"
+       href="list_available_files.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">verbosity</p>
+        <p class="prev-next-title">list_available_files</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -541,8 +512,7 @@ containing:</p>
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.load_MAREoS"><code class="docutils literal notranslate"><span class="pre">load_MAREoS()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.datasets.clean_tmp"><code class="docutils literal notranslate"><span class="pre">clean_tmp()</span></code></a></li>
 </ul>
   </nav></div>
 

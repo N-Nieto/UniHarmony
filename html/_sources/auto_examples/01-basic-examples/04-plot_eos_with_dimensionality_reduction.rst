@@ -34,7 +34,7 @@ For this we will use the function ``plot_2d_projection`` of ``uniharmony``, that
 Imports
 -------
 
-.. GENERATED FROM PYTHON SOURCE LINES 17-29
+.. GENERATED FROM PYTHON SOURCE LINES 17-30
 
 .. code-block:: Python
 
@@ -43,7 +43,8 @@ Imports
     import seaborn as sns
     from sklearn.decomposition import FastICA
 
-    from uniharmony import make_multisite_classification, verbosity
+    from uniharmony import verbosity
+    from uniharmony.datasets import make_multisite_classification
     from uniharmony.plot import plot_2d_projection
 
 
@@ -57,13 +58,13 @@ Imports
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-33
+.. GENERATED FROM PYTHON SOURCE LINES 31-34
 
 Data generation
 ---------------
 Let's simulate data with only Effects of Site (EoS) or only real signal, and see how tSNE groups the target and Eos.
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-38
+.. GENERATED FROM PYTHON SOURCE LINES 34-39
 
 .. code-block:: Python
 
@@ -92,7 +93,7 @@ Let's simulate data with only Effects of Site (EoS) or only real signal, and see
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-44
+.. GENERATED FROM PYTHON SOURCE LINES 40-45
 
 .. code-block:: Python
 
@@ -114,23 +115,23 @@ Let's simulate data with only Effects of Site (EoS) or only real signal, and see
 
  .. code-block:: none
 
-    2026-05-06 09:28:58 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
+    2026-05-07 08:52:21 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 45-49
+.. GENERATED FROM PYTHON SOURCE LINES 46-50
 
 In the first plot, we see that classes are perfectly separated and the sites are all mixed in the clusters.
 This is because tSNE used the target information to get the clusters, as there was no EoS information.
 
 In the second plot, exactly the opposite happened, tSNE clustered the sites almost perfectly.
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-52
+.. GENERATED FROM PYTHON SOURCE LINES 52-53
 
 Let's try now another dimensionality reduction method.
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-59
+.. GENERATED FROM PYTHON SOURCE LINES 55-60
 
 .. code-block:: Python
 
@@ -159,7 +160,7 @@ Let's try now another dimensionality reduction method.
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 60-66
+.. GENERATED FROM PYTHON SOURCE LINES 61-67
 
 .. code-block:: Python
 
@@ -182,17 +183,17 @@ Let's try now another dimensionality reduction method.
 
  .. code-block:: none
 
-    2026-05-06 09:29:03 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
+    2026-05-07 08:52:26 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 67-69
+.. GENERATED FROM PYTHON SOURCE LINES 68-70
 
 Dimensionality reduction
 ------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-75
+.. GENERATED FROM PYTHON SOURCE LINES 70-76
 
 .. code-block:: Python
 
@@ -222,7 +223,7 @@ Dimensionality reduction
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-82
+.. GENERATED FROM PYTHON SOURCE LINES 77-83
 
 .. code-block:: Python
 
@@ -245,19 +246,19 @@ Dimensionality reduction
 
  .. code-block:: none
 
-    2026-05-06 09:29:04 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
+    2026-05-07 08:52:27 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 83-84
+.. GENERATED FROM PYTHON SOURCE LINES 84-85
 
 We found similar behavior using PCA os FastICA, but different clusters were generated.
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 14.571 seconds)
+   **Total running time of the script:** (0 minutes 15.041 seconds)
 
 
 .. _sphx_glr_download_auto_examples_01-basic-examples_04-plot_eos_with_dimensionality_reduction.py:

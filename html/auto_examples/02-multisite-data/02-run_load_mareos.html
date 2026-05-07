@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Load MAREoS dataset &#8212; uniharmony 0.0.3.dev89 documentation</title>
+    <title>Load MAREoS dataset &#8212; uniharmony 0.0.3.dev146 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=ce92ff0e"></script>
+    <script src="../../_static/documentation_options.js?v=eaaf177c"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -55,7 +55,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Generate imbalance multisite data" href="03-plot_generate_imbalance_multisite_data.html" />
-    <link rel="prev" title="Multisite Data" href="../../examples/multisite_data/index.html" />
+    <link rel="prev" title="Load ON-Harmony dataset" href="04-run_load_on_harmony.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.3.dev89 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.3.dev146 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -148,8 +148,10 @@
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">▶️ Getting Started</a></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../utilities/index.html">🛠️ Utilities</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../../utilities/simulate_multisite_data.html">🧪 Multisite Data Simulation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../utilities/load_mareos_datasets.html">📊 MAREoS Benchmark Datasets for Harmonization Method Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/simulate_multisite_data.html">Multisite Data Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/load_mareos_datasets.html">MAREoS Benchmark Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/load_onharmony_dataset.html">ON-Harmony Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/datalad_integration.html">Datalad Integration</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../methods/index.html">🧮 Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -194,6 +196,7 @@
 </ul>
 </details></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../../examples/multisite_data/index.html">Multisite Data</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="04-run_load_on_harmony.html">Load ON-Harmony dataset</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">Load MAREoS dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="03-plot_generate_imbalance_multisite_data.html">Generate imbalance multisite data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="01-plot_generate_multisite_data.html">Multisite data generation</a></li>
@@ -222,10 +225,17 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../api/index.html">🗺️ API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../api/utils/index.html">uniharmony</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../api/utils/make_multisite_classification.html">make_multisite_classification</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../api/utils/load_mareos.html">load_MAREoS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/utils/verbosity.html">verbosity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/utils/verbosity_context.html">verbosity_context</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/datasets/index.html">uniharmony.datasets</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/datasets/make_multisite_classification.html">make_multisite_classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/datasets/load_mareos.html">load_MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/datasets/load_on_harmony.html">load_ONharmony</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/datasets/download_bids_dataset.html">download_bids_dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/datasets/clean_tmp.html">clean_tmp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/datasets/list_available_files.html">list_available_files</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../api/combat_based/index.html">uniharmony.combat</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -432,7 +442,7 @@ to download the full example code.</p>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_MAREoS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_MAREoS</span>
 </pre></div>
 </div>
 <p>We can call the helper funtion to load all the dataset (aprox 3MB).
@@ -440,15 +450,15 @@ The files will be stored in the cache, so we don’t have to worry about them</p
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">datasets</span></a> <span class="o">=</span> <span class="n">load_MAREoS</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-05-06 09:29:49 [info     ] MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS
-2026-05-06 09:29:49 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv
-2026-05-06 09:29:49 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple2_data.csv
-2026-05-06 09:29:49 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction1_data.csv
-2026-05-06 09:29:49 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction2_data.csv
-2026-05-06 09:29:49 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_simple1_data.csv
-2026-05-06 09:29:49 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_simple2_data.csv
-2026-05-06 09:29:49 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_interaction1_data.csv
-2026-05-06 09:29:49 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_interaction2_data.csv
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-05-07 08:53:12 [info     ] MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS
+2026-05-07 08:53:12 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv
+2026-05-07 08:53:12 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple2_data.csv
+2026-05-07 08:53:12 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction1_data.csv
+2026-05-07 08:53:12 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction2_data.csv
+2026-05-07 08:53:12 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_simple1_data.csv
+2026-05-07 08:53:12 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_simple2_data.csv
+2026-05-07 08:53:12 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_interaction1_data.csv
+2026-05-07 08:53:12 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_interaction2_data.csv
 </pre></div>
 </div>
 </section>
@@ -489,11 +499,11 @@ the dataset for further downstream analysis.</p>
 <span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">datasets</span></a><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-05-06 09:29:49 [info     ] MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS
-2026-05-06 09:29:49 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv
-2026-05-06 09:29:49 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple2_data.csv
-2026-05-06 09:29:49 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction1_data.csv
-2026-05-06 09:29:49 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction2_data.csv
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-05-07 08:53:12 [info     ] MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS
+2026-05-07 08:53:12 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv
+2026-05-07 08:53:12 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple2_data.csv
+2026-05-07 08:53:12 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction1_data.csv
+2026-05-07 08:53:12 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction2_data.csv
 dict_keys([&#39;eos_simple1&#39;, &#39;eos_simple2&#39;, &#39;eos_interaction1&#39;, &#39;eos_interaction2&#39;])
 </pre></div>
 </div>
@@ -501,9 +511,9 @@ dict_keys([&#39;eos_simple1&#39;, &#39;eos_simple2&#39;, &#39;eos_interaction1&#
 <span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">datasets</span></a><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-05-06 09:29:49 [info     ] MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS
-2026-05-06 09:29:49 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv
-2026-05-06 09:29:49 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple2_data.csv
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-05-07 08:53:12 [info     ] MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS
+2026-05-07 08:53:12 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv
+2026-05-07 08:53:12 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple2_data.csv
 dict_keys([&#39;eos_simple1&#39;, &#39;eos_simple2&#39;])
 </pre></div>
 </div>
@@ -511,8 +521,8 @@ dict_keys([&#39;eos_simple1&#39;, &#39;eos_simple2&#39;])
 <span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">datasets</span></a><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-05-06 09:29:49 [info     ] MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS
-2026-05-06 09:29:49 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-05-07 08:53:12 [info     ] MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS
+2026-05-07 08:53:12 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv
 dict_keys([&#39;eos_simple1&#39;])
 </pre></div>
 </div>
@@ -525,8 +535,8 @@ You can chose to load the dataset as pandas.DataFrame, with has the simulated ar
 <a href="https://pandas.pydata.org/pandas-docs/dev/reference/api/pandas.DataFrame.head.html#pandas.DataFrame.head" title="pandas.DataFrame.head" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-method"><span class="n">dataset</span><span class="o">.</span><span class="n">head</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-05-06 09:29:49 [info     ] MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS
-2026-05-06 09:29:49 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-05-07 08:53:12 [info     ] MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS
+2026-05-07 08:53:12 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv
 </pre></div>
 </div>
 <div class="output_subarea output_html rendered_html output_result">
@@ -647,18 +657,18 @@ We will use a relative path from this example to look for appropiated path</p>
 </pre></div>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Unzipping contents of &#39;/home/runner/.cache/uniharmony/public_datasets.zip&#39; to &#39;/home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS&#39;
-2026-05-06 09:29:49 [info     ] MAREoS datasets downloaded: 16 CSV files in /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS
-2026-05-06 09:29:49 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/eos_simple1_data.csv
-2026-05-06 09:29:49 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/eos_simple2_data.csv
-2026-05-06 09:29:49 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/eos_interaction1_data.csv
-2026-05-06 09:29:49 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/eos_interaction2_data.csv
-2026-05-06 09:29:49 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/true_simple1_data.csv
-2026-05-06 09:29:49 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/true_simple2_data.csv
-2026-05-06 09:29:49 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/true_interaction1_data.csv
-2026-05-06 09:29:49 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/true_interaction2_data.csv
+2026-05-07 08:53:12 [info     ] MAREoS datasets downloaded: 16 CSV files in /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS
+2026-05-07 08:53:12 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/eos_simple1_data.csv
+2026-05-07 08:53:12 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/eos_simple2_data.csv
+2026-05-07 08:53:12 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/eos_interaction1_data.csv
+2026-05-07 08:53:12 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/eos_interaction2_data.csv
+2026-05-07 08:53:12 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/true_simple1_data.csv
+2026-05-07 08:53:12 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/true_simple2_data.csv
+2026-05-07 08:53:12 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/true_interaction1_data.csv
+2026-05-07 08:53:12 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/true_interaction2_data.csv
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.808 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.888 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-02-multisite-data-02-run-load-mareos-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/5e80b0ae4b0e034407461ebbc78d3264/02-run_load_mareos.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">02-run_load_mareos.ipynb</span></code></a></p>
@@ -686,12 +696,12 @@ We will use a relative path from this example to look for appropiated path</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../../examples/multisite_data/index.html"
+       href="04-run_load_on_harmony.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Multisite Data</p>
+        <p class="prev-next-title">Load ON-Harmony dataset</p>
       </div>
     </a>
     <a class="right-next"

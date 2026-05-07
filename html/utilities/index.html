@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>🛠️ Utilities &#8212; uniharmony 0.0.3.dev89 documentation</title>
+    <title>🛠️ Utilities &#8212; uniharmony 0.0.3.dev146 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=ce92ff0e"></script>
+    <script src="../_static/documentation_options.js?v=eaaf177c"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -54,7 +54,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'utilities/index';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="🧪 Multisite Data Simulation" href="simulate_multisite_data.html" />
+    <link rel="next" title="Multisite Data Simulation" href="simulate_multisite_data.html" />
     <link rel="prev" title="▶️ Getting Started" href="../getting_started.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.3.dev89 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.3.dev146 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -148,8 +148,10 @@
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">▶️ Getting Started</a></li>
 <li class="toctree-l1 current active has-children"><a class="current reference internal" href="#">🛠️ Utilities</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="simulate_multisite_data.html">🧪 Multisite Data Simulation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="load_mareos_datasets.html">📊 MAREoS Benchmark Datasets for Harmonization Method Evaluation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulate_multisite_data.html">Multisite Data Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_mareos_datasets.html">MAREoS Benchmark Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_onharmony_dataset.html">ON-Harmony Dataset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="datalad_integration.html">Datalad Integration</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../methods/index.html">🧮 Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -194,6 +196,7 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../examples/multisite_data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/04-run_load_on_harmony.html">Load ON-Harmony dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/02-run_load_mareos.html">Load MAREoS dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/03-plot_generate_imbalance_multisite_data.html">Generate imbalance multisite data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/01-plot_generate_multisite_data.html">Multisite data generation</a></li>
@@ -222,10 +225,17 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">🗺️ API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/utils/index.html">uniharmony</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../api/utils/make_multisite_classification.html">make_multisite_classification</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../api/utils/load_mareos.html">load_MAREoS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/utils/verbosity.html">verbosity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../api/utils/verbosity_context.html">verbosity_context</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/datasets/index.html">uniharmony.datasets</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/make_multisite_classification.html">make_multisite_classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/load_mareos.html">load_MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/load_on_harmony.html">load_ONharmony</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/download_bids_dataset.html">download_bids_dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/clean_tmp.html">clean_tmp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/list_available_files.html">list_available_files</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../api/combat_based/index.html">uniharmony.combat</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -411,16 +421,16 @@
 <h1>🛠️ Utilities<a class="headerlink" href="#utilities" title="Link to this heading">#</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="simulate_multisite_data.html">🧪 Multisite Data Simulation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="simulate_multisite_data.html#what-s-this">What’s this?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="simulate_multisite_data.html#quick-start">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="simulate_multisite_data.html">Multisite Data Simulation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="simulate_multisite_data.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="simulate_multisite_data.html#usage">Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulate_multisite_data.html#behind-the-scenes">Behind the Scenes</a></li>
 <li class="toctree-l2"><a class="reference internal" href="simulate_multisite_data.html#flexible-configuration">Flexible Configuration</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="load_mareos_datasets.html">📊 MAREoS Benchmark Datasets for Harmonization Method Evaluation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="load_mareos_datasets.html#overview-and-purpose">Overview and Purpose</a></li>
-<li class="toctree-l2"><a class="reference internal" href="load_mareos_datasets.html#quick-start">Quick Start</a></li>
+<li class="toctree-l1"><a class="reference internal" href="load_mareos_datasets.html">MAREoS Benchmark Datasets</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="load_mareos_datasets.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_mareos_datasets.html#usage">Usage</a></li>
 <li class="toctree-l2"><a class="reference internal" href="load_mareos_datasets.html#dataset-structure-and-experimental-design">Dataset Structure and Experimental Design</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="load_mareos_datasets.html#effect">Effect</a></li>
 <li class="toctree-l3"><a class="reference internal" href="load_mareos_datasets.html#effect-type">Effect Type</a></li>
@@ -430,6 +440,57 @@
 <li class="toctree-l2"><a class="reference internal" href="load_mareos_datasets.html#dataset-specifications">Dataset Specifications</a></li>
 <li class="toctree-l2"><a class="reference internal" href="load_mareos_datasets.html#scientific-rationale">Scientific Rationale</a></li>
 <li class="toctree-l2"><a class="reference internal" href="load_mareos_datasets.html#citation">Citation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="load_onharmony_dataset.html">ON-Harmony Dataset</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="load_onharmony_dataset.html#overview">Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_onharmony_dataset.html#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_onharmony_dataset.html#examples">Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="load_onharmony_dataset.html#download-all-files-for-a-subject-and-a-session">Download all files for a subject and a session</a></li>
+<li class="toctree-l3"><a class="reference internal" href="load_onharmony_dataset.html#direct-download-no-hidden-cache">Direct Download (No hidden cache)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="load_onharmony_dataset.html#download-diffusion-mri">Download diffusion MRI</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="load_onharmony_dataset.html#advanced-usage">Advanced Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="load_onharmony_dataset.html#working-with-on-harmony-session-names">Working with ON-Harmony Session Names</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="load_onharmony_dataset.html#citation">Citation</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="datalad_integration.html">Datalad Integration</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="datalad_integration.html#overview">Overview</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="datalad_integration.html#key-features">Key Features</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="datalad_integration.html#core-concepts">Core Concepts</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="datalad_integration.html#hidden-vs-direct-mode">Hidden vs. Direct Mode</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="datalad_integration.html#hidden-mode-hidden-true-default">Hidden Mode (<code class="docutils literal notranslate"><span class="pre">hidden=True</span></code>, default)</a></li>
+<li class="toctree-l4"><a class="reference internal" href="datalad_integration.html#direct-mode-hidden-false">Direct Mode (<code class="docutils literal notranslate"><span class="pre">hidden=False</span></code>)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="datalad_integration.html#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="datalad_integration.html#downloading-data">Downloading Data</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="datalad_integration.html#download-bids-dataset"><code class="docutils literal notranslate"><span class="pre">download_bids_dataset()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="datalad_integration.html#dataset-management">Dataset Management</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="datalad_integration.html#clean-tmp"><code class="docutils literal notranslate"><span class="pre">clean_tmp()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="datalad_integration.html#utility-functions">Utility Functions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="datalad_integration.html#list-available-files"><code class="docutils literal notranslate"><span class="pre">list_available_files()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="datalad_integration.html#troubleshooting">Troubleshooting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="datalad_integration.html#disk-space-running-out">Disk space running out</a></li>
+<li class="toctree-l3"><a class="reference internal" href="datalad_integration.html#clone-fails-with-ssl-error">Clone fails with SSL error</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -461,7 +522,7 @@
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">🧪 Multisite Data Simulation</p>
+        <p class="prev-next-title">Multisite Data Simulation</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

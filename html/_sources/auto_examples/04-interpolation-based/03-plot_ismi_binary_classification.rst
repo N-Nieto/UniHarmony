@@ -31,7 +31,7 @@ interpolating between matched subjects across different sites, reducing site-rel
 Imports
 -------
 
-.. GENERATED FROM PYTHON SOURCE LINES 14-28
+.. GENERATED FROM PYTHON SOURCE LINES 14-29
 
 .. code-block:: Python
 
@@ -41,7 +41,8 @@ Imports
     import pandas as pd
     import seaborn as sns
 
-    from uniharmony import make_multisite_classification, verbosity
+    from uniharmony import verbosity
+    from uniharmony.datasets import make_multisite_classification
     from uniharmony.interpolation import InterSiteMatchedInterpolation
 
 
@@ -56,7 +57,7 @@ Imports
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-39
+.. GENERATED FROM PYTHON SOURCE LINES 30-40
 
 Data generation
 ---------------
@@ -69,7 +70,7 @@ We create a dataset with 3 sites, simulating a scenario where:
 - Site C: Mixed population, different acquisition protocol
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-68
+.. GENERATED FROM PYTHON SOURCE LINES 40-69
 
 .. code-block:: Python
 
@@ -109,12 +110,12 @@ We create a dataset with 3 sites, simulating a scenario where:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 69-71
+.. GENERATED FROM PYTHON SOURCE LINES 70-72
 
 Plot before harmonisation
 --------------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 71-80
+.. GENERATED FROM PYTHON SOURCE LINES 72-81
 
 .. code-block:: Python
 
@@ -139,7 +140,7 @@ Plot before harmonisation
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 81-92
+.. GENERATED FROM PYTHON SOURCE LINES 82-93
 
 Harmonisation
 -------------
@@ -153,7 +154,7 @@ We use ISMI with the following configuration:
 - **k**: 2 (generate 2 synthetic samples per match)
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 92-107
+.. GENERATED FROM PYTHON SOURCE LINES 93-108
 
 .. code-block:: Python
 
@@ -179,13 +180,13 @@ We use ISMI with the following configuration:
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 108-111
+.. GENERATED FROM PYTHON SOURCE LINES 109-112
 
 Plotting after harmonisation
 ----------------------------
 Visualize Harmonized Data
 
-.. GENERATED FROM PYTHON SOURCE LINES 111-120
+.. GENERATED FROM PYTHON SOURCE LINES 112-121
 
 .. code-block:: Python
 
@@ -210,7 +211,7 @@ Visualize Harmonized Data
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 121-138
+.. GENERATED FROM PYTHON SOURCE LINES 122-139
 
 .. code-block:: Python
 
@@ -243,14 +244,14 @@ Visualize Harmonized Data
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 139-143
+.. GENERATED FROM PYTHON SOURCE LINES 140-144
 
 .. admonition:: Take-home message
 
    This evaluation correctly measures whether ISMI helps the model learn
    site-invariant features that generalize to new, unseen sites.
 
-.. GENERATED FROM PYTHON SOURCE LINES 145-164
+.. GENERATED FROM PYTHON SOURCE LINES 146-165
 
 Conclusion
 ----------
@@ -275,7 +276,7 @@ presaging biological signals relevant to the target variable.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.436 seconds)
+   **Total running time of the script:** (0 minutes 1.518 seconds)
 
 
 .. _sphx_glr_download_auto_examples_04-interpolation-based_03-plot_ismi_binary_classification.py:

@@ -38,8 +38,8 @@ Imports
     import pandas as pd
     import seaborn as sns
 
-    from uniharmony import make_multisite_classification
-    from uniharmony._verbose import verbosity
+    from uniharmony import verbosity
+    from uniharmony.datasets import make_multisite_classification
 
 
     sns.set_theme(style="whitegrid")
@@ -193,8 +193,8 @@ Let's now create a site imbalance problem. That means that, while the total numb
 
  .. code-block:: none
 
-    2026-05-06 09:29:50 [warning  ] Not enough samples of class 0 in global dataset. Requested 350, available 330. Consider adjusting balance_per_site or generating more samples.
-    2026-05-06 09:29:50 [warning  ] Not enough samples of class 0 in global dataset. Requested 350, available 330. Consider adjusting balance_per_site or generating more samples.
+    2026-05-07 08:53:13 [warning  ] Not enough samples of class 0 in global dataset. Requested 350, available 330. Consider adjusting balance_per_site or generating more samples.
+    2026-05-07 08:53:13 [warning  ] Not enough samples of class 0 in global dataset. Requested 350, available 330. Consider adjusting balance_per_site or generating more samples.
     The class are imbalanced in general, but have the same imbalance across sites
     General balance: 0.30 
     site 0 balance: 0.30 
@@ -206,7 +206,7 @@ Let's now create a site imbalance problem. That means that, while the total numb
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.262 seconds)
+   **Total running time of the script:** (0 minutes 1.425 seconds)
 
 
 .. _sphx_glr_download_auto_examples_02-multisite-data_03-plot_generate_imbalance_multisite_data.py:

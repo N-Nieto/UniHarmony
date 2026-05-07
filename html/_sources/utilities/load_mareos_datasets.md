@@ -1,7 +1,7 @@
 (load-mareos-datasets)=
-# 📊 MAREoS Benchmark Datasets for Harmonization Method Evaluation
+# MAREoS Benchmark Datasets
 
-## Overview and Purpose
+## Overview
 
 The MAREoS (Methods Aiming to Remove Effect of Site) datasets constitute a standardized benchmark
 suite specifically designed for rigorous evaluation and comparison of data harmonization methods.
@@ -10,11 +10,11 @@ Developed by
 synthetic datasets provide controlled experimental conditions that enable systematic comparision of
 harmonization algorithm performance.
 
-## Quick Start
+## Usage
 
 ```python
-# Import the helper function
-from uniharmony import load_MAREoS
+from uniharmony.datasets import load_MAREoS
+
 # Load the 8 datasets as a dictionary. Use the dictionary `keys` to access each dataset
 datasets = load_MAREoS()
 # Each dataset contains X, y, sites, covs, folds
@@ -56,7 +56,7 @@ The harmonization methods should remove this relationship, thus an ML model shou
 
 If you are using these datasets in your research, please cite the original publication:
 
-```biblatex
+```bibtex
 @article{solanes2023removing,
   title={Removing the effects of the site in brain imaging machine-learning--Measurement and extendable benchmark},
   author={Solanes, Aleix and Gosling, Corentin J and Fortea, Lydia and Ortu{\~n}o, Mar{\'\i}a and Lopez-Soley, Elisabet and Llufriu, Sara and Madero, Santiago and Martinez-Heras, Eloy and Pomarol-Clotet, Edith and Solana, Elisabeth and others},
