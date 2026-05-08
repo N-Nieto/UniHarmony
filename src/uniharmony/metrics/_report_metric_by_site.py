@@ -10,6 +10,7 @@ from collections.abc import Callable, Sequence
 from typing import Any
 
 import numpy as np
+import numpy.typing as npt
 
 
 __all__ = [
@@ -45,11 +46,11 @@ METRICS_REQUIRING_Y_PRED: set[str] = {
 
 
 def report_metrics_by_site(
-    y_true: np.ndarray,
-    y_pred: np.ndarray,
-    sites: np.ndarray,
     metrics: Callable | Sequence[Callable],
     metric_kwargs: dict[str, Any] | Sequence[dict[str, Any]] | None = None,
+    y_true: npt.NDarray,
+    y_pred: npt.NDarray,
+    sites: npt.NDarray,
     overall_performance: bool = True,
     skip_empty_sites: bool = True,
 ) -> dict[str, dict[str | int, float]]:
@@ -198,7 +199,7 @@ def report_metrics_by_site(
     return results
 
 
-def _binarize(y: np.ndarray, threshold: float = 0.5) -> np.ndarray:
+def _binarize(y: npt.NDarray, threshold: float = 0.5) -> npt.NDarray:
     """Binarize continuous scores using a threshold.
 
     Parameters
@@ -222,7 +223,7 @@ def _metric_needs_y_pred(metric: Callable) -> bool:
     return getattr(metric, "__name__", "") in METRICS_REQUIRING_Y_PRED
 
 
-def _is_binary_or_multiclass(y: np.ndarray, tol: float = 1e-9) -> bool:
+def _is_binary_or_multiclass(y: npt.NDarray, tol: float = 1e-9) -> bool:
     """Check if array contains only discrete class labels.
 
     Parameters
@@ -245,7 +246,7 @@ def _is_binary_or_multiclass(y: np.ndarray, tol: float = 1e-9) -> bool:
     return bool(np.allclose(y, rounded, atol=tol))
 
 
-def _is_probability_like(y: np.ndarray) -> bool:
+def _is_probability_like(y: npt.NDarray) -> bool:
     """Check if array values look like continuous scores/probabilities.
 
     Parameters
@@ -267,9 +268,9 @@ def _is_probability_like(y: np.ndarray) -> bool:
 
 
 def _input_checks(
-    y_true: np.ndarray,
-    y_pred: np.ndarray,
-    sites: np.ndarray,
+    y_true: npt.NDarray,
+    y_pred: npt.NDarray,
+    sites: npt.NDarray,
     metric: Callable,
     overall_performance: bool,
 ) -> None:
@@ -307,10 +308,10 @@ def _input_checks(
 
 
 def _input_checks_multi(
-    y_true: np.ndarray,
-    y_pred: np.ndarray,
-    sites: np.ndarray,
     metrics: Sequence[Callable],
+    y_true: npt.NDarray,
+    y_pred: npt.NDarray,
+    sites: npt.NDarray,
     overall_performance: bool,
 ) -> None:
     """Validate inputs for multi-metric site-wise evaluation.
