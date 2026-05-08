@@ -6,7 +6,7 @@ It supports computing one or many metrics simultaneously, with automatic
 binarization of continuous scores when discrete predictions are required.
 """
 
-from collections.abc import Callable, Sequence
+from collections.abc import Callable
 from typing import Any
 
 import numpy as np
@@ -46,11 +46,11 @@ METRICS_REQUIRING_Y_PRED: set[str] = {
 
 
 def report_metrics_by_site(
-    metrics: Callable | Sequence[Callable],
-    metric_kwargs: dict[str, Any] | Sequence[dict[str, Any]] | None = None,
     y_true: npt.NDarray,
     y_pred: npt.NDarray,
     sites: npt.NDarray,
+    metrics: Callable | list[Callable],
+    metric_kwargs: dict[str, Any] | list[dict[str, Any]] | None = None,
     overall_performance: bool = True,
     skip_empty_sites: bool = True,
 ) -> dict[str, dict[str | int, float]]:
@@ -72,13 +72,13 @@ def report_metrics_by_site(
         estimates / decision function outputs.
     sites : np.ndarray
         Site identifiers for stratification. Can be strings or integers.
-    metrics : Callable or Sequence[Callable]
+    metrics : callable or list of callable
         Metric function or list of metric functions to compute (e.g., from
         ``sklearn.metrics``). Pass a single callable for one metric, or
         a sequence for multiple metrics.
     metric_kwargs : dict or list of dict or None, optional (default None)
         Keyword arguments for each metric. If a single dict, it is passed
-        to all metrics. If a sequence, ``metric_kwargs[i]`` is passed to
+        to all metrics. If a list, ``metric_kwargs[i]`` is passed to
         ``metrics[i]``. Must have the same length as ``metrics``. Include
         ``threshold`` (default: 0.5) for metrics that require discrete
         predictions when ``y_pred`` contains continuous scores.
@@ -142,9 +142,9 @@ def report_metrics_by_site(
      'f1_score': {'overall': 0.833, 'A': 1.0, 'B': 0.5}}
 
     """
-    # Normalize metrics to a sequence
-    if callable(metrics):
-        metrics_seq: Sequence[Callable] = [metrics]
+    # Normalize metrics to list
+    if not isinstance(list, metrics):
+        metrics_seq = [metrics]
     else:
         metrics_seq = metrics
 
@@ -315,10 +315,10 @@ def _input_checks(
 
 
 def _input_checks_multi(
-    metrics: Sequence[Callable],
     y_true: npt.NDarray,
     y_pred: npt.NDarray,
     sites: npt.NDarray,
+    metrics: list[Callable],
     overall_performance: bool,
 ) -> None:
     """Validate inputs for multi-metric site-wise evaluation.
@@ -344,8 +344,8 @@ def _input_checks_multi(
         If arrays have mismatched lengths or metrics is empty.
 
     """
-    if not isinstance(metrics, Sequence) or isinstance(metrics, (str, bytes)):
-        raise TypeError(f"metrics must be a sequence of callables, got {type(metrics).__name__!r}.")
+    if not isinstance(metrics, list) or isinstance(metrics, str):
+        raise TypeError(f"metrics must be a list of callables, got {type(metrics).__name__!r}.")
 
     if len(metrics) == 0:
         raise ValueError("metrics must contain at least one callable.")
@@ -359,7 +359,7 @@ def _input_checks_multi(
 
 
 def _validate_metric_kwargs(
-    metric_kwargs: dict[str, Any] | Sequence[dict[str, Any]] | None,
+    metric_kwargs: dict[str, Any] | list[dict[str, Any]] | None,
     n_metrics: int,
 ) -> list[dict[str, Any]]:
     """Normalize and validate keyword arguments for multiple metrics.
@@ -369,12 +369,12 @@ def _validate_metric_kwargs(
 
     Parameters
     ----------
-    metric_kwargs : dict[str, Any] | Sequence[dict[str, Any]] | None
+    metric_kwargs : dict or list of dict or None
         Keyword arguments for metric functions. Supported formats:
 
         - ``None``: No keyword arguments for any metric (empty dicts).
         - ``dict``: A single dictionary applied to **all** metrics.
-        - ``Sequence[dict]``: A sequence (list/tuple) of dictionaries,
+        - ``list of dict``: A list of dictionaries,
           where ``metric_kwargs[i]`` is passed to ``metrics[i]``.
 
     n_metrics : int
@@ -421,7 +421,7 @@ def _validate_metric_kwargs(
     if isinstance(metric_kwargs, dict):
         return [metric_kwargs for _ in range(n_metrics)]
 
-    if isinstance(metric_kwargs, Sequence) and not isinstance(metric_kwargs, (str, bytes)):
+    if isinstance(metric_kwargs, list) and not isinstance(metric_kwargs, str):
         if len(metric_kwargs) != n_metrics:
             raise ValueError(f"metric_kwargs must have the same length as metrics ({n_metrics}), got {len(metric_kwargs)}.")
         for i, item in enumerate(metric_kwargs):
