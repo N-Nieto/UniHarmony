@@ -1,4 +1,7 @@
-"""Compute metrics by site."""
+"""
+Compute metrics by site
+=======================
+"""
 
 # %%
 # Imports

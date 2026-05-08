@@ -96,21 +96,3 @@ report_metrics_by_site(
     y_true, y_scores, sites, accuracy_score, metric_kwargs={"threshold": 0.3}
 )
 ```
-
-### Extending for Custom Metrics
-
-Register custom metrics by adding them to the appropriate registry:
-
-```python
-from uniharmony.metrics import METRICS_REQUIRING_Y_SCORE, METRICS_REQUIRING_Y_PRED
-
-# Custom score-based metric
-def my_auc(y_true, y_score):
-    ...
-METRICS_REQUIRING_Y_SCORE.add("my_auc")
-
-# Custom prediction-based metric
-def my_accuracy(y_true, y_pred):
-    ...
-METRICS_REQUIRING_Y_PRED.add("my_accuracy")
-```
