@@ -25,7 +25,7 @@ class StandardizationMixin:
 
     def fit_standardize(
         self,
-        X: npt.ArrayLike,
+        X: npt.NDArray,
         design: npt.NDArray,
         n_samples: int,
         n_samples_per_site: npt.NDArray,
@@ -43,7 +43,7 @@ class StandardizationMixin:
 
         Parameters
         ----------
-        X : array-like, shape (n_samples, n_features)
+        X : array, shape (n_samples, n_features)
             Features.
         design : array
             Design matrix.
@@ -120,7 +120,7 @@ class StandardizationMixin:
 
     def transform_standardize(
         self,
-        X: npt.ArrayLike,
+        X: npt.NDArray,
         design: npt.NDArray,
         n_samples: int,
     ) -> tuple[npt.NDArray, npt.NDArray]:
@@ -128,7 +128,7 @@ class StandardizationMixin:
 
         Parameters
         ----------
-        X : array-like, shape (n_samples, n_features)
+        X : array, shape (n_samples, n_features)
             Features.
         design : array
             Design matrix.
