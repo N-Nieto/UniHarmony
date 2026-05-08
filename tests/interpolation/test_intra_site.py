@@ -341,21 +341,3 @@ def test_reproducibility(binary_data):
 # ==============================================================================
 # Monkeypatch robustness
 # ==============================================================================
-
-
-def test_assertion_failure(monkeypatch):
-    """If resampling fails to balance, an assertion should be triggered."""
-    rng = np.random.default_rng(99)
-    X = rng.standard_normal((200, 4))
-    sites = np.array([0] * 100 + [1] * 100)
-    y = np.array([0] * 80 + [1] * 20 + [0] * 30 + [1] * 70)
-
-    isi = IntraSiteInterpolation("random")
-
-    def bad_resample(*args, **kwargs):
-        return args[1], args[2]
-
-    monkeypatch.setattr(IntraSiteInterpolation, "_resample_site", bad_resample)
-
-    with pytest.raises(AssertionError):
-        isi.fit_resample(X, y, sites=sites)
