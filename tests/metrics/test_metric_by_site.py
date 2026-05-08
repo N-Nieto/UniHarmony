@@ -365,14 +365,14 @@ def test_mismatched_array_lengths(y_true, y_pred, sites, metric, error_match) ->
             np.array([0, 1]),
             np.array([1, 1]),
             123,
-            "metrics must be a sequence of callables",
+            r"must be callable",
         ),
         (
             np.array([0, 1]),
             np.array([0, 1]),
             np.array([1, 1]),
             "accuracy_score",
-            "metrics must be a sequence of callables",
+            r"must be callable",
         ),
     ],
 )
@@ -614,9 +614,9 @@ def test_input_checks_multi_empty_metrics() -> None:
         )
 
 
-def test_input_checks_multi_non_sequence_raises() -> None:
-    """Test non-sequence metrics raises TypeError."""
-    with pytest.raises(TypeError, match="must be a sequence"):
+def test_input_checks_multi_non_list_raises() -> None:
+    """Test non-list metrics raises TypeError."""
+    with pytest.raises(TypeError, match="must be a list"):
         _input_checks_multi(
             np.array([0, 1]),
             np.array([0, 1]),
