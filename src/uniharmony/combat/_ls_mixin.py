@@ -32,7 +32,7 @@ class LocationAndScaleMixin:
         delta_epsilon: float = 1e-8,
         tau_2_epsilon: float = 1e-10,
         max_iter: int = 1000,
-    ) -> tuple[npt.NDArray, list]:
+    ) -> None:
         """Fit L/S model.
 
         Parameters
