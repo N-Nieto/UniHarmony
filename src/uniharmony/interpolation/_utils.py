@@ -5,6 +5,7 @@ from typing import Any
 import numpy as np
 import numpy.typing as npt
 import structlog
+from imblearn.base import SamplerMixin
 from imblearn.over_sampling import (
     ADASYN,
     SMOTE,
@@ -27,9 +28,7 @@ __all__ = [
 logger = structlog.get_logger()
 
 
-def create_interpolator(
-    name: str, random_state: int | np.random.RandomState = 23, **kwargs
-) -> type[SMOTE] | type[BorderlineSMOTE] | type[SVMSMOTE] | type[ADASYN] | type[KMeansSMOTE] | type[RandomOverSampler]:
+def create_interpolator(name: str, random_state: int | np.random.RandomState = 23, **kwargs) -> SamplerMixin:
     """Create an imblearn interpolator based on a string name.
 
     Parameters
@@ -45,7 +44,7 @@ def create_interpolator(
     Returns
     -------
     object
-        Initialised interpolator instance.
+        Initialized interpolator instance.
 
     Raises
     ------
@@ -62,12 +61,11 @@ def create_interpolator(
         "kmeans-smote": KMeansSMOTE,
         "random": RandomOverSampler,
     }
-
-    name = name.lower()
-    if name not in mapping:
+    name_lower = name.lower()
+    if name_lower not in mapping:
         raise ValueError(f"Unsupported interpolator: {name}")
 
-    return mapping[name](random_state=random_state, sampling_strategy="not majority", **kwargs)
+    return mapping[name](random_state=random_state, **kwargs)
 
 
 def validate_class_representation(y: npt.NDArray, sites: npt.NDArray) -> None:
@@ -142,7 +140,7 @@ def validate_covariates(
         cat_cov = check_array(categorical_covariate, dtype=None, ensure_all_finite=not allow_nan)
         if cat_cov.shape[0] != n_samples:
             raise ValueError(f"categorical_covariate has {cat_cov.shape[0]} samples, but X has {n_samples} samples")
-        logger.debug(f"[ISMI] Using {cat_cov.shape[1]} categorical covariates")
+        logger.debug(f"Using {cat_cov.shape[1]} categorical covariates")
 
     if continuous_covariate is not None:
         cont_cov = check_array(continuous_covariate, ensure_all_finite=not allow_nan)
@@ -154,7 +152,7 @@ def validate_covariates(
 
         if covariate_tolerance is None:
             tol_arr = np.zeros(cont_cov.shape[1])
-            logger.debug("[ISMI] No tolerance specified, using exact matching")
+            logger.debug("No tolerance specified, using exact matching")
         else:
             tol_arr = np.asarray(covariate_tolerance, dtype=np.float64).flatten()
             if tol_arr.shape[0] != cont_cov.shape[1]:
@@ -164,7 +162,7 @@ def validate_covariates(
                     "One tolerance value per continuous covariate (column) is required."
                 )
 
-        logger.debug(f"[ISMI] Using {cont_cov.shape[1]} continuous covariates with tolerance: {tol_arr}")
+        logger.debug(f"Using {cont_cov.shape[1]} continuous covariates with tolerance: {tol_arr}")
 
     elif covariate_tolerance is not None:
         raise ValueError(
