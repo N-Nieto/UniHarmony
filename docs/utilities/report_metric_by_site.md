@@ -1,7 +1,7 @@
 (report_metric_by_site-utilities)=
 # Site-Stratified Metrics
 
-A robust module for computing machine learning metrics stratified by site (e.g., hospital, data center, geographic region). Features automatic binarization of continuous scores when discrete predictions are required, and supports computing one or many metrics in a single call.
+`uniharmony` provides a module for computing machine learning metrics stratified by site (e.g., hospital, data center, geographic region). Features automatic binarization of continuous scores when discrete predictions are required, and supports computing one or many metrics in a single call.
 
 ## Features
 
@@ -58,8 +58,7 @@ results = report_metrics_by_site(
 # }
 ```
 
----
-**Auto-Binarization**
+### Auto-Binarization
 
 If `y_pred` contains continuous scores but the metric requires discrete predictions, the scores are automatically binarized:
 
@@ -68,15 +67,6 @@ If `y_pred` contains continuous scores but the metric requires discrete predicti
 
 The `threshold` key is consumed during binarization and not passed to the metric itself.
 
-
-## Prediction-Type Handling
-
-The module maintains registries of metrics and their input requirements:
-
-| Registry | Metrics | Behavior with Scores |
-|----------|---------|---------------------|
-| `METRICS_REQUIRING_Y_SCORE` | `roc_auc_score`, `average_precision_score`, `roc_curve`, `precision_recall_curve`, `det_curve`, `brier_score_loss`, `log_loss` | Uses scores directly |
-| `METRICS_REQUIRING_Y_PRED` | `accuracy_score`, `balanced_accuracy_score`, `precision_score`, `recall_score`, `f1_score`, `fbeta_score`, `jaccard_score`, `cohen_kappa_score`, `matthews_corrcoef`, `hamming_loss`, `zero_one_loss`, `confusion_matrix`, `classification_report` | Auto-binarizes scores at `threshold` (default: 0.5) |
 
 ### How It Works
 
