@@ -11,8 +11,6 @@
 import numpy as np
 import numpy.typing as npt
 import structlog
-from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.utils import Tags
 from sklearn.utils.validation import (
     FLOAT_DTYPES,
     check_array,
@@ -22,9 +20,7 @@ from sklearn.utils.validation import (
 
 from uniharmony._utils import validate_sites
 
-from ._design_matrix_mixin import DesignMatrixMixin
-from ._ls_mixin import LocationAndScaleMixin
-from ._standardization_mixin import StandardizationMixin
+from ._base import BaseComBat
 
 
 __all__ = ["NeuroComBat"]
@@ -32,7 +28,7 @@ __all__ = ["NeuroComBat"]
 logger = structlog.get_logger()
 
 
-class NeuroComBat(DesignMatrixMixin, StandardizationMixin, LocationAndScaleMixin, TransformerMixin, BaseEstimator):
+class NeuroComBat(BaseComBat):
     """Harmonize scanner effects in multi-site imaging data.
 
     This transformer performs harmonization using a parametric empirical Bayes
@@ -123,10 +119,8 @@ class NeuroComBat(DesignMatrixMixin, StandardizationMixin, LocationAndScaleMixin
         """
         logger.debug("Fitting")
 
-        # Check that X and sites have correct shape and type
-        X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
-        sites = check_array(sites, copy=self.copy, dtype=None, ensure_2d=False, estimator=self)
-        check_consistent_length(X, sites)
+        # Validate input
+        X, sites = self._check_X_sites(X, sites, copy=self.copy, estimator=self)
         validate_sites(sites)
 
         # Check that categorical_covariates and continuous_covariates have correct shape and type if they are not None.
@@ -225,11 +219,9 @@ class NeuroComBat(DesignMatrixMixin, StandardizationMixin, LocationAndScaleMixin
         """
         logger.debug("Transforming")
 
+        # Validate input
         check_is_fitted(self)
-
-        X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
-        sites = check_array(sites, copy=self.copy, dtype=None, ensure_2d=False, estimator=self)
-        check_consistent_length(X, sites)
+        X, sites = self._check_X_sites(X, sites, copy=self.copy, estimator=self)
 
         if self._categorical_covariates_used:
             categorical_covariates = check_array(categorical_covariates, dtype=None, estimator=self)
@@ -268,47 +260,3 @@ class NeuroComBat(DesignMatrixMixin, StandardizationMixin, LocationAndScaleMixin
         )
 
         return bayes_data.T
-
-    # Overridden to allow sites
-    def fit_transform(
-        self,
-        X: npt.ArrayLike,
-        sites: npt.ArrayLike,
-        **fit_params,
-    ) -> npt.NDArray:
-        """Fit to data, then transform it.
-
-        Fits transformer to `X` and `sites` with optional parameters
-        `fit_params` and returns a transformed version of `X`.
-
-        Parameters
-        ----------
-        X : array-like, shape (n_samples, n_features)
-            Input samples.
-        sites : array-like, shape (n_samples, 1)
-            Sites.
-        **fit_params : dict
-            Additional fit parameters.
-
-        Returns
-        -------
-        array, shape (n_samples, n_features)
-            Transformed array.
-
-        """
-        return self.fit(X, sites, **fit_params).transform(X, sites, **fit_params)
-
-    # Overridden for check_is_fitted() usage
-    def __sklearn_is_fitted__(self) -> bool:
-        """Check fitted status."""
-        return hasattr(self, "_gamma_star") and hasattr(self, "_delta_star")
-
-    def __sklearn_tags__(self) -> Tags:
-        tags = super().__sklearn_tags__()
-        tags.estimator_type = "transformer"
-        tags.target_tags.required = True
-        tags.target_tags.two_d_labels = True
-        tags.target_tags.positive_only = True
-        tags.input_tags.two_d_array = True
-        tags.input_tags.allow_nan = True
-        return tags

@@ -8,8 +8,6 @@ import numpy as np
 import numpy.typing as npt
 import pandas as pd
 import structlog
-from sklearn.base import BaseEstimator, TransformerMixin
-from sklearn.utils import Tags
 from sklearn.utils.validation import (
     FLOAT_DTYPES,
     check_array,
@@ -20,9 +18,7 @@ from statsmodels.gam.api import BSplines
 
 from uniharmony._utils import validate_sites
 
-from ._design_matrix_mixin import DesignMatrixMixin
-from ._ls_mixin import LocationAndScaleMixin
-from ._standardization_mixin import StandardizationMixin
+from ._base import BaseComBat
 
 
 __all__ = ["ComBatGAM"]
@@ -30,7 +26,7 @@ __all__ = ["ComBatGAM"]
 logger = structlog.get_logger()
 
 
-class ComBatGAM(DesignMatrixMixin, StandardizationMixin, LocationAndScaleMixin, TransformerMixin, BaseEstimator):
+class ComBatGAM(BaseComBat):
     """Harmonize multi-site scanner effects controlling for non-linear age effects.
 
     This is an improvement on NeuroComBat allowing for non-linear effects to be controlled by Generalized Additive Models (GAMs).
@@ -121,10 +117,8 @@ class ComBatGAM(DesignMatrixMixin, StandardizationMixin, LocationAndScaleMixin, 
         """
         logger.debug("Fitting")
 
-        # Check that X and sites have correct shape and type
-        X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
-        sites = check_array(sites, copy=self.copy, dtype=None, ensure_2d=False, estimator=self)
-        check_consistent_length(X, sites)
+        # Validate input
+        X, sites = self._check_X_sites(X, sites, copy=self.copy, estimator=self)
         validate_sites(sites)
 
         # Check smooth_covariates and its bounds if passed
@@ -271,11 +265,9 @@ class ComBatGAM(DesignMatrixMixin, StandardizationMixin, LocationAndScaleMixin, 
         """
         logger.debug("Transforming")
 
+        # Validate input
         check_is_fitted(self)
-
-        X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
-        sites = check_array(sites, copy=self.copy, dtype=None, ensure_2d=False, estimator=self)
-        check_consistent_length(X, sites)
+        X, sites = self._check_X_sites(X, sites, copy=self.copy, estimator=self)
 
         smooth_covariates = check_array(smooth_covariates, dtype=FLOAT_DTYPES, estimator=self)
 
@@ -333,7 +325,7 @@ class ComBatGAM(DesignMatrixMixin, StandardizationMixin, LocationAndScaleMixin, 
 
         return bayes_data.T
 
-    # Overridden to allow sites
+    # Overridden to allow smooth_covariates
     def fit_transform(
         self,
         X: npt.ArrayLike,
@@ -364,18 +356,3 @@ class ComBatGAM(DesignMatrixMixin, StandardizationMixin, LocationAndScaleMixin, 
 
         """
         return self.fit(X, sites, smooth_covariates, **fit_params).transform(X, sites, smooth_covariates, **fit_params)
-
-    # Overridden for check_is_fitted() usage
-    def __sklearn_is_fitted__(self) -> bool:
-        """Check fitted status."""
-        return hasattr(self, "_gamma_star") and hasattr(self, "_delta_star")
-
-    def __sklearn_tags__(self) -> Tags:
-        tags = super().__sklearn_tags__()
-        tags.estimator_type = "transformer"
-        tags.target_tags.required = True
-        tags.target_tags.two_d_labels = True
-        tags.target_tags.positive_only = True
-        tags.input_tags.two_d_array = True
-        tags.input_tags.allow_nan = True
-        return tags
