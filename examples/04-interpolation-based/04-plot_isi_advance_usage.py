@@ -1,4 +1,6 @@
-"""IntraSiteInterpolation advance usage examples."""
+"""
+IntraSiteInterpolation advance usage examples.
+"""
 
 # %%
 ### Global Maximum Balancing
