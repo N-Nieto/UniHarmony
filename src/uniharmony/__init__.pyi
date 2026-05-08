@@ -3,6 +3,7 @@ __all__ = [
     "datasets",
     "dl",
     "interpolation",
+    "metrics",
     "normative",
     "plot",
     "prettyharmonize",
@@ -10,5 +11,5 @@ __all__ = [
     "verbosity_context",
 ]
 
-from . import combat, datasets, dl, interpolation, normative, plot, prettyharmonize
+from . import combat, datasets, dl, interpolation, metrics, normative, plot, prettyharmonize
 from ._verbose import verbosity, verbosity_context
