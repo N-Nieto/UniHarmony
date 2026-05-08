@@ -67,36 +67,30 @@ def report_metrics_by_site(
     ----------
     y_true : np.ndarray
         Ground-truth (correct) target values.
-
     y_pred : np.ndarray
         Estimated targets as returned by a classifier, or probability
         estimates / decision function outputs.
-
     sites : np.ndarray
         Site identifiers for stratification. Can be strings or integers.
-
     metrics : Callable or Sequence[Callable]
         Metric function or list of metric functions to compute (e.g., from
         ``sklearn.metrics``). Pass a single callable for one metric, or
         a sequence for multiple metrics.
-
-    metric_kwargs : dict[str, Any] | Sequence[dict[str, Any]] | None, default=None
+    metric_kwargs : dict or list of dict or None, optional (default None)
         Keyword arguments for each metric. If a single dict, it is passed
         to all metrics. If a sequence, ``metric_kwargs[i]`` is passed to
         ``metrics[i]``. Must have the same length as ``metrics``. Include
         ``threshold`` (default: 0.5) for metrics that require discrete
         predictions when ``y_pred`` contains continuous scores.
-
-    overall_performance : bool, default=True
+    overall_performance : bool, optional (default True)
         If True, include an ``"overall"`` key for each metric computed
         across all sites.
-
-    skip_empty_sites : bool, default=True
+    skip_empty_sites : bool, optional (default True)
         If True, skip sites with no samples.
 
     Returns
     -------
-    dict[str, dict[str | int, float]]
+    dict
         Dictionary mapping metric names to site-wise results.
         Each inner dictionary maps site identifiers to metric values.
         When a single metric is passed, the result contains one top-level
@@ -107,8 +101,8 @@ def report_metrics_by_site(
     TypeError
         If inputs have incorrect types.
     ValueError
-        If ``metric_kwargs`` length does not match ``metrics`` length,
-        or if input arrays have mismatched lengths.
+        If ``metric_kwargs`` length does not match ``metrics`` length or
+        if input arrays have mismatched lengths.
 
     Examples
     --------
@@ -206,7 +200,7 @@ def _binarize(y: npt.NDarray, threshold: float = 0.5) -> npt.NDarray:
     ----------
     y : np.ndarray
         Continuous scores or probability estimates.
-    threshold : float, default=0.5
+    threshold : float, optional (default 0.5)
         Values >= threshold are mapped to 1, values < threshold to 0.
 
     Returns
@@ -230,7 +224,7 @@ def _is_binary_or_multiclass(y: npt.NDarray, tol: float = 1e-9) -> bool:
     ----------
     y : np.ndarray
         Array to check.
-    tol : float, default=1e-9
+    tol : float, optional (default 1e-9)
         Tolerance for checking if values are close to integers.
 
     Returns
@@ -276,6 +270,19 @@ def _input_checks(
 ) -> None:
     """Validate input types and shapes for site-wise performance evaluation.
 
+    Parameters
+    ----------
+    y_true : np.ndarray
+        True labels.
+    y_pred : np.ndarray
+        Predicted values.
+    sites : np.ndarray
+        Site identifiers for stratification.
+    metric : Callable
+        Metric to compute from sklearn.metrics.
+    overall_performance: bool
+        Add an additional dictionary entry with the overall performance.
+
     Raises
     ------
     TypeError
@@ -315,6 +322,19 @@ def _input_checks_multi(
     overall_performance: bool,
 ) -> None:
     """Validate inputs for multi-metric site-wise evaluation.
+
+    Parameters
+    ----------
+    y_true : np.ndarray
+        True labels.
+    y_pred : np.ndarray
+        Predicted values.
+    sites : np.ndarray
+        Site identifiers for stratification.
+    metrics : list of callable
+        Metrics to compute from sklearn.metrics.
+    overall_performance: bool
+        Add an additional dictionary entry with the overall performance.
 
     Raises
     ------
@@ -362,17 +382,17 @@ def _validate_metric_kwargs(
 
     Returns
     -------
-    list[dict[str, Any]]
+    list of dict
         A list of length ``n_metrics`` where each element is a dict of
         keyword arguments for the corresponding metric.
 
     Raises
     ------
     TypeError
-        If ``metric_kwargs`` is not a dict, sequence of dicts, or None.
+        If ``metric_kwargs`` is not a dict, list of dict or None.
     ValueError
-        If ``n_metrics`` is not positive, or if ``metric_kwargs`` is a
-        sequence whose length does not match ``n_metrics``.
+        If ``n_metrics`` is not positive or
+        if ``metric_kwargs`` is a list whose length does not match ``n_metrics``.
 
     Examples
     --------
