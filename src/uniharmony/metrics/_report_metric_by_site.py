@@ -46,9 +46,9 @@ METRICS_REQUIRING_Y_PRED: set[str] = {
 
 
 def report_metrics_by_site(
-    y_true: npt.NDarray,
-    y_pred: npt.NDarray,
-    sites: npt.NDarray,
+    y_true: npt.NDArray,
+    y_pred: npt.NDArray,
+    sites: npt.NDArray,
     metrics: Callable | list[Callable],
     metric_kwargs: dict[str, Any] | list[dict[str, Any]] | None = None,
     overall_performance: bool = True,
@@ -193,7 +193,7 @@ def report_metrics_by_site(
     return results
 
 
-def _binarize(y: npt.NDarray, threshold: float = 0.5) -> npt.NDarray:
+def _binarize(y: npt.NDArray, threshold: float = 0.5) -> npt.NDArray:
     """Binarize continuous scores using a threshold.
 
     Parameters
@@ -217,7 +217,7 @@ def _metric_needs_y_pred(metric: Callable) -> bool:
     return getattr(metric, "__name__", "") in METRICS_REQUIRING_Y_PRED
 
 
-def _is_binary_or_multiclass(y: npt.NDarray, tol: float = 1e-9) -> bool:
+def _is_binary_or_multiclass(y: npt.NDArray, tol: float = 1e-9) -> bool:
     """Check if array contains only discrete class labels.
 
     Parameters
@@ -240,7 +240,7 @@ def _is_binary_or_multiclass(y: npt.NDarray, tol: float = 1e-9) -> bool:
     return bool(np.allclose(y, rounded, atol=tol))
 
 
-def _is_probability_like(y: npt.NDarray) -> bool:
+def _is_probability_like(y: npt.NDArray) -> bool:
     """Check if array values look like continuous scores/probabilities.
 
     Parameters
@@ -262,9 +262,9 @@ def _is_probability_like(y: npt.NDarray) -> bool:
 
 
 def _input_checks(
-    y_true: npt.NDarray,
-    y_pred: npt.NDarray,
-    sites: npt.NDarray,
+    y_true: npt.NDArray,
+    y_pred: npt.NDArray,
+    sites: npt.NDArray,
     metric: Callable,
     overall_performance: bool,
 ) -> None:
@@ -315,9 +315,9 @@ def _input_checks(
 
 
 def _input_checks_multi(
-    y_true: npt.NDarray,
-    y_pred: npt.NDarray,
-    sites: npt.NDarray,
+    y_true: npt.NDArray,
+    y_pred: npt.NDArray,
+    sites: npt.NDArray,
     metrics: list[Callable],
     overall_performance: bool,
 ) -> None:
