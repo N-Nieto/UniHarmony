@@ -19,7 +19,7 @@ logger = structlog.get_logger()
 
 def solve_ordinary_least_squares(
     gram_matrix: npt.NDArray,
-    X: npt.ArrayLike,
+    X: npt.NDArray,
     design: npt.NDArray,
 ) -> npt.NDArray:
     """Solve Ordinary Least Squares using normal equations with stability checks.
@@ -33,7 +33,7 @@ def solve_ordinary_least_squares(
     ----------
     gram_matrix : array, shape (n_features, n_features)
         The Gram matrix X_design^T @ X_design.
-    X : array-like, shape (n_samples, n_targets)
+    X : array, shape (n_samples, n_targets)
         Target values (transposed to (n_targets, n_samples) internally).
     design : array, shape (n_samples, n_features)
         Design matrix X_design.
