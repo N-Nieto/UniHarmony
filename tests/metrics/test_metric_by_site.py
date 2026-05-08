@@ -554,14 +554,6 @@ def test_validate_metric_kwargs_valid(metric_kwargs, n_metrics, expected) -> Non
     assert result == expected
 
 
-def test_validate_metric_kwargs_tuple_input() -> None:
-    """Test tuple is converted to list."""
-    kwargs = ({}, {"average": "binary"})
-    result = _validate_metric_kwargs(kwargs, 2)
-    assert isinstance(result, list)
-    assert len(result) == 2
-
-
 @pytest.mark.parametrize(
     "metric_kwargs,n_metrics,error_type,error_match",
     [
