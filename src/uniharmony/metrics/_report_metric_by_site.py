@@ -143,7 +143,7 @@ def report_metrics_by_site(
 
     """
     # Normalize metrics to list
-    if not isinstance(list, metrics):
+    if not isinstance(metrics, list):
         metrics_seq = [metrics]
     else:
         metrics_seq = metrics
