@@ -24,6 +24,7 @@ from ._base import BaseComBat
 __all__ = ["ComBatGAM"]
 
 logger = structlog.get_logger()
+logger.bind(src="ComBatGAM")
 
 
 class ComBatGAM(BaseComBat):

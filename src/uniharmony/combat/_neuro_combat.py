@@ -26,6 +26,7 @@ from ._base import BaseComBat
 __all__ = ["NeuroComBat"]
 
 logger = structlog.get_logger()
+logger.bind(src="NeuroComBat")
 
 
 class NeuroComBat(BaseComBat):
