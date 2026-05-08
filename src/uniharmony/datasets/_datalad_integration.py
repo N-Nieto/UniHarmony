@@ -664,8 +664,8 @@ def _build_search_patterns(
                     # Build pattern without triple-star
                     pattern = f"{tasks_patter}{run_patter}{suffix_pattern}{extension_patter}"
                     # Remove any leading/trailing stars that might cause issues
-                    while "***" in pattern:
-                        pattern = pattern.replace("***", "**")
+                    while "**" in pattern:
+                        pattern = pattern.replace("**", "*")
                     patterns.append(pattern)
     return patterns
 
