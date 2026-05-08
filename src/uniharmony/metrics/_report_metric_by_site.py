@@ -17,10 +17,6 @@ __all__ = [
 ]
 
 
-# -------------------------------------------------------------------------
-# Registry of metric signatures
-# -------------------------------------------------------------------------
-
 METRICS_REQUIRING_Y_SCORE: set[str] = {
     "roc_auc_score",
     "average_precision_score",
@@ -46,11 +42,6 @@ METRICS_REQUIRING_Y_PRED: set[str] = {
     "confusion_matrix",
     "classification_report",
 }
-
-
-# -------------------------------------------------------------------------
-# Public API
-# -------------------------------------------------------------------------
 
 
 def report_metrics_by_site(
@@ -205,11 +196,6 @@ def report_metrics_by_site(
             results[metric_name][site_key] = metric(y_true[mask], y_pred_metric[mask], **kwargs)
 
     return results
-
-
-# -------------------------------------------------------------------------
-# Internal helpers
-# -------------------------------------------------------------------------
 
 
 def _binarize(y: np.ndarray, threshold: float = 0.5) -> np.ndarray:
