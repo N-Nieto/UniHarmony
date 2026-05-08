@@ -656,14 +656,18 @@ def _build_search_patterns(
     runs_patters = ["*"] if runs == "all" else [f"*run-{run}" for run in runs]
     suffix_patterns = ["*"] if suffixes == "all" else [f"*{suffix}" for suffix in suffixes]
     extensions_patterns = ["*"] if extensions == "all" else [f"*{extension}" for extension in extensions]
-
-    return [
-        f"{tasks_patter}{run_patter}{suffix_pattern}{extension_patter}"
-        for tasks_patter in tasks_patters
-        for run_patter in runs_patters
-        for suffix_pattern in suffix_patterns
-        for extension_patter in extensions_patterns
-    ]
+    patterns = []
+    for tasks_patter in tasks_patters:
+        for run_patter in runs_patters:
+            for suffix_pattern in suffix_patterns:
+                for extension_patter in extensions_patterns:
+                    # Build pattern without triple-star
+                    pattern = f"{tasks_patter}{run_patter}{suffix_pattern}{extension_patter}"
+                    # Remove any leading/trailing stars that might cause issues
+                    while "***" in pattern:
+                        pattern = pattern.replace("***", "**")
+                    patterns.append(pattern)
+    return patterns
 
 
 def clean_tmp(tmp_dir_name: str = "datalad_cache") -> None:
