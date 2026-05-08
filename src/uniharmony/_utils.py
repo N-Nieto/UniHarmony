@@ -10,7 +10,6 @@ __all__ = [
     "handle_negative_variance",
     "minimum_samples_warning",
     "solve_ordinary_least_squares",
-    "validate_covariates",
     "validate_sites",
 ]
 
@@ -20,7 +19,7 @@ logger = structlog.get_logger()
 
 def solve_ordinary_least_squares(
     gram_matrix: npt.NDArray,
-    X: npt.ArrayLike,
+    X: npt.NDArray,
     design: npt.NDArray,
 ) -> npt.NDArray:
     """Solve Ordinary Least Squares using normal equations with stability checks.
@@ -34,7 +33,7 @@ def solve_ordinary_least_squares(
     ----------
     gram_matrix : array, shape (n_features, n_features)
         The Gram matrix X_design^T @ X_design.
-    X : array-like, shape (n_samples, n_targets)
+    X : array, shape (n_samples, n_targets)
         Target values (transposed to (n_targets, n_samples) internally).
     design : array, shape (n_samples, n_features)
         Design matrix X_design.
@@ -209,37 +208,6 @@ def minimum_samples_warning(n_samples_per_site: list[list[int]] | npt.NDArray, m
             f"Specified minimum is {min_samples_limit}. "
             "Results may be unstable or overfit."
         )
-
-
-def validate_covariates(covariates: npt.NDArray | None, n_samples: int, name: str) -> npt.NDArray | None:
-    """Validate covariates.
-
-    Parameters
-    ----------
-    covariates : array or None
-        The covariates.
-    n_samples : int
-        Sample count.
-    name : str
-        Covariate name.
-
-    Returns
-    -------
-    array or None
-        Validated covariates or None.
-
-    Raises
-    ------
-    ValueError
-        If covariates has incorrect shape.
-
-    """
-    if covariates is not None:
-        if covariates.ndim == 1:
-            covariates = covariates.reshape(-1, 1)
-        if covariates.shape[0] != n_samples:
-            raise ValueError(f"{name} has {covariates.shape[0]} samples but sites has {n_samples}")
-        return covariates
 
 
 def validate_sites(sites: npt.NDArray) -> None:
