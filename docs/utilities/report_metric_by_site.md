@@ -11,8 +11,6 @@
 - **Flexible Site Identifiers** — Supports integer, string, or mixed site labels with automatic type normalization
 - **Overall Performance** — Optionally include aggregate metrics across all sites
 
----
-
 ## Quick Start
 
 ```python
