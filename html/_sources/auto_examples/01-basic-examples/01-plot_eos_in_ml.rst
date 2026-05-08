@@ -213,7 +213,7 @@ Create DataFrame for easier plotting
 
  .. code-block:: none
 
-    2026-05-07 08:52:15 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
+    2026-05-08 11:20:04 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
     We don't have real signal, and the classes are equally distributed across sites
     Mean accuracy: 0.4945
 
@@ -243,7 +243,7 @@ Create DataFrame for easier plotting
 
  .. code-block:: none
 
-    2026-05-07 08:52:16 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
+    2026-05-08 11:20:05 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
 
 
 
@@ -345,7 +345,7 @@ Test the visualization
 
  .. code-block:: none
 
-    2026-05-07 08:52:16 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
+    2026-05-08 11:20:05 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
     We don't have real signal, nor site effects. Even with class imbalance across sites, there is nothing to pick up.
     Mean accuracy: 0.5206
 
@@ -355,7 +355,7 @@ Test the visualization
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.813 seconds)
+   **Total running time of the script:** (0 minutes 4.528 seconds)
 
 
 .. _sphx_glr_download_auto_examples_01-basic-examples_01-plot_eos_in_ml.py:

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>ComBatGAM &#8212; uniharmony 0.0.3.dev146 documentation</title>
+    <title>ComBatGAM &#8212; uniharmony 0.0.3.dev165 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=eaaf177c"></script>
+    <script src="../../_static/documentation_options.js?v=3aa0b7ac"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.3.dev146 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.3.dev165 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -455,6 +455,12 @@
 </dd>
 </dl>
 </dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>sites_</strong><span class="classifier">array, shape (n_samples,)</span></dt><dd><p>Fitted site names.</p>
+</dd>
+</dl>
+</dd>
 </dl>
 <p class="rubric">Methods</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
@@ -462,14 +468,26 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony.combat.ComBatGAM.fit" title="uniharmony.combat.ComBatGAM.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X, sites, smooth_covariates[, ...])</p></td>
 <td><p>Compute per-feature statistics to perform harmonization.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#uniharmony.combat.ComBatGAM.fit_transform" title="uniharmony.combat.ComBatGAM.fit_transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code></a>(X, sites, smooth_covariates, ...)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_design_matrix</span></code>(sites, ...)</p></td>
+<td><p>Fit encoders and make design matrix.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_ls_model</span></code>(data, design, idx_per_site[, ...])</p></td>
+<td><p>Fit L/S model.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_standardize</span></code>(X, design, n_samples, ...[, ...])</p></td>
+<td><p>Standardization of the features.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony.combat.ComBatGAM.fit_transform" title="uniharmony.combat.ComBatGAM.fit_transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code></a>(X, sites, smooth_covariates, ...)</p></td>
 <td><p>Fit to data, then transform it.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_metadata_routing</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_metadata_routing</span></code>()</p></td>
 <td><p>Get metadata routing of this object.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</p></td>
 <td><p>Get parameters for this estimator.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">harmonize</span></code>(data, mean, idx_per_site[, epsilon])</p></td>
+<td><p>Compute the final harmonized data.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony.combat.ComBatGAM.set_fit_request" title="uniharmony.combat.ComBatGAM.set_fit_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_fit_request</span></code></a>(*[, continuous_covariates, ...])</p></td>
 <td><p>Configure whether metadata should be requested to be passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method.</p></td>
@@ -485,6 +503,12 @@
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony.combat.ComBatGAM.transform" title="uniharmony.combat.ComBatGAM.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X, sites, smooth_covariates[, ...])</p></td>
 <td><p>Harmonize data.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform_design_matrix</span></code>(sites, ...)</p></td>
+<td><p>Transform using fitted encoders and make design matrix.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform_standardize</span></code>(X, design, n_samples)</p></td>
+<td><p>Standardize features on fitted standardization of input.</p></td>
 </tr>
 </tbody>
 </table>

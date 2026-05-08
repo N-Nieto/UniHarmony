@@ -100,16 +100,16 @@ Metrics by site report
 
  .. code-block:: none
 
-    For site 0: bACC 0.7692
-    For site 1: bACC 0.8462
-    For site 2: bACC 0.6778
-    For site 3: bACC 0.8532
-    For site 4: bACC 0.6667
-    For site 5: bACC 0.6818
-    For site 6: bACC 0.7386
-    For site 7: bACC 0.6039
-    For site 8: bACC 0.7083
-    For site 9: bACC 0.5824
+    For site 0: bACC 0.5804
+    For site 1: bACC 0.6151
+    For site 2: bACC 0.7167
+    For site 3: bACC 0.8091
+    For site 4: bACC 0.7028
+    For site 5: bACC 0.6378
+    For site 6: bACC 0.7424
+    For site 7: bACC 0.5934
+    For site 8: bACC 0.7851
+    For site 9: bACC 0.7167
 
 
 
@@ -138,8 +138,8 @@ Metrics by site report
 
  .. code-block:: none
 
-    Overall bACC: 0.7082693292370712
-    Overall bACC: 0.7082693292370712
+    Overall bACC: 0.6915851775604736
+    Overall bACC: 0.6915851775604736
 
 
 
@@ -151,7 +151,7 @@ If requested, the function also computes the overall performance and stores it a
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.522 seconds)
+   **Total running time of the script:** (0 minutes 2.468 seconds)
 
 
 .. _sphx_glr_download_auto_examples_01-basic-examples_02-run_metrics_by_site.py:

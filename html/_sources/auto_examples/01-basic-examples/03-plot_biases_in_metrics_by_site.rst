@@ -98,7 +98,7 @@ Let's create the first scenario: a dataset with 3 good sites and 1 bad site (sig
 
  .. code-block:: none
 
-    Overall bACC for Scenario 1: 0.633
+    Overall bACC for Scenario 1: 0.648
 
 
 
@@ -140,7 +140,7 @@ Now let's create a second scenario: a dataset with 3 bad sites and 1 good site (
 
  .. code-block:: none
 
-    Overall bACC for Scenario 2: 0.652
+    Overall bACC for Scenario 2: 0.634
 
 
 
@@ -236,7 +236,7 @@ If we had only reported the overall performance, we would not be able to unravel
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.607 seconds)
+   **Total running time of the script:** (0 minutes 3.113 seconds)
 
 
 .. _sphx_glr_download_auto_examples_01-basic-examples_03-plot_biases_in_metrics_by_site.py:

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>NeuroComBat &#8212; uniharmony 0.0.3.dev146 documentation</title>
+    <title>NeuroComBat &#8212; uniharmony 0.0.3.dev165 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=eaaf177c"></script>
+    <script src="../../_static/documentation_options.js?v=3aa0b7ac"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.3.dev146 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.3.dev165 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -417,7 +417,6 @@
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.combat.NeuroComBat"><code class="docutils literal notranslate"><span class="pre">NeuroComBat</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.combat.NeuroComBat.fit"><code class="docutils literal notranslate"><span class="pre">NeuroComBat.fit()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.combat.NeuroComBat.fit_transform"><code class="docutils literal notranslate"><span class="pre">NeuroComBat.fit_transform()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.combat.NeuroComBat.set_fit_request"><code class="docutils literal notranslate"><span class="pre">NeuroComBat.set_fit_request()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.combat.NeuroComBat.set_transform_request"><code class="docutils literal notranslate"><span class="pre">NeuroComBat.set_transform_request()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.combat.NeuroComBat.transform"><code class="docutils literal notranslate"><span class="pre">NeuroComBat.transform()</span></code></a></li>
@@ -470,14 +469,26 @@ here <a class="reference internal" href="#rc2682b75cd7b-2" id="id2"><span>[Rc268
 <tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony.combat.NeuroComBat.fit" title="uniharmony.combat.NeuroComBat.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X, sites[, categorical_covariates, ...])</p></td>
 <td><p>Compute per-feature statistics to perform harmonization.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#uniharmony.combat.NeuroComBat.fit_transform" title="uniharmony.combat.NeuroComBat.fit_transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code></a>(X, sites, **fit_params)</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_design_matrix</span></code>(sites, ...)</p></td>
+<td><p>Fit encoders and make design matrix.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_ls_model</span></code>(data, design, idx_per_site[, ...])</p></td>
+<td><p>Fit L/S model.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_standardize</span></code>(X, design, n_samples, ...[, ...])</p></td>
+<td><p>Standardization of the features.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code>(X, sites, **fit_params)</p></td>
 <td><p>Fit to data, then transform it.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_metadata_routing</span></code>()</p></td>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_metadata_routing</span></code>()</p></td>
 <td><p>Get metadata routing of this object.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</p></td>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_params</span></code>([deep])</p></td>
 <td><p>Get parameters for this estimator.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">harmonize</span></code>(data, mean, idx_per_site[, epsilon])</p></td>
+<td><p>Compute the final harmonized data.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony.combat.NeuroComBat.set_fit_request" title="uniharmony.combat.NeuroComBat.set_fit_request"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_fit_request</span></code></a>(*[, categorical_covariates, ...])</p></td>
 <td><p>Configure whether metadata should be requested to be passed to the <code class="docutils literal notranslate"><span class="pre">fit</span></code> method.</p></td>
@@ -493,6 +504,12 @@ here <a class="reference internal" href="#rc2682b75cd7b-2" id="id2"><span>[Rc268
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony.combat.NeuroComBat.transform" title="uniharmony.combat.NeuroComBat.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X, sites[, ...])</p></td>
 <td><p>Harmonize data.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform_design_matrix</span></code>(sites, ...)</p></td>
+<td><p>Transform using fitted encoders and make design matrix.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform_standardize</span></code>(X, design, n_samples)</p></td>
+<td><p>Standardize features on fitted standardization of input.</p></td>
 </tr>
 </tbody>
 </table>
@@ -543,32 +560,6 @@ This is only used if empirical_bayes=True and parametric_adjustments=True.</p>
 </dd>
 <dt><strong>max_iter</strong><span class="classifier">int, optional (default 1000)</span></dt><dd><p>Maximum number of iterations for the solver in full mode.
 This is only used if empirical_bayes=True and parametric_adjustments=True.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="uniharmony.combat.NeuroComBat.fit_transform">
-<span class="sig-name descname"><span class="pre">fit_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sites</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">fit_params</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v2.4)"><span class="pre">ndarray</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.14)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><span class="pre">Any</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v2.4)"><span class="pre">dtype</span></a><span class="p"><span class="pre">[</span></span><span class="pre">_ScalarT</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#uniharmony.combat.NeuroComBat.fit_transform" title="Link to this definition">#</a></dt>
-<dd><p>Fit to data, then transform it.</p>
-<p>Fits transformer to <cite>X</cite> and <cite>sites</cite> with optional parameters
-<cite>fit_params</cite> and returns a transformed version of <cite>X</cite>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>X</strong><span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>Input samples.</p>
-</dd>
-<dt><strong>sites</strong><span class="classifier">array-like, shape (n_samples, 1)</span></dt><dd><p>Sites.</p>
-</dd>
-<dt><strong>**fit_params</strong><span class="classifier">dict</span></dt><dd><p>Additional fit parameters.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><dl class="simple">
-<dt>array, shape (n_samples, n_features)</dt><dd><p>Transformed array.</p>
 </dd>
 </dl>
 </dd>
@@ -766,7 +757,6 @@ parameters and not others.</p>
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.combat.NeuroComBat"><code class="docutils literal notranslate"><span class="pre">NeuroComBat</span></code></a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.combat.NeuroComBat.fit"><code class="docutils literal notranslate"><span class="pre">NeuroComBat.fit()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.combat.NeuroComBat.fit_transform"><code class="docutils literal notranslate"><span class="pre">NeuroComBat.fit_transform()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.combat.NeuroComBat.set_fit_request"><code class="docutils literal notranslate"><span class="pre">NeuroComBat.set_fit_request()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.combat.NeuroComBat.set_transform_request"><code class="docutils literal notranslate"><span class="pre">NeuroComBat.set_transform_request()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.combat.NeuroComBat.transform"><code class="docutils literal notranslate"><span class="pre">NeuroComBat.transform()</span></code></a></li>

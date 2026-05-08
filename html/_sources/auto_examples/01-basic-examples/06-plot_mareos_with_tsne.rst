@@ -77,7 +77,7 @@ Let's load the MAREoS datasets, which simulates several datasets with and withou
  .. code-block:: none
 
     Downloading file 'public_datasets.zip' from 'https://www.imardgroup.com/mareos-benchmark/public_datasets.zip' to '/home/runner/.cache/uniharmony'.
-      0%|                                              | 0.00/3.66M [00:00<?, ?B/s]     11%|████                                  | 392k/3.66M [00:00<00:00, 3.54MB/s]     41%|███████████████                      | 1.49M/3.66M [00:00<00:00, 7.71MB/s]      0%|                                              | 0.00/3.66M [00:00<?, ?B/s]    100%|█████████████████████████████████████| 3.66M/3.66M [00:00<00:00, 17.0GB/s]
+      0%|                                              | 0.00/3.66M [00:00<?, ?B/s]      9%|███▏                                  | 312k/3.66M [00:00<00:01, 3.09MB/s]     30%|██████████▉                          | 1.09M/3.66M [00:00<00:00, 5.76MB/s]     92%|█████████████████████████████████▉   | 3.36M/3.66M [00:00<00:00, 13.4MB/s]      0%|                                              | 0.00/3.66M [00:00<?, ?B/s]    100%|█████████████████████████████████████| 3.66M/3.66M [00:00<00:00, 18.4GB/s]
     Unzipping contents of '/home/runner/.cache/uniharmony/public_datasets.zip' to '/home/runner/.cache/uniharmony/MAREoS'
     dict_keys(['eos_simple1', 'eos_simple2', 'eos_interaction1', 'eos_interaction2', 'true_simple1', 'true_simple2', 'true_interaction1', 'true_interaction2'])
 
@@ -361,7 +361,7 @@ Now let's use the ``plot_tsne`` funtion which can simplify the code and will all
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 58.757 seconds)
+   **Total running time of the script:** (0 minutes 59.535 seconds)
 
 
 .. _sphx_glr_download_auto_examples_01-basic-examples_06-plot_mareos_with_tsne.py:

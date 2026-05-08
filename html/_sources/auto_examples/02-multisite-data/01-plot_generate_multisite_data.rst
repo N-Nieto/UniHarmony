@@ -346,7 +346,7 @@ From this generated problem, ``uniharmony`` adds an Effect of Site and noise on 
 
  .. code-block:: none
 
-    2026-05-07 08:53:15 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
+    2026-05-08 11:21:05 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
 
 
 
@@ -587,7 +587,7 @@ Noise effect
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.575 seconds)
+   **Total running time of the script:** (0 minutes 6.592 seconds)
 
 
 .. _sphx_glr_download_auto_examples_02-multisite-data_01-plot_generate_multisite_data.py:
