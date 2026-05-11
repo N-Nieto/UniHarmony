@@ -20,7 +20,7 @@ from sklearn.model_selection import train_test_split
 
 from uniharmony import verbosity
 from uniharmony.datasets import make_multisite_classification
-from uniharmony.metrics import report_metric_by_site
+from uniharmony.metrics import report_metrics_by_site
 
 
 sns.set_theme(style="whitegrid")
@@ -53,7 +53,7 @@ X_train, X_test, y_train, y_test, sites_train, sites_test = train_test_split(X, 
 
 clf.fit(X_train, y_train)
 y_pred_s1 = clf.predict(X_test)
-metric_s1 = report_metric_by_site(y_test, y_pred_s1, sites_test, balanced_accuracy_score, overall_performance=True)
+metric_s1 = report_metrics_by_site(y_test, y_pred_s1, sites_test, balanced_accuracy_score, overall_performance=True)
 print(f"Overall bACC for Scenario 1: {metric_s1['overall']:.3}")
 
 ###############################################################################
@@ -78,7 +78,7 @@ X_train, X_test, y_train, y_test, sites_train, sites_test = train_test_split(X, 
 
 clf.fit(X_train, y_train)
 y_pred_s2 = clf.predict(X_test)
-metric_s2 = report_metric_by_site(y_test, y_pred_s2, sites_test, balanced_accuracy_score, overall_performance=True)
+metric_s2 = report_metrics_by_site(y_test, y_pred_s2, sites_test, balanced_accuracy_score, overall_performance=True)
 print(f"Overall bACC for Scenario 2: {metric_s2['overall']:.3}")
 
 # %%
@@ -143,7 +143,9 @@ plt.show()
 
 
 ###############################################################################
-# But, how is it possible that they have an similar overall performance? Where is the catch? The sites have different number of samples!
+# But, how is it possible that they have an similar overall performance?
+# Where is the catch?
+# The sites have different number of samples!
 #
 # In the first scenario, even when the first site is bigger, the other 3 compensates the bad performance.
 # In the second Scenario, the last site (good one) is bigger an pushes the overall performance up.
