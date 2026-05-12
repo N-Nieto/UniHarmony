@@ -36,6 +36,23 @@ Interpolation Methods
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="IntraSiteInterpolation advance usage">
+
+.. only:: html
+
+  .. image:: /auto_examples/04-interpolation-based/images/thumb/sphx_glr_04-plot_isi_advance_usage_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/04-interpolation-based/04-plot_isi_advance_usage`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">IntraSiteInterpolation advance usage</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Multiclass classification using ISI">
 
 .. only:: html
@@ -79,6 +96,7 @@ Interpolation Methods
    :hidden:
 
    /auto_examples/04-interpolation-based/01-plot_isi_binary_classification
+   /auto_examples/04-interpolation-based/04-plot_isi_advance_usage
    /auto_examples/04-interpolation-based/02-plot_isi_multiclass_classification
    /auto_examples/04-interpolation-based/03-plot_ismi_binary_classification
 

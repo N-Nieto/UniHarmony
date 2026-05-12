@@ -33,12 +33,12 @@ Imports
 
     import seaborn as sns
     from sklearn.linear_model import LogisticRegression
-    from sklearn.metrics import balanced_accuracy_score
+    from sklearn.metrics import accuracy_score, balanced_accuracy_score, f1_score, roc_auc_score
     from sklearn.model_selection import train_test_split
 
     from uniharmony import verbosity
     from uniharmony.datasets import make_multisite_classification
-    from uniharmony.metrics import report_metric_by_site
+    from uniharmony.metrics import report_metrics_by_site
 
 
     sns.set_theme(style="whitegrid")
@@ -80,47 +80,33 @@ Data generation
 Metrics by site report
 ----------------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-45
+.. GENERATED FROM PYTHON SOURCE LINES 37-46
 
 .. code-block:: Python
 
 
     clf.fit(X_train, y_train)
     y_pred = clf.predict(X_test)
-    metrics = report_metric_by_site(y_test, y_pred, sites_test, balanced_accuracy_score)
+    y_scores = clf.predict_proba(X_test)[:, 0]
+    metrics = report_metrics_by_site(y_test, y_pred, sites_test, balanced_accuracy_score)
 
-    for key in metrics.keys():
-        print(f"For site {key}: bACC {metrics[key]:.4}")
-
-
-
-
-
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    For site 0: bACC 0.5804
-    For site 1: bACC 0.6151
-    For site 2: bACC 0.7167
-    For site 3: bACC 0.8091
-    For site 4: bACC 0.7028
-    For site 5: bACC 0.6378
-    For site 6: bACC 0.7424
-    For site 7: bACC 0.5934
-    For site 8: bACC 0.7851
-    For site 9: bACC 0.7167
+    # for key in metrics.keys():
+    #     print(f"For site {key}: bACC {metrics[key]:.4}")
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-58
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 47-59
 
 .. code-block:: Python
 
 
     # Compute metrics but now request the overall
-    metrics = report_metric_by_site(y_test, y_pred, sites_test, balanced_accuracy_score, overall_performance=True)
+    metrics = report_metrics_by_site(y_test, y_pred, sites_test, balanced_accuracy_score, overall_performance=True)
 
     # Compute the metric outside the function to compare.
     bacc = balanced_accuracy_score(y_true=y_test, y_pred=y_pred)
@@ -128,7 +114,7 @@ Metrics by site report
     # Overall comparison.
     print(f"Overall bACC: {bacc}")
     # The overall performance is also stored in the metrics if requested.
-    print(f"Overall bACC: {metrics['overall']}")
+    print(f"Overall bACC: {metrics['balanced_accuracy_score']['overall']}")
 
 
 
@@ -138,20 +124,68 @@ Metrics by site report
 
  .. code-block:: none
 
-    Overall bACC: 0.6915851775604736
-    Overall bACC: 0.6915851775604736
+    Overall bACC: 0.612
+    Overall bACC: 0.612
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 59-60
+.. GENERATED FROM PYTHON SOURCE LINES 60-61
 
 If requested, the function also computes the overall performance and stores it as another entry in the dictionary.
+
+.. GENERATED FROM PYTHON SOURCE LINES 63-91
+
+.. code-block:: Python
+
+
+    # Single metric (simplest case)
+    metrics = report_metrics_by_site(y_test, y_scores, sites_test, accuracy_score)
+    print(metrics)
+
+    # Single metric with kwargs
+    metrics = report_metrics_by_site(y_test, y_scores, sites_test, f1_score, metric_kwargs={"threshold": 0.5, "average": "macro"})
+    print(metrics)
+
+    # Multiple metrics
+    metrics = report_metrics_by_site(
+        y_test,
+        y_scores,
+        sites_test,
+        metrics=[roc_auc_score, accuracy_score],
+        metric_kwargs=[{}, {"threshold": 0.5}],
+    )
+    print(metrics)
+
+    # With overall performance
+    metrics = report_metrics_by_site(
+        y_test,
+        y_scores,
+        sites_test,
+        metrics=[accuracy_score, roc_auc_score],
+        overall_performance=True,
+    )
+    print(metrics)
+
+
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    {'accuracy_score': {'overall': 0.388, 0: 0.28, 1: 0.28, 2: 0.39285714285714285, 3: 0.2727272727272727, 4: 0.4230769230769231, 5: 0.5833333333333334, 6: 0.6, 7: 0.5, 8: 0.24, 9: 0.2916666666666667}}
+    {'f1_score': {'overall': 0.3879118593077403, 0: 0.27884615384615385, 1: 0.2694805194805195, 2: 0.39208173690932313, 3: 0.26666666666666666, 4: 0.4152923538230885, 5: 0.5833333333333334, 6: 0.5941558441558441, 7: 0.49925925925925924, 8: 0.24, 9: 0.2804232804232804}}
+    {'roc_auc_score': {'overall': 0.318976, 0: 0.25, 1: 0.23717948717948717, 2: 0.28205128205128205, 3: 0.175, 4: 0.4166666666666667, 5: 0.5664335664335665, 6: 0.5714285714285714, 7: 0.42011834319526625, 8: 0.1923076923076923, 9: 0.14685314685314685}, 'accuracy_score': {'overall': 0.388, 0: 0.28, 1: 0.28, 2: 0.39285714285714285, 3: 0.2727272727272727, 4: 0.4230769230769231, 5: 0.5833333333333334, 6: 0.6, 7: 0.5, 8: 0.24, 9: 0.2916666666666667}}
+    {'accuracy_score': {'overall': 0.388, 0: 0.28, 1: 0.28, 2: 0.39285714285714285, 3: 0.2727272727272727, 4: 0.4230769230769231, 5: 0.5833333333333334, 6: 0.6, 7: 0.5, 8: 0.24, 9: 0.2916666666666667}, 'roc_auc_score': {'overall': 0.318976, 0: 0.25, 1: 0.23717948717948717, 2: 0.28205128205128205, 3: 0.175, 4: 0.4166666666666667, 5: 0.5664335664335665, 6: 0.5714285714285714, 7: 0.42011834319526625, 8: 0.1923076923076923, 9: 0.14685314685314685}}
+
+
+
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.468 seconds)
+   **Total running time of the script:** (0 minutes 2.019 seconds)
 
 
 .. _sphx_glr_download_auto_examples_01-basic-examples_02-run_metrics_by_site.py:

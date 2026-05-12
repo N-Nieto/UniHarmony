@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>📂 CHANGELOG &#8212; uniharmony 0.0.3.dev165 documentation</title>
+    <title>📂 CHANGELOG &#8212; uniharmony 0.0.4.dev4 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=3aa0b7ac"></script>
+    <script src="_static/documentation_options.js?v=a8ac3f18"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -132,7 +132,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.3.dev165 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.4.dev4 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -151,6 +151,7 @@
 <li class="toctree-l2"><a class="reference internal" href="utilities/load_mareos_datasets.html">MAREoS Benchmark Datasets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utilities/load_onharmony_dataset.html">ON-Harmony Dataset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="utilities/datalad_integration.html">Datalad Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities/report_metric_by_site.html">Site-Stratified Metrics</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="methods/index.html">🧮 Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -173,8 +174,7 @@
 <li class="toctree-l3"><a class="reference internal" href="methods/interpolation_based/inter_site_matched_interpolation.html">Inter-Site Matched Interpolation (ISMI)</a></li>
 
 
-<li class="toctree-l3"><a class="reference internal" href="methods/interpolation_based/intra_site_interpolation.html">Intra Site Interpolation</a></li>
-
+<li class="toctree-l3"><a class="reference internal" href="methods/interpolation_based/intra_site_interpolation.html">Intra-Site Interpolation (ISI)</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="methods/iqm_based/index.html">🔬 IQM-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -187,8 +187,8 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="examples/index.html">🎛️ Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="examples/basic/index.html">Basic examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/05-plot_multisite_data_characterization.html">Characterise a multisite problem</a></li>
-<li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/02-run_metrics_by_site.html">Compute metrics by site</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/04-plot_eos_with_dimensionality_reduction.html">Explore EoS with dimensionality reduction techniques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/02-run_metrics_by_site.html">Compute metrics by site</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/06-plot_mareos_with_tsne.html">Characterise a multisite problem with MAREoS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/03-plot_biases_in_metrics_by_site.html">Discover biases in metrics by site</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/01-plot_eos_in_ml.html">Impact of Effects of Site in ML</a></li>
@@ -212,6 +212,7 @@
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="examples/interpolation/index.html">Interpolation Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/04-interpolation-based/01-plot_isi_binary_classification.html">Binary classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/04-interpolation-based/04-plot_isi_advance_usage.html">IntraSiteInterpolation advance usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/04-interpolation-based/02-plot_isi_multiclass_classification.html">Multiclass classification using ISI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/04-interpolation-based/03-plot_ismi_binary_classification.html">Multisite Harmonization using Inter-Site Matched Interpolation (ISMI)</a></li>
 </ul>
@@ -235,6 +236,10 @@
 <li class="toctree-l3"><a class="reference internal" href="api/datasets/download_bids_dataset.html">download_bids_dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/datasets/clean_tmp.html">clean_tmp</a></li>
 <li class="toctree-l3"><a class="reference internal" href="api/datasets/list_available_files.html">list_available_files</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/metrics/index.html">uniharmony.metrics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/metrics/report_metrics_by_site.html">report_metrics_by_site</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="api/combat_based/index.html">uniharmony.combat</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -414,17 +419,22 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">0.0.2 - 2026-04-16</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">0.0.3 - 2026-05-08</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#added">Added</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#changed">Changed</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">0.0.1 - 2026-03-26</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">0.0.2 - 2026-04-16</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Changed</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">0.0.0 - 2026-01-15</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Added</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">0.0.1 - 2026-03-26</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Added</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">0.0.0 - 2026-01-15</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Added</a></li>
 </ul>
 </li>
 </ul>
@@ -441,17 +451,41 @@
   <section class="tex2jax_ignore mathjax_ignore" id="changelog">
 <h1>📂 CHANGELOG<a class="headerlink" href="#changelog" title="Link to this heading">#</a></h1>
 <section id="id1">
-<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.2">0.0.2</a> - 2026-04-16<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.3">0.0.3</a> - 2026-05-08<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <section id="added">
 <h3>Added<a class="headerlink" href="#added" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Add ComBatGAM harmonisation method (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/15">#15</a>)</p></li>
+<li><p>Add support for fetching BIDS-compatible datasets using DataLad and use ON-Harmony dataset as an example (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/58">#58</a>)</p></li>
+<li><p>Export <code class="docutils literal notranslate"><span class="pre">uniharmony.metrics</span></code> and allow for multiple metrics in <code class="docutils literal notranslate"><span class="pre">uniharmony.metrics.report_metrics_by_site</span></code> (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/59">#59</a>)</p></li>
+<li><p>Add global and per site functionality to IntraSiteInterpolation class.
+Add covariate match interpolation to IntraSiteInterpolation class for better preserve biological plausibility. (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/61">#61</a>)</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">BaseComBat</span></code>, <code class="docutils literal notranslate"><span class="pre">DesignMatrixMixin</span></code>, <code class="docutils literal notranslate"><span class="pre">StandardizationMixin</span></code> and <code class="docutils literal notranslate"><span class="pre">LocationAndScaleMixin</span></code> for ComBat-based methods (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/64">#64</a>)</p></li>
+</ul>
+</section>
+<section id="changed">
+<h3>Changed<a class="headerlink" href="#changed" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Refactor <code class="docutils literal notranslate"><span class="pre">make_multisite_classification</span></code> to use <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> functions to generate base samples (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/54">#54</a>)</p></li>
+<li><p>Expose <code class="docutils literal notranslate"><span class="pre">uniharmony.datasets</span></code> and hide previously exposed functions from it (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/58">#58</a>)</p></li>
+<li><p>Fix <code class="docutils literal notranslate"><span class="pre">uniharmony.metrics.report_metrics_by_site</span></code> when requested metric requires <code class="docutils literal notranslate"><span class="pre">y_score</span></code> instead of <code class="docutils literal notranslate"><span class="pre">y_pred</span></code> (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/59">#59</a>)</p></li>
+<li><p>Change basic to IntraSiteInterpolation class structure to allow for classification and regression problems. (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/61">#61</a>)</p></li>
+<li><p>Refactor ComBat-based method implementations to use mixin classes (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/64">#64</a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="id2">
+<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.2">0.0.2</a> - 2026-04-16<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<section id="id3">
+<h3>Added<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Introduce <code class="docutils literal notranslate"><span class="pre">uniharmony.verbosity</span></code> and <code class="docutils literal notranslate"><span class="pre">uniharmony.verbosity_context</span></code> to manage logging levels (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/10">#10</a>)</p></li>
 <li><p>Add InterSiteMatchedInterpolation harmonisation method (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/16">#16</a>)</p></li>
 <li><p>Add <code class="docutils literal notranslate"><span class="pre">plot</span></code> sub-package for providing plotting helpers (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/26">#26</a>)</p></li>
 </ul>
 </section>
-<section id="changed">
-<h3>Changed<a class="headerlink" href="#changed" title="Link to this heading">#</a></h3>
+<section id="id4">
+<h3>Changed<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Improve <code class="docutils literal notranslate"><span class="pre">sites</span></code> validation, handling and storage across transformers (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/17">#17</a>)</p></li>
 <li><p>Split up API reference in docs (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/19">#19</a>)</p></li>
@@ -463,10 +497,10 @@
 </ul>
 </section>
 </section>
-<section id="id2">
-<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.1">0.0.1</a> - 2026-03-26<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
-<section id="id3">
-<h3>Added<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<section id="id5">
+<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.1">0.0.1</a> - 2026-03-26<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<section id="id6">
+<h3>Added<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Setup documentation and add initial info (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/2">#2</a>)</p></li>
 <li><p>Add IntraSiteInterpolation harmonisation method, MAREoS dataset loading and multisite data generation functions (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/4">#4</a>)</p></li>
@@ -474,10 +508,10 @@
 </ul>
 </section>
 </section>
-<section id="id4">
-<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.0">0.0.0</a> - 2026-01-15<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
-<section id="id5">
-<h3>Added<a class="headerlink" href="#id5" title="Link to this heading">#</a></h3>
+<section id="id7">
+<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.0">0.0.0</a> - 2026-01-15<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
+<section id="id8">
+<h3>Added<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Clean up repository and publish package (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/1">#1</a>)</p></li>
 </ul>
@@ -523,17 +557,22 @@
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">0.0.2 - 2026-04-16</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">0.0.3 - 2026-05-08</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#added">Added</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#changed">Changed</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">0.0.1 - 2026-03-26</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">0.0.2 - 2026-04-16</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Changed</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">0.0.0 - 2026-01-15</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">Added</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">0.0.1 - 2026-03-26</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Added</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">0.0.0 - 2026-01-15</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Added</a></li>
 </ul>
 </li>
 </ul>

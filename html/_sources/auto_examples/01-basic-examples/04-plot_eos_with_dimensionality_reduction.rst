@@ -115,7 +115,7 @@ Let's simulate data with only Effects of Site (EoS) or only real signal, and see
 
  .. code-block:: none
 
-    2026-05-08 11:20:10 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
+    2026-05-12 08:16:46 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
 
 
 
@@ -183,7 +183,7 @@ Let's try now another dimensionality reduction method.
 
  .. code-block:: none
 
-    2026-05-08 11:20:15 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
+    2026-05-12 08:16:51 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
 
 
 
@@ -246,7 +246,7 @@ Dimensionality reduction
 
  .. code-block:: none
 
-    2026-05-08 11:20:16 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
+    2026-05-12 08:16:52 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
 
 
 
@@ -258,7 +258,7 @@ We found similar behavior using PCA os FastICA, but different clusters were gene
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 15.276 seconds)
+   **Total running time of the script:** (0 minutes 14.939 seconds)
 
 
 .. _sphx_glr_download_auto_examples_01-basic-examples_04-plot_eos_with_dimensionality_reduction.py:

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Load ON-Harmony dataset &#8212; uniharmony 0.0.3.dev165 documentation</title>
+    <title>Load ON-Harmony dataset &#8212; uniharmony 0.0.4.dev4 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=3aa0b7ac"></script>
+    <script src="../../_static/documentation_options.js?v=a8ac3f18"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.3.dev165 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.4.dev4 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -152,6 +152,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../utilities/load_mareos_datasets.html">MAREoS Benchmark Datasets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../utilities/load_onharmony_dataset.html">ON-Harmony Dataset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../utilities/datalad_integration.html">Datalad Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/report_metric_by_site.html">Site-Stratified Metrics</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../methods/index.html">🧮 Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -174,8 +175,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../methods/interpolation_based/inter_site_matched_interpolation.html">Inter-Site Matched Interpolation (ISMI)</a></li>
 
 
-<li class="toctree-l3"><a class="reference internal" href="../../methods/interpolation_based/intra_site_interpolation.html">Intra Site Interpolation</a></li>
-
+<li class="toctree-l3"><a class="reference internal" href="../../methods/interpolation_based/intra_site_interpolation.html">Intra-Site Interpolation (ISI)</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../methods/iqm_based/index.html">🔬 IQM-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -188,8 +188,8 @@
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../../examples/index.html">🎛️ Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/basic/index.html">Basic examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/05-plot_multisite_data_characterization.html">Characterise a multisite problem</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/02-run_metrics_by_site.html">Compute metrics by site</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/04-plot_eos_with_dimensionality_reduction.html">Explore EoS with dimensionality reduction techniques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/02-run_metrics_by_site.html">Compute metrics by site</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/06-plot_mareos_with_tsne.html">Characterise a multisite problem with MAREoS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/03-plot_biases_in_metrics_by_site.html">Discover biases in metrics by site</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/01-plot_eos_in_ml.html">Impact of Effects of Site in ML</a></li>
@@ -213,6 +213,7 @@
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/interpolation/index.html">Interpolation Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/01-plot_isi_binary_classification.html">Binary classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/04-plot_isi_advance_usage.html">IntraSiteInterpolation advance usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/02-plot_isi_multiclass_classification.html">Multiclass classification using ISI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/03-plot_ismi_binary_classification.html">Multisite Harmonization using Inter-Site Matched Interpolation (ISMI)</a></li>
 </ul>
@@ -236,6 +237,10 @@
 <li class="toctree-l3"><a class="reference internal" href="../../api/datasets/download_bids_dataset.html">download_bids_dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/datasets/clean_tmp.html">clean_tmp</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/datasets/list_available_files.html">list_available_files</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/metrics/index.html">uniharmony.metrics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/metrics/report_metrics_by_site.html">report_metrics_by_site</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../api/combat_based/index.html">uniharmony.combat</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -457,12 +462,12 @@ to download the full example code.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-05-08 11:21:02 [debug    ] Validating arguments
-2026-05-08 11:21:02 [info     ] Visible dataset directory ready at /home/runner/work/UniHarmony/UniHarmony/examples/02-multisite-data/ON-Harmony
-2026-05-08 11:21:02 [debug    ] Hidden dataset path prepared: /tmp/datalad_cache
-2026-05-08 11:21:02 [debug    ] Using hidden folder at /tmp/datalad_cache
-2026-05-08 11:21:02 [debug    ] Source URL: https://github.com/OpenNeuroDatasets/ds004712.git
-2026-05-08 11:21:02 [info     ] Cloning DataLad dataset...
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-05-12 08:17:37 [debug    ] Validating arguments
+2026-05-12 08:17:37 [info     ] Visible dataset directory ready at /home/runner/work/UniHarmony/UniHarmony/examples/02-multisite-data/ON-Harmony
+2026-05-12 08:17:37 [debug    ] Hidden dataset path prepared: /tmp/datalad_cache
+2026-05-12 08:17:37 [debug    ] Using hidden folder at /tmp/datalad_cache
+2026-05-12 08:17:37 [debug    ] Source URL: https://github.com/OpenNeuroDatasets/ds004712.git
+2026-05-12 08:17:37 [info     ] Cloning DataLad dataset...
 [INFO] Attempting a clone into /tmp/datalad_cache
 [INFO] Attempting to clone from https://github.com/OpenNeuroDatasets/ds004712.git to /tmp/datalad_cache
 [INFO] Start enumerating objects
@@ -473,11 +478,11 @@ to download the full example code.</p>
 [INFO] Completed clone attempts for Dataset(/tmp/datalad_cache)
 [INFO] Remote origin not usable by git-annex; setting annex-ignore
 [INFO] https://github.com/OpenNeuroDatasets/ds004712.git/config download failed: Not Found
-2026-05-08 11:21:07 [info     ] DataLad dataset cloned successfully
-2026-05-08 11:21:07 [info     ] Getting: sub-16981/ses-NOT4GEP001/anat/sub-16981_ses-NOT4GEP001_T1w.json
-2026-05-08 11:21:07 [info     ] Copied derivative files to target directory.
-2026-05-08 11:21:07 [info     ] Getting: participants.tsv
-2026-05-08 11:21:07 [info     ] Copied root files to target directory.
+2026-05-12 08:17:41 [info     ] DataLad dataset cloned successfully
+2026-05-12 08:17:41 [info     ] Getting: sub-16981/ses-NOT4GEP001/anat/sub-16981_ses-NOT4GEP001_T1w.json
+2026-05-12 08:17:41 [info     ] Copied derivative files to target directory.
+2026-05-12 08:17:41 [info     ] Getting: participants.tsv
+2026-05-12 08:17:41 [info     ] Copied root files to target directory.
 </pre></div>
 </div>
 </section>
@@ -487,11 +492,11 @@ to download the full example code.</p>
 <span class="n">clean_tmp</span><span class="p">(</span><span class="s2">&quot;datalad_cache&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-05-08 11:21:07 [info     ] Removing temporary files: /tmp/datalad_cache
-2026-05-08 11:21:08 [info     ] Temporary cache removed successfully.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-05-12 08:17:41 [info     ] Removing temporary files: /tmp/datalad_cache
+2026-05-12 08:17:42 [info     ] Temporary cache removed successfully.
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 6.443 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 5.422 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-02-multisite-data-04-run-load-on-harmony-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/4dfdc7a1d6d3cb565998e170b26a1c47/04-run_load_on_harmony.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">04-run_load_on_harmony.ipynb</span></code></a></p>

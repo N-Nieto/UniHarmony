@@ -273,7 +273,7 @@ Plotting
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 7.803 seconds)
+   **Total running time of the script:** (0 minutes 7.154 seconds)
 
 
 .. _sphx_glr_download_auto_examples_03-combat-based_03-plot_neurocombat_with_mareos.py:

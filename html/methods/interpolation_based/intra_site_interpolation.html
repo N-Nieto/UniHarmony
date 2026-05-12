@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Intra Site Interpolation &#8212; uniharmony 0.0.3.dev165 documentation</title>
+    <title>Intra-Site Interpolation (ISI) &#8212; uniharmony 0.0.4.dev4 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=3aa0b7ac"></script>
+    <script src="../../_static/documentation_options.js?v=a8ac3f18"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.3.dev165 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.4.dev4 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -152,6 +152,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../utilities/load_mareos_datasets.html">MAREoS Benchmark Datasets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../utilities/load_onharmony_dataset.html">ON-Harmony Dataset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../utilities/datalad_integration.html">Datalad Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/report_metric_by_site.html">Site-Stratified Metrics</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">🧮 Methods</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
@@ -174,8 +175,7 @@
 <li class="toctree-l3"><a class="reference internal" href="inter_site_matched_interpolation.html">Inter-Site Matched Interpolation (ISMI)</a></li>
 
 
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Intra Site Interpolation</a></li>
-
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Intra-Site Interpolation (ISI)</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../iqm_based/index.html">🔬 IQM-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -188,8 +188,8 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../examples/index.html">🎛️ Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/basic/index.html">Basic examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/05-plot_multisite_data_characterization.html">Characterise a multisite problem</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/02-run_metrics_by_site.html">Compute metrics by site</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/04-plot_eos_with_dimensionality_reduction.html">Explore EoS with dimensionality reduction techniques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/02-run_metrics_by_site.html">Compute metrics by site</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/06-plot_mareos_with_tsne.html">Characterise a multisite problem with MAREoS</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/03-plot_biases_in_metrics_by_site.html">Discover biases in metrics by site</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/01-plot_eos_in_ml.html">Impact of Effects of Site in ML</a></li>
@@ -213,6 +213,7 @@
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/interpolation/index.html">Interpolation Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/01-plot_isi_binary_classification.html">Binary classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/04-plot_isi_advance_usage.html">IntraSiteInterpolation advance usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/02-plot_isi_multiclass_classification.html">Multiclass classification using ISI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/03-plot_ismi_binary_classification.html">Multisite Harmonization using Inter-Site Matched Interpolation (ISMI)</a></li>
 </ul>
@@ -236,6 +237,10 @@
 <li class="toctree-l3"><a class="reference internal" href="../../api/datasets/download_bids_dataset.html">download_bids_dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/datasets/clean_tmp.html">clean_tmp</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../api/datasets/list_available_files.html">list_available_files</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/metrics/index.html">uniharmony.metrics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/metrics/report_metrics_by_site.html">report_metrics_by_site</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../api/combat_based/index.html">uniharmony.combat</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -405,7 +410,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Intra Site Interpolation</h1>
+    <h1>Intra-Site Interpolation (ISI)</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -415,10 +420,22 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Intra Site Interpolation</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">Key features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#design-principles">Design principles</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-usage">Basic Usage</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-support">Regression Support</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-samples-created">Understanding <code class="docutils literal notranslate"><span class="pre">samples_created_</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#balance-strategies">Balance Strategies</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#per-site-default"><code class="docutils literal notranslate"><span class="pre">per_site</span></code> (Default)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#global-max"><code class="docutils literal notranslate"><span class="pre">global_max</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-notes">Implementation Notes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference-implementation">Reference Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citation">Citation</a></li>
+</ul>
             </nav>
         </div>
     </div>
@@ -429,21 +446,144 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="intra-site-interpolation">
-<span id="intrasite-long"></span><h1>Intra Site Interpolation<a class="headerlink" href="#intra-site-interpolation" title="Link to this heading">#</a></h1>
-<p>Make the Effects of Site “invisible” to the ML models by breaking the correlation between site and target. This is made by interpolating within each class in each site to balance the classes.</p>
-<p><strong>Paper</strong></p>
-<p>On preparation.</p>
-<p><strong>Source Code</strong></p>
+  <section class="tex2jax_ignore mathjax_ignore" id="intra-site-interpolation-isi">
+<span id="intrasite-long"></span><h1>Intra-Site Interpolation (ISI)<a class="headerlink" href="#intra-site-interpolation-isi" title="Link to this heading">#</a></h1>
+<p>Intra-Site Interpolation (ISI) is a data harmonization technique that reduces spurious correlations between data acquisition site and target labels by <strong>balancing class distributions independently within each site</strong>. Unlike methods that remove site effects from features, ISI makes site membership “invisible” to machine learning models by ensuring that no class is over- or under-represented at any site.</p>
+<p>The method works by oversampling minority classes within each site until all classes reach the same count — either the site’s own majority count (<code class="docutils literal notranslate"><span class="pre">per_site</span></code> strategy) or a global maximum across all sites (<code class="docutils literal notranslate"><span class="pre">global_max</span></code> strategy). Synthetic samples are generated through interpolating between real samples, with optional <strong>stratified matching</strong> on categorical and continuous covariates to preserve demographic and clinical distributions.</p>
+<p>This method is particularly effective when:</p>
 <ul class="simple">
-<li><p><a class="github reference external" href="https://github.com/N-Nieto/IntraSiteInterpolator.git">N-Nieto/IntraSiteInterpolator.git</a></p></li>
+<li><p>Training data comes from multiple sites with different recruitment biases</p></li>
+<li><p>Site membership is correlated with target labels (e.g., one site recruits mostly patients, another mostly controls)</p></li>
+<li><p>You want to prevent ML models from learning site-specific shortcuts instead of true biological signal</p></li>
+<li><p>Covariate distributions (age, sex, disease severity) must be preserved during balancing</p></li>
+<li><p>Working with regression tasks where the target is continuous and requires binning before balancing</p></li>
+</ul>
+<section id="key-features">
+<h2>Key features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Site-wise class balancing using interpolation-based oversampling.</p></li>
+<li><p>Optional stratification via categorical and/or continuous covariates.</p></li>
+<li><p>Support for both classification and regression problems.</p></li>
+<li><p>Regression targets are discretized into bins for balancing purposes.</p></li>
+<li><p>Compatible with imbalanced-learn samplers.</p></li>
 </ul>
 </section>
-<section class="tex2jax_ignore mathjax_ignore" id="implementation">
-<h1>Implementation<a class="headerlink" href="#implementation" title="Link to this heading">#</a></h1>
+<section id="design-principles">
+<h2>Design principles<a class="headerlink" href="#design-principles" title="Link to this heading">#</a></h2>
 <ul class="simple">
-<li><p>Implemented and tested on syntetic data.</p></li>
+<li><p>Preserve covariate distributions when requested.</p></li>
+<li><p>Guarantee exact class balance per site (or globally).</p></li>
+<li><p>Provide robust fallbacks when interpolation is insufficient.</p></li>
 </ul>
+</section>
+<hr class="docutils" />
+<section id="basic-usage">
+<h2>Basic Usage<a class="headerlink" href="#basic-usage" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_multisite_classification</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.interpolation</span><span class="w"> </span><span class="kn">import</span> <span class="n">IntraSiteInterpolation</span>
+
+<span class="c1"># Your multi-site data</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span><span class="n">balance_per_site</span><span class="o">=</span><span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">])</span>
+
+
+<span class="c1"># Initialize and fit</span>
+<span class="n">isi</span> <span class="o">=</span> <span class="n">IntraSiteInterpolation</span><span class="p">(</span>
+    <span class="n">interpolator</span><span class="o">=</span><span class="s2">&quot;smote&quot;</span><span class="p">,</span>
+    <span class="n">balance_strategy</span><span class="o">=</span><span class="s2">&quot;per_site&quot;</span><span class="p">,</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span>
+<span class="p">)</span>
+
+<span class="n">X_balanced</span><span class="p">,</span> <span class="n">y_balanced</span> <span class="o">=</span> <span class="n">isi</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span><span class="o">=</span><span class="n">sites</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Original: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="si">}</span><span class="s2"> samples&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Balanced: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">X_balanced</span><span class="p">)</span><span class="si">}</span><span class="s2"> samples&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Samples created: </span><span class="si">{</span><span class="n">isi</span><span class="o">.</span><span class="n">samples_created_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Matching hierarchy:</strong></p>
+<ol class="arabic simple">
+<li><p><strong>Class/bin match</strong>: Donor must belong to the same class (or regression bin)</p></li>
+<li><p><strong>Categorical covariates</strong>: Exact match required, checked column-by-column</p></li>
+<li><p><strong>Continuous covariates</strong>: Must be within <code class="docutils literal notranslate"><span class="pre">covariate_tolerance</span></code> per column</p></li>
+</ol>
+<p>If no matching donor is found, a random donor from the same class is used as fallback.</p>
+<section id="regression-support">
+<h3>Regression Support<a class="headerlink" href="#regression-support" title="Link to this heading">#</a></h3>
+<p>For continuous targets (e.g., disease severity scores, brain age), ISI automatically bins the target, balances bins intra-site, and interpolates synthetic targets continuously:</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="understanding-samples-created">
+<h2>Understanding <code class="docutils literal notranslate"><span class="pre">samples_created_</span></code><a class="headerlink" href="#understanding-samples-created" title="Link to this heading">#</a></h2>
+<p>After fitting, <code class="docutils literal notranslate"><span class="pre">samples_created_</span></code> contains a nested dictionary tracking how many synthetic samples were generated for each class in each site:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+    <span class="s2">&quot;Site_A&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">80</span><span class="p">},</span>    <span class="c1"># 80 synthetic class-1 samples created</span>
+    <span class="s2">&quot;Site_B&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>     <span class="c1"># Already balanced, none created</span>
+    <span class="s2">&quot;Site_C&quot;</span><span class="p">:</span> <span class="p">{</span><span class="mi">0</span><span class="p">:</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span> <span class="mi">0</span><span class="p">},</span>    <span class="c1"># 80 synthetic class-0 samples created</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This is useful for:</p>
+<ul class="simple">
+<li><p>Auditing data augmentation intensity per site</p></li>
+<li><p>Detecting sites with severe recruitment bias</p></li>
+<li><p>Quality control: unexpectedly high values may indicate poor site compatibility</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="balance-strategies">
+<h2>Balance Strategies<a class="headerlink" href="#balance-strategies" title="Link to this heading">#</a></h2>
+<section id="per-site-default">
+<h3><code class="docutils literal notranslate"><span class="pre">per_site</span></code> (Default)<a class="headerlink" href="#per-site-default" title="Link to this heading">#</a></h3>
+<p>Each site is balanced independently to its own majority class count. Best for:</p>
+<ul class="simple">
+<li><p>Sites with very different sample sizes</p></li>
+<li><p>Preserving site-specific data volumes</p></li>
+<li><p>When global harmonization is not required</p></li>
+</ul>
+<p><strong>Example:</strong></p>
+<ul class="simple">
+<li><p>Site A: 100 class-0, 20 class-1 → balanced to 100 each</p></li>
+<li><p>Site B: 30 class-0, 70 class-1 → balanced to 70 each</p></li>
+</ul>
+</section>
+<section id="global-max">
+<h3><code class="docutils literal notranslate"><span class="pre">global_max</span></code><a class="headerlink" href="#global-max" title="Link to this heading">#</a></h3>
+<p>All sites are balanced to the single largest class count found across all sites. Best for:</p>
+<ul class="simple">
+<li><p>Ensuring identical class counts everywhere for strict cross-site comparability</p></li>
+<li><p>Training site-invariant models</p></li>
+<li><p>When downstream analysis assumes equal group sizes</p></li>
+</ul>
+<p><strong>Example:</strong></p>
+<ul class="simple">
+<li><p>Site A: 100 class-0, 20 class-1</p></li>
+<li><p>Site B: 30 class-0, 70 class-1</p></li>
+<li><p>Global max = 100 → both sites balanced to 100 per class</p></li>
+</ul>
+</section>
+</section>
+<hr class="docutils" />
+<section id="implementation-notes">
+<h2>Implementation Notes<a class="headerlink" href="#implementation-notes" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><strong>Post-hoc assertions</strong>: After resampling, ISI verifies that all sites are correctly balanced. If the interpolator fails to produce enough samples (e.g., ADASYN with very small classes), a <code class="docutils literal notranslate"><span class="pre">RuntimeError</span></code> is raised.</p></li>
+<li><p><strong>Memory</strong>: Synthetic samples are generated per-site and concatenated. Memory scales linearly with the number of sites and the oversampling ratio.</p></li>
+<li><p><strong>Missing classes</strong>:  Ensure all classes are present at all sites.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="reference-implementation">
+<h2>Reference Implementation<a class="headerlink" href="#reference-implementation" title="Link to this heading">#</a></h2>
+<p>Source code: - <a class="github reference external" href="https://github.com/N-Nieto/IntraSiteInterpolator.git">N-Nieto/IntraSiteInterpolator.git</a></p>
+</section>
+<hr class="docutils" />
+<section id="citation">
+<h2>Citation<a class="headerlink" href="#citation" title="Link to this heading">#</a></h2>
+<p>Paper under review</p>
+</section>
 </section>
 
 
@@ -493,10 +633,22 @@
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Intra Site Interpolation</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation">Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">Key features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#design-principles">Design principles</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-usage">Basic Usage</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regression-support">Regression Support</a></li>
 </ul>
-
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#understanding-samples-created">Understanding <code class="docutils literal notranslate"><span class="pre">samples_created_</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#balance-strategies">Balance Strategies</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#per-site-default"><code class="docutils literal notranslate"><span class="pre">per_site</span></code> (Default)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#global-max"><code class="docutils literal notranslate"><span class="pre">global_max</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#implementation-notes">Implementation Notes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference-implementation">Reference Implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citation">Citation</a></li>
+</ul>
   </nav></div>
 
 </div></div>

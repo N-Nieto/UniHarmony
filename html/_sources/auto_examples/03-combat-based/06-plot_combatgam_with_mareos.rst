@@ -99,15 +99,15 @@ Load MAREoS benchmark dataset
 
  .. code-block:: none
 
-    2026-05-08 11:21:09 [info     ] MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS
-    2026-05-08 11:21:09 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv
-    2026-05-08 11:21:09 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple2_data.csv
-    2026-05-08 11:21:09 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction1_data.csv
-    2026-05-08 11:21:09 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction2_data.csv
-    2026-05-08 11:21:09 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_simple1_data.csv
-    2026-05-08 11:21:09 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_simple2_data.csv
-    2026-05-08 11:21:09 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_interaction1_data.csv
-    2026-05-08 11:21:09 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_interaction2_data.csv
+    2026-05-12 08:17:43 [info     ] MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS
+    2026-05-12 08:17:43 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv
+    2026-05-12 08:17:43 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple2_data.csv
+    2026-05-12 08:17:43 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction1_data.csv
+    2026-05-12 08:17:43 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction2_data.csv
+    2026-05-12 08:17:43 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_simple1_data.csv
+    2026-05-12 08:17:43 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_simple2_data.csv
+    2026-05-12 08:17:43 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_interaction1_data.csv
+    2026-05-12 08:17:43 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_interaction2_data.csv
 
 
 
@@ -227,653 +227,653 @@ Experiments
  .. code-block:: none
 
     Running experiment: true_simple1
-    2026-05-08 11:21:09 [debug    ] Fitting
-    2026-05-08 11:21:09 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:21:09 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:21:09 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:21:33 [debug    ] Transforming
-    2026-05-08 11:21:33 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:21:33 [debug    ] Transforming
-    2026-05-08 11:21:33 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:21:33 [debug    ] Fitting
-    2026-05-08 11:21:33 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:21:33 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:21:33 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:21:55 [debug    ] Transforming
-    2026-05-08 11:21:55 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:21:55 [debug    ] Transforming
-    2026-05-08 11:21:55 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:21:55 [debug    ] Fitting
-    2026-05-08 11:21:55 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:21:55 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:21:55 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:22:17 [debug    ] Transforming
-    2026-05-08 11:22:17 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:22:17 [debug    ] Transforming
-    2026-05-08 11:22:17 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:22:17 [debug    ] Fitting
-    2026-05-08 11:22:17 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:22:17 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:22:17 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:22:39 [debug    ] Transforming
-    2026-05-08 11:22:39 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:22:39 [debug    ] Transforming
-    2026-05-08 11:22:39 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:22:39 [debug    ] Fitting
-    2026-05-08 11:22:39 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:22:39 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:22:39 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:23:01 [debug    ] Transforming
-    2026-05-08 11:23:01 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:23:01 [debug    ] Transforming
-    2026-05-08 11:23:01 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:23:01 [debug    ] Fitting
-    2026-05-08 11:23:01 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:23:01 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:23:01 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:23:23 [debug    ] Transforming
-    2026-05-08 11:23:23 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:23:23 [debug    ] Transforming
-    2026-05-08 11:23:23 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:23:23 [debug    ] Fitting
-    2026-05-08 11:23:23 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:23:23 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:23:23 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:23:45 [debug    ] Transforming
-    2026-05-08 11:23:45 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:23:45 [debug    ] Transforming
-    2026-05-08 11:23:45 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:23:45 [debug    ] Fitting
-    2026-05-08 11:23:45 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:23:45 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:23:45 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:24:07 [debug    ] Transforming
-    2026-05-08 11:24:07 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:24:07 [debug    ] Transforming
-    2026-05-08 11:24:07 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:24:07 [debug    ] Fitting
-    2026-05-08 11:24:07 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:24:07 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:24:07 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:24:29 [debug    ] Transforming
-    2026-05-08 11:24:29 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:24:29 [debug    ] Transforming
-    2026-05-08 11:24:29 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:24:29 [debug    ] Fitting
-    2026-05-08 11:24:29 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:24:29 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:24:29 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:24:51 [debug    ] Transforming
-    2026-05-08 11:24:51 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:24:51 [debug    ] Transforming
-    2026-05-08 11:24:51 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:17:43 [debug    ] Fitting
+    2026-05-12 08:17:43 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:17:43 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:17:43 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:18:05 [debug    ] Transforming
+    2026-05-12 08:18:05 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:18:05 [debug    ] Transforming
+    2026-05-12 08:18:05 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:18:05 [debug    ] Fitting
+    2026-05-12 08:18:05 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:18:05 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:18:05 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:18:26 [debug    ] Transforming
+    2026-05-12 08:18:26 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:18:26 [debug    ] Transforming
+    2026-05-12 08:18:26 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:18:26 [debug    ] Fitting
+    2026-05-12 08:18:26 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:18:26 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:18:26 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:18:46 [debug    ] Transforming
+    2026-05-12 08:18:46 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:18:46 [debug    ] Transforming
+    2026-05-12 08:18:46 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:18:46 [debug    ] Fitting
+    2026-05-12 08:18:46 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:18:46 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:18:46 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:19:07 [debug    ] Transforming
+    2026-05-12 08:19:07 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:19:07 [debug    ] Transforming
+    2026-05-12 08:19:07 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:19:07 [debug    ] Fitting
+    2026-05-12 08:19:07 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:19:07 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:19:07 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:19:27 [debug    ] Transforming
+    2026-05-12 08:19:27 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:19:27 [debug    ] Transforming
+    2026-05-12 08:19:27 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:19:27 [debug    ] Fitting
+    2026-05-12 08:19:27 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:19:27 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:19:27 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:19:48 [debug    ] Transforming
+    2026-05-12 08:19:48 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:19:48 [debug    ] Transforming
+    2026-05-12 08:19:48 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:19:48 [debug    ] Fitting
+    2026-05-12 08:19:48 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:19:48 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:19:48 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:20:09 [debug    ] Transforming
+    2026-05-12 08:20:09 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:20:09 [debug    ] Transforming
+    2026-05-12 08:20:09 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:20:09 [debug    ] Fitting
+    2026-05-12 08:20:09 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:20:09 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:20:09 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:20:29 [debug    ] Transforming
+    2026-05-12 08:20:29 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:20:29 [debug    ] Transforming
+    2026-05-12 08:20:29 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:20:29 [debug    ] Fitting
+    2026-05-12 08:20:29 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:20:29 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:20:29 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:20:50 [debug    ] Transforming
+    2026-05-12 08:20:50 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:20:50 [debug    ] Transforming
+    2026-05-12 08:20:50 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:20:50 [debug    ] Fitting
+    2026-05-12 08:20:50 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:20:50 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:20:50 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:21:11 [debug    ] Transforming
+    2026-05-12 08:21:11 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:21:11 [debug    ] Transforming
+    2026-05-12 08:21:11 [debug    ] Setting up smoothing using B-Splines
     Running experiment: true_simple2
-    2026-05-08 11:24:51 [debug    ] Fitting
-    2026-05-08 11:24:51 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:24:51 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:24:51 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:25:13 [debug    ] Transforming
-    2026-05-08 11:25:13 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:25:13 [debug    ] Transforming
-    2026-05-08 11:25:13 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:25:13 [debug    ] Fitting
-    2026-05-08 11:25:13 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:25:13 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:25:13 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:25:35 [debug    ] Transforming
-    2026-05-08 11:25:35 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:25:35 [debug    ] Transforming
-    2026-05-08 11:25:35 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:25:36 [debug    ] Fitting
-    2026-05-08 11:25:36 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:25:36 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:25:36 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:25:57 [debug    ] Transforming
-    2026-05-08 11:25:57 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:25:57 [debug    ] Transforming
-    2026-05-08 11:25:57 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:25:57 [debug    ] Fitting
-    2026-05-08 11:25:57 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:25:57 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:25:57 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:26:19 [debug    ] Transforming
-    2026-05-08 11:26:19 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:26:20 [debug    ] Transforming
-    2026-05-08 11:26:20 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:26:20 [debug    ] Fitting
-    2026-05-08 11:26:20 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:26:20 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:26:20 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:26:41 [debug    ] Transforming
-    2026-05-08 11:26:41 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:26:42 [debug    ] Transforming
-    2026-05-08 11:26:42 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:26:42 [debug    ] Fitting
-    2026-05-08 11:26:42 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:26:42 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:26:42 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:27:03 [debug    ] Transforming
-    2026-05-08 11:27:03 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:27:03 [debug    ] Transforming
-    2026-05-08 11:27:03 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:27:03 [debug    ] Fitting
-    2026-05-08 11:27:03 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:27:03 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:27:03 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:27:25 [debug    ] Transforming
-    2026-05-08 11:27:25 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:27:25 [debug    ] Transforming
-    2026-05-08 11:27:25 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:27:25 [debug    ] Fitting
-    2026-05-08 11:27:25 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:27:25 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:27:25 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:27:47 [debug    ] Transforming
-    2026-05-08 11:27:47 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:27:47 [debug    ] Transforming
-    2026-05-08 11:27:47 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:27:47 [debug    ] Fitting
-    2026-05-08 11:27:47 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:27:47 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:27:47 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:28:09 [debug    ] Transforming
-    2026-05-08 11:28:09 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:28:09 [debug    ] Transforming
-    2026-05-08 11:28:09 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:28:09 [debug    ] Fitting
-    2026-05-08 11:28:09 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:28:09 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:28:09 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:28:31 [debug    ] Transforming
-    2026-05-08 11:28:31 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:28:31 [debug    ] Transforming
-    2026-05-08 11:28:31 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:21:11 [debug    ] Fitting
+    2026-05-12 08:21:11 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:21:11 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:21:11 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:21:32 [debug    ] Transforming
+    2026-05-12 08:21:32 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:21:32 [debug    ] Transforming
+    2026-05-12 08:21:32 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:21:32 [debug    ] Fitting
+    2026-05-12 08:21:32 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:21:32 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:21:32 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:21:53 [debug    ] Transforming
+    2026-05-12 08:21:53 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:21:53 [debug    ] Transforming
+    2026-05-12 08:21:53 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:21:53 [debug    ] Fitting
+    2026-05-12 08:21:53 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:21:53 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:21:53 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:22:14 [debug    ] Transforming
+    2026-05-12 08:22:14 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:22:14 [debug    ] Transforming
+    2026-05-12 08:22:14 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:22:14 [debug    ] Fitting
+    2026-05-12 08:22:14 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:22:14 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:22:14 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:22:35 [debug    ] Transforming
+    2026-05-12 08:22:35 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:22:35 [debug    ] Transforming
+    2026-05-12 08:22:35 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:22:35 [debug    ] Fitting
+    2026-05-12 08:22:35 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:22:35 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:22:35 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:22:55 [debug    ] Transforming
+    2026-05-12 08:22:55 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:22:55 [debug    ] Transforming
+    2026-05-12 08:22:55 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:22:55 [debug    ] Fitting
+    2026-05-12 08:22:55 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:22:55 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:22:55 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:23:16 [debug    ] Transforming
+    2026-05-12 08:23:16 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:23:16 [debug    ] Transforming
+    2026-05-12 08:23:16 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:23:16 [debug    ] Fitting
+    2026-05-12 08:23:16 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:23:16 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:23:16 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:23:37 [debug    ] Transforming
+    2026-05-12 08:23:37 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:23:37 [debug    ] Transforming
+    2026-05-12 08:23:37 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:23:37 [debug    ] Fitting
+    2026-05-12 08:23:37 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:23:37 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:23:37 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:23:57 [debug    ] Transforming
+    2026-05-12 08:23:57 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:23:57 [debug    ] Transforming
+    2026-05-12 08:23:57 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:23:57 [debug    ] Fitting
+    2026-05-12 08:23:57 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:23:57 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:23:57 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:24:18 [debug    ] Transforming
+    2026-05-12 08:24:18 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:24:18 [debug    ] Transforming
+    2026-05-12 08:24:18 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:24:18 [debug    ] Fitting
+    2026-05-12 08:24:18 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:24:18 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:24:18 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:24:38 [debug    ] Transforming
+    2026-05-12 08:24:38 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:24:38 [debug    ] Transforming
+    2026-05-12 08:24:38 [debug    ] Setting up smoothing using B-Splines
     Running experiment: true_interaction1
-    2026-05-08 11:28:31 [debug    ] Fitting
-    2026-05-08 11:28:31 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:28:31 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:28:31 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:28:52 [debug    ] Transforming
-    2026-05-08 11:28:52 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:28:52 [debug    ] Transforming
-    2026-05-08 11:28:52 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:28:52 [debug    ] Fitting
-    2026-05-08 11:28:52 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:28:52 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:28:52 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:29:14 [debug    ] Transforming
-    2026-05-08 11:29:14 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:29:14 [debug    ] Transforming
-    2026-05-08 11:29:14 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:29:14 [debug    ] Fitting
-    2026-05-08 11:29:14 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:29:14 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:29:14 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:29:35 [debug    ] Transforming
-    2026-05-08 11:29:35 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:29:35 [debug    ] Transforming
-    2026-05-08 11:29:35 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:29:35 [debug    ] Fitting
-    2026-05-08 11:29:35 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:29:35 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:29:35 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:29:57 [debug    ] Transforming
-    2026-05-08 11:29:57 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:29:57 [debug    ] Transforming
-    2026-05-08 11:29:57 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:29:57 [debug    ] Fitting
-    2026-05-08 11:29:57 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:29:57 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:29:57 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:30:18 [debug    ] Transforming
-    2026-05-08 11:30:18 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:30:18 [debug    ] Transforming
-    2026-05-08 11:30:18 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:30:18 [debug    ] Fitting
-    2026-05-08 11:30:18 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:30:18 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:30:18 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:30:40 [debug    ] Transforming
-    2026-05-08 11:30:40 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:30:40 [debug    ] Transforming
-    2026-05-08 11:30:40 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:30:40 [debug    ] Fitting
-    2026-05-08 11:30:40 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:30:40 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:30:40 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:31:01 [debug    ] Transforming
-    2026-05-08 11:31:01 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:31:01 [debug    ] Transforming
-    2026-05-08 11:31:01 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:31:01 [debug    ] Fitting
-    2026-05-08 11:31:01 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:31:01 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:31:01 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:31:22 [debug    ] Transforming
-    2026-05-08 11:31:22 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:31:23 [debug    ] Transforming
-    2026-05-08 11:31:23 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:31:23 [debug    ] Fitting
-    2026-05-08 11:31:23 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:31:23 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:31:23 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:31:44 [debug    ] Transforming
-    2026-05-08 11:31:44 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:31:44 [debug    ] Transforming
-    2026-05-08 11:31:44 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:31:44 [debug    ] Fitting
-    2026-05-08 11:31:44 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:31:44 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:31:44 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:32:05 [debug    ] Transforming
-    2026-05-08 11:32:05 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:32:06 [debug    ] Transforming
-    2026-05-08 11:32:06 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:24:38 [debug    ] Fitting
+    2026-05-12 08:24:38 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:24:38 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:24:38 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:24:58 [debug    ] Transforming
+    2026-05-12 08:24:58 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:24:58 [debug    ] Transforming
+    2026-05-12 08:24:58 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:24:59 [debug    ] Fitting
+    2026-05-12 08:24:59 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:24:59 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:24:59 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:25:19 [debug    ] Transforming
+    2026-05-12 08:25:19 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:25:19 [debug    ] Transforming
+    2026-05-12 08:25:19 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:25:19 [debug    ] Fitting
+    2026-05-12 08:25:19 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:25:19 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:25:19 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:25:39 [debug    ] Transforming
+    2026-05-12 08:25:39 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:25:39 [debug    ] Transforming
+    2026-05-12 08:25:39 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:25:39 [debug    ] Fitting
+    2026-05-12 08:25:39 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:25:39 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:25:39 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:25:59 [debug    ] Transforming
+    2026-05-12 08:25:59 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:25:59 [debug    ] Transforming
+    2026-05-12 08:25:59 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:25:59 [debug    ] Fitting
+    2026-05-12 08:25:59 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:25:59 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:25:59 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:26:19 [debug    ] Transforming
+    2026-05-12 08:26:19 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:26:19 [debug    ] Transforming
+    2026-05-12 08:26:19 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:26:19 [debug    ] Fitting
+    2026-05-12 08:26:19 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:26:19 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:26:19 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:26:39 [debug    ] Transforming
+    2026-05-12 08:26:39 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:26:39 [debug    ] Transforming
+    2026-05-12 08:26:39 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:26:39 [debug    ] Fitting
+    2026-05-12 08:26:39 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:26:39 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:26:39 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:26:59 [debug    ] Transforming
+    2026-05-12 08:26:59 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:26:59 [debug    ] Transforming
+    2026-05-12 08:26:59 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:26:59 [debug    ] Fitting
+    2026-05-12 08:26:59 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:26:59 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:26:59 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:27:19 [debug    ] Transforming
+    2026-05-12 08:27:19 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:27:19 [debug    ] Transforming
+    2026-05-12 08:27:19 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:27:19 [debug    ] Fitting
+    2026-05-12 08:27:19 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:27:19 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:27:19 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:27:39 [debug    ] Transforming
+    2026-05-12 08:27:39 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:27:39 [debug    ] Transforming
+    2026-05-12 08:27:39 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:27:39 [debug    ] Fitting
+    2026-05-12 08:27:39 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:27:39 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:27:39 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:27:59 [debug    ] Transforming
+    2026-05-12 08:27:59 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:27:59 [debug    ] Transforming
+    2026-05-12 08:27:59 [debug    ] Setting up smoothing using B-Splines
     Running experiment: true_interaction2
-    2026-05-08 11:32:06 [debug    ] Fitting
-    2026-05-08 11:32:06 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:32:06 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:32:06 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:32:27 [debug    ] Transforming
-    2026-05-08 11:32:27 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:32:27 [debug    ] Transforming
-    2026-05-08 11:32:27 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:32:27 [debug    ] Fitting
-    2026-05-08 11:32:27 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:32:27 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:32:27 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:32:48 [debug    ] Transforming
-    2026-05-08 11:32:48 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:32:48 [debug    ] Transforming
-    2026-05-08 11:32:48 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:32:48 [debug    ] Fitting
-    2026-05-08 11:32:48 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:32:48 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:32:48 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:33:10 [debug    ] Transforming
-    2026-05-08 11:33:10 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:33:10 [debug    ] Transforming
-    2026-05-08 11:33:10 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:33:10 [debug    ] Fitting
-    2026-05-08 11:33:10 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:33:10 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:33:10 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:33:31 [debug    ] Transforming
-    2026-05-08 11:33:31 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:33:31 [debug    ] Transforming
-    2026-05-08 11:33:31 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:33:31 [debug    ] Fitting
-    2026-05-08 11:33:31 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:33:31 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:33:31 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:33:55 [debug    ] Transforming
-    2026-05-08 11:33:55 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:33:55 [debug    ] Transforming
-    2026-05-08 11:33:55 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:33:55 [debug    ] Fitting
-    2026-05-08 11:33:55 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:33:55 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:33:55 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:34:16 [debug    ] Transforming
-    2026-05-08 11:34:16 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:34:16 [debug    ] Transforming
-    2026-05-08 11:34:16 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:34:16 [debug    ] Fitting
-    2026-05-08 11:34:16 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:34:16 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:34:16 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:34:38 [debug    ] Transforming
-    2026-05-08 11:34:38 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:34:38 [debug    ] Transforming
-    2026-05-08 11:34:38 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:34:38 [debug    ] Fitting
-    2026-05-08 11:34:38 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:34:38 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:34:38 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:34:59 [debug    ] Transforming
-    2026-05-08 11:34:59 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:34:59 [debug    ] Transforming
-    2026-05-08 11:34:59 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:34:59 [debug    ] Fitting
-    2026-05-08 11:34:59 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:34:59 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:34:59 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:35:22 [debug    ] Transforming
-    2026-05-08 11:35:22 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:35:22 [debug    ] Transforming
-    2026-05-08 11:35:22 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:35:22 [debug    ] Fitting
-    2026-05-08 11:35:22 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:35:22 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:35:22 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:35:43 [debug    ] Transforming
-    2026-05-08 11:35:43 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:35:43 [debug    ] Transforming
-    2026-05-08 11:35:43 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:27:59 [debug    ] Fitting
+    2026-05-12 08:27:59 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:27:59 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:27:59 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:28:20 [debug    ] Transforming
+    2026-05-12 08:28:20 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:28:20 [debug    ] Transforming
+    2026-05-12 08:28:20 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:28:20 [debug    ] Fitting
+    2026-05-12 08:28:20 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:28:20 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:28:20 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:28:40 [debug    ] Transforming
+    2026-05-12 08:28:40 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:28:40 [debug    ] Transforming
+    2026-05-12 08:28:40 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:28:40 [debug    ] Fitting
+    2026-05-12 08:28:40 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:28:40 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:28:40 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:29:00 [debug    ] Transforming
+    2026-05-12 08:29:00 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:29:00 [debug    ] Transforming
+    2026-05-12 08:29:00 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:29:00 [debug    ] Fitting
+    2026-05-12 08:29:00 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:29:00 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:29:00 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:29:20 [debug    ] Transforming
+    2026-05-12 08:29:20 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:29:20 [debug    ] Transforming
+    2026-05-12 08:29:20 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:29:20 [debug    ] Fitting
+    2026-05-12 08:29:20 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:29:20 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:29:20 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:29:40 [debug    ] Transforming
+    2026-05-12 08:29:40 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:29:40 [debug    ] Transforming
+    2026-05-12 08:29:40 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:29:40 [debug    ] Fitting
+    2026-05-12 08:29:40 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:29:40 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:29:40 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:30:02 [debug    ] Transforming
+    2026-05-12 08:30:02 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:30:03 [debug    ] Transforming
+    2026-05-12 08:30:03 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:30:03 [debug    ] Fitting
+    2026-05-12 08:30:03 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:30:03 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:30:03 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:30:23 [debug    ] Transforming
+    2026-05-12 08:30:23 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:30:23 [debug    ] Transforming
+    2026-05-12 08:30:23 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:30:23 [debug    ] Fitting
+    2026-05-12 08:30:23 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:30:23 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:30:23 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:30:43 [debug    ] Transforming
+    2026-05-12 08:30:43 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:30:43 [debug    ] Transforming
+    2026-05-12 08:30:43 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:30:43 [debug    ] Fitting
+    2026-05-12 08:30:43 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:30:43 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:30:43 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:31:03 [debug    ] Transforming
+    2026-05-12 08:31:03 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:03 [debug    ] Transforming
+    2026-05-12 08:31:03 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:03 [debug    ] Fitting
+    2026-05-12 08:31:03 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:31:03 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:03 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:31:24 [debug    ] Transforming
+    2026-05-12 08:31:24 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:24 [debug    ] Transforming
+    2026-05-12 08:31:24 [debug    ] Setting up smoothing using B-Splines
     Running experiment: eos_simple1
-    2026-05-08 11:35:43 [debug    ] Fitting
-    2026-05-08 11:35:43 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:35:43 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:35:43 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:35:48 [debug    ] Transforming
-    2026-05-08 11:35:48 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:35:48 [debug    ] Transforming
-    2026-05-08 11:35:48 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:35:48 [debug    ] Fitting
-    2026-05-08 11:35:48 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:35:48 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:35:48 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:35:52 [debug    ] Transforming
-    2026-05-08 11:35:52 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:35:52 [debug    ] Transforming
-    2026-05-08 11:35:52 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:35:52 [debug    ] Fitting
-    2026-05-08 11:35:52 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:35:52 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:35:52 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:35:56 [debug    ] Transforming
-    2026-05-08 11:35:56 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:35:56 [debug    ] Transforming
-    2026-05-08 11:35:56 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:35:56 [debug    ] Fitting
-    2026-05-08 11:35:56 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:35:56 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:35:56 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:36:01 [debug    ] Transforming
-    2026-05-08 11:36:01 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:36:01 [debug    ] Transforming
-    2026-05-08 11:36:01 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:36:01 [debug    ] Fitting
-    2026-05-08 11:36:01 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:36:01 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:36:01 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:36:05 [debug    ] Transforming
-    2026-05-08 11:36:05 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:36:05 [debug    ] Transforming
-    2026-05-08 11:36:05 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:36:05 [debug    ] Fitting
-    2026-05-08 11:36:05 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:36:05 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:36:05 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:36:10 [debug    ] Transforming
-    2026-05-08 11:36:10 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:36:10 [debug    ] Transforming
-    2026-05-08 11:36:10 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:36:10 [debug    ] Fitting
-    2026-05-08 11:36:10 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:36:10 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:36:10 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:36:14 [debug    ] Transforming
-    2026-05-08 11:36:14 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:36:14 [debug    ] Transforming
-    2026-05-08 11:36:14 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:36:14 [debug    ] Fitting
-    2026-05-08 11:36:14 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:36:14 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:36:14 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:36:19 [debug    ] Transforming
-    2026-05-08 11:36:19 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:36:19 [debug    ] Transforming
-    2026-05-08 11:36:19 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:36:19 [debug    ] Fitting
-    2026-05-08 11:36:19 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:36:19 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:36:19 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:36:23 [debug    ] Transforming
-    2026-05-08 11:36:23 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:36:23 [debug    ] Transforming
-    2026-05-08 11:36:23 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:36:23 [debug    ] Fitting
-    2026-05-08 11:36:23 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:36:23 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:36:23 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:36:27 [debug    ] Transforming
-    2026-05-08 11:36:27 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:36:27 [debug    ] Transforming
-    2026-05-08 11:36:27 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:24 [debug    ] Fitting
+    2026-05-12 08:31:24 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:31:24 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:24 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:31:29 [debug    ] Transforming
+    2026-05-12 08:31:29 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:29 [debug    ] Transforming
+    2026-05-12 08:31:29 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:29 [debug    ] Fitting
+    2026-05-12 08:31:29 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:31:29 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:29 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:31:33 [debug    ] Transforming
+    2026-05-12 08:31:33 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:33 [debug    ] Transforming
+    2026-05-12 08:31:33 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:33 [debug    ] Fitting
+    2026-05-12 08:31:33 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:31:33 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:33 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:31:37 [debug    ] Transforming
+    2026-05-12 08:31:37 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:37 [debug    ] Transforming
+    2026-05-12 08:31:37 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:37 [debug    ] Fitting
+    2026-05-12 08:31:37 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:31:37 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:37 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:31:42 [debug    ] Transforming
+    2026-05-12 08:31:42 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:42 [debug    ] Transforming
+    2026-05-12 08:31:42 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:42 [debug    ] Fitting
+    2026-05-12 08:31:42 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:31:42 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:42 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:31:46 [debug    ] Transforming
+    2026-05-12 08:31:46 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:46 [debug    ] Transforming
+    2026-05-12 08:31:46 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:46 [debug    ] Fitting
+    2026-05-12 08:31:46 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:31:46 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:46 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:31:50 [debug    ] Transforming
+    2026-05-12 08:31:50 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:50 [debug    ] Transforming
+    2026-05-12 08:31:50 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:50 [debug    ] Fitting
+    2026-05-12 08:31:50 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:31:50 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:50 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:31:54 [debug    ] Transforming
+    2026-05-12 08:31:54 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:54 [debug    ] Transforming
+    2026-05-12 08:31:54 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:54 [debug    ] Fitting
+    2026-05-12 08:31:54 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:31:54 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:54 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:31:58 [debug    ] Transforming
+    2026-05-12 08:31:58 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:58 [debug    ] Transforming
+    2026-05-12 08:31:58 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:58 [debug    ] Fitting
+    2026-05-12 08:31:58 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:31:58 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:31:58 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:32:04 [debug    ] Transforming
+    2026-05-12 08:32:04 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:32:04 [debug    ] Transforming
+    2026-05-12 08:32:04 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:32:04 [debug    ] Fitting
+    2026-05-12 08:32:04 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:32:04 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:32:04 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:32:08 [debug    ] Transforming
+    2026-05-12 08:32:08 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:32:08 [debug    ] Transforming
+    2026-05-12 08:32:08 [debug    ] Setting up smoothing using B-Splines
     Running experiment: eos_simple2
-    2026-05-08 11:36:27 [debug    ] Fitting
-    2026-05-08 11:36:27 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:36:27 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:36:27 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:36:49 [debug    ] Transforming
-    2026-05-08 11:36:49 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:36:49 [debug    ] Transforming
-    2026-05-08 11:36:49 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:36:49 [debug    ] Fitting
-    2026-05-08 11:36:49 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:36:49 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:36:49 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:37:11 [debug    ] Transforming
-    2026-05-08 11:37:11 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:37:11 [debug    ] Transforming
-    2026-05-08 11:37:11 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:37:11 [debug    ] Fitting
-    2026-05-08 11:37:11 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:37:11 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:37:11 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:37:33 [debug    ] Transforming
-    2026-05-08 11:37:33 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:37:33 [debug    ] Transforming
-    2026-05-08 11:37:33 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:37:33 [debug    ] Fitting
-    2026-05-08 11:37:33 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:37:33 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:37:33 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:37:55 [debug    ] Transforming
-    2026-05-08 11:37:55 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:37:55 [debug    ] Transforming
-    2026-05-08 11:37:55 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:37:55 [debug    ] Fitting
-    2026-05-08 11:37:55 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:37:55 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:37:55 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:38:17 [debug    ] Transforming
-    2026-05-08 11:38:17 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:38:17 [debug    ] Transforming
-    2026-05-08 11:38:17 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:38:17 [debug    ] Fitting
-    2026-05-08 11:38:17 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:38:17 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:38:17 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:38:39 [debug    ] Transforming
-    2026-05-08 11:38:39 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:38:39 [debug    ] Transforming
-    2026-05-08 11:38:39 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:38:39 [debug    ] Fitting
-    2026-05-08 11:38:39 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:38:39 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:38:39 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:39:00 [debug    ] Transforming
-    2026-05-08 11:39:00 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:39:00 [debug    ] Transforming
-    2026-05-08 11:39:00 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:39:00 [debug    ] Fitting
-    2026-05-08 11:39:00 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:39:00 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:39:00 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:39:22 [debug    ] Transforming
-    2026-05-08 11:39:22 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:39:22 [debug    ] Transforming
-    2026-05-08 11:39:22 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:39:22 [debug    ] Fitting
-    2026-05-08 11:39:22 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:39:22 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:39:22 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:39:44 [debug    ] Transforming
-    2026-05-08 11:39:44 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:39:44 [debug    ] Transforming
-    2026-05-08 11:39:44 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:39:44 [debug    ] Fitting
-    2026-05-08 11:39:44 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:39:44 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:39:44 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:40:06 [debug    ] Transforming
-    2026-05-08 11:40:06 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:40:06 [debug    ] Transforming
-    2026-05-08 11:40:06 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:32:08 [debug    ] Fitting
+    2026-05-12 08:32:08 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:32:08 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:32:08 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:32:29 [debug    ] Transforming
+    2026-05-12 08:32:29 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:32:29 [debug    ] Transforming
+    2026-05-12 08:32:29 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:32:29 [debug    ] Fitting
+    2026-05-12 08:32:29 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:32:29 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:32:29 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:32:49 [debug    ] Transforming
+    2026-05-12 08:32:49 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:32:49 [debug    ] Transforming
+    2026-05-12 08:32:49 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:32:49 [debug    ] Fitting
+    2026-05-12 08:32:49 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:32:49 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:32:49 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:33:10 [debug    ] Transforming
+    2026-05-12 08:33:10 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:33:10 [debug    ] Transforming
+    2026-05-12 08:33:10 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:33:10 [debug    ] Fitting
+    2026-05-12 08:33:10 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:33:10 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:33:10 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:33:31 [debug    ] Transforming
+    2026-05-12 08:33:31 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:33:31 [debug    ] Transforming
+    2026-05-12 08:33:31 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:33:31 [debug    ] Fitting
+    2026-05-12 08:33:31 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:33:31 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:33:31 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:33:51 [debug    ] Transforming
+    2026-05-12 08:33:51 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:33:51 [debug    ] Transforming
+    2026-05-12 08:33:51 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:33:51 [debug    ] Fitting
+    2026-05-12 08:33:51 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:33:51 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:33:51 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:34:12 [debug    ] Transforming
+    2026-05-12 08:34:12 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:34:12 [debug    ] Transforming
+    2026-05-12 08:34:12 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:34:12 [debug    ] Fitting
+    2026-05-12 08:34:12 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:34:12 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:34:12 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:34:32 [debug    ] Transforming
+    2026-05-12 08:34:32 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:34:32 [debug    ] Transforming
+    2026-05-12 08:34:32 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:34:32 [debug    ] Fitting
+    2026-05-12 08:34:32 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:34:32 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:34:32 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:34:53 [debug    ] Transforming
+    2026-05-12 08:34:53 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:34:53 [debug    ] Transforming
+    2026-05-12 08:34:53 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:34:53 [debug    ] Fitting
+    2026-05-12 08:34:53 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:34:53 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:34:53 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:35:13 [debug    ] Transforming
+    2026-05-12 08:35:13 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:35:13 [debug    ] Transforming
+    2026-05-12 08:35:13 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:35:13 [debug    ] Fitting
+    2026-05-12 08:35:13 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:35:13 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:35:13 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:35:34 [debug    ] Transforming
+    2026-05-12 08:35:34 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:35:34 [debug    ] Transforming
+    2026-05-12 08:35:34 [debug    ] Setting up smoothing using B-Splines
     Running experiment: eos_interaction1
-    2026-05-08 11:40:06 [debug    ] Fitting
-    2026-05-08 11:40:06 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:40:06 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:40:06 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:40:27 [debug    ] Transforming
-    2026-05-08 11:40:27 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:40:27 [debug    ] Transforming
-    2026-05-08 11:40:27 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:40:27 [debug    ] Fitting
-    2026-05-08 11:40:27 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:40:27 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:40:27 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:40:48 [debug    ] Transforming
-    2026-05-08 11:40:48 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:40:48 [debug    ] Transforming
-    2026-05-08 11:40:48 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:40:48 [debug    ] Fitting
-    2026-05-08 11:40:48 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:40:48 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:40:48 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:41:09 [debug    ] Transforming
-    2026-05-08 11:41:09 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:41:09 [debug    ] Transforming
-    2026-05-08 11:41:09 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:41:09 [debug    ] Fitting
-    2026-05-08 11:41:09 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:41:09 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:41:09 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:41:31 [debug    ] Transforming
-    2026-05-08 11:41:31 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:41:31 [debug    ] Transforming
-    2026-05-08 11:41:31 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:41:31 [debug    ] Fitting
-    2026-05-08 11:41:31 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:41:31 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:41:31 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:41:52 [debug    ] Transforming
-    2026-05-08 11:41:52 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:41:52 [debug    ] Transforming
-    2026-05-08 11:41:52 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:41:52 [debug    ] Fitting
-    2026-05-08 11:41:52 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:41:52 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:41:52 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:42:13 [debug    ] Transforming
-    2026-05-08 11:42:13 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:42:13 [debug    ] Transforming
-    2026-05-08 11:42:13 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:42:13 [debug    ] Fitting
-    2026-05-08 11:42:13 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:42:13 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:42:13 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:42:34 [debug    ] Transforming
-    2026-05-08 11:42:34 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:42:34 [debug    ] Transforming
-    2026-05-08 11:42:34 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:42:34 [debug    ] Fitting
-    2026-05-08 11:42:34 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:42:34 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:42:34 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:42:55 [debug    ] Transforming
-    2026-05-08 11:42:55 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:42:55 [debug    ] Transforming
-    2026-05-08 11:42:55 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:42:55 [debug    ] Fitting
-    2026-05-08 11:42:55 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:42:55 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:42:55 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:43:16 [debug    ] Transforming
-    2026-05-08 11:43:16 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:43:16 [debug    ] Transforming
-    2026-05-08 11:43:16 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:43:16 [debug    ] Fitting
-    2026-05-08 11:43:16 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:43:16 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:43:16 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:43:37 [debug    ] Transforming
-    2026-05-08 11:43:37 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:43:37 [debug    ] Transforming
-    2026-05-08 11:43:37 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:35:34 [debug    ] Fitting
+    2026-05-12 08:35:34 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:35:34 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:35:34 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:35:53 [debug    ] Transforming
+    2026-05-12 08:35:53 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:35:53 [debug    ] Transforming
+    2026-05-12 08:35:53 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:35:54 [debug    ] Fitting
+    2026-05-12 08:35:54 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:35:54 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:35:54 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:36:13 [debug    ] Transforming
+    2026-05-12 08:36:13 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:36:13 [debug    ] Transforming
+    2026-05-12 08:36:13 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:36:13 [debug    ] Fitting
+    2026-05-12 08:36:13 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:36:13 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:36:13 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:36:33 [debug    ] Transforming
+    2026-05-12 08:36:33 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:36:33 [debug    ] Transforming
+    2026-05-12 08:36:33 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:36:33 [debug    ] Fitting
+    2026-05-12 08:36:33 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:36:33 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:36:33 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:36:52 [debug    ] Transforming
+    2026-05-12 08:36:52 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:36:52 [debug    ] Transforming
+    2026-05-12 08:36:52 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:36:52 [debug    ] Fitting
+    2026-05-12 08:36:52 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:36:52 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:36:52 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:37:12 [debug    ] Transforming
+    2026-05-12 08:37:12 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:37:12 [debug    ] Transforming
+    2026-05-12 08:37:12 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:37:12 [debug    ] Fitting
+    2026-05-12 08:37:12 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:37:12 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:37:12 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:37:32 [debug    ] Transforming
+    2026-05-12 08:37:32 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:37:32 [debug    ] Transforming
+    2026-05-12 08:37:32 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:37:32 [debug    ] Fitting
+    2026-05-12 08:37:32 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:37:32 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:37:32 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:37:51 [debug    ] Transforming
+    2026-05-12 08:37:51 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:37:52 [debug    ] Transforming
+    2026-05-12 08:37:52 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:37:52 [debug    ] Fitting
+    2026-05-12 08:37:52 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:37:52 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:37:52 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:38:12 [debug    ] Transforming
+    2026-05-12 08:38:12 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:38:12 [debug    ] Transforming
+    2026-05-12 08:38:12 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:38:12 [debug    ] Fitting
+    2026-05-12 08:38:12 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:38:12 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:38:12 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:38:32 [debug    ] Transforming
+    2026-05-12 08:38:32 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:38:32 [debug    ] Transforming
+    2026-05-12 08:38:32 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:38:32 [debug    ] Fitting
+    2026-05-12 08:38:32 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:38:32 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:38:32 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:38:52 [debug    ] Transforming
+    2026-05-12 08:38:52 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:38:52 [debug    ] Transforming
+    2026-05-12 08:38:52 [debug    ] Setting up smoothing using B-Splines
     Running experiment: eos_interaction2
-    2026-05-08 11:43:37 [debug    ] Fitting
-    2026-05-08 11:43:37 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:43:37 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:43:37 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:43:41 [debug    ] Transforming
-    2026-05-08 11:43:41 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:43:41 [debug    ] Transforming
-    2026-05-08 11:43:41 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:43:41 [debug    ] Fitting
-    2026-05-08 11:43:41 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:43:41 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:43:41 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:43:46 [debug    ] Transforming
-    2026-05-08 11:43:46 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:43:46 [debug    ] Transforming
-    2026-05-08 11:43:46 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:43:46 [debug    ] Fitting
-    2026-05-08 11:43:46 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:43:46 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:43:46 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:43:50 [debug    ] Transforming
-    2026-05-08 11:43:50 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:43:50 [debug    ] Transforming
-    2026-05-08 11:43:50 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:43:50 [debug    ] Fitting
-    2026-05-08 11:43:50 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:43:50 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:43:50 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:43:55 [debug    ] Transforming
-    2026-05-08 11:43:55 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:43:55 [debug    ] Transforming
-    2026-05-08 11:43:55 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:43:55 [debug    ] Fitting
-    2026-05-08 11:43:55 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:43:55 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:43:55 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:43:59 [debug    ] Transforming
-    2026-05-08 11:43:59 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:43:59 [debug    ] Transforming
-    2026-05-08 11:43:59 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:43:59 [debug    ] Fitting
-    2026-05-08 11:43:59 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:43:59 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:43:59 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:44:03 [debug    ] Transforming
-    2026-05-08 11:44:03 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:44:03 [debug    ] Transforming
-    2026-05-08 11:44:03 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:44:03 [debug    ] Fitting
-    2026-05-08 11:44:03 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:44:03 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:44:03 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:44:08 [debug    ] Transforming
-    2026-05-08 11:44:08 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:44:08 [debug    ] Transforming
-    2026-05-08 11:44:08 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:44:08 [debug    ] Fitting
-    2026-05-08 11:44:08 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:44:08 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:44:08 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:44:12 [debug    ] Transforming
-    2026-05-08 11:44:12 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:44:12 [debug    ] Transforming
-    2026-05-08 11:44:12 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:44:12 [debug    ] Fitting
-    2026-05-08 11:44:12 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:44:12 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:44:12 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:44:16 [debug    ] Transforming
-    2026-05-08 11:44:16 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:44:16 [debug    ] Transforming
-    2026-05-08 11:44:16 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:44:16 [debug    ] Fitting
-    2026-05-08 11:44:16 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-05-08 11:44:16 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:44:16 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-05-08 11:44:21 [debug    ] Transforming
-    2026-05-08 11:44:21 [debug    ] Setting up smoothing using B-Splines
-    2026-05-08 11:44:21 [debug    ] Transforming
-    2026-05-08 11:44:21 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:38:52 [debug    ] Fitting
+    2026-05-12 08:38:52 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:38:52 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:38:52 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:38:56 [debug    ] Transforming
+    2026-05-12 08:38:56 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:38:56 [debug    ] Transforming
+    2026-05-12 08:38:56 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:38:56 [debug    ] Fitting
+    2026-05-12 08:38:56 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:38:56 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:38:56 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:39:00 [debug    ] Transforming
+    2026-05-12 08:39:00 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:00 [debug    ] Transforming
+    2026-05-12 08:39:00 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:00 [debug    ] Fitting
+    2026-05-12 08:39:00 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:39:00 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:00 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:39:04 [debug    ] Transforming
+    2026-05-12 08:39:04 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:04 [debug    ] Transforming
+    2026-05-12 08:39:04 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:04 [debug    ] Fitting
+    2026-05-12 08:39:04 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:39:04 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:04 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:39:08 [debug    ] Transforming
+    2026-05-12 08:39:08 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:08 [debug    ] Transforming
+    2026-05-12 08:39:08 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:08 [debug    ] Fitting
+    2026-05-12 08:39:08 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:39:08 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:08 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:39:12 [debug    ] Transforming
+    2026-05-12 08:39:12 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:12 [debug    ] Transforming
+    2026-05-12 08:39:12 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:12 [debug    ] Fitting
+    2026-05-12 08:39:12 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:39:12 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:12 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:39:16 [debug    ] Transforming
+    2026-05-12 08:39:16 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:16 [debug    ] Transforming
+    2026-05-12 08:39:16 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:16 [debug    ] Fitting
+    2026-05-12 08:39:16 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:39:16 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:16 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:39:20 [debug    ] Transforming
+    2026-05-12 08:39:20 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:20 [debug    ] Transforming
+    2026-05-12 08:39:20 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:20 [debug    ] Fitting
+    2026-05-12 08:39:20 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:39:20 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:20 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:39:24 [debug    ] Transforming
+    2026-05-12 08:39:24 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:25 [debug    ] Transforming
+    2026-05-12 08:39:25 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:25 [debug    ] Fitting
+    2026-05-12 08:39:25 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:39:25 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:25 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:39:29 [debug    ] Transforming
+    2026-05-12 08:39:29 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:29 [debug    ] Transforming
+    2026-05-12 08:39:29 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:29 [debug    ] Fitting
+    2026-05-12 08:39:29 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-12 08:39:29 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:29 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-05-12 08:39:33 [debug    ] Transforming
+    2026-05-12 08:39:33 [debug    ] Setting up smoothing using B-Splines
+    2026-05-12 08:39:33 [debug    ] Transforming
+    2026-05-12 08:39:33 [debug    ] Setting up smoothing using B-Splines
 
 
 
@@ -941,7 +941,7 @@ Plotting
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (23 minutes 12.585 seconds)
+   **Total running time of the script:** (21 minutes 50.551 seconds)
 
 
 .. _sphx_glr_download_auto_examples_03-combat-based_06-plot_combatgam_with_mareos.py:

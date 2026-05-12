@@ -31,23 +31,9 @@ y_{\text{synth}} = y_k \quad \text{(classification)}
 
 $$
 
-Where $\alpha \in (0, 1)$ controls interpolation strength (default: 0.3). An alpha of aproximately 0 will generate a interpolated sample more similar to the *base* sample. On the other hand, a value closer to 1 will generate an interpolated sample more similar to the *target* sample.
+Where $\alpha \in (0, 1)$ controls interpolation strength (default: 0.3). An alpha of approximately 0 will generate a interpolated sample more similar to the *base* sample. On the other hand, a value closer to 1 will generate an interpolated sample more similar to the *target* sample.
 
 For **regression**, targets are interpolated continuously. For **classification**, targets remain discrete while features are interpolated.
-
----
-
-## Parameters
-
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `alpha` | float or tuple | 0.3 | Interpolation weight. If float, constant. If tuple `(min, max)`, sampled uniformly per sample. Range [0, 1]. |
-| `target_tolerance` | float or None | None | Tolerance for target matching. `None` = exact match (classification) or 10% of range (regression). |
-| `covariate_tolerance` | array-like or None | None | Tolerance for continuous covariates (e.g., age tolerance in years). |
-| `k` | int, "max", or "average" | 1 | Number of matches per sample: - `int`: Specific count - `"max"`: All available matches - `"average"`: Interpolate toward mean of all matches |
-| `mode` | "pairwise" or "base_to_others" | "pairwise" | Site pairing strategy. `base_to_others` forces `k="average"` and interpolates each site against all others combined. |
-| `concatenate` | bool | True | If True, returns original + synthetic data. If False, returns only synthetic samples. |
-| `random_state` | int or None | None | Random seed for reproducibility. |
 
 ---
 

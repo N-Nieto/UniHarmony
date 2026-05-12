@@ -36,23 +36,6 @@ Basic examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Compute metrics by site">
-
-.. only:: html
-
-  .. image:: /auto_examples/01-basic-examples/images/thumb/sphx_glr_02-run_metrics_by_site_thumb.png
-    :alt:
-
-  :doc:`/auto_examples/01-basic-examples/02-run_metrics_by_site`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Compute metrics by site</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="The first step before applying any harmonization technique is to understand and characterize our data.">
 
 .. only:: html
@@ -65,6 +48,23 @@ Basic examples
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Explore EoS with dimensionality reduction techniques</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Compute metrics by site">
+
+.. only:: html
+
+  .. image:: /auto_examples/01-basic-examples/images/thumb/sphx_glr_02-run_metrics_by_site_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/01-basic-examples/02-run_metrics_by_site`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Compute metrics by site</div>
     </div>
 
 
@@ -130,8 +130,8 @@ Basic examples
    :hidden:
 
    /auto_examples/01-basic-examples/05-plot_multisite_data_characterization
-   /auto_examples/01-basic-examples/02-run_metrics_by_site
    /auto_examples/01-basic-examples/04-plot_eos_with_dimensionality_reduction
+   /auto_examples/01-basic-examples/02-run_metrics_by_site
    /auto_examples/01-basic-examples/06-plot_mareos_with_tsne
    /auto_examples/01-basic-examples/03-plot_biases_in_metrics_by_site
    /auto_examples/01-basic-examples/01-plot_eos_in_ml

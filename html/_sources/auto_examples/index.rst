@@ -55,23 +55,6 @@ Basic examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Compute metrics by site">
-
-.. only:: html
-
-  .. image:: /auto_examples/01-basic-examples/images/thumb/sphx_glr_02-run_metrics_by_site_thumb.png
-    :alt:
-
-  :doc:`/auto_examples/01-basic-examples/02-run_metrics_by_site`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">Compute metrics by site</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="The first step before applying any harmonization technique is to understand and characterize our data.">
 
 .. only:: html
@@ -84,6 +67,23 @@ Basic examples
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Explore EoS with dimensionality reduction techniques</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Compute metrics by site">
+
+.. only:: html
+
+  .. image:: /auto_examples/01-basic-examples/images/thumb/sphx_glr_02-run_metrics_by_site_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/01-basic-examples/02-run_metrics_by_site`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Compute metrics by site</div>
     </div>
 
 
@@ -385,6 +385,23 @@ Interpolation Methods
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">Binary classification using ISI</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="IntraSiteInterpolation advance usage">
+
+.. only:: html
+
+  .. image:: /auto_examples/04-interpolation-based/images/thumb/sphx_glr_04-plot_isi_advance_usage_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/04-interpolation-based/04-plot_isi_advance_usage`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">IntraSiteInterpolation advance usage</div>
     </div>
 
 

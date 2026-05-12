@@ -1,15 +1,134 @@
 (intrasite-long)=
-# Intra Site Interpolation
+# Intra-Site Interpolation (ISI)
 
-Make the Effects of Site "invisible" to the ML models by breaking the correlation between site and target. This is made by interpolating within each class in each site to balance the classes.
+Intra-Site Interpolation (ISI) is a data harmonization technique that reduces spurious correlations between data acquisition site and target labels by **balancing class distributions independently within each site**. Unlike methods that remove site effects from features, ISI makes site membership "invisible" to machine learning models by ensuring that no class is over- or under-represented at any site.
 
-**Paper**
+The method works by oversampling minority classes within each site until all classes reach the same count — either the site's own majority count (`per_site` strategy) or a global maximum across all sites (`global_max` strategy). Synthetic samples are generated through interpolating between real samples, with optional **stratified matching** on categorical and continuous covariates to preserve demographic and clinical distributions.
 
-On preparation.
+This method is particularly effective when:
+- Training data comes from multiple sites with different recruitment biases
+- Site membership is correlated with target labels (e.g., one site recruits mostly patients, another mostly controls)
+- You want to prevent ML models from learning site-specific shortcuts instead of true biological signal
+- Covariate distributions (age, sex, disease severity) must be preserved during balancing
+- Working with regression tasks where the target is continuous and requires binning before balancing
 
-**Source Code**
+Key features
+------------
+- Site-wise class balancing using interpolation-based oversampling.
+- Optional stratification via categorical and/or continuous covariates.
+- Support for both classification and regression problems.
+- Regression targets are discretized into bins for balancing purposes.
+- Compatible with imbalanced-learn samplers.
 
-- https://github.com/N-Nieto/IntraSiteInterpolator.git
+Design principles
+-----------------
+- Preserve covariate distributions when requested.
+- Guarantee exact class balance per site (or globally).
+- Provide robust fallbacks when interpolation is insufficient.
+---
 
-# Implementation
-- Implemented and tested on syntetic data.
+
+## Basic Usage
+
+```python
+import numpy as np
+
+from uniharmony.datasets import make_multisite_classification
+from uniharmony.interpolation import IntraSiteInterpolation
+
+# Your multi-site data
+X, y, sites = make_multisite_classification(balance_per_site=[0.3, 0.7])
+
+
+# Initialize and fit
+isi = IntraSiteInterpolation(
+    interpolator="smote",
+    balance_strategy="per_site",
+    random_state=42
+)
+
+X_balanced, y_balanced = isi.fit_resample(X, y, sites=sites)
+
+print(f"Original: {len(X)} samples")
+print(f"Balanced: {len(X_balanced)} samples")
+print(f"Samples created: {isi.samples_created_}")
+```
+
+
+**Matching hierarchy:**
+1. **Class/bin match**: Donor must belong to the same class (or regression bin)
+2. **Categorical covariates**: Exact match required, checked column-by-column
+3. **Continuous covariates**: Must be within `covariate_tolerance` per column
+
+If no matching donor is found, a random donor from the same class is used as fallback.
+
+### Regression Support
+
+For continuous targets (e.g., disease severity scores, brain age), ISI automatically bins the target, balances bins intra-site, and interpolates synthetic targets continuously:
+
+---
+
+## Understanding `samples_created_`
+
+After fitting, `samples_created_` contains a nested dictionary tracking how many synthetic samples were generated for each class in each site:
+
+```python
+{
+    "Site_A": {0: 0, 1: 80},    # 80 synthetic class-1 samples created
+    "Site_B": {0: 0, 1: 0},     # Already balanced, none created
+    "Site_C": {0: 80, 1: 0},    # 80 synthetic class-0 samples created
+}
+```
+
+This is useful for:
+- Auditing data augmentation intensity per site
+- Detecting sites with severe recruitment bias
+- Quality control: unexpectedly high values may indicate poor site compatibility
+
+---
+
+## Balance Strategies
+
+### `per_site` (Default)
+Each site is balanced independently to its own majority class count. Best for:
+- Sites with very different sample sizes
+- Preserving site-specific data volumes
+- When global harmonization is not required
+
+**Example:**
+- Site A: 100 class-0, 20 class-1 → balanced to 100 each
+- Site B: 30 class-0, 70 class-1 → balanced to 70 each
+
+### `global_max`
+All sites are balanced to the single largest class count found across all sites. Best for:
+- Ensuring identical class counts everywhere for strict cross-site comparability
+- Training site-invariant models
+- When downstream analysis assumes equal group sizes
+
+**Example:**
+- Site A: 100 class-0, 20 class-1
+- Site B: 30 class-0, 70 class-1
+- Global max = 100 → both sites balanced to 100 per class
+
+---
+
+## Implementation Notes
+
+- **Post-hoc assertions**: After resampling, ISI verifies that all sites are correctly balanced. If the interpolator fails to produce enough samples (e.g., ADASYN with very small classes), a `RuntimeError` is raised.
+- **Memory**: Synthetic samples are generated per-site and concatenated. Memory scales linearly with the number of sites and the oversampling ratio.
+- **Missing classes**:  Ensure all classes are present at all sites.
+
+---
+
+## Reference Implementation
+
+
+Source code: - https://github.com/N-Nieto/IntraSiteInterpolator.git
+
+---
+
+
+
+## Citation
+
+Paper under review
