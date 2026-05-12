@@ -1,9 +1,11 @@
 """
-IntraSiteInterpolation advance usage examples.
+IntraSiteInterpolation advance usage
+====================================
 """
 
 # %%
-### Global Maximum Balancing
+# Global Maximum Balancing
+# ------------------------
 
 # Balance all sites to the single largest class count found anywhere:
 
@@ -20,9 +22,11 @@ X_balanced, y_balanced = isi.fit_resample(X, y, sites=sites)
 print(f"Global target count: {isi.target_count_}")
 
 # %%
-## Covariates
-
-### Stratified Interpolation with Covariates
+# Covariates
+# ----------
+#
+# Stratified Interpolation with Covariates
+# ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 # Preserve demographic distributions while balancing classes.
 # Synthetic samples are interpolated only between participants matching on all covariates:
@@ -36,5 +40,3 @@ isi = IntraSiteInterpolation(balance_strategy="per_site", random_state=42)
 X_balanced, y_balanced = isi.fit_resample(
     X, y, sites=sites, categorical_covariate=sex, continuous_covariate=age, n_bins_cont_cov=2
 )  # Age binned with 5 bins
-
-# %%
