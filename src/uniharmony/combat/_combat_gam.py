@@ -40,8 +40,6 @@ class ComBatGAM(BaseComBat):
         Whether to perform parametric adjustments.
     mean_only : bool, optional (default False)
         Whether to only adjust mean (no scaling).
-    copy : bool, optional (default True)
-        Whether to copy objects when doing `check_array`.
 
     Attributes
     ----------
@@ -62,12 +60,10 @@ class ComBatGAM(BaseComBat):
         empirical_bayes: bool = True,
         parametric_adjustments: bool = True,
         mean_only: bool = False,
-        copy: bool = True,
     ) -> None:
         self.empirical_bayes = empirical_bayes
         self.parametric_adjustments = parametric_adjustments
         self.mean_only = mean_only
-        self.copy = copy
 
     def fit(
         self,
@@ -119,7 +115,7 @@ class ComBatGAM(BaseComBat):
         logger.debug("Fitting")
 
         # Validate input
-        X, sites = self._check_X_sites(X, sites, copy=self.copy, estimator=self)
+        X, sites = self._check_X_sites(X, sites, estimator=self)
         validate_sites(sites)
 
         # Check smooth_covariates and its bounds if passed
@@ -268,7 +264,7 @@ class ComBatGAM(BaseComBat):
 
         # Validate input
         check_is_fitted(self)
-        X, sites = self._check_X_sites(X, sites, copy=self.copy, estimator=self)
+        X, sites = self._check_X_sites(X, sites, estimator=self)
 
         smooth_covariates = check_array(smooth_covariates, dtype=FLOAT_DTYPES, estimator=self)
 

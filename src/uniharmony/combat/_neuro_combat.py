@@ -44,8 +44,6 @@ class NeuroComBat(BaseComBat):
         Whether to perform parametric adjustments.
     mean_only : bool, optional (default False)
         Whether to only adjust mean (no scaling).
-    copy : bool, optional (default True)
-        Whether to copy objects when doing `check_array`.
 
     Attributes
     ----------
@@ -73,12 +71,10 @@ class NeuroComBat(BaseComBat):
         empirical_bayes: bool = True,
         parametric_adjustments: bool = True,
         mean_only: bool = False,
-        copy: bool = True,
     ) -> None:
         self.empirical_bayes = empirical_bayes
         self.parametric_adjustments = parametric_adjustments
         self.mean_only = mean_only
-        self.copy = copy
 
     def fit(
         self,
@@ -121,7 +117,7 @@ class NeuroComBat(BaseComBat):
         logger.debug("Fitting")
 
         # Validate input
-        X, sites = self._check_X_sites(X, sites, copy=self.copy, estimator=self)
+        X, sites = self._check_X_sites(X, sites, estimator=self)
         validate_sites(sites)
 
         # Check that categorical_covariates and continuous_covariates have correct shape and type if they are not None.
@@ -222,7 +218,7 @@ class NeuroComBat(BaseComBat):
 
         # Validate input
         check_is_fitted(self)
-        X, sites = self._check_X_sites(X, sites, copy=self.copy, estimator=self)
+        X, sites = self._check_X_sites(X, sites, estimator=self)
 
         if self._categorical_covariates_used:
             categorical_covariates = check_array(categorical_covariates, dtype=None, estimator=self)
