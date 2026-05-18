@@ -24,7 +24,7 @@ class BaseComBat(DesignMatrixMixin, StandardizationMixin, LocationAndScaleMixin,
         self,
         X: npt.ArrayLike,
         sites: npt.ArrayLike,
-        copy: bool = True,
+        copy: bool = False,
         estimator: type["BaseComBat"] | None = None,
     ) -> tuple[npt.NDArray, npt.NDArray]:
         """Check X and sites.
@@ -35,7 +35,7 @@ class BaseComBat(DesignMatrixMixin, StandardizationMixin, LocationAndScaleMixin,
             Input data.
         sites : array-like, shape (n_samples,)
             Sites.
-        copy : bool, optional (default True)
+        copy : bool, optional (default False)
             Whether to copy objects when doing `check_array`.
         estimator : estimator instance, optional (default None)
             If passed, include the name of the estimator in warning messages.
