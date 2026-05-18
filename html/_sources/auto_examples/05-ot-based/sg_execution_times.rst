@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:01.270** total execution time for 1 file **from auto_examples/05-ot-based**:
+**00:01.254** total execution time for 1 file **from auto_examples/05-ot-based**:
 
 .. container::
 
@@ -33,5 +33,5 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_05-ot-based_01-plot_binary_classification.py` (``01-plot_binary_classification.py``)
-     - 00:01.270
+     - 00:01.254
      - 0.0

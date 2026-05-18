@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:13.436** total execution time for 4 files **from auto_examples/02-multisite-data**:
+**00:15.706** total execution time for 4 files **from auto_examples/02-multisite-data**:
 
 .. container::
 
@@ -33,14 +33,14 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_02-multisite-data_01-plot_generate_multisite_data.py` (``01-plot_generate_multisite_data.py``)
-     - 00:05.885
+     - 00:06.779
      - 0.0
    * - :ref:`sphx_glr_auto_examples_02-multisite-data_04-run_load_on_harmony.py` (``04-run_load_on_harmony.py``)
-     - 00:05.422
+     - 00:06.593
      - 0.0
    * - :ref:`sphx_glr_auto_examples_02-multisite-data_03-plot_generate_imbalance_multisite_data.py` (``03-plot_generate_imbalance_multisite_data.py``)
-     - 00:01.350
+     - 00:01.432
      - 0.0
    * - :ref:`sphx_glr_auto_examples_02-multisite-data_02-run_load_mareos.py` (``02-run_load_mareos.py``)
-     - 00:00.779
+     - 00:00.903
      - 0.0

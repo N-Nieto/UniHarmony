@@ -77,7 +77,7 @@ Let's load the MAREoS datasets, which simulates several datasets with and withou
  .. code-block:: none
 
     Downloading file 'public_datasets.zip' from 'https://www.imardgroup.com/mareos-benchmark/public_datasets.zip' to '/home/runner/.cache/uniharmony'.
-      0%|                                              | 0.00/3.66M [00:00<?, ?B/s]      1%|▎                                     | 32.8k/3.66M [00:00<00:14, 256kB/s]      5%|█▊                                     | 176k/3.66M [00:00<00:04, 754kB/s]     11%|████▏                                 | 409k/3.66M [00:00<00:02, 1.22MB/s]     21%|███████▉                              | 761k/3.66M [00:00<00:01, 1.80MB/s]     35%|█████████████                        | 1.29M/3.66M [00:00<00:00, 2.60MB/s]     55%|████████████████████▏                | 2.00M/3.66M [00:00<00:00, 3.57MB/s]     78%|████████████████████████████▋        | 2.84M/3.66M [00:00<00:00, 4.49MB/s]      0%|                                              | 0.00/3.66M [00:00<?, ?B/s]    100%|█████████████████████████████████████| 3.66M/3.66M [00:00<00:00, 15.4GB/s]
+      0%|                                              | 0.00/3.66M [00:00<?, ?B/s]      3%|▉                                     | 96.3k/3.66M [00:00<00:04, 758kB/s]      7%|██▋                                   | 264k/3.66M [00:00<00:03, 1.08MB/s]     14%|█████▏                                | 497k/3.66M [00:00<00:02, 1.40MB/s]     27%|██████████▏                           | 977k/3.66M [00:00<00:01, 2.31MB/s]     48%|█████████████████▊                   | 1.77M/3.66M [00:00<00:00, 3.67MB/s]     92%|██████████████████████████████████   | 3.38M/3.66M [00:00<00:00, 6.63MB/s]      0%|                                              | 0.00/3.66M [00:00<?, ?B/s]    100%|█████████████████████████████████████| 3.66M/3.66M [00:00<00:00, 18.3GB/s]
     Unzipping contents of '/home/runner/.cache/uniharmony/public_datasets.zip' to '/home/runner/.cache/uniharmony/MAREoS'
     dict_keys(['eos_simple1', 'eos_simple2', 'eos_interaction1', 'eos_interaction2', 'true_simple1', 'true_simple2', 'true_interaction1', 'true_interaction2'])
 
@@ -361,7 +361,7 @@ Now let's use the ``plot_tsne`` funtion which can simplify the code and will all
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 57.782 seconds)
+   **Total running time of the script:** (1 minutes 0.655 seconds)
 
 
 .. _sphx_glr_download_auto_examples_01-basic-examples_06-plot_mareos_with_tsne.py:
