@@ -1,5 +1,5 @@
 """
-Load ON-Harmony dataset
+Download ON-Harmony dataset
 =======================
 """
 
@@ -8,7 +8,7 @@ Load ON-Harmony dataset
 # -------
 
 from uniharmony import verbosity
-from uniharmony.datasets import clean_tmp, load_ONharmony
+from uniharmony.datasets import clean_tmp, download_ONharmony
 
 
 verbosity("debug")
@@ -18,7 +18,7 @@ verbosity("debug")
 # Load dataset
 # ------------
 
-load_ONharmony(
+download_ONharmony(
     subjects="16981",
     sessions="NOT4GEP001",
     modalities="anat",
