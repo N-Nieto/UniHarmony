@@ -10,6 +10,8 @@ The ON-Harmony dataset (~58 GB) contains:
 - **5 modalities**: T1w, T2w, SWI, dMRI, rfMRI
 - Defaced anatomical images with defacing masks
 
+# Note: This function downloads the *raw* files, we may need to extract the desired features with another tool.
+
 ## Usage
 
 ### Download all files for a subject and a session
