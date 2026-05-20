@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>ON-Harmony Dataset &#8212; uniharmony 0.0.4.dev9 documentation</title>
+    <title>Download ON-Harmony Dataset &#8212; uniharmony 0.0.4.dev16 documentation</title>
   
   
   
@@ -44,18 +44,16 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../_static/documentation_options.js?v=4e82bc9d"></script>
+    <script src="../_static/documentation_options.js?v=c2dc913f"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
     <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'utilities/load_onharmony_dataset';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'utilities/download_onharmony_dataset';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Datalad Integration" href="datalad_integration.html" />
-    <link rel="prev" title="MAREoS Benchmark Datasets" href="load_mareos_datasets.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -107,6 +105,8 @@
       
       
       
+        
+      
       <dialog id="pst-primary-sidebar-modal"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.4.dev9 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.4.dev16 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -145,12 +145,11 @@
 </button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../getting_started.html">▶️ Getting Started</a></li>
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">🛠️ Utilities</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l1 has-children"><a class="reference internal" href="index.html">🛠️ Utilities</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="simulate_multisite_data.html">Multisite Data Simulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="load_mareos_datasets.html">MAREoS Benchmark Datasets</a></li>
-<li class="toctree-l2 current active"><a class="current reference internal" href="#">ON-Harmony Dataset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="datalad_integration.html">Datalad Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="report_metric_by_site.html">Site-Stratified Metrics</a></li>
 </ul>
@@ -196,8 +195,9 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../examples/multisite_data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/04-run_load_on_harmony.html">Load ON-Harmony dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/04-run_download_on_harmony.html">Download ON-Harmony dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/02-run_load_mareos.html">Load MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/05-explore_onharmony_features.html">Explore ON-Harmony features</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/03-plot_generate_imbalance_multisite_data.html">Generate imbalance multisite data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/01-plot_generate_multisite_data.html">Multisite data generation</a></li>
 </ul>
@@ -334,7 +334,7 @@
       
       
       
-      <li><a href="../_sources/utilities/load_onharmony_dataset.md" target="_blank"
+      <li><a href="../_sources/utilities/download_onharmony_dataset.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -410,7 +410,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>ON-Harmony Dataset</h1>
+    <h1>Download ON-Harmony Dataset</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -420,9 +420,12 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Download ON-Harmony Dataset</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a><ul class="nav section-nav flex-column">
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#note-this-function-downloads-the-raw-files-we-may-need-to-extract-the-desired-features-with-another-tool">Note: This function downloads the <em>raw</em> files, we may need to extract the desired features with another tool.</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#download-all-files-for-a-subject-and-a-session">Download all files for a subject and a session</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#direct-download-no-hidden-cache">Direct Download (No hidden cache)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#download-diffusion-mri">Download diffusion MRI</a></li>
@@ -434,6 +437,9 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citation">Citation</a></li>
 </ul>
+</li>
+</ul>
+
             </nav>
         </div>
     </div>
@@ -444,8 +450,8 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="on-harmony-dataset">
-<span id="load-onharmony-dataset"></span><h1>ON-Harmony Dataset<a class="headerlink" href="#on-harmony-dataset" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="download-on-harmony-dataset">
+<span id="load-onharmony-dataset"></span><h1>Download ON-Harmony Dataset<a class="headerlink" href="#download-on-harmony-dataset" title="Link to this heading">#</a></h1>
 <section id="overview">
 <h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
 <p>The ON-Harmony dataset (~58 GB) contains:</p>
@@ -456,16 +462,11 @@
 <li><p>Defaced anatomical images with defacing masks</p></li>
 </ul>
 </section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="note-this-function-downloads-the-raw-files-we-may-need-to-extract-the-desired-features-with-another-tool">
+<h1>Note: This function downloads the <em>raw</em> files, we may need to extract the desired features with another tool.<a class="headerlink" href="#note-this-function-downloads-the-raw-files-we-may-need-to-extract-the-desired-features-with-another-tool" title="Link to this heading">#</a></h1>
 <section id="usage">
 <h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_ONharmony</span>
-
-<span class="n">datasets</span> <span class="o">=</span> <span class="n">load_ONharmony</span><span class="p">()</span>
-</pre></div>
-</div>
-</section>
-<section id="examples">
-<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
 <section id="download-all-files-for-a-subject-and-a-session">
 <h3>Download all files for a subject and a session<a class="headerlink" href="#download-all-files-for-a-subject-and-a-session" title="Link to this heading">#</a></h3>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_ONharmony</span>
@@ -478,7 +479,6 @@
     <span class="n">suffixes</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span>
     <span class="n">extensions</span><span class="o">=</span><span class="s2">&quot;all&quot;</span><span class="p">,</span>
     <span class="n">target_path</span><span class="o">=</span><span class="s2">&quot;./ON-Harmony&quot;</span><span class="p">,</span>
-    <span class="n">dataset_source_URL</span><span class="o">=</span><span class="s2">&quot;https://github.com/OpenNeuroDatasets/ds004712.git&quot;</span><span class="p">,</span> <span class="c1"># This is also the default</span>
     <span class="n">root_files</span><span class="o">=</span><span class="p">[],</span>  <span class="c1"># Passing an empty list to not get any file</span>
     <span class="n">hidden</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -555,7 +555,7 @@
 <h2>Advanced Usage<a class="headerlink" href="#advanced-usage" title="Link to this heading">#</a></h2>
 <section id="working-with-on-harmony-session-names">
 <h3>Working with ON-Harmony Session Names<a class="headerlink" href="#working-with-on-harmony-session-names" title="Link to this heading">#</a></h3>
-<p>The ON-Harmony dataset uses session codes that encode scanner information:</p>
+<p>The ON-Harmony dataset uses session codes that encode scanner information, for example:</p>
 <div class="pst-scrollable-table-container"><table class="table">
 <thead>
 <tr class="row-odd"><th class="head"><p>Session Code</p></th>
@@ -643,24 +643,6 @@
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="load_mareos_datasets.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">MAREoS Benchmark Datasets</p>
-      </div>
-    </a>
-    <a class="right-next"
-       href="datalad_integration.html"
-       title="next page">
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Datalad Integration</p>
-      </div>
-      <i class="fa-solid fa-angle-right"></i>
-    </a>
 </div>
                 </footer>
               
@@ -679,9 +661,12 @@
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Download ON-Harmony Dataset</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a><ul class="nav section-nav flex-column">
+</ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#note-this-function-downloads-the-raw-files-we-may-need-to-extract-the-desired-features-with-another-tool">Note: This function downloads the <em>raw</em> files, we may need to extract the desired features with another tool.</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#download-all-files-for-a-subject-and-a-session">Download all files for a subject and a session</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#direct-download-no-hidden-cache">Direct Download (No hidden cache)</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#download-diffusion-mri">Download diffusion MRI</a></li>
@@ -693,6 +678,9 @@
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citation">Citation</a></li>
 </ul>
+</li>
+</ul>
+
   </nav></div>
 
 </div></div>

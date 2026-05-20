@@ -203,7 +203,7 @@ Preserving the target as covariate
 
  .. code-block:: none
 
-    2026-05-18 13:04:41 [warning  ] You specified categorical and/or continuous covariates to be preserved. If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-05-20 09:27:05 [warning  ] You specified categorical and/or continuous covariates to be preserved. If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
 
 
 
@@ -251,7 +251,7 @@ Plotting
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.140 seconds)
+   **Total running time of the script:** (0 minutes 1.087 seconds)
 
 
 .. _sphx_glr_download_auto_examples_03-combat-based_02-plot_neurocombat_imbalance_across_sites.py:

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Generate imbalance multisite data &#8212; uniharmony 0.0.4.dev9 documentation</title>
+    <title>Generate imbalance multisite data &#8212; uniharmony 0.0.4.dev16 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=4e82bc9d"></script>
+    <script src="../../_static/documentation_options.js?v=c2dc913f"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -55,7 +55,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Multisite data generation" href="01-plot_generate_multisite_data.html" />
-    <link rel="prev" title="Load MAREoS dataset" href="02-run_load_mareos.html" />
+    <link rel="prev" title="Explore ON-Harmony features" href="05-explore_onharmony_features.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.4.dev9 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.4.dev16 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -150,7 +150,6 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../utilities/index.html">🛠️ Utilities</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../utilities/simulate_multisite_data.html">Multisite Data Simulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../utilities/load_mareos_datasets.html">MAREoS Benchmark Datasets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../utilities/load_onharmony_dataset.html">ON-Harmony Dataset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../utilities/datalad_integration.html">Datalad Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../utilities/report_metric_by_site.html">Site-Stratified Metrics</a></li>
 </ul>
@@ -196,8 +195,9 @@
 </ul>
 </details></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../../examples/multisite_data/index.html">Multisite Data</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="04-run_load_on_harmony.html">Load ON-Harmony dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="04-run_download_on_harmony.html">Download ON-Harmony dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="02-run_load_mareos.html">Load MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="05-explore_onharmony_features.html">Explore ON-Harmony features</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">Generate imbalance multisite data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="01-plot_generate_multisite_data.html">Multisite data generation</a></li>
 </ul>
@@ -537,15 +537,15 @@ site 1 balance: 0.70
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_03-plot_generate_imbalance_multisite_data_003.png" srcset="../../_images/sphx_glr_03-plot_generate_imbalance_multisite_data_003.png" alt="Class and site distribution" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-05-18 13:04:34 [warning  ] Not enough samples of class 0 in global dataset. Requested 350, available 330. Consider adjusting balance_per_site or generating more samples.
-2026-05-18 13:04:34 [warning  ] Not enough samples of class 0 in global dataset. Requested 350, available 330. Consider adjusting balance_per_site or generating more samples.
+<img src="../../_images/sphx_glr_03-plot_generate_imbalance_multisite_data_003.png" srcset="../../_images/sphx_glr_03-plot_generate_imbalance_multisite_data_003.png" alt="Class and site distribution" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-05-20 09:26:59 [warning  ] Not enough samples of class 0 in global dataset. Requested 350, available 330. Consider adjusting balance_per_site or generating more samples.
+2026-05-20 09:26:59 [warning  ] Not enough samples of class 0 in global dataset. Requested 350, available 330. Consider adjusting balance_per_site or generating more samples.
 The class are imbalanced in general, but have the same imbalance across sites
 General balance: 0.30
 site 0 balance: 0.30
 site 1 balance: 0.30
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.432 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.386 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-02-multisite-data-03-plot-generate-imbalance-multisite-data-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/b3794d25cd57c6688dde35788d98f58f/03-plot_generate_imbalance_multisite_data.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">03-plot_generate_imbalance_multisite_data.ipynb</span></code></a></p>
@@ -573,12 +573,12 @@ site 1 balance: 0.30
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="02-run_load_mareos.html"
+       href="05-explore_onharmony_features.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Load MAREoS dataset</p>
+        <p class="prev-next-title">Explore ON-Harmony features</p>
       </div>
     </a>
     <a class="right-next"

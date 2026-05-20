@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Characterise a multisite problem &#8212; uniharmony 0.0.4.dev9 documentation</title>
+    <title>Characterise a multisite problem &#8212; uniharmony 0.0.4.dev16 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=4e82bc9d"></script>
+    <script src="../../_static/documentation_options.js?v=c2dc913f"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.4.dev9 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.4.dev16 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -150,7 +150,6 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../utilities/index.html">🛠️ Utilities</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../utilities/simulate_multisite_data.html">Multisite Data Simulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../utilities/load_mareos_datasets.html">MAREoS Benchmark Datasets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../utilities/load_onharmony_dataset.html">ON-Harmony Dataset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../utilities/datalad_integration.html">Datalad Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../utilities/report_metric_by_site.html">Site-Stratified Metrics</a></li>
 </ul>
@@ -196,8 +195,9 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/multisite_data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/04-run_load_on_harmony.html">Load ON-Harmony dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/04-run_download_on_harmony.html">Download ON-Harmony dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/02-run_load_mareos.html">Load MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/05-explore_onharmony_features.html">Explore ON-Harmony features</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/03-plot_generate_imbalance_multisite_data.html">Generate imbalance multisite data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/01-plot_generate_multisite_data.html">Multisite data generation</a></li>
 </ul>
@@ -499,55 +499,55 @@ to download the full example code.</p>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Computing statistics...
 ============================================================
-2026-05-18 13:03:34 [info     ] ============================================================
-2026-05-18 13:03:34 [info     ] DATASET STATISTICS SUMMARY
-2026-05-18 13:03:34 [info     ] ============================================================
-2026-05-18 13:03:34 [info     ]
+2026-05-20 09:26:01 [info     ] ============================================================
+2026-05-20 09:26:01 [info     ] DATASET STATISTICS SUMMARY
+2026-05-20 09:26:01 [info     ] ============================================================
+2026-05-20 09:26:01 [info     ]
 OVERALL:
-2026-05-18 13:03:34 [info     ]   Samples: 1000
-2026-05-18 13:03:34 [info     ]   Features: 10
-2026-05-18 13:03:34 [info     ]   Sites: 5
-2026-05-18 13:03:34 [info     ]   Classes: 3
-2026-05-18 13:03:34 [info     ]
+2026-05-20 09:26:01 [info     ]   Samples: 1000
+2026-05-20 09:26:01 [info     ]   Features: 10
+2026-05-20 09:26:01 [info     ]   Sites: 5
+2026-05-20 09:26:01 [info     ]   Classes: 3
+2026-05-20 09:26:01 [info     ]
 CLASS DISTRIBUTION:
-2026-05-18 13:03:34 [info     ]   class_0: 335 samples (33.5%)
-2026-05-18 13:03:34 [info     ]   class_1: 335 samples (33.5%)
-2026-05-18 13:03:34 [info     ]   class_2: 330 samples (33.0%)
-2026-05-18 13:03:34 [info     ]
+2026-05-20 09:26:01 [info     ]   class_0: 335 samples (33.5%)
+2026-05-20 09:26:01 [info     ]   class_1: 335 samples (33.5%)
+2026-05-20 09:26:01 [info     ]   class_2: 330 samples (33.0%)
+2026-05-20 09:26:01 [info     ]
 SITE DISTRIBUTION:
-2026-05-18 13:03:34 [info     ]   site_0: 200 samples (20.0%)
-2026-05-18 13:03:34 [info     ]   site_1: 200 samples (20.0%)
-2026-05-18 13:03:34 [info     ]   site_2: 200 samples (20.0%)
-2026-05-18 13:03:34 [info     ]   site_3: 200 samples (20.0%)
-2026-05-18 13:03:34 [info     ]   site_4: 200 samples (20.0%)
-2026-05-18 13:03:34 [info     ]
+2026-05-20 09:26:01 [info     ]   site_0: 200 samples (20.0%)
+2026-05-20 09:26:01 [info     ]   site_1: 200 samples (20.0%)
+2026-05-20 09:26:01 [info     ]   site_2: 200 samples (20.0%)
+2026-05-20 09:26:01 [info     ]   site_3: 200 samples (20.0%)
+2026-05-20 09:26:01 [info     ]   site_4: 200 samples (20.0%)
+2026-05-20 09:26:01 [info     ]
 SITE STATISTICS (summary):
-2026-05-18 13:03:34 [info     ]   site_0:
-2026-05-18 13:03:34 [info     ]     Samples: 200
-2026-05-18 13:03:34 [info     ]     Class distribution: {&#39;class_0&#39;: 67, &#39;class_1&#39;: 67, &#39;class_2&#39;: 66}
-2026-05-18 13:03:34 [info     ]   site_1:
-2026-05-18 13:03:34 [info     ]     Samples: 200
-2026-05-18 13:03:34 [info     ]     Class distribution: {&#39;class_0&#39;: 67, &#39;class_1&#39;: 67, &#39;class_2&#39;: 66}
-2026-05-18 13:03:34 [info     ]   site_2:
-2026-05-18 13:03:34 [info     ]     Samples: 200
-2026-05-18 13:03:34 [info     ]     Class distribution: {&#39;class_0&#39;: 67, &#39;class_1&#39;: 67, &#39;class_2&#39;: 66}
-2026-05-18 13:03:34 [info     ]   site_3:
-2026-05-18 13:03:34 [info     ]     Samples: 200
-2026-05-18 13:03:34 [info     ]     Class distribution: {&#39;class_0&#39;: 67, &#39;class_1&#39;: 67, &#39;class_2&#39;: 66}
-2026-05-18 13:03:34 [info     ]   site_4:
-2026-05-18 13:03:34 [info     ]     Samples: 200
-2026-05-18 13:03:34 [info     ]     Class distribution: {&#39;class_0&#39;: 67, &#39;class_1&#39;: 67, &#39;class_2&#39;: 66}
-2026-05-18 13:03:34 [info     ]
+2026-05-20 09:26:01 [info     ]   site_0:
+2026-05-20 09:26:01 [info     ]     Samples: 200
+2026-05-20 09:26:01 [info     ]     Class distribution: {&#39;class_0&#39;: 67, &#39;class_1&#39;: 67, &#39;class_2&#39;: 66}
+2026-05-20 09:26:01 [info     ]   site_1:
+2026-05-20 09:26:01 [info     ]     Samples: 200
+2026-05-20 09:26:01 [info     ]     Class distribution: {&#39;class_0&#39;: 67, &#39;class_1&#39;: 67, &#39;class_2&#39;: 66}
+2026-05-20 09:26:01 [info     ]   site_2:
+2026-05-20 09:26:01 [info     ]     Samples: 200
+2026-05-20 09:26:01 [info     ]     Class distribution: {&#39;class_0&#39;: 67, &#39;class_1&#39;: 67, &#39;class_2&#39;: 66}
+2026-05-20 09:26:01 [info     ]   site_3:
+2026-05-20 09:26:01 [info     ]     Samples: 200
+2026-05-20 09:26:01 [info     ]     Class distribution: {&#39;class_0&#39;: 67, &#39;class_1&#39;: 67, &#39;class_2&#39;: 66}
+2026-05-20 09:26:01 [info     ]   site_4:
+2026-05-20 09:26:01 [info     ]     Samples: 200
+2026-05-20 09:26:01 [info     ]     Class distribution: {&#39;class_0&#39;: 67, &#39;class_1&#39;: 67, &#39;class_2&#39;: 66}
+2026-05-20 09:26:01 [info     ]
 FEATURE STATISTICS (first 5 features):
-2026-05-18 13:03:34 [info     ]   feat_0: mean=0.8137, std=1.6804, MAD=1.2405
-2026-05-18 13:03:34 [info     ]   feat_1: mean=-0.2313, std=1.9461, MAD=1.4023
-2026-05-18 13:03:34 [info     ]   feat_2: mean=1.0819, std=2.0994, MAD=1.4588
-2026-05-18 13:03:34 [info     ]   feat_3: mean=0.8475, std=1.6420, MAD=1.2095
-2026-05-18 13:03:34 [info     ]   feat_4: mean=0.7886, std=1.5675, MAD=1.1310
-2026-05-18 13:03:34 [info     ]
+2026-05-20 09:26:01 [info     ]   feat_0: mean=0.8137, std=1.6804, MAD=1.2405
+2026-05-20 09:26:01 [info     ]   feat_1: mean=-0.2313, std=1.9461, MAD=1.4023
+2026-05-20 09:26:01 [info     ]   feat_2: mean=1.0819, std=2.0994, MAD=1.4588
+2026-05-20 09:26:01 [info     ]   feat_3: mean=0.8475, std=1.6420, MAD=1.2095
+2026-05-20 09:26:01 [info     ]   feat_4: mean=0.7886, std=1.5675, MAD=1.1310
+2026-05-20 09:26:01 [info     ]
 CORRELATIONS:
-2026-05-18 13:03:34 [info     ]   Average Inter-Site Correlation: 0.9485
-2026-05-18 13:03:34 [info     ] ============================================================
+2026-05-20 09:26:01 [info     ]   Average Inter-Site Correlation: 0.9485
+2026-05-20 09:26:01 [info     ] ============================================================
 </pre></div>
 </div>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Same plot individual points overlay</span>
@@ -562,7 +562,7 @@ CORRELATIONS:
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_05-plot_multisite_data_characterization_001.png" srcset="../../_images/sphx_glr_05-plot_multisite_data_characterization_001.png" alt="All Features by Site (with individual points)" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 3.870 seconds)</p>
+<img src="../../_images/sphx_glr_05-plot_multisite_data_characterization_001.png" srcset="../../_images/sphx_glr_05-plot_multisite_data_characterization_001.png" alt="All Features by Site (with individual points)" class = "sphx-glr-single-img"/><p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 3.292 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-01-basic-examples-05-plot-multisite-data-characterization-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/30a8bbcd9d9ca67a3b9b879d55ae60f9/05-plot_multisite_data_characterization.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">05-plot_multisite_data_characterization.ipynb</span></code></a></p>

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Load ON-Harmony dataset &#8212; uniharmony 0.0.4.dev9 documentation</title>
+    <title>Explore ON-Harmony features &#8212; uniharmony 0.0.4.dev16 documentation</title>
   
   
   
@@ -44,18 +44,18 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=4e82bc9d"></script>
+    <script src="../../_static/documentation_options.js?v=c2dc913f"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'auto_examples/02-multisite-data/04-run_load_on_harmony';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'auto_examples/02-multisite-data/05-explore_onharmony_features';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Load MAREoS dataset" href="02-run_load_mareos.html" />
-    <link rel="prev" title="Multisite Data" href="../../examples/multisite_data/index.html" />
+    <link rel="next" title="Generate imbalance multisite data" href="03-plot_generate_imbalance_multisite_data.html" />
+    <link rel="prev" title="Load MAREoS dataset" href="02-run_load_mareos.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.4.dev9 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.4.dev16 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -150,7 +150,6 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../utilities/index.html">🛠️ Utilities</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../utilities/simulate_multisite_data.html">Multisite Data Simulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../utilities/load_mareos_datasets.html">MAREoS Benchmark Datasets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../utilities/load_onharmony_dataset.html">ON-Harmony Dataset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../utilities/datalad_integration.html">Datalad Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../utilities/report_metric_by_site.html">Site-Stratified Metrics</a></li>
 </ul>
@@ -196,8 +195,9 @@
 </ul>
 </details></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../../examples/multisite_data/index.html">Multisite Data</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Load ON-Harmony dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="04-run_download_on_harmony.html">Download ON-Harmony dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="02-run_load_mareos.html">Load MAREoS dataset</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Explore ON-Harmony features</a></li>
 <li class="toctree-l3"><a class="reference internal" href="03-plot_generate_imbalance_multisite_data.html">Generate imbalance multisite data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="01-plot_generate_multisite_data.html">Multisite data generation</a></li>
 </ul>
@@ -334,7 +334,7 @@
       
       
       
-      <li><a href="../../_sources/auto_examples/02-multisite-data/04-run_load_on_harmony.rst" target="_blank"
+      <li><a href="../../_sources/auto_examples/02-multisite-data/05-explore_onharmony_features.rst" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -410,7 +410,7 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Load ON-Harmony dataset</h1>
+    <h1>Explore ON-Harmony features</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -421,8 +421,6 @@
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-dataset">Load dataset</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clean-up">Clean up</a></li>
 </ul>
             </nav>
         </div>
@@ -436,76 +434,88 @@
                   
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p><a class="reference internal" href="#sphx-glr-download-auto-examples-02-multisite-data-04-run-load-on-harmony-py"><span class="std std-ref">Go to the end</span></a>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-02-multisite-data-05-explore-onharmony-features-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code.</p>
 </div>
-<section class="sphx-glr-example-title" id="load-on-harmony-dataset">
-<span id="sphx-glr-auto-examples-02-multisite-data-04-run-load-on-harmony-py"></span><h1>Load ON-Harmony dataset<a class="headerlink" href="#load-on-harmony-dataset" title="Link to this heading">#</a></h1>
+<section class="sphx-glr-example-title" id="explore-on-harmony-features">
+<span id="sphx-glr-auto-examples-02-multisite-data-05-explore-onharmony-features-py"></span><h1>Explore ON-Harmony features<a class="headerlink" href="#explore-on-harmony-features" title="Link to this heading">#</a></h1>
 <section id="imports">
 <h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony</span><span class="w"> </span><span class="kn">import</span> <span class="n">verbosity</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">clean_tmp</span><span class="p">,</span> <span class="n">load_ONharmony</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 
-
-<span class="n">verbosity</span><span class="p">(</span><span class="s2">&quot;debug&quot;</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_onharmony_structural_features</span>
 </pre></div>
 </div>
-</section>
-<section id="load-dataset">
-<h2>Load dataset<a class="headerlink" href="#load-dataset" title="Link to this heading">#</a></h2>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">load_ONharmony</span><span class="p">(</span>
-    <span class="n">subjects</span><span class="o">=</span><span class="s2">&quot;16981&quot;</span><span class="p">,</span>
-    <span class="n">sessions</span><span class="o">=</span><span class="s2">&quot;NOT4GEP001&quot;</span><span class="p">,</span>
-    <span class="n">modalities</span><span class="o">=</span><span class="s2">&quot;anat&quot;</span><span class="p">,</span>
-    <span class="n">suffixes</span><span class="o">=</span><span class="s2">&quot;T1w&quot;</span><span class="p">,</span>
-    <span class="n">extensions</span><span class="o">=</span><span class="s2">&quot;.json&quot;</span><span class="p">,</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">load_onharmony_structural_features</span><span class="p">()</span>
+<span class="c1"># Plot some of the columns</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">40</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data have shape: f</span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">40</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">subject_col</span> <span class="o">=</span> <span class="s2">&quot;subject&quot;</span>
+<span class="n">scanner_col</span> <span class="o">=</span> <span class="s2">&quot;scanner_code&quot;</span>
+<span class="n">feature_name</span> <span class="o">=</span> <span class="s2">&quot;T1_GM_parcellation_L_Front_Pole_vol&quot;</span>
+
+<span class="c1"># Filter for the specific feature</span>
+<span class="n">feature_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="n">subject_col</span><span class="p">,</span> <span class="n">scanner_col</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+<span class="c1"># Pivot to get subjects as rows, scanners as columns</span>
+<span class="c1"># The values come from the column that actually contains the numerical data</span>
+<span class="n">pivot_df</span> <span class="o">=</span> <span class="n">feature_df</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span>
+    <span class="n">index</span><span class="o">=</span><span class="n">subject_col</span><span class="p">,</span>
+    <span class="n">columns</span><span class="o">=</span><span class="n">scanner_col</span><span class="p">,</span>
+    <span class="n">values</span><span class="o">=</span><span class="n">feature_name</span>
 <span class="p">)</span>
+
+<span class="c1"># Compute differences between all scanner pairs</span>
+<span class="n">scanners</span> <span class="o">=</span> <span class="n">pivot_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+<span class="n">n_scanners</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">scanners</span><span class="p">)</span>
+
+<span class="c1"># Initialize difference matrix (scanner x scanner)</span>
+<span class="n">diff_matrix</span> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/dev/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span></a><span class="p">(</span>
+    <a href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html#numpy.zeros" title="numpy.zeros" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">zeros</span></a><span class="p">((</span><span class="n">n_scanners</span><span class="p">,</span> <span class="n">n_scanners</span><span class="p">)),</span>
+    <span class="n">index</span><span class="o">=</span><span class="n">scanners</span><span class="p">,</span>
+    <span class="n">columns</span><span class="o">=</span><span class="n">scanners</span>
+<span class="p">)</span>
+
+<span class="c1"># Fill with average absolute differences for each pair</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">scanners</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">s2</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">scanners</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span>
+            <span class="n">diff</span> <span class="o">=</span> <span class="n">pivot_df</span><span class="p">[</span><span class="n">s1</span><span class="p">]</span> <span class="o">-</span> <span class="n">pivot_df</span><span class="p">[</span><span class="n">s2</span><span class="p">]</span>
+            <span class="n">diff_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">diff</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="c1"># Plot heatmap</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span>
+    <span class="n">diff_matrix</span><span class="p">,</span>
+    <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;vlag&quot;</span><span class="p">,</span>
+    <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;.3f&quot;</span><span class="p">,</span>
+    <span class="n">square</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="n">cbar_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Mean Difference&quot;</span><span class="p">}</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scanner Differences for Feature: </span><span class="si">{</span><span class="n">feature_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-05-18 13:04:33 [debug    ] Validating arguments
-2026-05-18 13:04:33 [info     ] Visible dataset directory ready at /home/runner/work/UniHarmony/UniHarmony/examples/02-multisite-data/ON-Harmony
-2026-05-18 13:04:33 [debug    ] Hidden dataset path prepared: /tmp/datalad_cache
-2026-05-18 13:04:33 [debug    ] Using hidden folder at /tmp/datalad_cache
-2026-05-18 13:04:33 [debug    ] Source URL: https://github.com/OpenNeuroDatasets/ds004712.git
-2026-05-18 13:04:33 [info     ] Cloning DataLad dataset...
-[INFO] Attempting a clone into /tmp/datalad_cache
-[INFO] Attempting to clone from https://github.com/OpenNeuroDatasets/ds004712.git to /tmp/datalad_cache
-[INFO] Start enumerating objects
-[INFO] Start counting objects
-[INFO] Start compressing objects
-[INFO] Start receiving objects
-[INFO] Start resolving deltas
-[INFO] Completed clone attempts for Dataset(/tmp/datalad_cache)
-[INFO] Remote origin not usable by git-annex; setting annex-ignore
-[INFO] https://github.com/OpenNeuroDatasets/ds004712.git/config download failed: Not Found
-2026-05-18 13:04:38 [info     ] DataLad dataset cloned successfully
-2026-05-18 13:04:38 [info     ] Getting: sub-16981/ses-NOT4GEP001/anat/sub-16981_ses-NOT4GEP001_T1w.json
-2026-05-18 13:04:38 [info     ] Copied derivative files to target directory.
-2026-05-18 13:04:38 [info     ] Getting: participants.tsv
-2026-05-18 13:04:38 [info     ] Copied root files to target directory.
-</pre></div>
-</div>
-</section>
-<section id="clean-up">
-<h2>Clean up<a class="headerlink" href="#clean-up" title="Link to this heading">#</a></h2>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Later, clean up the temporary cache</span>
-<span class="n">clean_tmp</span><span class="p">(</span><span class="s2">&quot;datalad_cache&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-05-18 13:04:38 [info     ] Removing temporary files: /tmp/datalad_cache
-2026-05-18 13:04:39 [info     ] Temporary cache removed successfully.
-</pre></div>
-</div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 6.593 seconds)</p>
-<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-02-multisite-data-04-run-load-on-harmony-py">
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-02-multisite-data-05-explore-onharmony-features-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/4dfdc7a1d6d3cb565998e170b26a1c47/04-run_load_on_harmony.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">04-run_load_on_harmony.ipynb</span></code></a></p>
+<p><a class="reference download internal" download="" href="../../_downloads/f565b8436350c7372b50dab8c5c2e7bc/05-explore_onharmony_features.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">05-explore_onharmony_features.ipynb</span></code></a></p>
 </div>
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/0d8377112a1d20923def66103b66e5ac/04-run_load_on_harmony.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">04-run_load_on_harmony.py</span></code></a></p>
+<p><a class="reference download internal" download="" href="../../_downloads/d92f6ae42afa0914a419e789dfbd95bc/05-explore_onharmony_features.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">05-explore_onharmony_features.py</span></code></a></p>
 </div>
 <div class="sphx-glr-download sphx-glr-download-zip docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/8df7e056b8583cb1b8b6a4859f987c99/04-run_load_on_harmony.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">04-run_load_on_harmony.zip</span></code></a></p>
+<p><a class="reference download internal" download="" href="../../_downloads/55052e0f7107efaa023ec43b752d0231/05-explore_onharmony_features.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">05-explore_onharmony_features.zip</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -524,20 +534,20 @@ to download the full example code.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../../examples/multisite_data/index.html"
+       href="02-run_load_mareos.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Multisite Data</p>
+        <p class="prev-next-title">Load MAREoS dataset</p>
       </div>
     </a>
     <a class="right-next"
-       href="02-run_load_mareos.html"
+       href="03-plot_generate_imbalance_multisite_data.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Load MAREoS dataset</p>
+        <p class="prev-next-title">Generate imbalance multisite data</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -560,8 +570,6 @@ to download the full example code.</p>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#load-dataset">Load dataset</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#clean-up">Clean up</a></li>
 </ul>
   </nav></div>
 

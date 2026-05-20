@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Multisite Data &#8212; uniharmony 0.0.4.dev9 documentation</title>
+    <title>Multisite Data &#8212; uniharmony 0.0.4.dev16 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=4e82bc9d"></script>
+    <script src="../../_static/documentation_options.js?v=c2dc913f"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -54,7 +54,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'examples/multisite_data/index';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Load ON-Harmony dataset" href="../../auto_examples/02-multisite-data/04-run_load_on_harmony.html" />
+    <link rel="next" title="Download ON-Harmony dataset" href="../../auto_examples/02-multisite-data/04-run_download_on_harmony.html" />
     <link rel="prev" title="Impact of Effects of Site in ML" href="../../auto_examples/01-basic-examples/01-plot_eos_in_ml.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.4.dev9 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.4.dev16 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -150,7 +150,6 @@
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../utilities/index.html">🛠️ Utilities</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../utilities/simulate_multisite_data.html">Multisite Data Simulation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../utilities/load_mareos_datasets.html">MAREoS Benchmark Datasets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../utilities/load_onharmony_dataset.html">ON-Harmony Dataset</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../utilities/datalad_integration.html">Datalad Integration</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../utilities/report_metric_by_site.html">Site-Stratified Metrics</a></li>
 </ul>
@@ -196,8 +195,9 @@
 </ul>
 </details></li>
 <li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">Multisite Data</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/04-run_load_on_harmony.html">Load ON-Harmony dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/04-run_download_on_harmony.html">Download ON-Harmony dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/02-run_load_mareos.html">Load MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/05-explore_onharmony_features.html">Explore ON-Harmony features</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/03-plot_generate_imbalance_multisite_data.html">Generate imbalance multisite data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/01-plot_generate_multisite_data.html">Multisite data generation</a></li>
 </ul>
@@ -424,12 +424,15 @@
                   
   <section id="multisite-data">
 <span id="sphx-glr-auto-examples-02-multisite-data"></span><h1>Multisite Data<a class="headerlink" href="#multisite-data" title="Link to this heading">#</a></h1>
-<div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Load ON-Harmony dataset"><img alt="" src="../../_images/sphx_glr_04-run_load_on_harmony_thumb.png" />
-<p><a class="reference internal" href="../../auto_examples/02-multisite-data/04-run_load_on_harmony.html"><span class="doc">Load ON-Harmony dataset</span></a></p>
-  <div class="sphx-glr-thumbnail-title">Load ON-Harmony dataset</div>
+<div id='sg-tag-list' class='sphx-glr-tag-list'></div><div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="Download ON-Harmony dataset"><img alt="" src="../../_images/sphx_glr_04-run_download_on_harmony_thumb.png" />
+<p><a class="reference internal" href="../../auto_examples/02-multisite-data/04-run_download_on_harmony.html"><span class="doc">Download ON-Harmony dataset</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Download ON-Harmony dataset</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="Load MAREoS dataset"><img alt="" src="../../_images/sphx_glr_02-run_load_mareos_thumb.png" />
 <p><a class="reference internal" href="../../auto_examples/02-multisite-data/02-run_load_mareos.html"><span class="doc">Load MAREoS dataset</span></a></p>
   <div class="sphx-glr-thumbnail-title">Load MAREoS dataset</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Explore ON-Harmony features"><img alt="" src="../../_images/sphx_glr_05-explore_onharmony_features_thumb.png" />
+<p><a class="reference internal" href="../../auto_examples/02-multisite-data/05-explore_onharmony_features.html"><span class="doc">Explore ON-Harmony features</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Explore ON-Harmony features</div>
 </div><div class="sphx-glr-thumbcontainer" tooltip="This example shows how to generate an unbalanced multisite dataset using the balance_per_site parameter of the make_multisite_classification function."><img alt="" src="../../_images/sphx_glr_03-plot_generate_imbalance_multisite_data_thumb.png" />
 <p><a class="reference internal" href="../../auto_examples/02-multisite-data/03-plot_generate_imbalance_multisite_data.html"><span class="doc">Generate imbalance multisite data</span></a></p>
   <div class="sphx-glr-thumbnail-title">Generate imbalance multisite data</div>
@@ -461,11 +464,11 @@
       </div>
     </a>
     <a class="right-next"
-       href="../../auto_examples/02-multisite-data/04-run_load_on_harmony.html"
+       href="../../auto_examples/02-multisite-data/04-run_download_on_harmony.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Load ON-Harmony dataset</p>
+        <p class="prev-next-title">Download ON-Harmony dataset</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
