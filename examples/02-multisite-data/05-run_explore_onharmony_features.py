@@ -1,8 +1,7 @@
 """
 Explore ON-Harmony features
-========================
+===========================
 """
-
 # %%
 # Imports
 # -------
@@ -10,26 +9,25 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 from uniharmony.datasets import load_onharmony_structural_features
 
 # %% Load data
 df = load_onharmony_structural_features()
 # Plot some of the columns
-print("="*40)
-print(f"Data have shape: f{df.shape}")
-print("="*40)
+print("="*80)
+print(f"Data have shape: {df.shape}")
+print("="*80)
 print(df.head())
-
 
 # %% Plot scanner differences aggregated by subject.
 subject_col = "subject"
 scanner_col = "scanner_code"
+
+# You can explore other features changing this name
 feature_name = "T1_GM_parcellation_L_Front_Pole_vol"
 
-# Filter for the specific feature
+# Filter for the needed features
 feature_df = df[[subject_col, scanner_col, feature_name]].copy()
 
 # Pivot to get subjects as rows, scanners as columns
@@ -71,3 +69,5 @@ sns.heatmap(
 plt.title(f"Scanner Differences for Feature: {feature_name}")
 plt.tight_layout()
 plt.show()
+
+# %%
