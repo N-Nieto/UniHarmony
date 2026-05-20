@@ -1,5 +1,5 @@
 (load-onharmony-dataset)=
-# ON-Harmony Dataset
+# Download ON-Harmony Dataset
 
 ## Overview
 
@@ -10,15 +10,9 @@ The ON-Harmony dataset (~58 GB) contains:
 - **5 modalities**: T1w, T2w, SWI, dMRI, rfMRI
 - Defaced anatomical images with defacing masks
 
+# Note: This function downloads the *raw* files, we may need to extract the desired features with another tool.
+
 ## Usage
-
-```python
-from uniharmony.datasets import load_ONharmony
-
-datasets = load_ONharmony()
-```
-
-## Examples
 
 ### Download all files for a subject and a session
 
@@ -33,7 +27,6 @@ load_ONharmony(
     suffixes="all",
     extensions="all",
     target_path="./ON-Harmony",
-    dataset_source_URL="https://github.com/OpenNeuroDatasets/ds004712.git", # This is also the default
     root_files=[],  # Passing an empty list to not get any file
     hidden=True,
     copy=True,
@@ -108,7 +101,7 @@ load_ONharmony(
 
 ### Working with ON-Harmony Session Names
 
-The ON-Harmony dataset uses session codes that encode scanner information:
+The ON-Harmony dataset uses session codes that encode scanner information, for example:
 
 | Session Code | Scanner | Site |
 |-------------|---------|------|

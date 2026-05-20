@@ -1,4 +1,4 @@
 Original Authors
 ================
-* Nicolás Nieto <nnieto@sinc.unl.edu.ar>
+* Nicolás Nieto <n.nieto@fz-juelich.de>
 * Synchon Mandal <synchon@protonmail.com>
