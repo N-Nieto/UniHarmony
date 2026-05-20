@@ -6,15 +6,17 @@ from uniharmony.datasets import download_ONharmony
 
 
 @pytest.mark.parametrize(
-    "subjects, sessions, modalities, suffixes, extensions, copy, force_download",
+    "subjects, sessions, modalities, suffixes, extensions, copy, force_download, root_files, hidden",
     [
-        ("16981", "NOT4GEP001", "anat", "T2w", ".json", False, True),
-        ("all", "NOT4GEP001", "anat", "T1w", ".json", False, True),
-        ("16981", "all", "anat", "T1w", ".json", False, False),
-        ("16981", "all", "all", "T1w", ".json", False, False),
+        ("16981", "NOT4GEP001", "anat", "T2w", ".json", False, True, "participants.tsv", True),
+        ("all", "NOT4GEP001", "anat", "T1w", ".json", False, True, "all", False),
+        ("16981", "all", "anat", "T1w", ".json", False, False, "all", False),
+        ("16981", "all", "all", "T1w", ".json", False, False, "all", False),
     ],
 )
-def test_load_onharmony_success(subjects, sessions, modalities, suffixes, extensions, copy, force_download) -> None:
+def test_load_onharmony_success(
+    subjects, sessions, modalities, suffixes, extensions, copy, force_download, root_files, hidden
+) -> None:
     """Test basic functionality."""
     download_ONharmony(
         subjects=subjects,
@@ -24,4 +26,6 @@ def test_load_onharmony_success(subjects, sessions, modalities, suffixes, extens
         extensions=extensions,
         copy=copy,
         force_download=force_download,
+        root_files=root_files,
+        hidden=hidden,
     )
