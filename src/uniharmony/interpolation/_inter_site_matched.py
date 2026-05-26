@@ -44,7 +44,7 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
     The alpha parameter controls how close the synthetic sample is to the base or target site, allowing a flexible interpolation.
 
     By matching the samples with similar target values and covariates across sites,
-    ISMI creates synthetic samples that mantains the the underlying data distribution while reducing site-specific biases.
+    ISMI creates synthetic samples that maintains the the underlying data distribution while reducing site-specific biases.
 
     Parameters
     ----------
@@ -87,7 +87,7 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
           this produces ``n*(n-1)/2`` pairs.
         - ``"base_to_others"``: Use each site as base once against all other
           sites combined. This mode only works with k="average",
-          as the avergage of all matches for all sites is used as target sample.
+          as the average of all matches for all sites is used as target sample.
 
     concatenate : bool, optional (default True)
         If ``True``, the output dataset includes both original and synthetic samples.
@@ -130,8 +130,8 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
 
     Matches are determined in the following priority order:
 
-    1. **Target value**: Must match exacly for categorical variables
-                         or within ``target_tolerance`` if target is a contunuous variable.
+    1. **Target value**: Must match exactly for categorical variables
+                         or within ``target_tolerance`` if target is a continuous variable.
     2. **Categorical covariates**: Exact match required, checked in column
        order (first column must match, then second, etc.)
     3. **Continuous covariates**: Must be within ``covariate_tolerance`` for each column
@@ -153,12 +153,12 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
     >>> # Define covariates for matching
     >>> categorical_covariate = np.array([["M"], ["F"]] * 75)  # Sex
     >>> continuous_covariate = rng.randint(20, 80, (150, 1))  # Age
-    >>> tolerance = np.array([5.0])  # ±5 years tolerance
+    >>> covariate_tolerance = np.array([5.0])  # ±5 years tolerance
     >>>
     >>> # Create interpolator with pairwise mode and k=2 matches
     >>> ismi = InterSiteMatchedInterpolation(
     ...     alpha=(0.2, 0.4),
-    ...     tolerance=tolerance,
+    ...     covariate_tolerance=covariate_tolerance,
     ...     k=2,
     ...     mode="pairwise",
     ...     random_state=42,
@@ -273,7 +273,7 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
             Continuous covariates used for matching after categorical
             matching (e.g., age, education years). Matches must be within
             ``tolerance`` for each column.
-        allow_nan : bool, default=None
+        allow_nan : bool, default=False
             If allow continuos and categorical covariates to present NaN or not
 
         Returns
