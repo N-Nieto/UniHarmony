@@ -39,7 +39,7 @@ sns.set_theme(style="whitegrid")
 #
 
 # Generate base dataset
-X, y, sites = make_multisite_classification(n_samples=600, n_features=2, n_classes=2, n_sites=3, balance_per_site=[0.2, 0.5, 0.8])
+X, y, sites = make_multisite_classification(n_samples=600, n_features=2, n_classes=2, n_sites=3, balance_per_site=[0.2, 0.5, 0.8], signal_type="blobs")
 
 # Simulate site-specific age and sex covariates for matching
 site_names = np.unique(sites)
@@ -162,3 +162,5 @@ plt.tight_layout()
 #
 # For real neuroimaging data, ISMI can help reduce site-related confounds while
 # presaging biological signals relevant to the target variable.
+
+# %%
