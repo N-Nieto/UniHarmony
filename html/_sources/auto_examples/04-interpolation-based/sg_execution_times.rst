@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:05.125** total execution time for 4 files **from auto_examples/04-interpolation-based**:
+**00:05.413** total execution time for 4 files **from auto_examples/04-interpolation-based**:
 
 .. container::
 
@@ -32,15 +32,15 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_auto_examples_04-interpolation-based_03-plot_ismi_binary_classification.py` (``03-plot_ismi_binary_classification.py``)
-     - 00:01.625
-     - 0.0
    * - :ref:`sphx_glr_auto_examples_04-interpolation-based_02-plot_isi_multiclass_classification.py` (``02-plot_isi_multiclass_classification.py``)
-     - 00:01.612
+     - 00:01.762
      - 0.0
    * - :ref:`sphx_glr_auto_examples_04-interpolation-based_04-plot_isi_advance_usage.py` (``04-plot_isi_advance_usage.py``)
-     - 00:01.227
+     - 00:01.586
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_04-interpolation-based_03-plot_ismi_binary_classification.py` (``03-plot_ismi_binary_classification.py``)
+     - 00:01.492
      - 0.0
    * - :ref:`sphx_glr_auto_examples_04-interpolation-based_01-plot_isi_binary_classification.py` (``01-plot_isi_binary_classification.py``)
-     - 00:00.661
+     - 00:00.572
      - 0.0

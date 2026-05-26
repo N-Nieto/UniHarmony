@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Compute metrics by site &#8212; uniharmony 0.0.4.dev16 documentation</title>
+    <title>Compute metrics by site &#8212; uniharmony 0.0.4.dev19 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=c2dc913f"></script>
+    <script src="../../_static/documentation_options.js?v=887a10c1"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.4.dev16 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.4.dev19 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -491,8 +491,8 @@ to download the full example code.</p>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Overall bACC: </span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">metrics</span></a><span class="p">[</span><span class="s1">&#39;balanced_accuracy_score&#39;</span><span class="p">][</span><span class="s1">&#39;overall&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Overall bACC: 0.6769814719505919
-Overall bACC: 0.6769814719505919
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Overall bACC: 0.6568081428845784
+Overall bACC: 0.6568081428845784
 </pre></div>
 </div>
 <p>If requested, the function also computes the overall performance and stores it as another entry in the dictionary.</p>
@@ -525,13 +525,13 @@ Overall bACC: 0.6769814719505919
 <span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">metrics</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;accuracy_score&#39;: {&#39;overall&#39;: 0.332, 0: 0.3448275862068966, 1: 0.391304347826087, 2: 0.3103448275862069, 3: 0.20833333333333334, 4: 0.5454545454545454, 5: 0.3125, 6: 0.3125, 7: 0.3076923076923077, 8: 0.36, 9: 0.25}}
-{&#39;f1_score&#39;: {&#39;overall&#39;: 0.31704045410675435, 0: 0.2908622908622909, 1: 0.39015151515151514, 2: 0.2892156862745098, 3: 0.19576719576719576, 4: 0.5299145299145299, 5: 0.26666666666666666, 6: 0.2874493927125506, 7: 0.2909090909090909, 8: 0.358974358974359, 9: 0.25}}
-{&#39;roc_auc_score&#39;: {&#39;overall&#39;: 0.3342768914050438, 0: 0.30526315789473685, 1: 0.2803030303030303, 2: 0.29047619047619044, 3: 0.2857142857142857, 4: 0.5416666666666667, 5: 0.30833333333333335, 6: 0.40625, 7: 0.30718954248366015, 8: 0.5208333333333334, 9: 0.17482517482517482}, &#39;accuracy_score&#39;: {&#39;overall&#39;: 0.332, 0: 0.3448275862068966, 1: 0.391304347826087, 2: 0.3103448275862069, 3: 0.20833333333333334, 4: 0.5454545454545454, 5: 0.3125, 6: 0.3125, 7: 0.3076923076923077, 8: 0.36, 9: 0.25}}
-{&#39;accuracy_score&#39;: {&#39;overall&#39;: 0.332, 0: 0.3448275862068966, 1: 0.391304347826087, 2: 0.3103448275862069, 3: 0.20833333333333334, 4: 0.5454545454545454, 5: 0.3125, 6: 0.3125, 7: 0.3076923076923077, 8: 0.36, 9: 0.25}, &#39;roc_auc_score&#39;: {&#39;overall&#39;: 0.3342768914050438, 0: 0.30526315789473685, 1: 0.2803030303030303, 2: 0.29047619047619044, 3: 0.2857142857142857, 4: 0.5416666666666667, 5: 0.30833333333333335, 6: 0.40625, 7: 0.30718954248366015, 8: 0.5208333333333334, 9: 0.17482517482517482}}
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;accuracy_score&#39;: {&#39;overall&#39;: 0.344, 0: 0.2857142857142857, 1: 0.17391304347826086, 2: 0.41935483870967744, 3: 0.5, 4: 0.25, 5: 0.52, 6: 0.32142857142857145, 7: 0.3157894736842105, 8: 0.3076923076923077, 9: 0.3333333333333333}}
+{&#39;f1_score&#39;: {&#39;overall&#39;: 0.3419363122752953, 0: 0.2708333333333333, 1: 0.17391304347826086, 2: 0.41386554621848737, 3: 0.4905263157894737, 4: 0.2285714285714286, 5: 0.5, 6: 0.3135483870967742, 7: 0.3081232492997199, 8: 0.26875, 9: 0.32867132867132864}}
+{&#39;roc_auc_score&#39;: {&#39;overall&#39;: 0.33877472632994043, 0: 0.3826530612244898, 1: 0.1742424242424242, 2: 0.4831932773109244, 3: 0.45833333333333337, 4: 0.2666666666666667, 5: 0.5808823529411764, 6: 0.21875, 7: 0.2, 8: 0.33749999999999997, 9: 0.2152777777777778}, &#39;accuracy_score&#39;: {&#39;overall&#39;: 0.344, 0: 0.2857142857142857, 1: 0.17391304347826086, 2: 0.41935483870967744, 3: 0.5, 4: 0.25, 5: 0.52, 6: 0.32142857142857145, 7: 0.3157894736842105, 8: 0.3076923076923077, 9: 0.3333333333333333}}
+{&#39;accuracy_score&#39;: {&#39;overall&#39;: 0.344, 0: 0.2857142857142857, 1: 0.17391304347826086, 2: 0.41935483870967744, 3: 0.5, 4: 0.25, 5: 0.52, 6: 0.32142857142857145, 7: 0.3157894736842105, 8: 0.3076923076923077, 9: 0.3333333333333333}, &#39;roc_auc_score&#39;: {&#39;overall&#39;: 0.33877472632994043, 0: 0.3826530612244898, 1: 0.1742424242424242, 2: 0.4831932773109244, 3: 0.45833333333333337, 4: 0.2666666666666667, 5: 0.5808823529411764, 6: 0.21875, 7: 0.2, 8: 0.33749999999999997, 9: 0.2152777777777778}}
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.757 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.045 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-01-basic-examples-02-run-metrics-by-site-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/93f983d114af13a54849dc50a1e3ef51/02-run_metrics_by_site.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">02-run_metrics_by_site.ipynb</span></code></a></p>

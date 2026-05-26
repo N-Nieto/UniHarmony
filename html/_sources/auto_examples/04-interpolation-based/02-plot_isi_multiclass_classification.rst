@@ -91,7 +91,7 @@ Data generation
 
  .. code-block:: none
 
-    2026-05-20 09:48:55 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
+    2026-05-26 09:16:33 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
 
 
 
@@ -153,7 +153,7 @@ Plotting
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.612 seconds)
+   **Total running time of the script:** (0 minutes 1.762 seconds)
 
 
 .. _sphx_glr_download_auto_examples_04-interpolation-based_02-plot_isi_multiclass_classification.py:

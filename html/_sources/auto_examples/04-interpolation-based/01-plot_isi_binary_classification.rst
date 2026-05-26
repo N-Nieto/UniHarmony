@@ -149,7 +149,7 @@ Plotting
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.661 seconds)
+   **Total running time of the script:** (0 minutes 0.572 seconds)
 
 
 .. _sphx_glr_download_auto_examples_04-interpolation-based_01-plot_isi_binary_classification.py:
