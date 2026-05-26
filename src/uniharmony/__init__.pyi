@@ -1,4 +1,5 @@
 __all__ = [
+    "__version__",
     "combat",
     "datasets",
     "dl",
@@ -13,3 +14,4 @@ __all__ = [
 
 from . import combat, datasets, dl, interpolation, metrics, normative, plot, prettyharmonize
 from ._verbose import verbosity, verbosity_context
+from ._version import __version__
