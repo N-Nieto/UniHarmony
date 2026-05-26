@@ -1,4 +1,4 @@
-"""ComBat methods."""
+"""ComBat-based methods."""
 
 import lazy_loader as lazy
 
