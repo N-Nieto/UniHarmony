@@ -28,7 +28,7 @@ def make_multisite_classification(
     n_features: int = 10,
     n_classes: int = 2,
     balance_per_site: list[float] | list[list[float]] | None = None,
-    signal_type: Literal["linear", "circular", "moons", "blobs", "gaussian_quantiles"] = "linear",
+    signal_type: str | Literal["linear", "circular", "moons", "blobs", "gaussian_quantiles"] = "linear",
     signal_strength: float = 1.0,
     noise_strength: list[float] | float = 0.1,
     site_effect_type: Literal["location", "scale", "location+scale"] = "location",
@@ -50,31 +50,43 @@ def make_multisite_classification(
     ----------
     n_classes : int, optional (default 2)
         Number of classes to simulate (2 for binary, >2 for multi-class).
+
     n_sites : int, optional (default 2)
         Number of sites to simulate.
+
     n_samples : int | list[int], optional (default 1000)
         If an int is provided, total number of samples across all sites.
         If a list is provided, N for each site, must have the same len as n_sites.
+
     balance_per_site : list of float, list of list of float or None, optional (default None)
         Class balance for each site. If None, uses balanced classes (0.5 for
         binary, equal distribution for multi-class).
+
     n_features : int, optional (default 10)
         Number of features per sample.
+
     signal_type : str, optional (default "linear")
         Which type of signal to generate the base problem.
+
     signal_strength : list of float or float, optional (default 1.0)
         Strength of the signal component separating classes. Passed as 'class_sep` to ``sklearn.datasets.make_classification`.
+
     noise_strength : list of float or float, optional (default 0.1)
         Strength of the noise component by site. If one component is passed, all sites has the same noise_strength.
+
     site_effect_type : str, optional (default "location")
         Type of site effect to add to the original data. Options: "location", "scale", "location+scale".
+
     site_effect_strength : float, optional (default 3.0)
         Strength of site-specific effects.
+
     site_effect_homogeneous : bool, optional (default True)
         Whether the site effect is homogeneous (same for all samples in a site).
+
     random_state : int or RandomState instance, (default 42)
         The seed of the pseudo random number generator or RandomState for
         reproducibility.
+
     kwargs : dict
         Additional keyword arguments passed to ``sklearn.datasets.make_classification``.
 
@@ -559,21 +571,24 @@ def _generate_site_effect_component(
 
     """
     n_features = X.shape[1]
-
-    if site_effect_type.lower() in ["location", "l"]:
-        site_effect = _site_effect_value(site_effect_strength, site_effect_homogeneous, n_features, random_state)
-        # Add site component to the signal
-        X = X + site_effect
-    elif site_effect_type.lower() in ["scale", "s"]:
-        site_effect = _site_effect_value(site_effect_strength, site_effect_homogeneous, n_features, random_state)
-        # Add site component to the signal
-        X = X * site_effect
-    elif site_effect_type.lower() in ["location+scale", "l+s"]:
-        site_effect_location = _site_effect_value(site_effect_strength, site_effect_homogeneous, n_features, random_state)
-        site_effect_scale = _site_effect_value(site_effect_strength, site_effect_homogeneous, n_features, random_state)
-        X = (X + site_effect_location) * (site_effect_scale)
+    if site_effect_strength == 0:
+        logger.debug("Site effect is 0, returning the same X and y")
+        return X, y
     else:
-        raise ValueError(f"Unsupported site_effect_type: {site_effect_type}")
+        if site_effect_type.lower() in ["location", "l"]:
+            site_effect = _site_effect_value(site_effect_strength, site_effect_homogeneous, n_features, random_state)
+            # Add site component to the signal
+            X = X + site_effect
+        elif site_effect_type.lower() in ["scale", "s"]:
+            site_effect = _site_effect_value(site_effect_strength, site_effect_homogeneous, n_features, random_state)
+            # Add site component to the signal
+            X = X * site_effect
+        elif site_effect_type.lower() in ["location+scale", "l+s"]:
+            site_effect_location = _site_effect_value(site_effect_strength, site_effect_homogeneous, n_features, random_state)
+            site_effect_scale = _site_effect_value(site_effect_strength, site_effect_homogeneous, n_features, random_state)
+            X = (X + site_effect_location) * (site_effect_scale)
+        else:
+            raise ValueError(f"Unsupported site_effect_type: {site_effect_type}")
 
     return X, y
 
