@@ -1,11 +1,14 @@
 """Provide function to configure logging."""
 
 from contextlib import contextmanager
+from typing import Literal
 
 import structlog
 
 
 __all__ = ["verbosity", "verbosity_context"]
+
+MIN_LEVEL = Literal["critical", "error", "warning", "info", "debug"]
 
 
 def verbosity(min_level="info") -> None:
