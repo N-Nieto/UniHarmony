@@ -2,7 +2,7 @@
 
 import logging
 from dataclasses import dataclass, field
-from typing import Literal, get_args
+from typing import Literal, cast, get_args
 
 import numpy as np
 
@@ -182,7 +182,7 @@ class Covariate:
 
 
 def make_covariate_site_distributions(
-    locs: list[float],
+    locs: list[float] | None = None,
     scales: list[float] | float = 1.0,
     clips: list[tuple[float, float] | None] | tuple[float, float] | None = None,
     probs: list[list[float]] | list[float] | None = None,
@@ -229,7 +229,17 @@ def make_covariate_site_distributions(
     45.0
 
     """
-    n = len(locs)
+    logger.debug(f"locs: {locs} and probs: {probs}")
+
+    # Determine number of sites
+    if locs is not None:
+        n = len(locs)
+    elif probs is not None and probs:
+        n = len(probs)
+    else:
+        raise ValueError(
+            "When using a single probability vector, you must provide 'locs' (with None values) to specify the number of sites."
+        )
 
     # Broadcast scales
     scales_list: list[float] = [float(scales)] * n if isinstance(scales, (int, float)) else list(scales)
@@ -253,7 +263,9 @@ def make_covariate_site_distributions(
         probs_list = list(probs)
     if len(probs_list) != n:
         raise ValueError(f"'probs' has {len(probs_list)} entries but 'locs' has {n}.")
-
+    # Broadcast None
+    if locs is None:
+        locs: list = [None] * n
     return [
         CovariateSiteDistribution(loc=locs[i], scale=scales_list[i], probs=probs_list[i], clip=clips_list[i]) for i in range(n)
     ]
@@ -314,7 +326,9 @@ def _make_preset_covariate(
 
     if name.lower() == "sex":
         # Equally distributed sex
-        dists = [CovariateSiteDistribution(probs=[0.5, 0.5])]
+        dists = make_covariate_site_distributions(
+            probs=[cast("list[float]", [0.5, 0.5])] * n_sites,
+        )
         return Covariate(
             name="sex",
             site_distributions=dists,
