@@ -12,7 +12,7 @@ logger = structlog.get_logger()
 =======
 import logging
 from dataclasses import dataclass, field
-from typing import Literal, get_args
+from typing import Literal, cast, get_args
 
 import numpy as np
 
