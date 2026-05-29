@@ -686,7 +686,7 @@ def test_site_effect_strength_validation(site_effect_strength, n_sites):
     """Test site_effect_strength options and validations."""
     _, _, _ = make_multisite_classification(
         n_sites=n_sites,
-        n_samples=20,
+        n_samples=200,
         n_features=10,
         n_classes=2,
         site_effect_strength=site_effect_strength,
@@ -701,7 +701,7 @@ def test_site_effect_strength_validation(site_effect_strength, n_sites):
 )
 def test_noise_strength_validation(noise_strength, n_sites):
     """Test noise_strength options and validations."""
-    _, _, _ = make_multisite_classification(n_sites=n_sites, n_samples=20, noise_strength=noise_strength)
+    _, _, _ = make_multisite_classification(n_sites=n_sites, n_samples=100, noise_strength=noise_strength)
 
 
 def test_noise_strength_invalid():
