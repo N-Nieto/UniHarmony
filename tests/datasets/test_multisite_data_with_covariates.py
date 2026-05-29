@@ -356,8 +356,9 @@ def test_make_covariates_site_idx_selects_correct_distribution():
 def test_apply_site_effect_shape_preserved(effect_type):
     """Test."""
     X = np.ones((50, 8))
-    X_out = _apply_site_effect(
+    X_out, _ = _apply_site_effect(
         X=X,
+        y=X,
         site_effect_type=effect_type,
         site_effect_strength=1.0,
         site_effect_homogeneous=True,
@@ -370,8 +371,10 @@ def test_apply_site_effect_shape_preserved(effect_type):
 def test_apply_site_effect_modifies_data(effect_type):
     """Test."""
     X = np.ones((50, 8))
-    X_out = _apply_site_effect(
+    y = np.ones((50, 8))
+    X_out, _ = _apply_site_effect(
         X=X,
+        y=y,
         site_effect_type=effect_type,
         site_effect_strength=5.0,
         site_effect_homogeneous=True,
@@ -383,8 +386,9 @@ def test_apply_site_effect_modifies_data(effect_type):
 def test_apply_site_effect_location_shifts_mean():
     """Test."""
     X = np.zeros((200, 5))
-    X_out = _apply_site_effect(
+    X_out, _ = _apply_site_effect(
         X=X,
+        y=np.ones((500, 8)),
         site_effect_type="location",
         site_effect_strength=3.0,
         site_effect_homogeneous=True,
@@ -398,8 +402,9 @@ def test_apply_site_effect_heterogeneous_has_within_site_variance():
     """Test."""
     X = np.zeros((500, 5))
 
-    X_out = _apply_site_effect(
+    X_out, _ = _apply_site_effect(
         X=X,
+        y=np.ones((500, 8)),
         site_effect_type="location",
         site_effect_strength=3.0,
         site_effect_homogeneous=False,
@@ -414,6 +419,7 @@ def test_apply_site_effect_unknown_type_raises():
     with pytest.raises(ValueError, match="Unsupported site_effect_type"):
         _apply_site_effect(
             X=np.ones((10, 4)),
+            y=np.ones((500, 8)),
             site_effect_type="rotate",
             site_effect_strength=1.0,
             site_effect_homogeneous=True,
@@ -427,6 +433,7 @@ def test_apply_site_effect_does_not_mutate_input() -> None:
     X_copy = X.copy()
     _apply_site_effect(
         X=X,
+        y=np.ones((500, 8)),
         site_effect_type="location",
         site_effect_strength=3.0,
         site_effect_homogeneous=True,
