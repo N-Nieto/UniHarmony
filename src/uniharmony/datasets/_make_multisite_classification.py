@@ -25,6 +25,9 @@ SIGNAL_TYPES = Literal["linear", "circular", "moons", "blobs", "gaussian_quantil
 # Currently available EoS signal types
 SITE_EFFECT_TYPES = Literal["location", "scale", "location+scale", "variance", "nonlinear", "dropout"]
 
+# Preset covariates
+PRESET_COVARS = Literal["age", "sex", "quality"]
+
 ReturnType = (
     tuple[np.ndarray, np.ndarray, np.ndarray]  # covariates None / return_base_data False
     | tuple[np.ndarray, np.ndarray, np.ndarray, dict[str, np.ndarray]]  # covariates not None / return_base_data False
@@ -130,7 +133,7 @@ def make_multisite_classification(
     site_effect_type: str | SITE_EFFECT_TYPES = "location",
     site_effect_strength: list[float] | float = 3.0,
     site_effect_homogeneous: bool = True,
-    covariates: list[Covariate | str] | None = None,
+    covariates: list[Covariate | str] | PRESET_COVARS | None = None,
     return_base_data: bool = False,
     random_state: int | np.random.RandomState = 42,
     **kwargs,
