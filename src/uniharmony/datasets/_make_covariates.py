@@ -1,13 +1,13 @@
 """Multisite classification dataset generator with covariate support."""
 
-import logging
 from dataclasses import dataclass, field
 from typing import Literal, cast, get_args
 
 import numpy as np
+import structlog
 
 
-logger = logging.getLogger()
+logger = structlog.get_logger()
 
 
 __all__ = ["Covariate", "CovariateSiteDistribution", "_make_covariate", "_resolve_covariates"]
