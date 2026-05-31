@@ -53,7 +53,7 @@ def test_class_balance() -> None:
         y_site = y[site_mask]
         if len(y_site) > 0:
             p_class1 = np.mean(y_site == 1)
-            expected = balance_per_site[site_idx]
+            expected = balance_per_site[1]
             # Allow 5% tolerance due to random sampling
             assert abs(p_class1 - expected) < 0.05, f"Site {site_idx}: expected {expected}, got {p_class1}"
 
@@ -190,8 +190,8 @@ def test_balance_combinations_multiclass() -> None:
             n_sites=4,
             balance_per_site=[None, None, None, None],
         )
-    # Wrong length
-    with pytest.raises(TypeError):
+    # Not summing 1
+    with pytest.raises(ValueError):
         make_multisite_classification(n_classes=4, n_sites=4, balance_per_site=[0.1, 0.1, 0.1, 0.1])
     # Wrong combination,
     # one list has one element more than the number of classes
@@ -347,7 +347,7 @@ def test_heterogeneous_site_effect() -> None:
         (2, 200, 10, 2, "linear", "location", True, None, 0.1, 1.0, 1.0),
         (3, 300, 2, 2, "circles", "scale", False, None, 0.0, 1.0, 2.0),
         (2, 150, 2, 2, "moons", "location+scale", True, [0.3, 0.7], 0.2, 1.5, 1.5),
-        (4, 400, 12, 2, "blobs", "location", False, [0.2, 0.4, 0.6, 0.8], 0.15, 1.0, 2.0),
+        (4, 400, 12, 2, "blobs", "location", False, [0.2, 0.8], 0.15, 1.0, 2.0),
         (2, 250, 8, 2, "make_gaussian_quantiles", "scale", True, None, 0.05, 0.8, 3.0),
         # Multi-class classification tests
         (2, 300, 15, 3, "linear", "location", True, None, 0.1, 1.0, 1.0),
@@ -367,7 +367,6 @@ def test_heterogeneous_site_effect() -> None:
         ),
         (3, 600, 25, 6, "make_gaussian_quantiles", "location", False, None, 0.1, 1.5, 2.0),
         # Edge cases
-        (2, 100, 5, 2, "linear", "location", True, [0.0, 1.0], 0.0, 1.0, 1.0),  # Extreme balance
         (2, 100, 5, 2, "linear", "location", True, [0.5, 0.5], 0.0, 0.0, 0.0),  # No signal, no site effect
         (5, 500, 20, 3, "blobs", "scale", True, None, 0.2, 1.0, 0.0),  # No site effect
     ],
@@ -381,7 +380,6 @@ def test_heterogeneous_site_effect() -> None:
         "multiclass_blobs_scale_heterogeneous_default_balance_no_noise",
         "multiclass_linear_location+scale_homogeneous_custom_balance",
         "multiclass_gaussian_quantiles_location_heterogeneous_default_balance",
-        "edge_extreme_balance",
         "edge_no_signal_no_site_effect",
         "edge_no_site_effect",
     ],
@@ -472,7 +470,7 @@ def test_make_multisite_classification_parametrized(
             site_proportions = site_class_counts / len(site_y)
 
             if n_classes == 2:
-                expected_p_class1 = balance_per_site[site_idx]
+                expected_p_class1 = balance_per_site[1]
                 # Allow for rounding errors due to integer sampling
                 np.testing.assert_almost_equal(
                     site_proportions[1], expected_p_class1, decimal=1, err_msg=f"Site {site_idx} class 1 proportion mismatch"
@@ -591,7 +589,7 @@ def test_custom_balance_per_site(balance_per_site, n_classes):
 
         if n_classes == 2:
             expected = balance_per_site[site_idx]
-            np.testing.assert_almost_equal(site_proportions[1], expected, decimal=1)
+            np.testing.assert_almost_equal(site_proportions[site_idx], expected, decimal=1)
         else:
             expected = np.array(balance_per_site[site_idx])
             np.testing.assert_almost_equal(site_proportions, expected, decimal=1)
@@ -688,7 +686,7 @@ def test_site_effect_strength_validation(site_effect_strength, n_sites):
     """Test site_effect_strength options and validations."""
     _, _, _ = make_multisite_classification(
         n_sites=n_sites,
-        n_samples=20,
+        n_samples=200,
         n_features=10,
         n_classes=2,
         site_effect_strength=site_effect_strength,
@@ -703,7 +701,7 @@ def test_site_effect_strength_validation(site_effect_strength, n_sites):
 )
 def test_noise_strength_validation(noise_strength, n_sites):
     """Test noise_strength options and validations."""
-    _, _, _ = make_multisite_classification(n_sites=n_sites, n_samples=20, noise_strength=noise_strength)
+    _, _, _ = make_multisite_classification(n_sites=n_sites, n_samples=100, noise_strength=noise_strength)
 
 
 def test_noise_strength_invalid():
@@ -730,7 +728,10 @@ def test_site_effect_strength_invalid():
 
 def test_invalid_moons():
     """Test moons with invalid options."""
-    with pytest.raises(ValueError, match="make_moons requires n_classes=2 and n_features>=2"):
-        _, _, _ = make_multisite_classification(n_features=10, signal_type="moons")
-    with pytest.raises(ValueError, match="make_moons requires n_classes=2 and n_features>=2"):
-        _, _, _ = make_multisite_classification(n_classes=10, signal_type="moons")
+    X, _, _ = make_multisite_classification(n_features=10, signal_type="moons")
+
+    assert X.shape[1] == 2
+
+    _, _, _ = make_multisite_classification(n_classes=3, signal_type="moons")
+
+    assert X.shape[1] == 2

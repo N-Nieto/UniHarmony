@@ -1,5 +1,5 @@
 """
-Characterise a multisite problem
+Characterize a multisite problem
 ================================
 """
 
