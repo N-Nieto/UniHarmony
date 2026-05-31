@@ -1,6 +1,5 @@
 """Multisite classification dataset generator with covariate support."""
 
-<<<<<<< HEAD
 from dataclasses import dataclass, field
 from typing import Literal, cast, get_args
 
@@ -9,16 +8,6 @@ import structlog
 
 
 logger = structlog.get_logger()
-=======
-import logging
-from dataclasses import dataclass, field
-from typing import Literal, cast, get_args
-
-import numpy as np
-
-
-logger = logging.getLogger()
->>>>>>> 184e0b72 (refactor: make_multisite_classification with covariates)
 
 
 __all__ = ["Covariate", "CovariateSiteDistribution", "_make_covariate", "_resolve_covariates"]
