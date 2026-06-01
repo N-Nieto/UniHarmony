@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Download ON-Harmony dataset &#8212; uniharmony 0.0.4.dev19 documentation</title>
+    <title>Download ON-Harmony dataset &#8212; uniharmony 0.0.4.dev45 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=887a10c1"></script>
+    <script src="../../_static/documentation_options.js?v=e392c62f"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -54,7 +54,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'auto_examples/02-multisite-data/04-run_download_on_harmony';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Load MAREoS dataset" href="02-run_load_mareos.html" />
+    <link rel="next" title="Multisite data generation with covariates" href="06-plot_simulate_multisite_data_with_covariates.html" />
     <link rel="prev" title="Multisite Data" href="../../examples/multisite_data/index.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.4.dev19 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.4.dev45 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -186,7 +186,7 @@
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../../examples/index.html">🎛️ Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/basic/index.html">Basic examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/05-plot_multisite_data_characterization.html">Characterise a multisite problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/05-plot_multisite_data_characterization.html">Characterize a multisite problem</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/04-plot_eos_with_dimensionality_reduction.html">Explore EoS with dimensionality reduction techniques</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/02-run_metrics_by_site.html">Compute metrics by site</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/06-plot_mareos_with_tsne.html">Characterise a multisite problem with MAREoS</a></li>
@@ -196,8 +196,10 @@
 </details></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../../examples/multisite_data/index.html">Multisite Data</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">Download ON-Harmony dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="06-plot_simulate_multisite_data_with_covariates.html">Multisite data generation with covariates</a></li>
 <li class="toctree-l3"><a class="reference internal" href="02-run_load_mareos.html">Load MAREoS dataset</a></li>
-<li class="toctree-l3"><a class="reference internal" href="05-explore_onharmony_features.html">Explore ON-Harmony features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="07-plot_simulate_multisite_data_with_costume_covariates.html">Multisite data generation with covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="05-run_explore_onharmony_features.html">Explore ON-Harmony features</a></li>
 <li class="toctree-l3"><a class="reference internal" href="03-plot_generate_imbalance_multisite_data.html">Generate imbalance multisite data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="01-plot_generate_multisite_data.html">Multisite data generation</a></li>
 </ul>
@@ -213,6 +215,7 @@
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/interpolation/index.html">Interpolation Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/01-plot_isi_binary_classification.html">Binary classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/05-run_ismi_covariate_example.html">Using Inter-Site Matched Interpolation (ISMI) with matching covariates</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/04-plot_isi_advance_usage.html">IntraSiteInterpolation advance usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/02-plot_isi_multiclass_classification.html">Multiclass classification using ISI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/03-plot_ismi_binary_classification.html">Multisite Harmonization using Inter-Site Matched Interpolation (ISMI)</a></li>
@@ -462,12 +465,12 @@ to download the full example code.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-05-26 08:54:14 [debug    ] Validating arguments
-2026-05-26 08:54:14 [info     ] Visible dataset directory ready at /home/runner/work/UniHarmony/UniHarmony/examples/02-multisite-data/ON-Harmony
-2026-05-26 08:54:14 [debug    ] Hidden dataset path prepared: /tmp/datalad_cache
-2026-05-26 08:54:14 [debug    ] Using hidden folder at /tmp/datalad_cache
-2026-05-26 08:54:14 [debug    ] Source URL: https://github.com/OpenNeuroDatasets/ds004712.git
-2026-05-26 08:54:14 [info     ] Cloning DataLad dataset...
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-06-01 17:27:31 [debug    ] Validating arguments
+2026-06-01 17:27:31 [info     ] Visible dataset directory ready at /home/runner/work/UniHarmony/UniHarmony/examples/02-multisite-data/ON-Harmony
+2026-06-01 17:27:31 [debug    ] Hidden dataset path prepared: /tmp/datalad_cache
+2026-06-01 17:27:31 [debug    ] Using hidden folder at /tmp/datalad_cache
+2026-06-01 17:27:31 [debug    ] Source URL: https://github.com/OpenNeuroDatasets/ds004712.git
+2026-06-01 17:27:31 [info     ] Cloning DataLad dataset...
 [INFO] Attempting a clone into /tmp/datalad_cache
 [INFO] Attempting to clone from https://github.com/OpenNeuroDatasets/ds004712.git to /tmp/datalad_cache
 [INFO] Start enumerating objects
@@ -478,11 +481,11 @@ to download the full example code.</p>
 [INFO] Completed clone attempts for Dataset(/tmp/datalad_cache)
 [INFO] Remote origin not usable by git-annex; setting annex-ignore
 [INFO] https://github.com/OpenNeuroDatasets/ds004712.git/config download failed: Not Found
-2026-05-26 08:54:19 [info     ] DataLad dataset cloned successfully
-2026-05-26 08:54:19 [info     ] Getting: sub-16981/ses-NOT4GEP001/anat/sub-16981_ses-NOT4GEP001_T1w.json
-2026-05-26 08:54:19 [info     ] Copied derivative files to target directory.
-2026-05-26 08:54:19 [info     ] Getting: participants.tsv
-2026-05-26 08:54:19 [info     ] Copied root files to target directory.
+2026-06-01 17:27:36 [info     ] DataLad dataset cloned successfully
+2026-06-01 17:27:36 [info     ] Getting: sub-16981/ses-NOT4GEP001/anat/sub-16981_ses-NOT4GEP001_T1w.json
+2026-06-01 17:27:36 [info     ] Copied derivative files to target directory.
+2026-06-01 17:27:36 [info     ] Getting: participants.tsv
+2026-06-01 17:27:36 [info     ] Copied root files to target directory.
 </pre></div>
 </div>
 </section>
@@ -492,11 +495,11 @@ to download the full example code.</p>
 <span class="n">clean_tmp</span><span class="p">(</span><span class="s2">&quot;datalad_cache&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-05-26 08:54:19 [info     ] Removing temporary files: /tmp/datalad_cache
-2026-05-26 08:54:20 [info     ] Temporary cache removed successfully.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-06-01 17:27:36 [info     ] Removing temporary files: /tmp/datalad_cache
+2026-06-01 17:27:37 [info     ] Temporary cache removed successfully.
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 5.934 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 6.903 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-02-multisite-data-04-run-download-on-harmony-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/24276ea6b35c15c20358990cb256b802/04-run_download_on_harmony.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">04-run_download_on_harmony.ipynb</span></code></a></p>
@@ -533,11 +536,11 @@ to download the full example code.</p>
       </div>
     </a>
     <a class="right-next"
-       href="02-run_load_mareos.html"
+       href="06-plot_simulate_multisite_data_with_covariates.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Load MAREoS dataset</p>
+        <p class="prev-next-title">Multisite data generation with covariates</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

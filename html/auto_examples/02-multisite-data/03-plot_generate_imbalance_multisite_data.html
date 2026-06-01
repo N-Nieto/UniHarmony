@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Generate imbalance multisite data &#8212; uniharmony 0.0.4.dev19 documentation</title>
+    <title>Generate imbalance multisite data &#8212; uniharmony 0.0.4.dev45 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=887a10c1"></script>
+    <script src="../../_static/documentation_options.js?v=e392c62f"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -55,7 +55,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Multisite data generation" href="01-plot_generate_multisite_data.html" />
-    <link rel="prev" title="Explore ON-Harmony features" href="05-explore_onharmony_features.html" />
+    <link rel="prev" title="Explore ON-Harmony features" href="05-run_explore_onharmony_features.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.4.dev19 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.4.dev45 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -186,7 +186,7 @@
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../../examples/index.html">🎛️ Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/basic/index.html">Basic examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/05-plot_multisite_data_characterization.html">Characterise a multisite problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/05-plot_multisite_data_characterization.html">Characterize a multisite problem</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/04-plot_eos_with_dimensionality_reduction.html">Explore EoS with dimensionality reduction techniques</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/02-run_metrics_by_site.html">Compute metrics by site</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/06-plot_mareos_with_tsne.html">Characterise a multisite problem with MAREoS</a></li>
@@ -196,8 +196,10 @@
 </details></li>
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../../examples/multisite_data/index.html">Multisite Data</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="04-run_download_on_harmony.html">Download ON-Harmony dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="06-plot_simulate_multisite_data_with_covariates.html">Multisite data generation with covariates</a></li>
 <li class="toctree-l3"><a class="reference internal" href="02-run_load_mareos.html">Load MAREoS dataset</a></li>
-<li class="toctree-l3"><a class="reference internal" href="05-explore_onharmony_features.html">Explore ON-Harmony features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="07-plot_simulate_multisite_data_with_costume_covariates.html">Multisite data generation with covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="05-run_explore_onharmony_features.html">Explore ON-Harmony features</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">Generate imbalance multisite data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="01-plot_generate_multisite_data.html">Multisite data generation</a></li>
 </ul>
@@ -213,6 +215,7 @@
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/interpolation/index.html">Interpolation Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/01-plot_isi_binary_classification.html">Binary classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/05-run_ismi_covariate_example.html">Using Inter-Site Matched Interpolation (ISMI) with matching covariates</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/04-plot_isi_advance_usage.html">IntraSiteInterpolation advance usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/02-plot_isi_multiclass_classification.html">Multiclass classification using ISI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/03-plot_ismi_binary_classification.html">Multisite Harmonization using Inter-Site Matched Interpolation (ISMI)</a></li>
@@ -511,12 +514,12 @@ site 1 balance: 0.50
 </pre></div>
 </div>
 <img src="../../_images/sphx_glr_03-plot_generate_imbalance_multisite_data_002.png" srcset="../../_images/sphx_glr_03-plot_generate_imbalance_multisite_data_002.png" alt="Class and site distribution" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The class distribution is imbalanced across sites but balanced in general
-General balance: 0.50
-site 0 balance: 0.30
+General balance: 0.70
+site 0 balance: 0.70
 site 1 balance: 0.70
 </pre></div>
 </div>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sites</span></a> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span><span class="n">balance_per_site</span><span class="o">=</span><span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">])</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sites</span></a> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span><span class="n">balance_per_site</span><span class="o">=</span><span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">])</span>
 <a href="https://pandas.pydata.org/pandas-docs/dev/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">df</span></a> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/dev/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class"><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span></a><span class="p">({</span><span class="s2">&quot;Class&quot;</span><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <span class="s2">&quot;Site&quot;</span><span class="p">:</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sites</span></a><span class="p">})</span>
 <a href="https://docs.python.org/3/library/functions.html#float" title="builtins.float" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">general_balance</span></a> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">[</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a> <span class="o">==</span> <span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">)</span>
 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y_site_0</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">[</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sites</span></a> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
@@ -537,15 +540,13 @@ site 1 balance: 0.70
 <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s2">&quot;y&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s2">&quot;--&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_03-plot_generate_imbalance_multisite_data_003.png" srcset="../../_images/sphx_glr_03-plot_generate_imbalance_multisite_data_003.png" alt="Class and site distribution" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-05-26 08:54:15 [warning  ] Not enough samples of class 0 in global dataset. Requested 350, available 330. Consider adjusting balance_per_site or generating more samples.
-2026-05-26 08:54:15 [warning  ] Not enough samples of class 0 in global dataset. Requested 350, available 330. Consider adjusting balance_per_site or generating more samples.
-The class are imbalanced in general, but have the same imbalance across sites
-General balance: 0.30
-site 0 balance: 0.30
-site 1 balance: 0.30
+<img src="../../_images/sphx_glr_03-plot_generate_imbalance_multisite_data_003.png" srcset="../../_images/sphx_glr_03-plot_generate_imbalance_multisite_data_003.png" alt="Class and site distribution" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>The class are imbalanced in general, but have the same imbalance across sites
+General balance: 0.70
+site 0 balance: 0.70
+site 1 balance: 0.70
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.351 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.649 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-02-multisite-data-03-plot-generate-imbalance-multisite-data-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/b3794d25cd57c6688dde35788d98f58f/03-plot_generate_imbalance_multisite_data.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">03-plot_generate_imbalance_multisite_data.ipynb</span></code></a></p>
@@ -573,7 +574,7 @@ site 1 balance: 0.30
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="05-explore_onharmony_features.html"
+       href="05-run_explore_onharmony_features.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">

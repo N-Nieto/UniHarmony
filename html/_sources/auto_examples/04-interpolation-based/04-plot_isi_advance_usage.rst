@@ -53,26 +53,28 @@ Global Maximum Balancing
 
  .. code-block:: none
 
-    2026-05-26 09:16:33 [info     ] Overall class balance across sites: [np.float64(0.5), np.float64(0.5)]
-    2026-05-26 09:16:33 [debug    ] Total Samples to generate 1000
-    2026-05-26 09:16:33 [debug    ] Total Samples to generate per site [500 500]
-    2026-05-26 09:16:33 [info     ] For site 0
-    2026-05-26 09:16:33 [info     ] Generating 500 samples
-    2026-05-26 09:16:33 [debug    ] Balance 0.3 for site 0
-    2026-05-26 09:16:33 [debug    ] Site 0, site effect strength [3.0, 3.0]
-    2026-05-26 09:16:33 [info     ] For site 1
-    2026-05-26 09:16:33 [info     ] Generating 500 samples
-    2026-05-26 09:16:33 [debug    ] Balance 0.7 for site 1
-    2026-05-26 09:16:33 [debug    ] Site 1, site effect strength [3.0, 3.0]
-    2026-05-26 09:16:33 [info     ] Generated 1000 samples across 2 sites
-    2026-05-26 09:16:33 [info     ] Class distribution: [500 500]
-    2026-05-26 09:16:33 [info     ] Site distribution: [500 500]
-    2026-05-26 09:16:33 [info     ] [ISI] Starting fit_resample
-    2026-05-26 09:16:33 [debug    ] [ISI] N target for global_max strategy = 350
-    2026-05-26 09:16:33 [info     ] [ISI] Processing site 0
-    2026-05-26 09:16:33 [debug    ] [ISI] For site 0, N target for per_site strategy = 350
-    2026-05-26 09:16:33 [info     ] [ISI] Processing site 1
-    2026-05-26 09:16:33 [debug    ] [ISI] For site 1, N target for per_site strategy = 350
+    2026-06-01 17:50:53 [debug    ] Total Samples to generate 1000
+    2026-06-01 17:50:53 [debug    ] Total Samples to generate per site [500 500]
+    2026-06-01 17:50:53 [debug    ] Using the same balance_per_site for all sites.
+    2026-06-01 17:50:53 [info     ] `balance_per_site` is: [[0.3, 0.7], [0.3, 0.7]]
+    2026-06-01 17:50:53 [info     ] Overall class balance across sites: [0.3 0.7]
+    2026-06-01 17:50:53 [info     ] For site 0
+    2026-06-01 17:50:53 [info     ] Generating 500 samples
+    2026-06-01 17:50:53 [debug    ] Balance [0.3, 0.7] for site 0
+    2026-06-01 17:50:53 [debug    ] Site 0, site effect strength [3.0, 3.0]
+    2026-06-01 17:50:53 [info     ] For site 1
+    2026-06-01 17:50:53 [info     ] Generating 500 samples
+    2026-06-01 17:50:53 [debug    ] Balance [0.3, 0.7] for site 1
+    2026-06-01 17:50:53 [debug    ] Site 1, site effect strength [3.0, 3.0]
+    2026-06-01 17:50:53 [info     ] Generated 1000 samples across 2 sites
+    2026-06-01 17:50:53 [info     ] Class distribution: [300 700]
+    2026-06-01 17:50:53 [info     ] Site distribution: [500 500]
+    2026-06-01 17:50:53 [info     ] [ISI] Starting fit_resample
+    2026-06-01 17:50:53 [debug    ] [ISI] N target for global_max strategy = 350
+    2026-06-01 17:50:53 [info     ] [ISI] Processing site 0
+    2026-06-01 17:50:53 [debug    ] [ISI] For site 0, N target for per_site strategy = 350
+    2026-06-01 17:50:53 [info     ] [ISI] Processing site 1
+    2026-06-01 17:50:53 [debug    ] [ISI] For site 1, N target for per_site strategy = 350
     Global target count: 350
 
 
@@ -86,7 +88,7 @@ Covariates
 Stratified Interpolation with Covariates
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-43
+.. GENERATED FROM PYTHON SOURCE LINES 30-44
 
 .. code-block:: Python
 
@@ -107,32 +109,35 @@ Stratified Interpolation with Covariates
 
 
 
+
 .. rst-class:: sphx-glr-script-out
 
  .. code-block:: none
 
-    2026-05-26 09:16:33 [info     ] Overall class balance across sites: [np.float64(0.5), np.float64(0.5)]
-    2026-05-26 09:16:33 [debug    ] Total Samples to generate 1000
-    2026-05-26 09:16:33 [debug    ] Total Samples to generate per site [500 500]
-    2026-05-26 09:16:33 [info     ] For site 0
-    2026-05-26 09:16:33 [info     ] Generating 500 samples
-    2026-05-26 09:16:33 [debug    ] Balance 0.3 for site 0
-    2026-05-26 09:16:33 [debug    ] Site 0, site effect strength [3.0, 3.0]
-    2026-05-26 09:16:33 [info     ] For site 1
-    2026-05-26 09:16:33 [info     ] Generating 500 samples
-    2026-05-26 09:16:33 [debug    ] Balance 0.7 for site 1
-    2026-05-26 09:16:33 [debug    ] Site 1, site effect strength [3.0, 3.0]
-    2026-05-26 09:16:33 [info     ] Generated 1000 samples across 2 sites
-    2026-05-26 09:16:33 [info     ] Class distribution: [500 500]
-    2026-05-26 09:16:33 [info     ] Site distribution: [500 500]
-    2026-05-26 09:16:33 [info     ] [ISI] Starting fit_resample
-    2026-05-26 09:16:33 [debug    ] Using 1 categorical covariates
-    2026-05-26 09:16:33 [debug    ] No tolerance specified, using exact matching
-    2026-05-26 09:16:33 [debug    ] Using 1 continuous covariates with tolerance: [0.]
-    2026-05-26 09:16:33 [info     ] [ISI] Processing site 0
-    2026-05-26 09:16:33 [debug    ] [ISI] For site 0, N target for per_site strategy = 350
-    2026-05-26 09:16:33 [info     ] [ISI] Processing site 1
-    2026-05-26 09:16:33 [debug    ] [ISI] For site 1, N target for per_site strategy = 350
+    2026-06-01 17:50:54 [debug    ] Total Samples to generate 1000
+    2026-06-01 17:50:54 [debug    ] Total Samples to generate per site [500 500]
+    2026-06-01 17:50:54 [debug    ] Using the same balance_per_site for all sites.
+    2026-06-01 17:50:54 [info     ] `balance_per_site` is: [[0.3, 0.7], [0.3, 0.7]]
+    2026-06-01 17:50:54 [info     ] Overall class balance across sites: [0.3 0.7]
+    2026-06-01 17:50:54 [info     ] For site 0
+    2026-06-01 17:50:54 [info     ] Generating 500 samples
+    2026-06-01 17:50:54 [debug    ] Balance [0.3, 0.7] for site 0
+    2026-06-01 17:50:54 [debug    ] Site 0, site effect strength [3.0, 3.0]
+    2026-06-01 17:50:54 [info     ] For site 1
+    2026-06-01 17:50:54 [info     ] Generating 500 samples
+    2026-06-01 17:50:54 [debug    ] Balance [0.3, 0.7] for site 1
+    2026-06-01 17:50:54 [debug    ] Site 1, site effect strength [3.0, 3.0]
+    2026-06-01 17:50:54 [info     ] Generated 1000 samples across 2 sites
+    2026-06-01 17:50:54 [info     ] Class distribution: [300 700]
+    2026-06-01 17:50:54 [info     ] Site distribution: [500 500]
+    2026-06-01 17:50:54 [info     ] [ISI] Starting fit_resample
+    2026-06-01 17:50:54 [debug    ] Using 1 categorical covariates
+    2026-06-01 17:50:54 [debug    ] No tolerance specified, using exact matching
+    2026-06-01 17:50:54 [debug    ] Using 1 continuous covariates with tolerance: [0.]
+    2026-06-01 17:50:54 [info     ] [ISI] Processing site 0
+    2026-06-01 17:50:54 [debug    ] [ISI] For site 0, N target for per_site strategy = 350
+    2026-06-01 17:50:54 [info     ] [ISI] Processing site 1
+    2026-06-01 17:50:54 [debug    ] [ISI] For site 1, N target for per_site strategy = 350
 
 
 
@@ -140,7 +145,7 @@ Stratified Interpolation with Covariates
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.586 seconds)
+   **Total running time of the script:** (0 minutes 1.780 seconds)
 
 
 .. _sphx_glr_download_auto_examples_04-interpolation-based_04-plot_isi_advance_usage.py:

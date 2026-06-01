@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>InterSiteMatchedInterpolation &#8212; uniharmony 0.0.4.dev19 documentation</title>
+    <title>InterSiteMatchedInterpolation &#8212; uniharmony 0.0.4.dev45 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=887a10c1"></script>
+    <script src="../../_static/documentation_options.js?v=e392c62f"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.4.dev19 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.4.dev45 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -186,7 +186,7 @@
 </details></li>
 <li class="toctree-l1 has-children"><a class="reference internal" href="../../examples/index.html">🎛️ Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/basic/index.html">Basic examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/05-plot_multisite_data_characterization.html">Characterise a multisite problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/05-plot_multisite_data_characterization.html">Characterize a multisite problem</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/04-plot_eos_with_dimensionality_reduction.html">Explore EoS with dimensionality reduction techniques</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/02-run_metrics_by_site.html">Compute metrics by site</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/06-plot_mareos_with_tsne.html">Characterise a multisite problem with MAREoS</a></li>
@@ -196,8 +196,10 @@
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/multisite_data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/04-run_download_on_harmony.html">Download ON-Harmony dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/06-plot_simulate_multisite_data_with_covariates.html">Multisite data generation with covariates</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/02-run_load_mareos.html">Load MAREoS dataset</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/05-explore_onharmony_features.html">Explore ON-Harmony features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/07-plot_simulate_multisite_data_with_costume_covariates.html">Multisite data generation with covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/05-run_explore_onharmony_features.html">Explore ON-Harmony features</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/03-plot_generate_imbalance_multisite_data.html">Generate imbalance multisite data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/01-plot_generate_multisite_data.html">Multisite data generation</a></li>
 </ul>
@@ -213,6 +215,7 @@
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/interpolation/index.html">Interpolation Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/01-plot_isi_binary_classification.html">Binary classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/05-run_ismi_covariate_example.html">Using Inter-Site Matched Interpolation (ISMI) with matching covariates</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/04-plot_isi_advance_usage.html">IntraSiteInterpolation advance usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/02-plot_isi_multiclass_classification.html">Multiclass classification using ISI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/03-plot_ismi_binary_classification.html">Multisite Harmonization using Inter-Site Matched Interpolation (ISMI)</a></li>
@@ -453,7 +456,7 @@ categorical and continuous covariates.</p>
 A synthetic sample is generated by interpolating between the base and target samples using a randomly sampled alpha value.
 The alpha parameter controls how close the synthetic sample is to the base or target site, allowing a flexible interpolation.</p>
 <p>By matching the samples with similar target values and covariates across sites,
-ISMI creates synthetic samples that mantains the the underlying data distribution while reducing site-specific biases.</p>
+ISMI creates synthetic samples that maintains the the underlying data distribution while reducing site-specific biases.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><dl>
@@ -498,7 +501,7 @@ matched samples from the target site.</p></li>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">&quot;base_to_others&quot;</span></code>: Use each site as base once against all other
 sites combined. This mode only works with k=”average”,
-as the avergage of all matches for all sites is used as target sample.</p></li>
+as the average of all matches for all sites is used as target sample.</p></li>
 </ul>
 </dd>
 <dt><strong>concatenate</strong><span class="classifier">bool, optional (default True)</span></dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">True</span></code>, the output dataset includes both original and synthetic samples.
@@ -567,7 +570,7 @@ but avoids redundant matching operations.</p>
 <p>Matches are determined in the following priority order:</p>
 <ol class="arabic simple">
 <li><dl class="simple">
-<dt><strong>Target value</strong>: Must match exacly for categorical variables</dt><dd><p>or within <code class="docutils literal notranslate"><span class="pre">target_tolerance</span></code> if target is a contunuous variable.</p>
+<dt><strong>Target value</strong>: Must match exactly for categorical variables</dt><dd><p>or within <code class="docutils literal notranslate"><span class="pre">target_tolerance</span></code> if target is a continuous variable.</p>
 </dd>
 </dl>
 </li>
@@ -601,12 +604,12 @@ Springer Nature.
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Define covariates for matching</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">categorical_covariate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="s2">&quot;M&quot;</span><span class="p">],</span> <span class="p">[</span><span class="s2">&quot;F&quot;</span><span class="p">]]</span> <span class="o">*</span> <span class="mi">75</span><span class="p">)</span>  <span class="c1"># Sex</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">continuous_covariate</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>  <span class="c1"># Age</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="n">tolerance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.0</span><span class="p">])</span>  <span class="c1"># ±5 years tolerance</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">covariate_tolerance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">5.0</span><span class="p">])</span>  <span class="c1"># ±5 years tolerance</span>
 <span class="gp">&gt;&gt;&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="c1"># Create interpolator with pairwise mode and k=2 matches</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">ismi</span> <span class="o">=</span> <span class="n">InterSiteMatchedInterpolation</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="n">alpha</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">),</span>
-<span class="gp">... </span>    <span class="n">tolerance</span><span class="o">=</span><span class="n">tolerance</span><span class="p">,</span>
+<span class="gp">... </span>    <span class="n">covariate_tolerance</span><span class="o">=</span><span class="n">covariate_tolerance</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;pairwise&quot;</span><span class="p">,</span>
 <span class="gp">... </span>    <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>
@@ -648,7 +651,7 @@ column must match exactly, then the second, etc.</p>
 matching (e.g., age, education years). Matches must be within
 <code class="docutils literal notranslate"><span class="pre">tolerance</span></code> for each column.</p>
 </dd>
-<dt><strong>allow_nan</strong><span class="classifier">bool, default=None</span></dt><dd><p>If allow continuos and categorical covariates to present NaN or not</p>
+<dt><strong>allow_nan</strong><span class="classifier">bool, default=False</span></dt><dd><p>If allow continuos and categorical covariates to present NaN or not</p>
 </dd>
 </dl>
 </dd>
@@ -724,6 +727,9 @@ parameters and not others.</p>
 <div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="This notebook demonstrates the use of .InterSiteMatchedInterpolation for harmonizing multi-site neuroimaging data."><img alt="" src="../../_images/sphx_glr_03-plot_ismi_binary_classification_thumb.png" />
 <p><a class="reference internal" href="../../auto_examples/04-interpolation-based/03-plot_ismi_binary_classification.html"><span class="doc">Multisite Harmonization using Inter-Site Matched Interpolation (ISMI)</span></a></p>
   <div class="sphx-glr-thumbnail-title">Multisite Harmonization using Inter-Site Matched Interpolation (ISMI)</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="This notebook demonstrates the use of .InterSiteMatchedInterpolation for harmonizing multi-site data using matching covariates."><img alt="" src="../../_images/sphx_glr_05-run_ismi_covariate_example_thumb.png" />
+<p><a class="reference internal" href="../../auto_examples/04-interpolation-based/05-run_ismi_covariate_example.html"><span class="doc">Using Inter-Site Matched Interpolation (ISMI) with matching covariates</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Using Inter-Site Matched Interpolation (ISMI) with matching covariates</div>
 </div></div></section>
 </section>
 

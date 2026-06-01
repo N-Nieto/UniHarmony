@@ -12,12 +12,13 @@ import pandas as pd
 import seaborn as sns
 
 from uniharmony import verbosity
+verbosity("warning")
 from uniharmony.combat import NeuroComBat
 from uniharmony.datasets import make_multisite_classification
 
 
 sns.set_theme(style="whitegrid")
-verbosity("warning")
+
 
 
 # %%
@@ -103,3 +104,5 @@ print(df_harm["Feature2"].groupby(df_harm["Site"]).mean())
 # .. admonition:: Take-home message
 #
 #    As expected, NeuroComBat pushes the mean of the site distributions closer.
+
+# %%

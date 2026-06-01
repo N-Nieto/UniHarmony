@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Characterise a multisite problem with MAREoS &#8212; uniharmony 0.0.4.dev19 documentation</title>
+    <title>Characterise a multisite problem with MAREoS &#8212; uniharmony 0.0.4.dev45 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=887a10c1"></script>
+    <script src="../../_static/documentation_options.js?v=e392c62f"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.4.dev19 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.4.dev45 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -186,7 +186,7 @@
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../../examples/index.html">🎛️ Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../../examples/basic/index.html">Basic examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="05-plot_multisite_data_characterization.html">Characterise a multisite problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="05-plot_multisite_data_characterization.html">Characterize a multisite problem</a></li>
 <li class="toctree-l3"><a class="reference internal" href="04-plot_eos_with_dimensionality_reduction.html">Explore EoS with dimensionality reduction techniques</a></li>
 <li class="toctree-l3"><a class="reference internal" href="02-run_metrics_by_site.html">Compute metrics by site</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">Characterise a multisite problem with MAREoS</a></li>
@@ -196,8 +196,10 @@
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/multisite_data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/04-run_download_on_harmony.html">Download ON-Harmony dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/06-plot_simulate_multisite_data_with_covariates.html">Multisite data generation with covariates</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/02-run_load_mareos.html">Load MAREoS dataset</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/05-explore_onharmony_features.html">Explore ON-Harmony features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/07-plot_simulate_multisite_data_with_costume_covariates.html">Multisite data generation with covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/05-run_explore_onharmony_features.html">Explore ON-Harmony features</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/03-plot_generate_imbalance_multisite_data.html">Generate imbalance multisite data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/01-plot_generate_multisite_data.html">Multisite data generation</a></li>
 </ul>
@@ -213,6 +215,7 @@
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/interpolation/index.html">Interpolation Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/01-plot_isi_binary_classification.html">Binary classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/05-run_ismi_covariate_example.html">Using Inter-Site Matched Interpolation (ISMI) with matching covariates</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/04-plot_isi_advance_usage.html">IntraSiteInterpolation advance usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/02-plot_isi_multiclass_classification.html">Multiclass classification using ISI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/03-plot_ismi_binary_classification.html">Multisite Harmonization using Inter-Site Matched Interpolation (ISMI)</a></li>
@@ -470,15 +473,11 @@ to download the full example code.</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Downloading file &#39;public_datasets.zip&#39; from &#39;https://www.imardgroup.com/mareos-benchmark/public_datasets.zip&#39; to &#39;/home/runner/.cache/uniharmony&#39;.
 
   0%|                                              | 0.00/3.66M [00:00&lt;?, ?B/s]
-  1%|▎                                     | 32.8k/3.66M [00:00&lt;00:14, 256kB/s]
-  5%|█▊                                     | 169k/3.66M [00:00&lt;00:04, 721kB/s]
- 10%|███▉                                  | 377k/3.66M [00:00&lt;00:02, 1.12MB/s]
- 19%|███████▎                              | 705k/3.66M [00:00&lt;00:01, 1.66MB/s]
- 33%|████████████▎                        | 1.22M/3.66M [00:00&lt;00:00, 2.50MB/s]
- 55%|████████████████████▏                | 2.00M/3.66M [00:00&lt;00:00, 3.66MB/s]
- 88%|████████████████████████████████▋    | 3.24M/3.66M [00:00&lt;00:00, 5.56MB/s]
+  9%|███▎                                  | 321k/3.66M [00:00&lt;00:01, 2.81MB/s]
+ 26%|█████████▋                            | 940k/3.66M [00:00&lt;00:00, 4.62MB/s]
+ 79%|█████████████████████████████▏       | 2.89M/3.66M [00:00&lt;00:00, 11.1MB/s]
   0%|                                              | 0.00/3.66M [00:00&lt;?, ?B/s]
-100%|█████████████████████████████████████| 3.66M/3.66M [00:00&lt;00:00, 16.5GB/s]
+100%|█████████████████████████████████████| 3.66M/3.66M [00:00&lt;00:00, 15.0GB/s]
 Unzipping contents of &#39;/home/runner/.cache/uniharmony/public_datasets.zip&#39; to &#39;/home/runner/.cache/uniharmony/MAREoS&#39;
 dict_keys([&#39;eos_simple1&#39;, &#39;eos_simple2&#39;, &#39;eos_interaction1&#39;, &#39;eos_interaction2&#39;, &#39;true_simple1&#39;, &#39;true_simple2&#39;, &#39;true_interaction1&#39;, &#39;true_interaction2&#39;])
 </pre></div>
@@ -623,7 +622,7 @@ On the other hand, there is not a clear relationship between the sites nor the t
       dtype=object))
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 58.210 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 59.565 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-01-basic-examples-06-plot-mareos-with-tsne-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/bb774a40d56bbd32426af7abd5288551/06-plot_mareos_with_tsne.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">06-plot_mareos_with_tsne.ipynb</span></code></a></p>

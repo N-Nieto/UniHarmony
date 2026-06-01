@@ -19,7 +19,7 @@ Basic examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Characterise a multisite problem">
+    <div class="sphx-glr-thumbcontainer" tooltip="Characterize a multisite problem">
 
 .. only:: html
 
@@ -30,7 +30,7 @@ Basic examples
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">Characterise a multisite problem</div>
+      <div class="sphx-glr-thumbnail-title">Characterize a multisite problem</div>
     </div>
 
 
@@ -87,7 +87,7 @@ Basic examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="uniharmony allows you to stratify the performance metrics by site, unraveling hidden patterns. In this example, we will not simulate site effects.">
+    <div class="sphx-glr-thumbcontainer" tooltip="While dealing with multisite data, we need to be careful when reporting our metrics.">
 
 .. only:: html
 

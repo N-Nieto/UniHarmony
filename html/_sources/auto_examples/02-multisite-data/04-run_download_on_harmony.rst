@@ -72,12 +72,12 @@ Load dataset
 
  .. code-block:: none
 
-    2026-05-26 08:54:14 [debug    ] Validating arguments
-    2026-05-26 08:54:14 [info     ] Visible dataset directory ready at /home/runner/work/UniHarmony/UniHarmony/examples/02-multisite-data/ON-Harmony
-    2026-05-26 08:54:14 [debug    ] Hidden dataset path prepared: /tmp/datalad_cache
-    2026-05-26 08:54:14 [debug    ] Using hidden folder at /tmp/datalad_cache
-    2026-05-26 08:54:14 [debug    ] Source URL: https://github.com/OpenNeuroDatasets/ds004712.git
-    2026-05-26 08:54:14 [info     ] Cloning DataLad dataset...
+    2026-06-01 17:27:31 [debug    ] Validating arguments
+    2026-06-01 17:27:31 [info     ] Visible dataset directory ready at /home/runner/work/UniHarmony/UniHarmony/examples/02-multisite-data/ON-Harmony
+    2026-06-01 17:27:31 [debug    ] Hidden dataset path prepared: /tmp/datalad_cache
+    2026-06-01 17:27:31 [debug    ] Using hidden folder at /tmp/datalad_cache
+    2026-06-01 17:27:31 [debug    ] Source URL: https://github.com/OpenNeuroDatasets/ds004712.git
+    2026-06-01 17:27:31 [info     ] Cloning DataLad dataset...
     [INFO] Attempting a clone into /tmp/datalad_cache 
     [INFO] Attempting to clone from https://github.com/OpenNeuroDatasets/ds004712.git to /tmp/datalad_cache 
     [INFO] Start enumerating objects 
@@ -88,11 +88,11 @@ Load dataset
     [INFO] Completed clone attempts for Dataset(/tmp/datalad_cache) 
     [INFO] Remote origin not usable by git-annex; setting annex-ignore 
     [INFO] https://github.com/OpenNeuroDatasets/ds004712.git/config download failed: Not Found 
-    2026-05-26 08:54:19 [info     ] DataLad dataset cloned successfully
-    2026-05-26 08:54:19 [info     ] Getting: sub-16981/ses-NOT4GEP001/anat/sub-16981_ses-NOT4GEP001_T1w.json
-    2026-05-26 08:54:19 [info     ] Copied derivative files to target directory.
-    2026-05-26 08:54:19 [info     ] Getting: participants.tsv
-    2026-05-26 08:54:19 [info     ] Copied root files to target directory.
+    2026-06-01 17:27:36 [info     ] DataLad dataset cloned successfully
+    2026-06-01 17:27:36 [info     ] Getting: sub-16981/ses-NOT4GEP001/anat/sub-16981_ses-NOT4GEP001_T1w.json
+    2026-06-01 17:27:36 [info     ] Copied derivative files to target directory.
+    2026-06-01 17:27:36 [info     ] Getting: participants.tsv
+    2026-06-01 17:27:36 [info     ] Copied root files to target directory.
 
 
 
@@ -117,8 +117,8 @@ Clean up
 
  .. code-block:: none
 
-    2026-05-26 08:54:19 [info     ] Removing temporary files: /tmp/datalad_cache
-    2026-05-26 08:54:20 [info     ] Temporary cache removed successfully.
+    2026-06-01 17:27:36 [info     ] Removing temporary files: /tmp/datalad_cache
+    2026-06-01 17:27:37 [info     ] Temporary cache removed successfully.
 
 
 
@@ -126,7 +126,7 @@ Clean up
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 5.934 seconds)
+   **Total running time of the script:** (0 minutes 6.903 seconds)
 
 
 .. _sphx_glr_download_auto_examples_02-multisite-data_04-run_download_on_harmony.py:

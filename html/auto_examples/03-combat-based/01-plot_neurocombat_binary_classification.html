@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Binary classification with NeuroComBat &#8212; uniharmony 0.0.4.dev19 documentation</title>
+    <title>Binary classification with NeuroComBat &#8212; uniharmony 0.0.4.dev45 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=887a10c1"></script>
+    <script src="../../_static/documentation_options.js?v=e392c62f"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.4.dev19 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.4.dev45 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -186,7 +186,7 @@
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../../examples/index.html">🎛️ Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/basic/index.html">Basic examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/05-plot_multisite_data_characterization.html">Characterise a multisite problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/05-plot_multisite_data_characterization.html">Characterize a multisite problem</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/04-plot_eos_with_dimensionality_reduction.html">Explore EoS with dimensionality reduction techniques</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/02-run_metrics_by_site.html">Compute metrics by site</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/06-plot_mareos_with_tsne.html">Characterise a multisite problem with MAREoS</a></li>
@@ -196,8 +196,10 @@
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/multisite_data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/04-run_download_on_harmony.html">Download ON-Harmony dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/06-plot_simulate_multisite_data_with_covariates.html">Multisite data generation with covariates</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/02-run_load_mareos.html">Load MAREoS dataset</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/05-explore_onharmony_features.html">Explore ON-Harmony features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/07-plot_simulate_multisite_data_with_costume_covariates.html">Multisite data generation with covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/05-run_explore_onharmony_features.html">Explore ON-Harmony features</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/03-plot_generate_imbalance_multisite_data.html">Generate imbalance multisite data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/01-plot_generate_multisite_data.html">Multisite data generation</a></li>
 </ul>
@@ -213,6 +215,7 @@
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/interpolation/index.html">Interpolation Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/01-plot_isi_binary_classification.html">Binary classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/05-run_ismi_covariate_example.html">Using Inter-Site Matched Interpolation (ISMI) with matching covariates</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/04-plot_isi_advance_usage.html">IntraSiteInterpolation advance usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/02-plot_isi_multiclass_classification.html">Multiclass classification using ISI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/03-plot_ismi_binary_classification.html">Multisite Harmonization using Inter-Site Matched Interpolation (ISMI)</a></li>
@@ -449,12 +452,12 @@ to download the full example code.</p>
 <span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony</span><span class="w"> </span><span class="kn">import</span> <span class="n">verbosity</span>
+<span class="n">verbosity</span><span class="p">(</span><span class="s2">&quot;warning&quot;</span><span class="p">)</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.combat</span><span class="w"> </span><span class="kn">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.base.TransformerMixin.html#sklearn.base.TransformerMixin" title="sklearn.base.TransformerMixin" class="sphx-glr-backref-module-sklearn-base sphx-glr-backref-type-py-class"><span class="n">NeuroComBat</span></a>
 <span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_multisite_classification</span>
 
 
 <span class="n">sns</span><span class="o">.</span><span class="n">set_theme</span><span class="p">(</span><span class="n">style</span><span class="o">=</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
-<span class="n">verbosity</span><span class="p">(</span><span class="s2">&quot;warning&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -514,13 +517,13 @@ to download the full example code.</p>
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Feature means by site before harmonization:
 Site
-0    2.307783
-1    1.932366
+0    3.5893
+1    1.9373
 Name: Feature1, dtype: float64
 Feature means by site after harmonization:
 Site
-0    2.105410
-1    2.134838
+0    2.764697
+1    2.761969
 Name: Feature1, dtype: float64
 </pre></div>
 </div>
@@ -542,13 +545,13 @@ Name: Feature1, dtype: float64
 </div>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Feature means by site before harmonization:
 Site
-0    1.452908
-1    0.906348
+0    0.961429
+1    2.043736
 Name: Feature2, dtype: float64
 Feature means by site after harmonization:
 Site
-0    1.196567
-1    1.162718
+0    1.501011
+1    1.504188
 Name: Feature2, dtype: float64
 </pre></div>
 </div>
@@ -556,7 +559,7 @@ Name: Feature2, dtype: float64
 <p class="admonition-title">Take-home message</p>
 <p>As expected, NeuroComBat pushes the mean of the site distributions closer.</p>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.790 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.970 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-03-combat-based-01-plot-neurocombat-binary-classification-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/9dfa1a73d8d73176481fa8802563219e/01-plot_neurocombat_binary_classification.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">01-plot_neurocombat_binary_classification.ipynb</span></code></a></p>

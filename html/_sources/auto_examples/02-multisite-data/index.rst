@@ -36,6 +36,23 @@ Multisite Data
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Multisite data generation with covariates">
+
+.. only:: html
+
+  .. image:: /auto_examples/02-multisite-data/images/thumb/sphx_glr_06-plot_simulate_multisite_data_with_covariates_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/02-multisite-data/06-plot_simulate_multisite_data_with_covariates`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Multisite data generation with covariates</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Load MAREoS dataset">
 
 .. only:: html
@@ -53,14 +70,31 @@ Multisite Data
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Multisite data generation with covariates">
+
+.. only:: html
+
+  .. image:: /auto_examples/02-multisite-data/images/thumb/sphx_glr_07-plot_simulate_multisite_data_with_costume_covariates_thumb.png
+    :alt:
+
+  :doc:`/auto_examples/02-multisite-data/07-plot_simulate_multisite_data_with_costume_covariates`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Multisite data generation with covariates</div>
+    </div>
+
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Explore ON-Harmony features">
 
 .. only:: html
 
-  .. image:: /auto_examples/02-multisite-data/images/thumb/sphx_glr_05-explore_onharmony_features_thumb.png
+  .. image:: /auto_examples/02-multisite-data/images/thumb/sphx_glr_05-run_explore_onharmony_features_thumb.png
     :alt:
 
-  :doc:`/auto_examples/02-multisite-data/05-explore_onharmony_features`
+  :doc:`/auto_examples/02-multisite-data/05-run_explore_onharmony_features`
 
 .. raw:: html
 
@@ -113,8 +147,10 @@ Multisite Data
    :hidden:
 
    /auto_examples/02-multisite-data/04-run_download_on_harmony
+   /auto_examples/02-multisite-data/06-plot_simulate_multisite_data_with_covariates
    /auto_examples/02-multisite-data/02-run_load_mareos
-   /auto_examples/02-multisite-data/05-explore_onharmony_features
+   /auto_examples/02-multisite-data/07-plot_simulate_multisite_data_with_costume_covariates
+   /auto_examples/02-multisite-data/05-run_explore_onharmony_features
    /auto_examples/02-multisite-data/03-plot_generate_imbalance_multisite_data
    /auto_examples/02-multisite-data/01-plot_generate_multisite_data
 

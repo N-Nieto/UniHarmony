@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**01:24.267** total execution time for 6 files **from auto_examples/01-basic-examples**:
+**01:28.675** total execution time for 6 files **from auto_examples/01-basic-examples**:
 
 .. container::
 
@@ -33,20 +33,20 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_01-basic-examples_06-plot_mareos_with_tsne.py` (``06-plot_mareos_with_tsne.py``)
-     - 00:58.210
+     - 00:59.565
      - 0.0
    * - :ref:`sphx_glr_auto_examples_01-basic-examples_04-plot_eos_with_dimensionality_reduction.py` (``04-plot_eos_with_dimensionality_reduction.py``)
-     - 00:14.332
+     - 00:15.523
      - 0.0
    * - :ref:`sphx_glr_auto_examples_01-basic-examples_01-plot_eos_in_ml.py` (``01-plot_eos_in_ml.py``)
-     - 00:03.909
+     - 00:04.781
      - 0.0
    * - :ref:`sphx_glr_auto_examples_01-basic-examples_05-plot_multisite_data_characterization.py` (``05-plot_multisite_data_characterization.py``)
-     - 00:03.328
+     - 00:03.828
      - 0.0
    * - :ref:`sphx_glr_auto_examples_01-basic-examples_03-plot_biases_in_metrics_by_site.py` (``03-plot_biases_in_metrics_by_site.py``)
-     - 00:02.443
+     - 00:02.714
      - 0.0
    * - :ref:`sphx_glr_auto_examples_01-basic-examples_02-run_metrics_by_site.py` (``02-run_metrics_by_site.py``)
-     - 00:02.045
+     - 00:02.263
      - 0.0

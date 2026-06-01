@@ -26,7 +26,7 @@ Binary classification with NeuroComBat
 Imports
 -------
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-23
+.. GENERATED FROM PYTHON SOURCE LINES 9-24
 
 .. code-block:: Python
 
@@ -36,12 +36,12 @@ Imports
     import seaborn as sns
 
     from uniharmony import verbosity
+    verbosity("warning")
     from uniharmony.combat import NeuroComBat
     from uniharmony.datasets import make_multisite_classification
 
 
     sns.set_theme(style="whitegrid")
-    verbosity("warning")
 
 
 
@@ -51,12 +51,13 @@ Imports
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 24-26
+
+.. GENERATED FROM PYTHON SOURCE LINES 25-27
 
 Data generation
 ---------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 26-39
+.. GENERATED FROM PYTHON SOURCE LINES 27-40
 
 .. code-block:: Python
 
@@ -85,12 +86,12 @@ Data generation
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-42
+.. GENERATED FROM PYTHON SOURCE LINES 41-43
 
 Harmonisation
 -------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-61
+.. GENERATED FROM PYTHON SOURCE LINES 43-62
 
 .. code-block:: Python
 
@@ -125,12 +126,12 @@ Harmonisation
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 62-64
+.. GENERATED FROM PYTHON SOURCE LINES 63-65
 
 Plotting
 --------
 
-.. GENERATED FROM PYTHON SOURCE LINES 64-75
+.. GENERATED FROM PYTHON SOURCE LINES 65-76
 
 .. code-block:: Python
 
@@ -157,7 +158,7 @@ Plotting
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 76-83
+.. GENERATED FROM PYTHON SOURCE LINES 77-84
 
 .. code-block:: Python
 
@@ -178,19 +179,19 @@ Plotting
 
     Feature means by site before harmonization:
     Site
-    0    2.307783
-    1    1.932366
+    0    3.5893
+    1    1.9373
     Name: Feature1, dtype: float64
     Feature means by site after harmonization:
     Site
-    0    2.105410
-    1    2.134838
+    0    2.764697
+    1    2.761969
     Name: Feature1, dtype: float64
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 84-95
+.. GENERATED FROM PYTHON SOURCE LINES 85-96
 
 .. code-block:: Python
 
@@ -217,7 +218,7 @@ Plotting
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 96-102
+.. GENERATED FROM PYTHON SOURCE LINES 97-103
 
 .. code-block:: Python
 
@@ -237,19 +238,19 @@ Plotting
 
     Feature means by site before harmonization:
     Site
-    0    1.452908
-    1    0.906348
+    0    0.961429
+    1    2.043736
     Name: Feature2, dtype: float64
     Feature means by site after harmonization:
     Site
-    0    1.196567
-    1    1.162718
+    0    1.501011
+    1    1.504188
     Name: Feature2, dtype: float64
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 103-106
+.. GENERATED FROM PYTHON SOURCE LINES 104-107
 
 .. admonition:: Take-home message
 
@@ -258,7 +259,7 @@ Plotting
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.790 seconds)
+   **Total running time of the script:** (0 minutes 2.970 seconds)
 
 
 .. _sphx_glr_download_auto_examples_03-combat-based_01-plot_neurocombat_binary_classification.py:

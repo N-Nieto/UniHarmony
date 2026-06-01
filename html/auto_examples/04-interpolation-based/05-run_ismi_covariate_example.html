@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Explore ON-Harmony features &#8212; uniharmony 0.0.4.dev19 documentation</title>
+    <title>Using Inter-Site Matched Interpolation (ISMI) with matching covariates &#8212; uniharmony 0.0.4.dev45 documentation</title>
   
   
   
@@ -44,18 +44,18 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=887a10c1"></script>
+    <script src="../../_static/documentation_options.js?v=e392c62f"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
     <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'auto_examples/02-multisite-data/05-explore_onharmony_features';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'auto_examples/04-interpolation-based/05-run_ismi_covariate_example';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Generate imbalance multisite data" href="03-plot_generate_imbalance_multisite_data.html" />
-    <link rel="prev" title="Load MAREoS dataset" href="02-run_load_mareos.html" />
+    <link rel="next" title="IntraSiteInterpolation advance usage" href="04-plot_isi_advance_usage.html" />
+    <link rel="prev" title="Binary classification using ISI" href="01-plot_isi_binary_classification.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.4.dev19 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.4.dev45 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -186,7 +186,7 @@
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../../examples/index.html">🎛️ Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/basic/index.html">Basic examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/05-plot_multisite_data_characterization.html">Characterise a multisite problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/05-plot_multisite_data_characterization.html">Characterize a multisite problem</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/04-plot_eos_with_dimensionality_reduction.html">Explore EoS with dimensionality reduction techniques</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/02-run_metrics_by_site.html">Compute metrics by site</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/06-plot_mareos_with_tsne.html">Characterise a multisite problem with MAREoS</a></li>
@@ -194,12 +194,14 @@
 <li class="toctree-l3"><a class="reference internal" href="../01-basic-examples/01-plot_eos_in_ml.html">Impact of Effects of Site in ML</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 current active has-children"><a class="reference internal" href="../../examples/multisite_data/index.html">Multisite Data</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="04-run_download_on_harmony.html">Download ON-Harmony dataset</a></li>
-<li class="toctree-l3"><a class="reference internal" href="02-run_load_mareos.html">Load MAREoS dataset</a></li>
-<li class="toctree-l3 current active"><a class="current reference internal" href="#">Explore ON-Harmony features</a></li>
-<li class="toctree-l3"><a class="reference internal" href="03-plot_generate_imbalance_multisite_data.html">Generate imbalance multisite data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="01-plot_generate_multisite_data.html">Multisite data generation</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/multisite_data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/04-run_download_on_harmony.html">Download ON-Harmony dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/06-plot_simulate_multisite_data_with_covariates.html">Multisite data generation with covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/02-run_load_mareos.html">Load MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/07-plot_simulate_multisite_data_with_costume_covariates.html">Multisite data generation with covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/05-run_explore_onharmony_features.html">Explore ON-Harmony features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/03-plot_generate_imbalance_multisite_data.html">Generate imbalance multisite data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/01-plot_generate_multisite_data.html">Multisite data generation</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/combat/index.html">ComBat Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -211,11 +213,12 @@
 <li class="toctree-l3"><a class="reference internal" href="../03-combat-based/06-plot_combatgam_with_mareos.html">Using ComBatGAM with MAREoS dataset</a></li>
 </ul>
 </details></li>
-<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/interpolation/index.html">Interpolation Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/01-plot_isi_binary_classification.html">Binary classification using ISI</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/04-plot_isi_advance_usage.html">IntraSiteInterpolation advance usage</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/02-plot_isi_multiclass_classification.html">Multiclass classification using ISI</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/03-plot_ismi_binary_classification.html">Multisite Harmonization using Inter-Site Matched Interpolation (ISMI)</a></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="../../examples/interpolation/index.html">Interpolation Methods</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="01-plot_isi_binary_classification.html">Binary classification using ISI</a></li>
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Using Inter-Site Matched Interpolation (ISMI) with matching covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="04-plot_isi_advance_usage.html">IntraSiteInterpolation advance usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="02-plot_isi_multiclass_classification.html">Multiclass classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="03-plot_ismi_binary_classification.html">Multisite Harmonization using Inter-Site Matched Interpolation (ISMI)</a></li>
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/ot/index.html">Optimal Transport based Domain Adaptation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
@@ -334,7 +337,7 @@
       
       
       
-      <li><a href="../../_sources/auto_examples/02-multisite-data/05-explore_onharmony_features.rst" target="_blank"
+      <li><a href="../../_sources/auto_examples/04-interpolation-based/05-run_ismi_covariate_example.rst" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -397,9 +400,7 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <span class="fa-solid fa-list"></span>
-</button>
+
 </div></div>
       
     </div>
@@ -410,19 +411,11 @@
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Explore ON-Harmony features</h1>
+    <h1>Using Inter-Site Matched Interpolation (ISMI) with matching covariates</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
             
-            <div>
-                <h2> Contents </h2>
-            </div>
-            <nav aria-label="Page">
-                <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
-</ul>
-            </nav>
         </div>
     </div>
 </div>
@@ -434,92 +427,109 @@
                   
   <div class="sphx-glr-download-link-note admonition note">
 <p class="admonition-title">Note</p>
-<p><a class="reference internal" href="#sphx-glr-download-auto-examples-02-multisite-data-05-explore-onharmony-features-py"><span class="std std-ref">Go to the end</span></a>
+<p><a class="reference internal" href="#sphx-glr-download-auto-examples-04-interpolation-based-05-run-ismi-covariate-example-py"><span class="std std-ref">Go to the end</span></a>
 to download the full example code.</p>
 </div>
-<section class="sphx-glr-example-title" id="explore-on-harmony-features">
-<span id="sphx-glr-auto-examples-02-multisite-data-05-explore-onharmony-features-py"></span><h1>Explore ON-Harmony features<a class="headerlink" href="#explore-on-harmony-features" title="Link to this heading">#</a></h1>
-<section id="imports">
-<h2>Imports<a class="headerlink" href="#imports" title="Link to this heading">#</a></h2>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
-<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
-
-<span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_onharmony_structural_features</span>
+<section class="sphx-glr-example-title" id="using-inter-site-matched-interpolation-ismi-with-matching-covariates">
+<span id="sphx-glr-auto-examples-04-interpolation-based-05-run-ismi-covariate-example-py"></span><h1>Using Inter-Site Matched Interpolation (ISMI) with matching covariates<a class="headerlink" href="#using-inter-site-matched-interpolation-ismi-with-matching-covariates" title="Link to this heading">#</a></h1>
+<p>This notebook demonstrates the use of <a class="reference internal" href="../../api/interpolation_based/inter_site_matched_interpolation.html#uniharmony.interpolation.InterSiteMatchedInterpolation" title="uniharmony.interpolation.InterSiteMatchedInterpolation"><code class="xref py py-class docutils literal notranslate"><span class="pre">InterSiteMatchedInterpolation</span></code></a> for harmonizing multi-site data using matching covariates.</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-06-01 17:50:54 [debug    ] Total Samples to generate 3000
+2026-06-01 17:50:54 [debug    ] Total Samples to generate per site [1000 1000 1000]
+2026-06-01 17:50:54 [info     ] Using balanced classes: [[0.5, 0.5], [0.5, 0.5], [0.5, 0.5]]
+2026-06-01 17:50:54 [info     ] `balance_per_site` is: [[0.5, 0.5], [0.5, 0.5], [0.5, 0.5]]
+2026-06-01 17:50:54 [info     ] Overall class balance across sites: [0.5 0.5]
+2026-06-01 17:50:54 [debug    ] locs: [50, 50, 50] and probs: None
+2026-06-01 17:50:54 [debug    ] locs: None and probs: [[0.5, 0.5], [0.5, 0.5], [0.5, 0.5]]
+2026-06-01 17:50:54 [debug    ] Covariates requested: [&#39;age&#39;, &#39;sex&#39;]
+2026-06-01 17:50:54 [info     ] For site 0
+2026-06-01 17:50:54 [info     ] Generating 1000 samples
+2026-06-01 17:50:54 [debug    ] Balance [0.5, 0.5] for site 0
+2026-06-01 17:50:54 [debug    ] Site 0 — covariate &#39;age&#39;: mean=50.893
+2026-06-01 17:50:54 [debug    ] Site 0 — covariate &#39;sex&#39;: mean=0.524
+2026-06-01 17:50:54 [debug    ] Site 0, site effect strength [3.0, 3.0, 3.0]
+2026-06-01 17:50:54 [info     ] For site 1
+2026-06-01 17:50:54 [info     ] Generating 1000 samples
+2026-06-01 17:50:54 [debug    ] Balance [0.5, 0.5] for site 1
+2026-06-01 17:50:54 [debug    ] Site 1 — covariate &#39;age&#39;: mean=49.223
+2026-06-01 17:50:54 [debug    ] Site 1 — covariate &#39;sex&#39;: mean=0.508
+2026-06-01 17:50:54 [debug    ] Site 1, site effect strength [3.0, 3.0, 3.0]
+2026-06-01 17:50:54 [info     ] For site 2
+2026-06-01 17:50:54 [info     ] Generating 1000 samples
+2026-06-01 17:50:54 [debug    ] Balance [0.5, 0.5] for site 2
+2026-06-01 17:50:54 [debug    ] Site 2 — covariate &#39;age&#39;: mean=49.728
+2026-06-01 17:50:54 [debug    ] Site 2 — covariate &#39;sex&#39;: mean=0.519
+2026-06-01 17:50:54 [debug    ] Site 2, site effect strength [3.0, 3.0, 3.0]
+2026-06-01 17:50:54 [info     ] Generated 3000 samples across 3 sites
+2026-06-01 17:50:54 [info     ] Class distribution: [1500 1500]
+2026-06-01 17:50:54 [info     ] Site distribution: [1000 1000 1000]
+2026-06-01 17:50:54 [debug    ] Using 1 categorical covariates
+2026-06-01 17:50:54 [debug    ] Using 1 continuous covariates with tolerance: [5.]
+2026-06-01 17:50:54 [info     ] [ISMI] Mode: pairwise
+2026-06-01 17:50:54 [info     ] [ISMI] Sites: [0 1 2] (3 sites, 3 pairs)
+2026-06-01 17:50:54 [info     ] [ISMI] Alpha: uniform[0.2, 0.4]
+2026-06-01 17:50:54 [info     ] [ISMI] Behavior: k=2 matches per sample
+2026-06-01 17:50:54 [info     ] [ISMI] Target tolerance: None
+2026-06-01 17:50:54 [info     ] [ISMI] Categorical covariates: 1
+2026-06-01 17:50:54 [info     ] [ISMI] Continuous covariates: 1 (tol: [5.])
+2026-06-01 17:50:54 [info     ] [ISMI] Processing 3 pairs
+2026-06-01 17:50:54 [info     ] [ISMI] Pair: 0 (1000) ↔ 1 (1000)
+/home/runner/work/UniHarmony/UniHarmony/src/uniharmony/interpolation/_inter_site_matched.py:469: UserWarning: Sample has 1 matches but k=2 requested, using all
+  X_synth_1, y_synth_1, n_un_1 = self._interpolate(X1, y1, X2, y2, matches_1to2, self.alpha_min_, self.alpha_max_)
+/home/runner/work/UniHarmony/UniHarmony/src/uniharmony/interpolation/_inter_site_matched.py:475: UserWarning: Sample has 1 matches but k=2 requested, using all
+  X_synth_2, y_synth_2, n_un_2 = self._interpolate(X2, y2, X1, y1, matches_2to1, rev_min, rev_max)
+2026-06-01 17:50:54 [info     ] [ISMI]   Generated 3970 samples (8 unmatched)
+2026-06-01 17:50:54 [info     ] [ISMI] Pair: 0 (1000) ↔ 2 (1000)
+2026-06-01 17:50:54 [info     ] [ISMI]   Generated 3978 samples (4 unmatched)
+2026-06-01 17:50:54 [info     ] [ISMI] Pair: 1 (1000) ↔ 2 (1000)
+2026-06-01 17:50:54 [info     ] [ISMI]   Generated 3970 samples (8 unmatched)
+2026-06-01 17:50:54 [info     ] [ISMI] Complete: 3000 original + 11918 synthetic = 14918 total (397.3% increase), 20 unmatched
+{(np.int64(0), np.int64(1)): 6, (np.int64(1), np.int64(0)): 2, (np.int64(0), np.int64(2)): 2, (np.int64(2), np.int64(0)): 2, (np.int64(1), np.int64(2)): 4, (np.int64(2), np.int64(1)): 4}
 </pre></div>
 </div>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">load_onharmony_structural_features</span><span class="p">()</span>
-<span class="c1"># Plot some of the columns</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">40</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Data have shape: f</span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="o">*</span><span class="mi">40</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">head</span><span class="p">())</span>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.interpolation</span><span class="w"> </span><span class="kn">import</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.base.BaseEstimator.html#sklearn.base.BaseEstimator" title="sklearn.base.BaseEstimator" class="sphx-glr-backref-module-sklearn-base sphx-glr-backref-type-py-class"><span class="n">InterSiteMatchedInterpolation</span></a>
+<span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_multisite_classification</span>
+
+<span class="c1"># Generate sample data with 3 sites</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sites</span></a><span class="p">,</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">covars</span></a> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">3000</span><span class="p">,</span> <span class="n">n_sites</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">covariates</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;sex&quot;</span><span class="p">])</span>
+
+<span class="c1"># Define covariates for matching</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">categorical_covariate</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">covars</span></a><span class="p">[</span><span class="s2">&quot;sex&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">continuous_covariate</span></a> <span class="o">=</span> <a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">covars</span></a><span class="p">[</span><span class="s2">&quot;age&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">covariate_tolerance</span></a> <span class="o">=</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.array.html#numpy.array" title="numpy.array" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="mf">5.0</span><span class="p">])</span>  <span class="c1"># ±5 years tolerance</span>
+
+<span class="c1"># Create interpolator with pairwise mode and k=2 matches</span>
+<span class="n">ismi</span> <span class="o">=</span> <a href="https://scikit-learn.org/stable/modules/generated/sklearn.base.BaseEstimator.html#sklearn.base.BaseEstimator" title="sklearn.base.BaseEstimator" class="sphx-glr-backref-module-sklearn-base sphx-glr-backref-type-py-class"><span class="n">InterSiteMatchedInterpolation</span></a><span class="p">(</span><span class="n">alpha</span><span class="o">=</span><span class="p">(</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">),</span>
+                                     <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">covariate_tolerance</span></a><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">covariate_tolerance</span></a><span class="p">,</span>
+                                     <span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                                     <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;pairwise&quot;</span><span class="p">,</span>
+                                     <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+
+<span class="c1"># Generate harmonized dataset</span>
+<a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X_res</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y_res</span></a> <span class="o">=</span> <span class="n">ismi</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">X</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">y</span></a><span class="p">,</span> <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">sites</span></a><span class="p">,</span>
+                                 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">categorical_covariate</span></a><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">categorical_covariate</span></a><span class="p">,</span>
+                                 <a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">continuous_covariate</span></a><span class="o">=</span><a href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="numpy.ndarray" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">continuous_covariate</span></a><span class="p">)</span>
+
+<span class="c1"># Check unmatched samples</span>
+<span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ismi</span><span class="o">.</span><span class="n">unmatched_samples_</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">subject_col</span> <span class="o">=</span> <span class="s2">&quot;subject&quot;</span>
-<span class="n">scanner_col</span> <span class="o">=</span> <span class="s2">&quot;scanner_code&quot;</span>
-<span class="n">feature_name</span> <span class="o">=</span> <span class="s2">&quot;T1_GM_parcellation_L_Front_Pole_vol&quot;</span>
-
-<span class="c1"># Filter for the specific feature</span>
-<span class="n">feature_df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="n">subject_col</span><span class="p">,</span> <span class="n">scanner_col</span><span class="p">,</span> <span class="n">feature_name</span><span class="p">]]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-
-<span class="c1"># Pivot to get subjects as rows, scanners as columns</span>
-<span class="c1"># The values come from the column that actually contains the numerical data</span>
-<span class="n">pivot_df</span> <span class="o">=</span> <span class="n">feature_df</span><span class="o">.</span><span class="n">pivot_table</span><span class="p">(</span>
-    <span class="n">index</span><span class="o">=</span><span class="n">subject_col</span><span class="p">,</span>
-    <span class="n">columns</span><span class="o">=</span><span class="n">scanner_col</span><span class="p">,</span>
-    <span class="n">values</span><span class="o">=</span><span class="n">feature_name</span>
-<span class="p">)</span>
-
-<span class="c1"># Compute differences between all scanner pairs</span>
-<span class="n">scanners</span> <span class="o">=</span> <span class="n">pivot_df</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
-<span class="n">n_scanners</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">scanners</span><span class="p">)</span>
-
-<span class="c1"># Initialize difference matrix (scanner x scanner)</span>
-<span class="n">diff_matrix</span> <span class="o">=</span> <a href="https://pandas.pydata.org/pandas-docs/dev/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="pandas.DataFrame" class="sphx-glr-backref-module-pandas sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span></a><span class="p">(</span>
-    <a href="https://numpy.org/doc/stable/reference/generated/numpy.zeros.html#numpy.zeros" title="numpy.zeros" class="sphx-glr-backref-module-numpy sphx-glr-backref-type-py-function"><span class="n">np</span><span class="o">.</span><span class="n">zeros</span></a><span class="p">((</span><span class="n">n_scanners</span><span class="p">,</span> <span class="n">n_scanners</span><span class="p">)),</span>
-    <span class="n">index</span><span class="o">=</span><span class="n">scanners</span><span class="p">,</span>
-    <span class="n">columns</span><span class="o">=</span><span class="n">scanners</span>
-<span class="p">)</span>
-
-<span class="c1"># Fill with average absolute differences for each pair</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s1</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">scanners</span><span class="p">):</span>
-    <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">s2</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">scanners</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">i</span> <span class="o">!=</span> <span class="n">j</span><span class="p">:</span>
-            <span class="n">diff</span> <span class="o">=</span> <span class="n">pivot_df</span><span class="p">[</span><span class="n">s1</span><span class="p">]</span> <span class="o">-</span> <span class="n">pivot_df</span><span class="p">[</span><span class="n">s2</span><span class="p">]</span>
-            <span class="n">diff_matrix</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">diff</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-
-<span class="c1"># Plot heatmap</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span>
-    <span class="n">diff_matrix</span><span class="p">,</span>
-    <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">cmap</span><span class="o">=</span><span class="s2">&quot;vlag&quot;</span><span class="p">,</span>
-    <span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;.3f&quot;</span><span class="p">,</span>
-    <span class="n">square</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">cbar_kws</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;label&quot;</span><span class="p">:</span> <span class="s2">&quot;Mean Difference&quot;</span><span class="p">}</span>
-<span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Scanner Differences for Feature: </span><span class="si">{</span><span class="n">feature_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-02-multisite-data-05-explore-onharmony-features-py">
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.031 seconds)</p>
+<div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-04-interpolation-based-05-run-ismi-covariate-example-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/f565b8436350c7372b50dab8c5c2e7bc/05-explore_onharmony_features.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">05-explore_onharmony_features.ipynb</span></code></a></p>
+<p><a class="reference download internal" download="" href="../../_downloads/db4a31e7a54daaeff7f27ae73087845c/05-run_ismi_covariate_example.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">05-run_ismi_covariate_example.ipynb</span></code></a></p>
 </div>
 <div class="sphx-glr-download sphx-glr-download-python docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/d92f6ae42afa0914a419e789dfbd95bc/05-explore_onharmony_features.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">05-explore_onharmony_features.py</span></code></a></p>
+<p><a class="reference download internal" download="" href="../../_downloads/2c12d835b9c506da4acbb06f834d81ce/05-run_ismi_covariate_example.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">05-run_ismi_covariate_example.py</span></code></a></p>
 </div>
 <div class="sphx-glr-download sphx-glr-download-zip docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/55052e0f7107efaa023ec43b752d0231/05-explore_onharmony_features.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">05-explore_onharmony_features.zip</span></code></a></p>
+<p><a class="reference download internal" download="" href="../../_downloads/fa8f3ef4253c86b37d060ca9e1edbe71/05-run_ismi_covariate_example.zip"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">zipped:</span> <span class="pre">05-run_ismi_covariate_example.zip</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
-</section>
 </section>
 
 
@@ -534,20 +544,20 @@ to download the full example code.</p>
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="02-run_load_mareos.html"
+       href="01-plot_isi_binary_classification.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Load MAREoS dataset</p>
+        <p class="prev-next-title">Binary classification using ISI</p>
       </div>
     </a>
     <a class="right-next"
-       href="03-plot_generate_imbalance_multisite_data.html"
+       href="04-plot_isi_advance_usage.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">Generate imbalance multisite data</p>
+        <p class="prev-next-title">IntraSiteInterpolation advance usage</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -557,23 +567,6 @@ to download the full example code.</p>
             </div>
             
             
-              
-                <dialog id="pst-secondary-sidebar-modal"></dialog>
-                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
-
-
-  <div class="sidebar-secondary-item"><div
-    id="pst-page-navigation-heading-2"
-    class="page-toc tocsection onthispage">
-    <i class="fa-solid fa-list"></i> Contents
-  </div>
-  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
-    <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#imports">Imports</a></li>
-</ul>
-  </nav></div>
-
-</div></div>
               
             
           </div>

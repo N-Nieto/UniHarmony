@@ -87,7 +87,7 @@ Data generation
 
  .. code-block:: none
 
-    2026-05-26 08:54:20 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
+    2026-06-01 17:27:37 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
 
 
 
@@ -186,13 +186,13 @@ Plotting
 
     Feature means by site before harmonization:
     Site
-    0    3.454432
-    1    2.313463
+    0    6.662625
+    1    2.316811
     Name: Feature1, dtype: float64
     Feature means by site after harmonization:
     Site
-    0    2.881748
-    1    2.886076
+    0    4.490071
+    1    4.489381
     Name: Feature1, dtype: float64
 
 
@@ -245,13 +245,13 @@ Plotting
 
     Feature means by site before harmonization:
     Site
-    0    3.599556
-    1    2.287443
+    0    2.382214
+    1    5.139412
     Name: Feature2, dtype: float64
     Feature means by site after harmonization:
     Site
-    0    2.944512
-    1    2.942473
+    0    3.760652
+    1    3.760976
     Name: Feature2, dtype: float64
 
 
@@ -266,7 +266,7 @@ Plotting
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.754 seconds)
+   **Total running time of the script:** (0 minutes 2.803 seconds)
 
 
 .. _sphx_glr_download_auto_examples_03-combat-based_04-plot_combatgam_binary_classification.py:

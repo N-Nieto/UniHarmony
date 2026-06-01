@@ -149,8 +149,8 @@ Let's now create a site imbalance problem. That means that, while the total numb
  .. code-block:: none
 
     The class distribution is imbalanced across sites but balanced in general 
-    General balance: 0.50 
-    site 0 balance: 0.30 
+    General balance: 0.70 
+    site 0 balance: 0.70 
     site 1 balance: 0.70
 
 
@@ -161,7 +161,7 @@ Let's now create a site imbalance problem. That means that, while the total numb
 .. code-block:: Python
 
 
-    X, y, sites = make_multisite_classification(balance_per_site=[0.3, 0.3])
+    X, y, sites = make_multisite_classification(balance_per_site=[0.3, 0.7])
     df = pd.DataFrame({"Class": y, "Site": sites})
     general_balance = len(y[y == 1]) / len(y)
     y_site_0 = y[sites == 0]
@@ -193,12 +193,10 @@ Let's now create a site imbalance problem. That means that, while the total numb
 
  .. code-block:: none
 
-    2026-05-26 08:54:15 [warning  ] Not enough samples of class 0 in global dataset. Requested 350, available 330. Consider adjusting balance_per_site or generating more samples.
-    2026-05-26 08:54:15 [warning  ] Not enough samples of class 0 in global dataset. Requested 350, available 330. Consider adjusting balance_per_site or generating more samples.
     The class are imbalanced in general, but have the same imbalance across sites
-    General balance: 0.30 
-    site 0 balance: 0.30 
-    site 1 balance: 0.30
+    General balance: 0.70 
+    site 0 balance: 0.70 
+    site 1 balance: 0.70
 
 
 
@@ -206,7 +204,7 @@ Let's now create a site imbalance problem. That means that, while the total numb
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.351 seconds)
+   **Total running time of the script:** (0 minutes 0.649 seconds)
 
 
 .. _sphx_glr_download_auto_examples_02-multisite-data_03-plot_generate_imbalance_multisite_data.py:

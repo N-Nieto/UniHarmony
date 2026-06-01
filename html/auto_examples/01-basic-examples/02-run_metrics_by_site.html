@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Compute metrics by site &#8212; uniharmony 0.0.4.dev19 documentation</title>
+    <title>Compute metrics by site &#8212; uniharmony 0.0.4.dev45 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=887a10c1"></script>
+    <script src="../../_static/documentation_options.js?v=e392c62f"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.4.dev19 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.4.dev45 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -186,7 +186,7 @@
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="../../examples/index.html">🎛️ Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
 <li class="toctree-l2 current active has-children"><a class="reference internal" href="../../examples/basic/index.html">Basic examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="05-plot_multisite_data_characterization.html">Characterise a multisite problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="05-plot_multisite_data_characterization.html">Characterize a multisite problem</a></li>
 <li class="toctree-l3"><a class="reference internal" href="04-plot_eos_with_dimensionality_reduction.html">Explore EoS with dimensionality reduction techniques</a></li>
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">Compute metrics by site</a></li>
 <li class="toctree-l3"><a class="reference internal" href="06-plot_mareos_with_tsne.html">Characterise a multisite problem with MAREoS</a></li>
@@ -196,8 +196,10 @@
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/multisite_data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/04-run_download_on_harmony.html">Download ON-Harmony dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/06-plot_simulate_multisite_data_with_covariates.html">Multisite data generation with covariates</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/02-run_load_mareos.html">Load MAREoS dataset</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/05-explore_onharmony_features.html">Explore ON-Harmony features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/07-plot_simulate_multisite_data_with_costume_covariates.html">Multisite data generation with covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/05-run_explore_onharmony_features.html">Explore ON-Harmony features</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/03-plot_generate_imbalance_multisite_data.html">Generate imbalance multisite data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../02-multisite-data/01-plot_generate_multisite_data.html">Multisite data generation</a></li>
 </ul>
@@ -213,6 +215,7 @@
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/interpolation/index.html">Interpolation Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/01-plot_isi_binary_classification.html">Binary classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/05-run_ismi_covariate_example.html">Using Inter-Site Matched Interpolation (ISMI) with matching covariates</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/04-plot_isi_advance_usage.html">IntraSiteInterpolation advance usage</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/02-plot_isi_multiclass_classification.html">Multiclass classification using ISI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../04-interpolation-based/03-plot_ismi_binary_classification.html">Multisite Harmonization using Inter-Site Matched Interpolation (ISMI)</a></li>
@@ -491,8 +494,8 @@ to download the full example code.</p>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Overall bACC: </span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">metrics</span></a><span class="p">[</span><span class="s1">&#39;balanced_accuracy_score&#39;</span><span class="p">][</span><span class="s1">&#39;overall&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Overall bACC: 0.6568081428845784
-Overall bACC: 0.6568081428845784
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Overall bACC: 0.6696337090163935
+Overall bACC: 0.6696337090163935
 </pre></div>
 </div>
 <p>If requested, the function also computes the overall performance and stores it as another entry in the dictionary.</p>
@@ -525,13 +528,13 @@ Overall bACC: 0.6568081428845784
 <span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">metrics</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;accuracy_score&#39;: {&#39;overall&#39;: 0.344, 0: 0.2857142857142857, 1: 0.17391304347826086, 2: 0.41935483870967744, 3: 0.5, 4: 0.25, 5: 0.52, 6: 0.32142857142857145, 7: 0.3157894736842105, 8: 0.3076923076923077, 9: 0.3333333333333333}}
-{&#39;f1_score&#39;: {&#39;overall&#39;: 0.3419363122752953, 0: 0.2708333333333333, 1: 0.17391304347826086, 2: 0.41386554621848737, 3: 0.4905263157894737, 4: 0.2285714285714286, 5: 0.5, 6: 0.3135483870967742, 7: 0.3081232492997199, 8: 0.26875, 9: 0.32867132867132864}}
-{&#39;roc_auc_score&#39;: {&#39;overall&#39;: 0.33877472632994043, 0: 0.3826530612244898, 1: 0.1742424242424242, 2: 0.4831932773109244, 3: 0.45833333333333337, 4: 0.2666666666666667, 5: 0.5808823529411764, 6: 0.21875, 7: 0.2, 8: 0.33749999999999997, 9: 0.2152777777777778}, &#39;accuracy_score&#39;: {&#39;overall&#39;: 0.344, 0: 0.2857142857142857, 1: 0.17391304347826086, 2: 0.41935483870967744, 3: 0.5, 4: 0.25, 5: 0.52, 6: 0.32142857142857145, 7: 0.3157894736842105, 8: 0.3076923076923077, 9: 0.3333333333333333}}
-{&#39;accuracy_score&#39;: {&#39;overall&#39;: 0.344, 0: 0.2857142857142857, 1: 0.17391304347826086, 2: 0.41935483870967744, 3: 0.5, 4: 0.25, 5: 0.52, 6: 0.32142857142857145, 7: 0.3157894736842105, 8: 0.3076923076923077, 9: 0.3333333333333333}, &#39;roc_auc_score&#39;: {&#39;overall&#39;: 0.33877472632994043, 0: 0.3826530612244898, 1: 0.1742424242424242, 2: 0.4831932773109244, 3: 0.45833333333333337, 4: 0.2666666666666667, 5: 0.5808823529411764, 6: 0.21875, 7: 0.2, 8: 0.33749999999999997, 9: 0.2152777777777778}}
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;accuracy_score&#39;: {&#39;overall&#39;: 0.332, 0: 0.2903225806451613, 1: 0.2857142857142857, 2: 0.23076923076923078, 3: 0.2916666666666667, 4: 0.5161290322580645, 5: 0.2916666666666667, 6: 0.25925925925925924, 7: 0.30434782608695654, 8: 0.5238095238095238, 9: 0.2857142857142857}}
+{&#39;f1_score&#39;: {&#39;overall&#39;: 0.32811921659505305, 0: 0.25219298245614036, 1: 0.28205128205128205, 2: 0.1875, 3: 0.2595281306715064, 4: 0.5141065830721003, 5: 0.2804232804232804, 6: 0.2582417582417582, 7: 0.2698412698412698, 8: 0.5227272727272727, 9: 0.25133689839572193}}
+{&#39;roc_auc_score&#39;: {&#39;overall&#39;: 0.3325435450819672, 0: 0.375, 1: 0.3010204081632653, 2: 0.25, 3: 0.24999999999999994, 4: 0.5126050420168068, 5: 0.2578125, 6: 0.25, 7: 0.3384615384615385, 8: 0.46153846153846156, 9: 0.12307692307692306}, &#39;accuracy_score&#39;: {&#39;overall&#39;: 0.332, 0: 0.2903225806451613, 1: 0.2857142857142857, 2: 0.23076923076923078, 3: 0.2916666666666667, 4: 0.5161290322580645, 5: 0.2916666666666667, 6: 0.25925925925925924, 7: 0.30434782608695654, 8: 0.5238095238095238, 9: 0.2857142857142857}}
+{&#39;accuracy_score&#39;: {&#39;overall&#39;: 0.332, 0: 0.2903225806451613, 1: 0.2857142857142857, 2: 0.23076923076923078, 3: 0.2916666666666667, 4: 0.5161290322580645, 5: 0.2916666666666667, 6: 0.25925925925925924, 7: 0.30434782608695654, 8: 0.5238095238095238, 9: 0.2857142857142857}, &#39;roc_auc_score&#39;: {&#39;overall&#39;: 0.3325435450819672, 0: 0.375, 1: 0.3010204081632653, 2: 0.25, 3: 0.24999999999999994, 4: 0.5126050420168068, 5: 0.2578125, 6: 0.25, 7: 0.3384615384615385, 8: 0.46153846153846156, 9: 0.12307692307692306}}
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.045 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.263 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-01-basic-examples-02-run-metrics-by-site-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/93f983d114af13a54849dc50a1e3ef51/02-run_metrics_by_site.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">02-run_metrics_by_site.ipynb</span></code></a></p>

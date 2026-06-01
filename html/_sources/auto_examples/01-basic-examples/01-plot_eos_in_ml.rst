@@ -50,9 +50,9 @@ Imports
 
     sns.set_theme(style="whitegrid")
     verbosity("warning")
-
-    clf = LogisticRegression()
-    cv = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
+    random_state = 42
+    clf = LogisticRegression(random_state=random_state)
+    cv = StratifiedKFold(n_splits=10, shuffle=True, random_state=random_state)
 
 
 
@@ -74,7 +74,7 @@ Data generation
 
     # First, lets create an example without EoS and classes balanced across site.
     X, y, sites = make_multisite_classification(
-        n_sites=3, n_features=2, signal_strength=1, site_effect_strength=0, signal_type="blobs", random_state=23
+        n_sites=3, n_features=2, signal_strength=1, site_effect_strength=0, signal_type="blobs", random_state=random_state
     )
     # Create DataFrame for easier plotting
     df = pd.DataFrame(
@@ -100,7 +100,7 @@ Data generation
 
 
 .. image-sg:: /auto_examples/01-basic-examples/images/sphx_glr_01-plot_eos_in_ml_001.png
-   :alt: Data distribution, mean CV AUC: 0.8365
+   :alt: Data distribution, mean CV AUC: 0.7454
    :srcset: /auto_examples/01-basic-examples/images/sphx_glr_01-plot_eos_in_ml_001.png
    :class: sphx-glr-single-img
 
@@ -108,36 +108,17 @@ Data generation
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 63-69
+.. GENERATED FROM PYTHON SOURCE LINES 63-89
 
 .. code-block:: Python
 
 
 
     X, y, sites = make_multisite_classification(
-        n_sites=3, n_features=2, signal_strength=1, site_effect_strength=4, signal_type="blobs", random_state=23
+        n_sites=3, n_features=2, signal_strength=1, site_effect_strength=4, signal_type="blobs", random_state=random_state
     )
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 70-72
-
-Plotting
---------
-
-.. GENERATED FROM PYTHON SOURCE LINES 74-75
-
-Create DataFrame for easier plotting
-
-.. GENERATED FROM PYTHON SOURCE LINES 75-94
-
-.. code-block:: Python
-
+    # Create DataFrame for easier plotting
     df = pd.DataFrame(
         {"Feature 1": X[:, 0], "Feature 2": X[:, 1], "Class": [f"Class {c}" for c in y], "Site": [f"Site {s}" for s in sites]}
     )
@@ -161,7 +142,7 @@ Create DataFrame for easier plotting
 
 
 .. image-sg:: /auto_examples/01-basic-examples/images/sphx_glr_01-plot_eos_in_ml_002.png
-   :alt: Data distribution, mean CV AUC: 0.8317
+   :alt: Data distribution, mean CV AUC: 0.6899
    :srcset: /auto_examples/01-basic-examples/images/sphx_glr_01-plot_eos_in_ml_002.png
    :class: sphx-glr-single-img
 
@@ -169,13 +150,13 @@ Create DataFrame for easier plotting
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 95-122
+.. GENERATED FROM PYTHON SOURCE LINES 90-117
 
 .. code-block:: Python
 
 
     X, y, sites = make_multisite_classification(
-        n_sites=3, n_features=2, signal_strength=0, site_effect_strength=4, signal_type="blobs", random_state=23
+        n_sites=3, n_features=2, signal_strength=0.01, site_effect_strength=4, signal_type="blobs", random_state=random_state
     )
 
     # Create DataFrame for easier plotting
@@ -204,7 +185,7 @@ Create DataFrame for easier plotting
 
 
 .. image-sg:: /auto_examples/01-basic-examples/images/sphx_glr_01-plot_eos_in_ml_003.png
-   :alt: Data distribution, mean CV AUC: 0.4945
+   :alt: Data distribution, mean CV AUC: 0.5091
    :srcset: /auto_examples/01-basic-examples/images/sphx_glr_01-plot_eos_in_ml_003.png
    :class: sphx-glr-single-img
 
@@ -213,14 +194,13 @@ Create DataFrame for easier plotting
 
  .. code-block:: none
 
-    2026-05-26 08:53:18 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
     We don't have real signal, and the classes are equally distributed across sites
-    Mean accuracy: 0.4945
+    Mean accuracy: 0.5091
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 123-134
+.. GENERATED FROM PYTHON SOURCE LINES 118-152
 
 .. code-block:: Python
 
@@ -228,34 +208,14 @@ Create DataFrame for easier plotting
     X, y, sites = make_multisite_classification(
         n_sites=3,
         n_features=2,
-        signal_strength=0,
-        site_effect_strength=1,
+        signal_strength=0.01,
+        site_effect_strength=4,
         signal_type="blobs",
-        random_state=23,
-        balance_per_site=[0.1, 0.5, 0.9],
+        random_state=random_state,
+        balance_per_site=[[0.1, 0.9], [0.5, 0.5], [0.9, 0.1]],
     )
 
-
-
-
-
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    2026-05-26 08:53:18 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 135-136
-
-Test the visualization
-
-.. GENERATED FROM PYTHON SOURCE LINES 136-158
-
-.. code-block:: Python
-
+    # Test the visualization
 
     # Create DataFrame for easier plotting
     df = pd.DataFrame(
@@ -282,7 +242,7 @@ Test the visualization
 
 
 .. image-sg:: /auto_examples/01-basic-examples/images/sphx_glr_01-plot_eos_in_ml_004.png
-   :alt: Data distribution, mean CV AUC: 0.4738
+   :alt: Data distribution, mean CV AUC: 0.6915
    :srcset: /auto_examples/01-basic-examples/images/sphx_glr_01-plot_eos_in_ml_004.png
    :class: sphx-glr-single-img
 
@@ -293,12 +253,12 @@ Test the visualization
 
     We don't have real signal, but now classes are not equally distributed across sites.
     The ML models might pick up on the site differences to fraudulently perform the task.
-    Mean accuracy: 0.4738
+    Mean accuracy: 0.6915
 
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 159-189
+.. GENERATED FROM PYTHON SOURCE LINES 153-184
 
 .. code-block:: Python
 
@@ -306,11 +266,11 @@ Test the visualization
     X, y, sites = make_multisite_classification(
         n_sites=3,
         n_features=2,
-        signal_strength=0,
+        signal_strength=0.01,
         site_effect_strength=0,
         signal_type="blobs",
         random_state=23,
-        balance_per_site=[0.1, 0.5, 0.9],
+        balance_per_site=[[0.1, 0.9], [0.5, 0.5], [0.9, 0.1]],
     )
 
     # Create DataFrame for easier plotting
@@ -335,8 +295,9 @@ Test the visualization
 
 
 
+
 .. image-sg:: /auto_examples/01-basic-examples/images/sphx_glr_01-plot_eos_in_ml_005.png
-   :alt: Data distribution mean CV AUC: 0.5206
+   :alt: Data distribution mean CV AUC: 0.4920
    :srcset: /auto_examples/01-basic-examples/images/sphx_glr_01-plot_eos_in_ml_005.png
    :class: sphx-glr-single-img
 
@@ -345,9 +306,8 @@ Test the visualization
 
  .. code-block:: none
 
-    2026-05-26 08:53:18 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
     We don't have real signal, nor site effects. Even with class imbalance across sites, there is nothing to pick up.
-    Mean accuracy: 0.5206
+    Mean accuracy: 0.4920
 
 
 
@@ -355,7 +315,7 @@ Test the visualization
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.909 seconds)
+   **Total running time of the script:** (0 minutes 4.781 seconds)
 
 
 .. _sphx_glr_download_auto_examples_01-basic-examples_01-plot_eos_in_ml.py:

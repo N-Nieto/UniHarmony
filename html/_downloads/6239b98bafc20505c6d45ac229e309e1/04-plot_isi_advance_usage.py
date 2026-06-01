@@ -40,3 +40,5 @@ isi = IntraSiteInterpolation(balance_strategy="per_site", random_state=42)
 X_balanced, y_balanced = isi.fit_resample(
     X, y, sites=sites, categorical_covariate=sex, continuous_covariate=age, n_bins_cont_cov=2
 )  # Age binned with 5 bins
+
+# %%
