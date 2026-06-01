@@ -26,9 +26,9 @@ from uniharmony.plot import plot_decision_boundary_2d
 
 sns.set_theme(style="whitegrid")
 verbosity("warning")
-
-clf = LogisticRegression()
-cv = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
+random_state = 42
+clf = LogisticRegression(random_state=random_state)
+cv = StratifiedKFold(n_splits=10, shuffle=True, random_state=random_state)
 
 
 # %%
@@ -37,7 +37,7 @@ cv = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
 
 # First, lets create an example without EoS and classes balanced across site.
 X, y, sites = make_multisite_classification(
-    n_sites=3, n_features=2, signal_strength=1, site_effect_strength=0, signal_type="blobs", random_state=23
+    n_sites=3, n_features=2, signal_strength=1, site_effect_strength=0, signal_type="blobs", random_state=random_state
 )
 # Create DataFrame for easier plotting
 df = pd.DataFrame(
@@ -63,14 +63,9 @@ plot_decision_boundary_2d(ax, clf)
 
 
 X, y, sites = make_multisite_classification(
-    n_sites=3, n_features=2, signal_strength=1, site_effect_strength=4, signal_type="blobs", random_state=23
+    n_sites=3, n_features=2, signal_strength=1, site_effect_strength=4, signal_type="blobs", random_state=random_state
 )
 
-# %%
-# Plotting
-# --------
-
-# %%
 # Create DataFrame for easier plotting
 df = pd.DataFrame(
     {"Feature 1": X[:, 0], "Feature 2": X[:, 1], "Class": [f"Class {c}" for c in y], "Site": [f"Site {s}" for s in sites]}
@@ -94,7 +89,7 @@ plot_decision_boundary_2d(ax, clf)
 # %%
 
 X, y, sites = make_multisite_classification(
-    n_sites=3, n_features=2, signal_strength=0, site_effect_strength=4, signal_type="blobs", random_state=23
+    n_sites=3, n_features=2, signal_strength=0.01, site_effect_strength=4, signal_type="blobs", random_state=random_state
 )
 
 # Create DataFrame for easier plotting
@@ -124,14 +119,13 @@ print(f"Mean accuracy: {scores.mean():.4f}")
 X, y, sites = make_multisite_classification(
     n_sites=3,
     n_features=2,
-    signal_strength=0,
-    site_effect_strength=1,
+    signal_strength=0.01,
+    site_effect_strength=4,
     signal_type="blobs",
-    random_state=23,
-    balance_per_site=[0.1, 0.5, 0.9],
+    random_state=random_state,
+    balance_per_site=[[0.1, 0.9], [0.5, 0.5], [0.9, 0.1]],
 )
 
-# %%
 # Test the visualization
 
 # Create DataFrame for easier plotting
@@ -160,11 +154,11 @@ print(f"Mean accuracy: {scores.mean():.4f}")
 X, y, sites = make_multisite_classification(
     n_sites=3,
     n_features=2,
-    signal_strength=0,
+    signal_strength=0.01,
     site_effect_strength=0,
     signal_type="blobs",
     random_state=23,
-    balance_per_site=[0.1, 0.5, 0.9],
+    balance_per_site=[[0.1, 0.9], [0.5, 0.5], [0.9, 0.1]],
 )
 
 # Create DataFrame for easier plotting
@@ -186,3 +180,5 @@ clf.fit(X, y)
 plot_decision_boundary_2d(ax, clf)
 print("We don't have real signal, nor site effects. Even with class imbalance across sites, there is nothing to pick up.")
 print(f"Mean accuracy: {scores.mean():.4f}")
+
+# %%
