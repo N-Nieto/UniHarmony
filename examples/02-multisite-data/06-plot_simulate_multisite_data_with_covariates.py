@@ -23,7 +23,7 @@ df = pd.DataFrame({"Class": y, "Site": sites, "Age": covars["age"], "Feature1":X
 print(f"X has {X.shape[0]} examples and {X.shape[1]} features")
 
 plt.figure(figsize=[10, 6])
-plt.title("Class and site distribution")
+plt.title("Features vs age/sex distribution")
 sns.scatterplot(df, y="Feature1", x="Age", hue="sex", style="Site")
 plt.grid(axis="y", color="black", alpha=0.5, linestyle="--")
 
