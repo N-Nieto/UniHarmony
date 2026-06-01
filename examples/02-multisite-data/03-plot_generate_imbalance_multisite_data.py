@@ -77,7 +77,7 @@ plt.grid(axis="y", color="black", alpha=0.5, linestyle="--")
 
 # %%
 
-X, y, sites = make_multisite_classification(balance_per_site=[0.3, 0.3])
+X, y, sites = make_multisite_classification(balance_per_site=[0.3, 0.7])
 df = pd.DataFrame({"Class": y, "Site": sites})
 general_balance = len(y[y == 1]) / len(y)
 y_site_0 = y[sites == 0]
