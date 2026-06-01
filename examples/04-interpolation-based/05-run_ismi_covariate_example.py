@@ -8,17 +8,14 @@ This notebook demonstrates the use of :class:`.InterSiteMatchedInterpolation` fo
 # %%
 import numpy as np
 from uniharmony.interpolation import InterSiteMatchedInterpolation
-
+from uniharmony.datasets import make_multisite_classification
 
 # Generate sample data with 3 sites
-rng = np.random.RandomState(42)
-X = rng.randn(150, 10)
-y = rng.randint(0, 2, 150)
-sites = np.array(["A"] * 50 + ["B"] * 50 + ["C"] * 50)
+X, y, sites, covars = make_multisite_classification(n_samples=3000, n_sites=3, covariates=["age", "sex"])
 
 # Define covariates for matching
-categorical_covariate = np.array([["M"], ["F"]] * 75)  # Sex
-continuous_covariate = rng.randint(20, 80, (150, 1))  # Age
+categorical_covariate = covars["sex"].reshape(-1,1)
+continuous_covariate = covars["age"].reshape(-1,1)
 covariate_tolerance = np.array([5.0])  # ±5 years tolerance
 
 # Create interpolator with pairwise mode and k=2 matches
@@ -35,3 +32,5 @@ X_res, y_res = ismi.fit_resample(X, y, sites,
 
 # Check unmatched samples
 print(ismi.unmatched_samples_)
+
+# %%

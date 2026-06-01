@@ -67,7 +67,7 @@ continuous_covariate = ages.reshape(-1, 1)
 
 
 # %%
-# Plot before harmonisation
+# Plot before harmonization
 # --------------------------
 
 df = pd.DataFrame({"Target": y, "Site": sites})
@@ -79,7 +79,7 @@ plt.grid(axis="y", color="black", alpha=0.5, linestyle="--")
 
 
 # %%
-# Harmonisation
+# Harmonization
 # -------------
 # Apply Inter-Site Matched Interpolation (ISMI)
 #
