@@ -1,4 +1,14 @@
-"""Provider CovBat transformer."""
+"""Provide CovBat transformer.
+
+Adapted from:
+https://github.com/andy1764/CovBat_Harmonization
+licensed under Artistic License 2.0.
+
+CovBat harmonizes both mean/variance (via ComBat) and covariance
+(via PCA + ComBat on scores) across sites. After CovBat,
+machine-learning classifiers should no longer be able to detect site
+membership from the covariance structure of the data.
+"""
 
 # Adapted from:
 # https://github.com/andy1764/CovBat_Harmonization
@@ -26,42 +36,83 @@ logger.bind(src="CovBat")
 
 
 class CovBat(BaseComBat):
-    """Harmonization of mean and covariance for multi-site imaging data.
+    """Harmonization of mean and covariance for multi-site data.
 
-    This transformer performs:
+    CovBat extends ComBat with a covariance-harmonization step.  The
+    algorithm is:
 
-    1. ComBat without correcting mean in the harmonized data, then
-    2. Reduce dimension by Principal Component Analysis (PCA), then
-    3. Harmonize the variance of the principal components
-
-    This process removes the batch effects from the data, which is not removed by standard ComBat.
-    Multivariate pattern analysis (MVPA) cannot use covariance information to detect site differences on CovBat-harmonized data
-    unlike that from ComBat-harmonized data.
+    1. **First ComBat** (with empirical Bayes) - removes site effects from
+       mean and variance.  The data are *residualized* (mean left at zero).
+    2. **PCA + Second ComBat** - principal components are computed on the
+       residualized data and the leading scores are harmonized with a second
+       ComBat step (usually without empirical Bayes).  This removes
+       site-specific covariance structure.
+    3. **Back-projection** - the harmonized scores are projected back to the
+       original feature space and the mean is restored.
 
     Parameters
     ----------
-    copy : bool, optional (default True)
-        Whether to copy objects when doing `check_array`.
+    copy : bool, default True
+        Whether to copy ``X`` during validation.
+    std_var : bool, default True
+        If ``True``, scale each feature to unit variance before PCA.  This
+        corresponds to the R implementation's ``std.var`` flag and is
+        strongly recommended when features are on different scales.
+    pct_var : float or None, default 0.95
+        Proportion of variance (0-1) that the selected PCs must explain.
+        Ignored when ``n_pc`` is not ``None``.
+    n_pc : int or None, default None
+        Exact number of principal components to harmonize.  Overrides
+        ``pct_var``.
+    first_combat_eb : bool, default True
+        Use empirical Bayes in the first ComBat step.
+    first_combat_parametric : bool, default True
+        Use parametric priors in the first ComBat step.
+    score_eb : bool, default False
+        Use empirical Bayes when harmonizing PC scores.  The reference
+        implementation uses ``False``.
+    score_parametric : bool, default True
+        Use parametric adjustments for the PC-score ComBat step.
+    residualize : bool, default False
+        If ``True``, the output is left mean-centered (the grand mean is not
+        added back).  This matches the R implementation's ``resid=TRUE``.
 
     Attributes
     ----------
-    sites_ : array, shape (n_samples,)
-        Fitted site names.
+    sites_ : ndarray, shape (n_sites,)
+        Site names seen during ``fit``.
+    n_pc_ : int
+        Number of PCs selected for harmonization.
 
     References
     ----------
-    .. [1] Chen, A. A., et al. (2022).
-           Mitigating site effects in covariance for machine learning in neuroimaging data.
-           Human Brain Mapping, 43(4), 1179-1195.
-           https://doi.org/10.1002/hbm.25688
+    .. [1] Chen, A. A., Beer, J. C., Tustison, N. J., Cook, P. A.,
+       Shinohara, R. T., Shou, H., & ADNI (2022).  Mitigating site effects
+       in covariance for machine learning in neuroimaging data.
+       *Human Brain Mapping*, 43(4), 1179-1195.
+       https://doi.org/10.1002/hbm.25688
 
     """
 
     def __init__(
         self,
-        copy: bool = True,
+        std_var: bool = True,
+        pct_var: float | None = 0.95,
+        n_pc: int | None = None,
+        first_combat_eb: bool = True,
+        first_combat_parametric: bool = True,
+        score_eb: bool = False,
+        score_parametric: bool = True,
+        residualize: bool = False,
     ) -> None:
-        self.copy = copy
+        self.std_var = std_var
+        self.pct_var = pct_var
+        self.n_pc = n_pc
+        self.first_combat_eb = first_combat_eb
+        self.first_combat_parametric = first_combat_parametric
+        self.score_eb = score_eb
+        self.score_parametric = score_parametric
+        self.residualize = residualize
 
     def fit(
         self,
@@ -69,8 +120,6 @@ class CovBat(BaseComBat):
         sites: npt.ArrayLike,
         categorical_covariates: npt.ArrayLike | None = None,
         continuous_covariates: npt.ArrayLike | None = None,
-        pct_var: float | None = 0.95,
-        n_pc: int | None = None,
         var_epsilon: float = 1e-8,
         delta_epsilon: float = 1e-8,
         tau_2_epsilon: float = 1e-10,
@@ -90,11 +139,6 @@ class CovBat(BaseComBat):
         continuous_covariates : array-like, shape (n_samples, n_continuous_covariates) or None, optional (default None)
             The continuous covariates to be preserved during harmonization.
             (e.g., age, clinical scores).
-        pct_var : float or None, optional (default 0.95)
-            Numeric between 0 and 1 indicating the percent of variation that is
-            explained by the adjusted PCs.
-        n_pc : positive int or None, optional (default None)
-            If not None, then this specifies the number of PCs to adjust. Overrides ``pct_var``.
         var_epsilon : float, optional (default 1e-8)
             Small constant to add to variance to avoid division by zero.
         delta_epsilon : float, optional (default 1e-8)
@@ -109,55 +153,72 @@ class CovBat(BaseComBat):
 
         """
         logger.debug("Fitting")
+        # ---- validate inputs ----
+        X, sites = self._check_X_sites(X, sites, estimator=self)
 
         # First combat
-        self._first_combat = _FirstNeuroComBat()
-        combat_data = self._first_combat.fit_transform(
+        self._first_combat = _ResidualNeuroComBat(
+            empirical_bayes=self.first_combat_eb,
+            parametric_adjustments=self.first_combat_parametric,
+        )
+        residualized = self._first_combat.fit_transform(
             X=X,
             sites=sites,
             categorical_covariates=categorical_covariates,
             continuous_covariates=continuous_covariates,
+            delta_epsilon=delta_epsilon,
+        )
+
+        # ------------------------------------------------------------------
+        # 2. Optional variance standardisation before PCA
+        # ------------------------------------------------------------------
+        if self.std_var:
+            self._scaler = StandardScaler()
+            pca_input = self._scaler.fit_transform(residualized)
+        else:
+            self._scaler = None
+            pca_input = residualized
+
+        # ------------------------------------------------------------------
+        # 3. Fit PCA on residualized data
+        # ------------------------------------------------------------------
+        self._pca = PCA()
+        self._pca.fit(pca_input)
+
+        n_samples, n_features = pca_input.shape
+        n_components = min(n_samples, n_features)
+
+        if self.n_pc is not None and self.n_pc > 0:
+            self.n_pc_ = min(self.n_pc, n_components)
+        elif self.pct_var is not None:
+            var_exp = np.cumsum(np.round(self._pca.explained_variance_ratio_, decimals=4))
+            above = np.where(var_exp > self.pct_var)[0]
+            self.n_pc_ = int(above[0]) + 1 if len(above) else n_components
+        else:
+            self.n_pc_ = n_components
+
+        logger.debug(f"Selected {self.n_pc_} / {n_components} PCs for covariance harmonization")
+
+        # ------------------------------------------------------------------
+        # 4. Second ComBat (no covariates, usually no EB) on PC scores
+        # ------------------------------------------------------------------
+        full_scores = self._pca.transform(pca_input)
+        scores = full_scores[:, : self.n_pc_]
+
+        self._second_combat = NeuroComBat(
+            empirical_bayes=self.score_eb,
+            parametric_adjustments=self.score_parametric,
+        )
+        self._second_combat.fit(
+            X=scores,
+            sites=sites,
+            categorical_covariates=None,
+            continuous_covariates=None,
             var_epsilon=var_epsilon,
             delta_epsilon=delta_epsilon,
             tau_2_epsilon=tau_2_epsilon,
             max_iter=max_iter,
         )
-        # bmu = np.mean(combat_data, axis=0)
-
-        # Standardize data before PCA
-        self._scaler = StandardScaler()
-        combat_data = self._scaler.fit_transform(combat_data)
-        # PCA
-        self._pca = PCA()
-        self._pca.fit(combat_data)
-        pc_components = self._pca.components_
-        full_scores = self._pca.fit_transform(combat_data)
-
-        var_exp = np.cumsum(np.round(self._pca.explained_variance_ratio_, decimals=4))
-        if pct_var is not None:
-            npc = np.min(np.where(var_exp > pct_var)) + 1
-        if n_pc is not None and n_pc > 0:
-            npc = n_pc
-        scores = full_scores.loc[range(0, npc), :]
-
-        # Second combat
-        self._second_combat = NeuroComBat(
-            empirical_bayes=False,
-        )
-        scores_combat = self._second_combat.fit(
-            X=scores,
-            sites=sites,
-            categorical_covariates=None,
-            continuous_covariates=None,
-        )
-        full_scores.loc[range(0, npc), :] = scores_combat
-
-        x_covbat = combat_data - combat_data  # create pandas DataFrame to store output
-        # x_covbat = x_covbat.add(bmu, axis='index')
-        proj = np.dot(full_scores.T, pc_components).T
-        x_covbat += self._scaler.inverse_transform(proj.T).T
-        # x_covbat = x_covbat * np.dot(vpsq, np.ones((1, int(n_array)))) + stand_mean
-        x_covbat += self._standardized_mean
 
         return self
 
@@ -198,7 +259,72 @@ class CovBat(BaseComBat):
 
         check_is_fitted(self)
 
-        self._second_combat.transform(
+        # ---- 1. First ComBat (residualize) ----
+        residualized = self._first_combat.transform(
+            X=X,
+            sites=sites,
+            categorical_covariates=categorical_covariates,
+            continuous_covariates=continuous_covariates,
+        )
+
+        # ---- 2. Scale (using fitted scaler) ----
+        if self._scaler is not None:
+            pca_input = self._scaler.transform(residualized)
+        else:
+            pca_input = residualized
+
+        # ---- 3. Project to PC space ----
+        full_scores = self._pca.transform(pca_input)
+
+        # ---- 4. Second ComBat on leading scores ----
+        scores = full_scores[:, : self.n_pc_]
+        scores_harmonized = self._second_combat.transform(
+            X=scores,
+            sites=sites,
+            categorical_covariates=None,
+            continuous_covariates=None,
+        )
+
+        # ---- 5. Back-project to feature space ----
+        full_scores_harmonized = full_scores.copy()
+        full_scores_harmonized[:, : self.n_pc_] = scores_harmonized
+
+        # Reconstruct: scores @ components + mean_
+        reconstructed = full_scores_harmonized @ self._pca.components_
+        reconstructed += self._pca.mean_
+
+        if self._scaler is not None:
+            reconstructed = self._scaler.inverse_transform(reconstructed)
+
+        # ---- 6. Restore mean from first ComBat ----
+        if not self.residualize:
+            # _standardized_mean was populated by _first_combat.transform
+            # shape (n_features, n_samples) → transpose to (n_samples, n_features)
+            standardized_mean = self._first_combat._standardized_mean
+            reconstructed = reconstructed + standardized_mean.T
+
+        return reconstructed
+
+    def fit_transform(
+        self,
+        X: npt.ArrayLike,
+        sites: npt.ArrayLike,
+        categorical_covariates: npt.ArrayLike | None = None,
+        continuous_covariates: npt.ArrayLike | None = None,
+        **fit_params,
+    ) -> npt.NDArray:
+        """Fit to data, then transform it.
+
+        Overrides ``BaseComBat.fit_transform`` so that fit-only parameters
+        (e.g. ``var_epsilon``) are not forwarded to ``transform``.
+        """
+        return self.fit(
+            X=X,
+            sites=sites,
+            categorical_covariates=categorical_covariates,
+            continuous_covariates=continuous_covariates,
+            **fit_params,
+        ).transform(
             X=X,
             sites=sites,
             categorical_covariates=categorical_covariates,
@@ -216,8 +342,15 @@ class CovBat(BaseComBat):
         )
 
 
-class _FirstNeuroComBat(NeuroComBat):
-    """Custom NeuroComBat for first step of CovBat."""
+class _ResidualNeuroComBat(NeuroComBat):
+    """NeuroComBat that returns residualized data (mean is NOT added back).
+
+    In the CovBat pipeline the first ComBat step must residualize the data:
+    site effects are removed from mean and variance, but the grand mean
+    (including covariate effects) is **not** restored.  The PCA step then
+    operates on pure residuals, and the mean is added back only after the
+    second ComBat / back-projection step.
+    """
 
     def transform(
         self,
@@ -225,53 +358,31 @@ class _FirstNeuroComBat(NeuroComBat):
         sites: npt.ArrayLike,
         categorical_covariates: npt.ArrayLike | None = None,
         continuous_covariates: npt.ArrayLike | None = None,
+        delta_epsilon: float = 1e-8,
     ) -> npt.NDArray:
-        """Harmonize data.
+        """Harmonize data without restoring the mean.
 
-        Parameters
-        ----------
-        X : array-like, shape (n_samples, n_features)
-            The data to be harmonized.
-        sites : array-like, shape (n_samples,)
-            Sites.
-        categorical_covariates : array-like, shape (n_samples, n_categorical_covariates) or None, optional (default None)
-            The categorical covariates to be preserved during harmonization.
-            (e.g., sex, disease).
-        continuous_covariates : array-like, shape (n_samples, n_continuous_covariates) or None, optional (default None)
-            The continuous covariates to be preserved during harmonization.
-            (e.g., age, clinical scores).
-
-        Returns
-        -------
-        array, shape (n_samples, n_features)
-            The array containing the harmonized data across sites.
-
-        Raises
-        ------
-        ValueError
-            If one or more site or sites is or are unseen.
-
+        The returned array is in the original feature scale (pooled standard
+        deviation has been reapplied) but the mean is left at zero.  The
+        ``_standardized_mean`` attribute is populated so that the caller
+        (``CovBat``) can add it back later.
         """
-        logger.debug("Transforming")
+        logger.debug("Transforming (residualize only)")
 
-        # Validate input
+        # ---- input validation (mirrors NeuroComBat.transform) ----
         check_is_fitted(self)
-        X, sites = self._check_X_sites(X, sites, copy=self.copy, estimator=self)
+        X, sites = self._check_X_sites(X, sites, estimator=self)
 
         if self._categorical_covariates_used:
             categorical_covariates = check_array(categorical_covariates, dtype=None, estimator=self)
-
         if self._continuous_covariates_used:
             continuous_covariates = check_array(continuous_covariates, dtype=FLOAT_DTYPES, estimator=self)
 
-        # Transpose to conform to neuroCombat and original ComBat
+        # neuroCombat convention: rows = features, columns = samples
         X = X.T
 
-        new_data_sites_name = np.unique(sites)
-
-        # Check all sites from new_data were seen
-        if not all(s in self.sites_ for s in new_data_sites_name):
-            raise ValueError("There is a site unseen during the fit method in the data.")
+        if not all(s in self.sites_ for s in np.unique(sites)):
+            raise ValueError("One or more sites were not seen during fit.")
 
         n_samples = sites.shape[0]
         idx_per_site = [list(np.where(sites == s)[0].tolist()) for s in self.sites_]
@@ -281,17 +392,16 @@ class _FirstNeuroComBat(NeuroComBat):
             categorical_covariates=categorical_covariates,
             continuous_covariates=continuous_covariates,
         )
+        self._design_matrix_shape = design.shape
+        standardized_data, self._standardized_mean = self.transform_standardize(X=X, design=design, n_samples=n_samples)
 
-        standardized_data, self._standardized_mean = self.transform_standardize(
-            X=X,
-            design=design,
-            n_samples=n_samples,
-        )
-
+        # Pass mean=0 so that harmonize() does NOT add the mean back.
         bayes_data = self.harmonize(
             data=standardized_data,
-            mean=0,  # don't add grand mean
+            mean=0,
             idx_per_site=idx_per_site,
+            epsilon=delta_epsilon,
         )
 
+        # Return in sample-major format (n_samples, n_features)
         return bayes_data.T
