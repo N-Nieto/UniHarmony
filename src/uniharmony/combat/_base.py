@@ -1,6 +1,7 @@
 """Provide BaseComBat."""
 
 import numpy.typing as npt
+import sklearn
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils import Tags
 from sklearn.utils.validation import (
@@ -13,6 +14,8 @@ from ._design_matrix_mixin import DesignMatrixMixin
 from ._ls_mixin import LocationAndScaleMixin
 from ._standardization_mixin import StandardizationMixin
 
+
+sklearn.set_config(enable_metadata_routing=True)
 
 __all__ = ["BaseComBat"]
 
@@ -80,6 +83,8 @@ class BaseComBat(DesignMatrixMixin, StandardizationMixin, LocationAndScaleMixin,
             Transformed array.
 
         """
+        sites_routed = fit_params.pop("sites")
+        assert sites == sites_routed
         return self.fit(X, sites, **fit_params).transform(X, sites, **fit_params)
 
     # Overridden for check_is_fitted() usage
