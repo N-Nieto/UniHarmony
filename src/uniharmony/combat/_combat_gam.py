@@ -9,9 +9,6 @@ import numpy.typing as npt
 import pandas as pd
 import structlog
 from sklearn.utils.validation import (
-    FLOAT_DTYPES,
-    check_array,
-    check_consistent_length,
     check_is_fitted,
 )
 from statsmodels.gam.api import BSplines
@@ -119,8 +116,7 @@ class ComBatGAM(BaseComBat):
         validate_sites(sites)
 
         # Check smooth_covariates and its bounds if passed
-        smooth_covariates = check_array(smooth_covariates, dtype=FLOAT_DTYPES, estimator=self)
-        check_consistent_length(smooth_covariates, sites)
+        smooth_covariates = self._check_continuous_covariates(X, smooth_covariates, estimator=self)
         if smooth_covariates_bounds is None:
             smooth_covariates_bounds = (None, None)
         logger.info(
@@ -136,8 +132,7 @@ class ComBatGAM(BaseComBat):
         self._continuous_covariates_used = False
         if continuous_covariates is not None:
             self._continuous_covariates_used = True
-            continuous_covariates = check_array(continuous_covariates, dtype=FLOAT_DTYPES, estimator=self)
-            check_consistent_length(continuous_covariates, sites)
+            continuous_covariates = self._check_continuous_covariates(X, continuous_covariates, estimator=self)
 
             logger.warning(
                 "You specified continuous covariates to be preserved. "
@@ -164,8 +159,8 @@ class ComBatGAM(BaseComBat):
         # Setup design matrix for smoothing
         logger.debug("Setting up smoothing using B-Splines")
         # Create cubic spline basis for smooth covariates
-        x_spline = smooth_covariates.copy()
-        smooth_covariates_cols = smooth_covariates.shape[1]
+        x_spline = smooth_covariates.reshape(-1, 1).copy()
+        smooth_covariates_cols = smooth_covariates.reshape(-1, 1).shape[1]
         if smooth_covariates_cols == 1:
             self._bsplines = BSplines(
                 x_spline,
@@ -194,10 +189,11 @@ class ComBatGAM(BaseComBat):
             df_gam[v] = design[:, b]
         # Set data from continuous covariates
         if self._continuous_covariates_used:
-            for c in range(continuous_covariates.shape[1]):
+            cont_covs = continuous_covariates.reshape(-1, 1)
+            for c in range(cont_covs.shape[1]):
                 v = f"c{c!s}"
                 formula += f"{v} + "
-                df_gam[v] = continuous_covariates[:, c].astype(float)
+                df_gam[v] = cont_covs[:, c].astype(float)
         # Complete formula
         formula = formula[:-2] + "- 1"
         logger.debug(f"Final formula for smoothing: {formula}")
@@ -266,10 +262,10 @@ class ComBatGAM(BaseComBat):
         check_is_fitted(self)
         X, sites = self._check_X_sites(X, sites, estimator=self)
 
-        smooth_covariates = check_array(smooth_covariates, dtype=FLOAT_DTYPES, estimator=self)
+        smooth_covariates = self._check_continuous_covariates(X, smooth_covariates, estimator=self)
 
         if self._continuous_covariates_used:
-            continuous_covariates = check_array(continuous_covariates, dtype=FLOAT_DTYPES, estimator=self)
+            continuous_covariates = self._check_continuous_covariates(X, continuous_covariates, estimator=self)
 
         # Transpose to conform to neuroCombat and original ComBat
         X = X.T
@@ -291,7 +287,7 @@ class ComBatGAM(BaseComBat):
         # Setup design matrix for smoothing
         logger.debug("Setting up smoothing using B-Splines")
         # Create cubic spline basis for smooth covariates
-        x_spline = smooth_covariates.copy()
+        x_spline = smooth_covariates.reshape(-1, 1).copy()
         bs_basis = self._bsplines.transform(x_spline)
         # Construct dataframe required for GAM
         df_gam = {}
@@ -301,9 +297,10 @@ class ComBatGAM(BaseComBat):
             df_gam[v] = design[:, b]
         # Set data from continuous covariates
         if self._continuous_covariates_used:
-            for c in range(continuous_covariates.shape[1]):
+            cont_covs = continuous_covariates.reshape(-1, 1)
+            for c in range(cont_covs.shape[1]):
                 v = f"c{c!s}"
-                df_gam[v] = continuous_covariates[:, c].astype(float)
+                df_gam[v] = cont_covs[:, c].astype(float)
         df_gam = pd.DataFrame(df_gam)
         # For matrix operations, a modified design matrix is required
         design = np.concatenate((df_gam, bs_basis), axis=1)
