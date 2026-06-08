@@ -53,6 +53,68 @@ class BaseComBat(DesignMatrixMixin, StandardizationMixin, LocationAndScaleMixin,
         check_consistent_length(X, sites)
         return X, sites
 
+    def _check_categorical_covariates(
+        self,
+        X: npt.ArrayLike,
+        categorical_covariates: npt.ArrayLike,
+        copy: bool = False,
+        estimator: type["BaseComBat"] | None = None,
+    ) -> npt.NDArray:
+        """Check categorical covariates.
+
+        Parameters
+        ----------
+        X : array-like, shape (n_samples, n_features)
+            Input data.
+        categorical_covariates : array-like, shape (n_samples, n_categorical_covariates)
+            Categorical covariates.
+        copy : bool, optional (default False)
+            Whether to copy objects when doing `check_array`.
+        estimator : estimator instance, optional (default None)
+            If passed, include the name of the estimator in warning messages.
+
+        Returns
+        -------
+        ndarray, shape (n_samples, n_categorical_covariates)
+            The converted and validated categorical covariates.
+
+        """
+        categorical_covariates = check_array(categorical_covariates, copy=copy, dtype=None, ensure_2d=False, estimator=estimator)
+        check_consistent_length(X, categorical_covariates)
+        return categorical_covariates
+
+    def _check_continuous_covariates(
+        self,
+        X: npt.ArrayLike,
+        continuous_covariates: npt.ArrayLike,
+        copy: bool = False,
+        estimator: type["BaseComBat"] | None = None,
+    ) -> npt.NDArray:
+        """Check continuous covariates.
+
+        Parameters
+        ----------
+        X : array-like, shape (n_samples, n_features)
+            Input data.
+        continuous_covariates : array-like, shape (n_samples, n_continuous_covariates)
+            Continuous covariates.
+        copy : bool, optional (default False)
+            Whether to copy objects when doing `check_array`.
+        estimator : estimator instance, optional (default None)
+            If passed, include the name of the estimator in warning messages.
+
+        Returns
+        -------
+        ndarray, shape (n_samples, n_continuous_covariates)
+            The converted and validated continuous covariates.
+
+        """
+        continuous_covariates = check_array(
+            continuous_covariates, copy=copy, dtype=FLOAT_DTYPES, ensure_2d=False, estimator=estimator
+        )
+        check_consistent_length(X, continuous_covariates)
+        return continuous_covariates
+
     # Overridden to allow sites
     def fit_transform(
         self,
