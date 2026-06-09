@@ -65,8 +65,8 @@ def test_neuro_combat_compat_sklearn(estimator: object, check: Callable) -> None
 def test_neuro_combat_ops_original() -> None:
     """Test operation of NeuroComBat with original."""
     data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
-    batches = np.array([1, 1, 1, 1, 1, 2, 2, 2, 2, 2]).reshape(-1, 1)
-    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2]).reshape(-1, 1)
+    batches = np.array([1, 1, 1, 1, 1, 2, 2, 2, 2, 2])
+    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2])
     data_combat = NeuroComBat().fit_transform(
         data.T,
         batches,
@@ -91,8 +91,8 @@ def test_neuro_combat_ops_impl() -> None:
 def test_neuro_combat_reproducibility() -> None:
     """Test reproducibility of NeuroComBat."""
     data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
-    batches = np.array([1, 1, 1, 1, 1, 2, 2, 2, 2, 2]).reshape(-1, 1)
-    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2]).reshape(-1, 1)
+    batches = np.array([1, 1, 1, 1, 1, 2, 2, 2, 2, 2])
+    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2])
     data_combat_v1 = NeuroComBat().fit_transform(
         data.T,
         batches,
@@ -109,8 +109,8 @@ def test_neuro_combat_reproducibility() -> None:
 def test_neuro_combat_reproducibility_categorical() -> None:
     """Test reproducibility of NeuroComBat with categoricals."""
     data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
-    batches = np.array([1, 1, 1, 1, 1, 2, 2, 2, 2, 2]).reshape(-1, 1)
-    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2]).reshape(-1, 1)
+    batches = np.array([1, 1, 1, 1, 1, 2, 2, 2, 2, 2])
+    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2])
     data_combat_v1 = NeuroComBat().fit_transform(
         data.T,
         batches,
@@ -127,8 +127,8 @@ def test_neuro_combat_reproducibility_categorical() -> None:
 def test_neuro_combat_no_parametrics() -> None:
     """Test reproducibility of NeuroComBat with categoricals."""
     data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
-    batches = np.array([1, 1, 1, 1, 1, 2, 2, 2, 2, 2]).reshape(-1, 1)
-    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2]).reshape(-1, 1)
+    batches = np.array([1, 1, 1, 1, 1, 2, 2, 2, 2, 2])
+    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2])
     _ = NeuroComBat(empirical_bayes=True, parametric_adjustments=False, mean_only=False).fit_transform(
         data.T,
         batches,
@@ -139,8 +139,8 @@ def test_neuro_combat_no_parametrics() -> None:
 def test_neuro_combat_site_with_nan() -> None:
     """Test Site with nan."""
     data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
-    batches = np.array([1, 1, 1, np.nan, 1, 2, 2, 2, 2, 2], dtype=object).reshape(-1, 1)
-    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2]).reshape(-1, 1)
+    batches = np.array([1, 1, 1, np.nan, 1, 2, 2, 2, 2, 2], dtype=object)
+    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2])
     with pytest.raises(ValueError):
         _ = NeuroComBat(empirical_bayes=True, parametric_adjustments=False, mean_only=False).fit_transform(
             data.T,
@@ -152,8 +152,8 @@ def test_neuro_combat_site_with_nan() -> None:
 def test_neuro_combat_covars_with_nan() -> None:
     """Test covars with nan."""
     data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
-    batches = np.array([1, 1, 1, 1, 1, 2, 2, 2, 2, 2], dtype=object).reshape(-1, 1)
-    genders = np.array([1, 2, 1, 2, np.nan, 2, 1, 2, 1, 2], dtype=object).reshape(-1, 1)
+    batches = np.array([1, 1, 1, 1, 1, 2, 2, 2, 2, 2], dtype=object)
+    genders = np.array([1, 2, 1, 2, np.nan, 2, 1, 2, 1, 2], dtype=object)
     with pytest.raises(ValueError):
         _ = NeuroComBat(empirical_bayes=True, parametric_adjustments=False, mean_only=False).fit_transform(
             data.T,
@@ -166,7 +166,7 @@ def test_neuro_combat_sites_as_str() -> None:
     """Test sites as str."""
     data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
     batches = ["1", "1", "1", "1", "1", "2", "2", "2", "2", "2"]
-    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2]).reshape(-1, 1)
+    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2])
 
     _ = NeuroComBat(empirical_bayes=True, parametric_adjustments=False, mean_only=False).fit_transform(
         data.T,
@@ -179,7 +179,7 @@ def test_neuro_combat_unseen_site() -> None:
     """Test unseen sites."""
     data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
     batches = ["1", "1", "1", "1", "1", "2", "2", "2", "2", "2"]
-    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2]).reshape(-1, 1)
+    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2])
     neurocombat = NeuroComBat(empirical_bayes=True, parametric_adjustments=False, mean_only=False)
     _ = neurocombat.fit(
         data.T,
@@ -195,7 +195,7 @@ def test_neuro_combat_unseen_site_same_nsites() -> None:
     """Test sites  unseen sites with matching number of sites."""
     data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
     batches = ["1", "1", "1", "1", "1", "2", "2", "2", "2", "2"]
-    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2]).reshape(-1, 1)
+    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2])
     neurocombat = NeuroComBat(empirical_bayes=True, parametric_adjustments=False, mean_only=False)
     _ = neurocombat.fit(
         data.T,
@@ -211,7 +211,7 @@ def test_neuro_combat_max_iter() -> None:
     """Test sites max iter."""
     data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
     batches = ["1", "1", "1", "1", "1", "2", "2", "2", "2", "2"]
-    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2]).reshape(-1, 1)
+    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2])
     neurocombat = NeuroComBat(empirical_bayes=True, parametric_adjustments=True, mean_only=False)
     _ = neurocombat.fit(data.T, batches, categorical_covariates=genders, max_iter=1)
 
