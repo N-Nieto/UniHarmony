@@ -10,10 +10,6 @@ machine-learning classifiers should no longer be able to detect site
 membership from the covariance structure of the data.
 """
 
-# Adapted from:
-# https://github.com/andy1764/CovBat_Harmonization
-# licensed under Artistic License 2.0 .
-
 import numpy as np
 import numpy.typing as npt
 import structlog
@@ -45,37 +41,44 @@ class CovBat(BaseComBat):
        mean and variance.  The data are *residualized* (mean left at zero).
     2. **PCA + Second ComBat** - principal components are computed on the
        residualized data and the leading scores are harmonized with a second
-       ComBat step (usually without empirical Bayes).  This removes
-       site-specific covariance structure.
+       ComBat step (without empirical Bayes according to the original paper).
+        This removes site-specific covariance structure.
     3. **Back-projection** - the harmonized scores are projected back to the
        original feature space and the mean is restored.
 
     Parameters
     ----------
-    copy : bool, default True
-        Whether to copy ``X`` during validation.
     std_var : bool, default True
-        If ``True``, scale each feature to unit variance before PCA.  This
-        corresponds to the R implementation's ``std.var`` flag and is
-        strongly recommended when features are on different scales.
+        If ``True``, scale each feature to unit variance before PCA
+        default value matches the original implementation.
+
     pct_var : float or None, default 0.95
         Proportion of variance (0-1) that the selected PCs must explain.
         Ignored when ``n_pc`` is not ``None``.
+        default value matches the original implementation.
+
     n_pc : int or None, default None
-        Exact number of principal components to harmonize.  Overrides
-        ``pct_var``.
+        Exact number of principal components to harmonize.
+        Overrides ``pct_var``.
+
     first_combat_eb : bool, default True
         Use empirical Bayes in the first ComBat step.
+
     first_combat_parametric : bool, default True
         Use parametric priors in the first ComBat step.
+
     score_eb : bool, default False
-        Use empirical Bayes when harmonizing PC scores.  The reference
-        implementation uses ``False``.
+        Use empirical Bayes when harmonizing PC scores.
+        default value matches the original implementation.
+
     score_parametric : bool, default True
         Use parametric adjustments for the PC-score ComBat step.
+
     residualize : bool, default False
         If ``True``, the output is left mean-centered (the grand mean is not
-        added back).  This matches the R implementation's ``resid=TRUE``.
+        added back).
+        default value matches the original implementation.
+
 
     Attributes
     ----------
@@ -131,22 +134,29 @@ class CovBat(BaseComBat):
         ----------
         X : array-like, shape (n_samples, n_features)
             The training input samples.
+
         sites : array-like, shape (n_samples,)
             Sites.
+
         categorical_covariates : array-like, shape (n_samples, n_categorical_covariates) or None, optional (default None)
             The categorical covariates to be preserved during harmonization.
             (e.g., sex, disease).
+
         continuous_covariates : array-like, shape (n_samples, n_continuous_covariates) or None, optional (default None)
             The continuous covariates to be preserved during harmonization.
             (e.g., age, clinical scores).
+
         var_epsilon : float, optional (default 1e-8)
             Small constant to add to variance to avoid division by zero.
+
         delta_epsilon : float, optional (default 1e-8)
             Small constant to add to delta variance to avoid division by zero in full mode.
             This is only used if empirical_bayes=True and parametric_adjustments=True.
+
         tau_2_epsilon : float, optional (default 1e-10)
             Small constant to add to tau_2 variance to avoid division by zero in full mode.
             This is only used if empirical_bayes=True and parametric_adjustments=True.
+
         max_iter : int, optional (default 1000)
             Maximum number of iterations for the solver in full mode.
             This is only used if empirical_bayes=True and parametric_adjustments=True.
@@ -157,10 +167,12 @@ class CovBat(BaseComBat):
         X, sites = self._check_X_sites(X, sites, estimator=self)
 
         # First combat
+        # This is an adaptation of original ComBat.
         self._first_combat = _ResidualNeuroComBat(
             empirical_bayes=self.first_combat_eb,
             parametric_adjustments=self.first_combat_parametric,
         )
+
         residualized = self._first_combat.fit_transform(
             X=X,
             sites=sites,
@@ -184,26 +196,34 @@ class CovBat(BaseComBat):
         # ------------------------------------------------------------------
         self._pca = PCA()
         self._pca.fit(pca_input)
+        full_scores = self._pca.transform(pca_input)
 
         n_samples, n_features = pca_input.shape
         n_components = min(n_samples, n_features)
-
+        # Warning about the behavior.
+        if self.n_pc is not None and self.n_pc > 0 and self.pct_var is not None:
+            logger.warning(
+                f"Both n_pc ({self.n_pc}) and pct_var ({self.pct_var}) provided. "
+                f"Using n_pc to determine number of components, ignoring pct_var."
+            )
         if self.n_pc is not None and self.n_pc > 0:
             self.n_pc_ = min(self.n_pc, n_components)
         elif self.pct_var is not None:
+            # Check the range of the explained variance
+            if not 0 < self.pct_var < 1:
+                raise ValueError(f"pct_var must be between 0 and 1, got {self.pct_var}")
             var_exp = np.cumsum(np.round(self._pca.explained_variance_ratio_, decimals=4))
             above = np.where(var_exp > self.pct_var)[0]
             self.n_pc_ = int(above[0]) + 1 if len(above) else n_components
         else:
             self.n_pc_ = n_components
 
+        scores = full_scores[:, : self.n_pc_]
         logger.debug(f"Selected {self.n_pc_} / {n_components} PCs for covariance harmonization")
 
-        # ------------------------------------------------------------------
-        # 4. Second ComBat (no covariates, usually no EB) on PC scores
-        # ------------------------------------------------------------------
-        full_scores = self._pca.transform(pca_input)
-        scores = full_scores[:, : self.n_pc_]
+        # -----------------------------------------------------------------------------------
+        # 4. Second ComBat (no covariates, no EB in the original implementation) on PC scores
+        # -----------------------------------------------------------------------------------
 
         self._second_combat = NeuroComBat(
             empirical_bayes=self.score_eb,
@@ -375,6 +395,7 @@ class _ResidualNeuroComBat(NeuroComBat):
 
         if self._categorical_covariates_used:
             categorical_covariates = check_array(categorical_covariates, dtype=None, estimator=self)
+
         if self._continuous_covariates_used:
             continuous_covariates = check_array(continuous_covariates, dtype=FLOAT_DTYPES, estimator=self)
 
@@ -393,14 +414,14 @@ class _ResidualNeuroComBat(NeuroComBat):
             continuous_covariates=continuous_covariates,
         )
         self._design_matrix_shape = design.shape
+
         standardized_data, self._standardized_mean = self.transform_standardize(X=X, design=design, n_samples=n_samples)
 
-        # Pass mean=0 so that harmonize() does NOT add the mean back.
         bayes_data = self.harmonize(
             data=standardized_data,
-            mean=0,
+            mean=0,  # Pass mean=0 so that harmonize() does NOT add the mean back.
             idx_per_site=idx_per_site,
-            epsilon=delta_epsilon,
+            epsilon=delta_epsilon,  # Small constant added to the delta* to avoid division by zero.
         )
 
         # Return in sample-major format (n_samples, n_features)
