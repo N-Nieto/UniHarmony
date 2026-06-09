@@ -1,6 +1,6 @@
 """
-Binary classification with NeuroComBat
-======================================
+NeuroComBat effect in features
+==============================
 """
 
 # %%
