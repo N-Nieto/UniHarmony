@@ -1,4 +1,4 @@
-# 🔬 IQM-based Harmonization
+# 🚄 Optimal Transport for Domain Adaptation
 
 (OT-short)=
 ## [Optimal Transport for Domain Adaptation](#ot-based): Optimal Transport for Domain Adaptation
