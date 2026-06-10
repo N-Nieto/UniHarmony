@@ -204,7 +204,7 @@ Let's now create a site imbalance problem. That means that, while the total numb
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.527 seconds)
+   **Total running time of the script:** (0 minutes 1.179 seconds)
 
 
 .. _sphx_glr_download_auto_examples_02-multisite-data_03-plot_generate_imbalance_multisite_data.py:

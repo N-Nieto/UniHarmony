@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Compute metrics by site &#8212; uniharmony 0.0.4.dev77 documentation</title>
+    <title>Compute metrics by site &#8212; uniharmony 0.0.5.dev3 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=ebdc74b9"></script>
+    <script src="../../_static/documentation_options.js?v=59766d8d"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.4.dev77 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.5.dev3 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -164,7 +164,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/covbat.html">CovBat</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/neuroharmony.html">Neuroharmony</a></li>
 
-<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/longcombat.html">LongComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/longcombat.html">Longitudinal ComBat (LongComBat)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/deepcombat.html">DeepComBat</a></li>
 
 <li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/prettyharmony.html">PrettYharmonize</a></li>
@@ -180,6 +180,10 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../methods/iqm_based/index.html">🔬 IQM-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../methods/iqm_based/bartharm.html">BARTharm</a></li>
 
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../methods/ot_based/index.html">🚄 Optimal Transport for Domain Adaptation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/ot_based/otda.html">Optimal Transport Domain Adaptation (OTDA)</a></li>
 </ul>
 </details></li>
 </ul>
@@ -205,10 +209,12 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/combat/index.html">ComBat Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../03-combat-based/02-plot_neurocombat_imbalance_across_sites.html">Analysing NeuroComBat behaviour with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../03-combat-based/05-plot_combatgam_imbalance_across_sites.html">Analyzing ComBatGAM behavior with imbalance across sites</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../03-combat-based/01-plot_neurocombat_binary_classification.html">Binary classification with NeuroComBat</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../03-combat-based/05-plot_combatgam_imbalance_across_sites.html">Analysing ComBatGAM behaviour with imbalance across sites</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../03-combat-based/04-plot_combatgam_binary_classification.html">Binary classification with ComBatGAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../03-combat-based/07-plot_neurocombat_effect_on_features.html">NeuroComBat effect in features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../03-combat-based/08-plot_combatgam_effect_on_features.html">ComBatGAM effect on features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../03-combat-based/02-plot_neurocombat_imbalance_across_sites.html">Analyzing NeuroComBat behavior with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../03-combat-based/04-plot_combatgam_age_preservation.html">Analyzing ComBatGAM behavior with imbalance across sites</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../03-combat-based/03-plot_neurocombat_with_mareos.html">Using NeuroComBat with MAREoS dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../03-combat-based/06-plot_combatgam_with_mareos.html">Using ComBatGAM with MAREoS dataset</a></li>
 </ul>
@@ -494,8 +500,8 @@ to download the full example code.</p>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Overall bACC: </span><span class="si">{</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">metrics</span></a><span class="p">[</span><span class="s1">&#39;balanced_accuracy_score&#39;</span><span class="p">][</span><span class="s1">&#39;overall&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Overall bACC: 0.686219262295082
-Overall bACC: 0.686219262295082
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Overall bACC: 0.6154589371980677
+Overall bACC: 0.6154589371980677
 </pre></div>
 </div>
 <p>If requested, the function also computes the overall performance and stores it as another entry in the dictionary.</p>
@@ -528,13 +534,13 @@ Overall bACC: 0.686219262295082
 <span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">metrics</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;accuracy_score&#39;: {&#39;overall&#39;: 0.316, 0: 0.20833333333333334, 1: 0.3181818181818182, 2: 0.11538461538461539, 3: 0.39285714285714285, 4: 0.3333333333333333, 5: 0.4482758620689655, 6: 0.30434782608695654, 7: 0.12903225806451613, 8: 0.5555555555555556, 9: 0.45454545454545453}}
-{&#39;f1_score&#39;: {&#39;overall&#39;: 0.3090909090909091, 0: 0.19576719576719576, 1: 0.30526315789473685, 2: 0.11407407407407408, 3: 0.28205128205128205, 4: 0.325, 5: 0.4423076923076923, 6: 0.23333333333333334, 7: 0.11428571428571428, 8: 0.55, 9: 0.45454545454545453}}
-{&#39;roc_auc_score&#39;: {&#39;overall&#39;: 0.3232581967213115, 0: 0.26573426573426573, 1: 0.3833333333333333, 2: 0.05325443786982246, 3: 0.2871794871794872, 4: 0.34659090909090906, 5: 0.4393939393939394, 6: 0.303921568627451, 7: 0.18333333333333335, 8: 0.48750000000000004, 9: 0.5904761904761905}, &#39;accuracy_score&#39;: {&#39;overall&#39;: 0.316, 0: 0.20833333333333334, 1: 0.3181818181818182, 2: 0.11538461538461539, 3: 0.39285714285714285, 4: 0.3333333333333333, 5: 0.4482758620689655, 6: 0.30434782608695654, 7: 0.12903225806451613, 8: 0.5555555555555556, 9: 0.45454545454545453}}
-{&#39;accuracy_score&#39;: {&#39;overall&#39;: 0.316, 0: 0.20833333333333334, 1: 0.3181818181818182, 2: 0.11538461538461539, 3: 0.39285714285714285, 4: 0.3333333333333333, 5: 0.4482758620689655, 6: 0.30434782608695654, 7: 0.12903225806451613, 8: 0.5555555555555556, 9: 0.45454545454545453}, &#39;roc_auc_score&#39;: {&#39;overall&#39;: 0.3232581967213115, 0: 0.26573426573426573, 1: 0.3833333333333333, 2: 0.05325443786982246, 3: 0.2871794871794872, 4: 0.34659090909090906, 5: 0.4393939393939394, 6: 0.303921568627451, 7: 0.18333333333333335, 8: 0.48750000000000004, 9: 0.5904761904761905}}
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>{&#39;accuracy_score&#39;: {&#39;overall&#39;: 0.384, 0: 0.3103448275862069, 1: 0.4444444444444444, 2: 0.36666666666666664, 3: 0.05, 4: 0.37037037037037035, 5: 0.6333333333333333, 6: 0.44, 7: 0.2222222222222222, 8: 0.5909090909090909, 9: 0.36363636363636365}}
+{&#39;f1_score&#39;: {&#39;overall&#39;: 0.38364497950819676, 0: 0.3028846153846154, 1: 0.375, 2: 0.3659621802002225, 3: 0.047619047619047616, 4: 0.36689655172413793, 5: 0.6296296296296295, 6: 0.3923611111111111, 7: 0.20476858345021037, 8: 0.5686274509803921, 9: 0.3418803418803419}}
+{&#39;roc_auc_score&#39;: {&#39;overall&#39;: 0.3285024154589372, 0: 0.3317307692307692, 1: 0.3625, 2: 0.38009049773755654, 3: 0.11111111111111116, 4: 0.29670329670329676, 5: 0.4955357142857143, 6: 0.16883116883116883, 7: 0.25555555555555554, 8: 0.46153846153846156, 9: 0.18181818181818177}, &#39;accuracy_score&#39;: {&#39;overall&#39;: 0.384, 0: 0.3103448275862069, 1: 0.4444444444444444, 2: 0.36666666666666664, 3: 0.05, 4: 0.37037037037037035, 5: 0.6333333333333333, 6: 0.44, 7: 0.2222222222222222, 8: 0.5909090909090909, 9: 0.36363636363636365}}
+{&#39;accuracy_score&#39;: {&#39;overall&#39;: 0.384, 0: 0.3103448275862069, 1: 0.4444444444444444, 2: 0.36666666666666664, 3: 0.05, 4: 0.37037037037037035, 5: 0.6333333333333333, 6: 0.44, 7: 0.2222222222222222, 8: 0.5909090909090909, 9: 0.36363636363636365}, &#39;roc_auc_score&#39;: {&#39;overall&#39;: 0.3285024154589372, 0: 0.3317307692307692, 1: 0.3625, 2: 0.38009049773755654, 3: 0.11111111111111116, 4: 0.29670329670329676, 5: 0.4955357142857143, 6: 0.16883116883116883, 7: 0.25555555555555554, 8: 0.46153846153846156, 9: 0.18181818181818177}}
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.573 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.765 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-01-basic-examples-02-run-metrics-by-site-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/93f983d114af13a54849dc50a1e3ef51/02-run_metrics_by_site.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">02-run_metrics_by_site.ipynb</span></code></a></p>

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>CovBat &#8212; uniharmony 0.0.4.dev77 documentation</title>
+    <title>CovBat &#8212; uniharmony 0.0.5.dev3 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=ebdc74b9"></script>
+    <script src="../../_static/documentation_options.js?v=59766d8d"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.4.dev77 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.5.dev3 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -164,7 +164,7 @@
 <li class="toctree-l3 current active"><a class="current reference internal" href="#">CovBat</a></li>
 <li class="toctree-l3"><a class="reference internal" href="neuroharmony.html">Neuroharmony</a></li>
 
-<li class="toctree-l3"><a class="reference internal" href="longcombat.html">LongComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="longcombat.html">Longitudinal ComBat (LongComBat)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="deepcombat.html">DeepComBat</a></li>
 
 <li class="toctree-l3"><a class="reference internal" href="prettyharmony.html">PrettYharmonize</a></li>
@@ -180,6 +180,10 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../iqm_based/index.html">🔬 IQM-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../iqm_based/bartharm.html">BARTharm</a></li>
 
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ot_based/index.html">🚄 Optimal Transport for Domain Adaptation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ot_based/otda.html">Optimal Transport Domain Adaptation (OTDA)</a></li>
 </ul>
 </details></li>
 </ul>
@@ -205,10 +209,12 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/combat/index.html">ComBat Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/02-plot_neurocombat_imbalance_across_sites.html">Analysing NeuroComBat behaviour with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/05-plot_combatgam_imbalance_across_sites.html">Analyzing ComBatGAM behavior with imbalance across sites</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/01-plot_neurocombat_binary_classification.html">Binary classification with NeuroComBat</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/05-plot_combatgam_imbalance_across_sites.html">Analysing ComBatGAM behaviour with imbalance across sites</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/04-plot_combatgam_binary_classification.html">Binary classification with ComBatGAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/07-plot_neurocombat_effect_on_features.html">NeuroComBat effect in features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/08-plot_combatgam_effect_on_features.html">ComBatGAM effect on features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/02-plot_neurocombat_imbalance_across_sites.html">Analyzing NeuroComBat behavior with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/04-plot_combatgam_age_preservation.html">Analyzing ComBatGAM behavior with imbalance across sites</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/03-plot_neurocombat_with_mareos.html">Using NeuroComBat with MAREoS dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/06-plot_combatgam_with_mareos.html">Using ComBatGAM with MAREoS dataset</a></li>
 </ul>
@@ -400,7 +406,9 @@
 <button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
 </button>
-
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
 </div></div>
       
     </div>
@@ -416,6 +424,15 @@
     <div id="print-main-content">
         <div id="jb-print-toc">
             
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#method">Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+            </nav>
         </div>
     </div>
 </div>
@@ -427,7 +444,29 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="covbat">
 <span id="covbat-long"></span><h1>CovBat<a class="headerlink" href="#covbat" title="Link to this heading">#</a></h1>
+<p>CovBat extends NeuroComBat by harmonizing not only means and variances but also feature covariances across sites <a class="footnote-reference brackets" href="#id2" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<p>Standard ComBat assumes that site effects are limited to location (mean) and scale (variance) shifts. However, multi-site neuroimaging studies often exhibit more complex batch effects where the correlation structure among features differs across scanners—for example, the relationship between hippocampal volume and cortical thickness may vary systematically by scanner manufacturer.</p>
+<p>CovBat addresses this limitation by harmonizing the full covariance structure of the data.</p>
+<section id="method">
+<h2>Method<a class="headerlink" href="#method" title="Link to this heading">#</a></h2>
+<p>CovBat operates in three steps:</p>
+<ul class="simple">
+<li><p>Apply ComBat to remove mean and variance site effects</p></li>
+<li><p>Decompose residuals via PCA within each site to obtain site-specific PC scores</p></li>
+<li><p>Harmonize PC score covariances to a reference site, then reconstruct features</p></li>
+</ul>
 </section>
+<section id="references">
+<h2>References<a class="headerlink" href="#references" title="Link to this heading">#</a></h2>
+</section>
+</section>
+<hr class="footnotes docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id2" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Chen, A. A., Beer, J. C., Tustison, N. J., Cook, P. A., Shinohara, R. T., &amp; Shou, H. (2022). Mitigating site effects in covariance for machine learning in neuroimaging data. <em>Human Brain Mapping</em>, 43(4), 1179-1195. <a class="reference external" href="https://doi.org/10.1002/hbm.25688">https://doi.org/10.1002/hbm.25688</a></p>
+</aside>
+</aside>
 
 
                 </article>
@@ -464,6 +503,24 @@
             </div>
             
             
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#method">Method</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#references">References</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
               
             
           </div>

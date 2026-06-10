@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Multisite data generation with covariates &#8212; uniharmony 0.0.4.dev77 documentation</title>
+    <title>Multisite data generation with covariates &#8212; uniharmony 0.0.5.dev3 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=ebdc74b9"></script>
+    <script src="../../_static/documentation_options.js?v=59766d8d"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.4.dev77 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.5.dev3 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -164,7 +164,7 @@
 <li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/covbat.html">CovBat</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/neuroharmony.html">Neuroharmony</a></li>
 
-<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/longcombat.html">LongComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/longcombat.html">Longitudinal ComBat (LongComBat)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/deepcombat.html">DeepComBat</a></li>
 
 <li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/prettyharmony.html">PrettYharmonize</a></li>
@@ -180,6 +180,10 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../methods/iqm_based/index.html">🔬 IQM-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../../methods/iqm_based/bartharm.html">BARTharm</a></li>
 
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../methods/ot_based/index.html">🚄 Optimal Transport for Domain Adaptation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/ot_based/otda.html">Optimal Transport Domain Adaptation (OTDA)</a></li>
 </ul>
 </details></li>
 </ul>
@@ -205,10 +209,12 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/combat/index.html">ComBat Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../03-combat-based/02-plot_neurocombat_imbalance_across_sites.html">Analysing NeuroComBat behaviour with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../03-combat-based/05-plot_combatgam_imbalance_across_sites.html">Analyzing ComBatGAM behavior with imbalance across sites</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../03-combat-based/01-plot_neurocombat_binary_classification.html">Binary classification with NeuroComBat</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../03-combat-based/05-plot_combatgam_imbalance_across_sites.html">Analysing ComBatGAM behaviour with imbalance across sites</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../03-combat-based/04-plot_combatgam_binary_classification.html">Binary classification with ComBatGAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../03-combat-based/07-plot_neurocombat_effect_on_features.html">NeuroComBat effect in features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../03-combat-based/08-plot_combatgam_effect_on_features.html">ComBatGAM effect on features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../03-combat-based/02-plot_neurocombat_imbalance_across_sites.html">Analyzing NeuroComBat behavior with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../03-combat-based/04-plot_combatgam_age_preservation.html">Analyzing ComBatGAM behavior with imbalance across sites</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../03-combat-based/03-plot_neurocombat_with_mareos.html">Using NeuroComBat with MAREoS dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../03-combat-based/06-plot_combatgam_with_mareos.html">Using ComBatGAM with MAREoS dataset</a></li>
 </ul>
@@ -487,7 +493,7 @@ to download the full example code.</p>
 <img src="../../_images/sphx_glr_07-plot_simulate_multisite_data_with_costume_covariates_001.png" srcset="../../_images/sphx_glr_07-plot_simulate_multisite_data_with_costume_covariates_001.png" alt="Features vs age/sex distribution" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>X has 1000 examples and 10 features
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.480 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.538 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-02-multisite-data-07-plot-simulate-multisite-data-with-costume-covariates-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/c11440eeb310fdc0ae5e05798db2023c/07-plot_simulate_multisite_data_with_costume_covariates.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">07-plot_simulate_multisite_data_with_costume_covariates.ipynb</span></code></a></p>

@@ -26,20 +26,23 @@ Binary classification with NeuroComBat
 Imports
 -------
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-24
+.. GENERATED FROM PYTHON SOURCE LINES 9-25
 
 .. code-block:: Python
 
 
+    from uniharmony import verbosity
+    verbosity("warning")
+
     import matplotlib.pyplot as plt
     import pandas as pd
     import seaborn as sns
-
-    from uniharmony import verbosity
-    verbosity("warning")
-    from uniharmony.combat import NeuroComBat
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.metrics import roc_auc_score
+    from sklearn.model_selection import train_test_split
     from uniharmony.datasets import make_multisite_classification
-
+    from uniharmony.plot import plot_decision_boundary_2d
+    from uniharmony.combat import NeuroComBat
 
     sns.set_theme(style="whitegrid")
 
@@ -50,35 +53,62 @@ Imports
 
 
 
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 25-27
+.. GENERATED FROM PYTHON SOURCE LINES 26-28
 
 Data generation
 ---------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-40
+.. GENERATED FROM PYTHON SOURCE LINES 28-70
 
 .. code-block:: Python
 
-
     X, y, sites = make_multisite_classification(
         n_features=2,
+        signal_strength=0.5,
         site_effect_strength=4,
     )
-    df = pd.DataFrame({"Target": y, "Site": sites})
+    random_state = 42
+    clf = LogisticRegression(random_state=random_state)
+    X_train, X_test, y_train, y_test, sites_train, sites_test = train_test_split(X, y, sites, test_size=0.3, random_state=42)
 
-    plt.figure(figsize=[10, 6])
-    plt.title("Generated data by site")
-    sns.countplot(df, x="Target", hue="Site")
-    plt.grid(axis="y", color="black", alpha=0.5, linestyle="--")
+    clf.fit(X=X_train, y=y_train)
+    y_pred = clf.predict_proba(X_test)[:,1]
+    combat = NeuroComBat()
+    X_harmonized = combat.fit_transform(X_train, sites_train)
+    clf.fit(X=X_harmonized, y=y_train)
+    X_test_harmonized = combat.transform(X_test, sites_test)
+    y_pred_harm = clf.predict_proba(X_test_harmonized)[:,1]
 
+
+    scores = roc_auc_score(y_test, y_pred)
+    scores_harmonized = roc_auc_score(y_test, y_pred_harm)
+
+    df_orig = pd.DataFrame(X_test, columns=["Feature 1", "Feature 2"])
+    df_orig["Site"] = sites_test
+    df_orig["Target"] = y_test
+
+    df_harm = pd.DataFrame(X_test_harmonized, columns=["Feature 1", "Feature 2"])
+    df_harm["Site"] = sites_test
+    df_harm["Target"] = y_test
+
+    fig, axes = plt.subplots(1, 2, figsize=(12, 5), sharex=True, sharey=True)
+    sns.scatterplot(data=df_orig, x="Feature 1", y="Feature 2", hue="Target", style="Site", alpha=0.6, ax=axes[0])
+    axes[0].set_title(f"Original data by site. AUC {scores:0.3}")
+    clf.fit(X_train, y_train)
+    plot_decision_boundary_2d(axes[0], clf)
+
+    sns.scatterplot(data=df_harm, x="Feature 1", y="Feature 2", hue="Target", style="Site", alpha=0.6, ax=axes[1])
+    axes[1].set_title(f"Harmonized data by site. AUC {scores_harmonized:0.3}")
+    plt.tight_layout()
+    clf.fit(X_harmonized, y_train)
+
+    plot_decision_boundary_2d(axes[1], clf)
 
 
 
 
 .. image-sg:: /auto_examples/03-combat-based/images/sphx_glr_01-plot_neurocombat_binary_classification_001.png
-   :alt: Generated data by site
+   :alt: Original data by site. AUC 0.889, Harmonized data by site. AUC 0.955
    :srcset: /auto_examples/03-combat-based/images/sphx_glr_01-plot_neurocombat_binary_classification_001.png
    :class: sphx-glr-single-img
 
@@ -86,180 +116,10 @@ Data generation
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 41-43
-
-Harmonisation
--------------
-
-.. GENERATED FROM PYTHON SOURCE LINES 43-62
-
-.. code-block:: Python
-
-
-    combat = NeuroComBat()
-    X_harmonized = combat.fit_transform(X, sites)
-    df_orig = pd.DataFrame(X, columns=["Feature1", "Feature2"])
-    df_orig["Site"] = sites
-    df_orig["Phase"] = "Original"
-
-    df_harm = pd.DataFrame(X_harmonized, columns=["Feature1", "Feature2"])
-    df_harm["Site"] = sites
-    df_harm["Phase"] = "Harmonized"
-
-    fig, axes = plt.subplots(1, 2, figsize=(12, 5), sharex=True, sharey=True)
-    sns.scatterplot(data=df_orig, x="Feature1", y="Feature2", hue="Site", alpha=0.6, ax=axes[0])
-    axes[0].set_title("Original data by site")
-    sns.scatterplot(data=df_harm, x="Feature1", y="Feature2", hue="Site", alpha=0.6, ax=axes[1])
-    axes[1].set_title("Harmonized data by site")
-    plt.tight_layout()
-
-
-
-
-
-.. image-sg:: /auto_examples/03-combat-based/images/sphx_glr_01-plot_neurocombat_binary_classification_002.png
-   :alt: Original data by site, Harmonized data by site
-   :srcset: /auto_examples/03-combat-based/images/sphx_glr_01-plot_neurocombat_binary_classification_002.png
-   :class: sphx-glr-single-img
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 63-65
-
-Plotting
---------
-
-.. GENERATED FROM PYTHON SOURCE LINES 65-76
-
-.. code-block:: Python
-
-
-    fig, axes = plt.subplots(1, 2, figsize=(12, 5), sharex=True, sharey=True)
-    sns.boxplot(data=df_orig, y="Feature1", hue="Site", ax=axes[0])
-    axes[0].set_title("Original data by site")
-    axes[0].grid(axis="y", color="black", alpha=0.5, linestyle="--")
-    sns.boxplot(data=df_harm, y="Feature1", hue="Site", ax=axes[1])
-    axes[1].set_title("Harmonized data by site")
-    axes[1].grid(axis="y", color="black", alpha=0.5, linestyle="--")
-    plt.tight_layout()
-
-
-
-
-
-.. image-sg:: /auto_examples/03-combat-based/images/sphx_glr_01-plot_neurocombat_binary_classification_003.png
-   :alt: Original data by site, Harmonized data by site
-   :srcset: /auto_examples/03-combat-based/images/sphx_glr_01-plot_neurocombat_binary_classification_003.png
-   :class: sphx-glr-single-img
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 77-84
-
-.. code-block:: Python
-
-
-    print("Feature means by site before harmonization:")
-    print(df_orig["Feature1"].groupby(df_orig["Site"]).mean())
-    print("Feature means by site after harmonization:")
-    print(df_harm["Feature1"].groupby(df_harm["Site"]).mean())
-
-
-
-
-
-
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    Feature means by site before harmonization:
-    Site
-    0    3.5893
-    1    1.9373
-    Name: Feature1, dtype: float64
-    Feature means by site after harmonization:
-    Site
-    0    2.764697
-    1    2.761969
-    Name: Feature1, dtype: float64
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 85-96
-
-.. code-block:: Python
-
-
-    fig, axes = plt.subplots(1, 2, figsize=(12, 5), sharex=True, sharey=True)
-    sns.boxplot(data=df_orig, y="Feature2", hue="Site", ax=axes[0])
-    axes[0].set_title("Original data by site")
-    axes[0].grid(axis="y", color="black", alpha=0.5, linestyle="--")
-    sns.boxplot(data=df_harm, y="Feature2", hue="Site", ax=axes[1])
-    axes[1].set_title("Harmonized data by site")
-    axes[1].grid(axis="y", color="black", alpha=0.5, linestyle="--")
-    plt.tight_layout()
-
-
-
-
-
-.. image-sg:: /auto_examples/03-combat-based/images/sphx_glr_01-plot_neurocombat_binary_classification_004.png
-   :alt: Original data by site, Harmonized data by site
-   :srcset: /auto_examples/03-combat-based/images/sphx_glr_01-plot_neurocombat_binary_classification_004.png
-   :class: sphx-glr-single-img
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 97-103
-
-.. code-block:: Python
-
-
-    print("Feature means by site before harmonization:")
-    print(df_orig["Feature2"].groupby(df_orig["Site"]).mean())
-    print("Feature means by site after harmonization:")
-    print(df_harm["Feature2"].groupby(df_harm["Site"]).mean())
-
-
-
-
-
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    Feature means by site before harmonization:
-    Site
-    0    0.961429
-    1    2.043736
-    Name: Feature2, dtype: float64
-    Feature means by site after harmonization:
-    Site
-    0    1.501011
-    1    1.504188
-    Name: Feature2, dtype: float64
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 104-107
-
-.. admonition:: Take-home message
-
-   As expected, NeuroComBat pushes the mean of the site distributions closer.
-
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.103 seconds)
+   **Total running time of the script:** (0 minutes 0.814 seconds)
 
 
 .. _sphx_glr_download_auto_examples_03-combat-based_01-plot_neurocombat_binary_classification.py:

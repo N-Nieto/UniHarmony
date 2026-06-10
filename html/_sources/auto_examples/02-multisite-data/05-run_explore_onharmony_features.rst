@@ -147,7 +147,7 @@ Imports
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.593 seconds)
+   **Total running time of the script:** (0 minutes 1.789 seconds)
 
 
 .. _sphx_glr_download_auto_examples_02-multisite-data_05-run_explore_onharmony_features.py:

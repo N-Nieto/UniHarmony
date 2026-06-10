@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**17:33.613** total execution time for 6 files **from auto_examples/03-combat-based**:
+**23:20.890** total execution time for 8 files **from auto_examples/03-combat-based**:
 
 .. container::
 
@@ -33,20 +33,26 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_03-combat-based_06-plot_combatgam_with_mareos.py` (``06-plot_combatgam_with_mareos.py``)
-     - 17:19.874
+     - 22:55.325
      - 0.0
    * - :ref:`sphx_glr_auto_examples_03-combat-based_03-plot_neurocombat_with_mareos.py` (``03-plot_neurocombat_with_mareos.py``)
-     - 00:06.321
+     - 00:08.638
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_03-combat-based_05-plot_combatgam_imbalance_across_sites.py` (``05-plot_combatgam_imbalance_across_sites.py``)
-     - 00:02.402
+   * - :ref:`sphx_glr_auto_examples_03-combat-based_04-plot_combatgam_age_preservation.py` (``04-plot_combatgam_age_preservation.py``)
+     - 00:05.448
      - 0.0
-   * - :ref:`sphx_glr_auto_examples_03-combat-based_04-plot_combatgam_binary_classification.py` (``04-plot_combatgam_binary_classification.py``)
-     - 00:02.288
+   * - :ref:`sphx_glr_auto_examples_03-combat-based_08-plot_combatgam_effect_on_features.py` (``08-plot_combatgam_effect_on_features.py``)
+     - 00:03.544
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_03-combat-based_07-plot_neurocombat_effect_on_features.py` (``07-plot_neurocombat_effect_on_features.py``)
+     - 00:02.426
      - 0.0
    * - :ref:`sphx_glr_auto_examples_03-combat-based_02-plot_neurocombat_imbalance_across_sites.py` (``02-plot_neurocombat_imbalance_across_sites.py``)
-     - 00:01.625
+     - 00:02.416
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_03-combat-based_05-plot_combatgam_imbalance_across_sites.py` (``05-plot_combatgam_imbalance_across_sites.py``)
+     - 00:02.277
      - 0.0
    * - :ref:`sphx_glr_auto_examples_03-combat-based_01-plot_neurocombat_binary_classification.py` (``01-plot_neurocombat_binary_classification.py``)
-     - 00:01.103
+     - 00:00.814
      - 0.0

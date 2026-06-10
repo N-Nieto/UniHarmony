@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Computation times &#8212; uniharmony 0.0.4.dev77 documentation</title>
+    <title>Computation times &#8212; uniharmony 0.0.5.dev3 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=ebdc74b9"></script>
+    <script src="_static/documentation_options.js?v=59766d8d"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.4.dev77 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.5.dev3 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -164,7 +164,7 @@
 <li class="toctree-l3"><a class="reference internal" href="methods/combat_based/covbat.html">CovBat</a></li>
 <li class="toctree-l3"><a class="reference internal" href="methods/combat_based/neuroharmony.html">Neuroharmony</a></li>
 
-<li class="toctree-l3"><a class="reference internal" href="methods/combat_based/longcombat.html">LongComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="methods/combat_based/longcombat.html">Longitudinal ComBat (LongComBat)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="methods/combat_based/deepcombat.html">DeepComBat</a></li>
 
 <li class="toctree-l3"><a class="reference internal" href="methods/combat_based/prettyharmony.html">PrettYharmonize</a></li>
@@ -180,6 +180,10 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="methods/iqm_based/index.html">🔬 IQM-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="methods/iqm_based/bartharm.html">BARTharm</a></li>
 
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="methods/ot_based/index.html">🚄 Optimal Transport for Domain Adaptation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="methods/ot_based/otda.html">Optimal Transport Domain Adaptation (OTDA)</a></li>
 </ul>
 </details></li>
 </ul>
@@ -205,10 +209,12 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="examples/combat/index.html">ComBat Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/02-plot_neurocombat_imbalance_across_sites.html">Analysing NeuroComBat behaviour with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/05-plot_combatgam_imbalance_across_sites.html">Analyzing ComBatGAM behavior with imbalance across sites</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/01-plot_neurocombat_binary_classification.html">Binary classification with NeuroComBat</a></li>
-<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/05-plot_combatgam_imbalance_across_sites.html">Analysing ComBatGAM behaviour with imbalance across sites</a></li>
-<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/04-plot_combatgam_binary_classification.html">Binary classification with ComBatGAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/07-plot_neurocombat_effect_on_features.html">NeuroComBat effect in features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/08-plot_combatgam_effect_on_features.html">ComBatGAM effect on features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/02-plot_neurocombat_imbalance_across_sites.html">Analyzing NeuroComBat behavior with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/04-plot_combatgam_age_preservation.html">Analyzing ComBatGAM behavior with imbalance across sites</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/03-plot_neurocombat_with_mareos.html">Using NeuroComBat with MAREoS dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/06-plot_combatgam_with_mareos.html">Using ComBatGAM with MAREoS dataset</a></li>
 </ul>
@@ -427,7 +433,7 @@
                   
   <section id="computation-times">
 <span id="sphx-glr-sg-execution-times"></span><h1>Computation times<a class="headerlink" href="#computation-times" title="Link to this heading">#</a></h1>
-<p><strong>19:07.445</strong> total execution time for 25 files <strong>from all galleries</strong>:</p>
+<p><strong>25:23.249</strong> total execution time for 27 files <strong>from all galleries</strong>:</p>
 <div class="docutils container">
 <style scoped>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
@@ -449,103 +455,111 @@ $(document).ready( function () {
 </thead>
 <tbody>
 <tr class="row-even"><td><p><a class="reference internal" href="auto_examples/03-combat-based/06-plot_combatgam_with_mareos.html#sphx-glr-auto-examples-03-combat-based-06-plot-combatgam-with-mareos-py"><span class="std std-ref">Using ComBatGAM with MAREoS dataset</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/03-combat-based/06-plot_combatgam_with_mareos.py</span></code>)</p></td>
-<td><p>17:19.874</p></td>
+<td><p>22:55.325</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="auto_examples/01-basic-examples/06-plot_mareos_with_tsne.html#sphx-glr-auto-examples-01-basic-examples-06-plot-mareos-with-tsne-py"><span class="std std-ref">Characterise a multisite problem with MAREoS</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/01-basic-examples/06-plot_mareos_with_tsne.py</span></code>)</p></td>
-<td><p>00:45.222</p></td>
+<td><p>00:59.838</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="auto_examples/01-basic-examples/04-plot_eos_with_dimensionality_reduction.html#sphx-glr-auto-examples-01-basic-examples-04-plot-eos-with-dimensionality-reduction-py"><span class="std std-ref">Explore EoS with dimensionality reduction techniques</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/01-basic-examples/04-plot_eos_with_dimensionality_reduction.py</span></code>)</p></td>
-<td><p>00:11.441</p></td>
+<td><p>00:15.576</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="auto_examples/03-combat-based/03-plot_neurocombat_with_mareos.html#sphx-glr-auto-examples-03-combat-based-03-plot-neurocombat-with-mareos-py"><span class="std std-ref">Using NeuroComBat with MAREoS dataset</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/03-combat-based/03-plot_neurocombat_with_mareos.py</span></code>)</p></td>
+<td><p>00:08.638</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="auto_examples/02-multisite-data/01-plot_generate_multisite_data.html#sphx-glr-auto-examples-02-multisite-data-01-plot-generate-multisite-data-py"><span class="std std-ref">Multisite data generation</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/02-multisite-data/01-plot_generate_multisite_data.py</span></code>)</p></td>
+<td><p>00:07.146</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="auto_examples/02-multisite-data/04-run_download_on_harmony.html#sphx-glr-auto-examples-02-multisite-data-04-run-download-on-harmony-py"><span class="std std-ref">Download ON-Harmony dataset</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/02-multisite-data/04-run_download_on_harmony.py</span></code>)</p></td>
-<td><p>00:06.820</p></td>
+<td><p>00:06.219</p></td>
 <td><p>0.0</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="auto_examples/03-combat-based/03-plot_neurocombat_with_mareos.html#sphx-glr-auto-examples-03-combat-based-03-plot-neurocombat-with-mareos-py"><span class="std std-ref">Using NeuroComBat with MAREoS dataset</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/03-combat-based/03-plot_neurocombat_with_mareos.py</span></code>)</p></td>
-<td><p>00:06.321</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="auto_examples/03-combat-based/04-plot_combatgam_age_preservation.html#sphx-glr-auto-examples-03-combat-based-04-plot-combatgam-age-preservation-py"><span class="std std-ref">Analyzing ComBatGAM behavior with imbalance across sites</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/03-combat-based/04-plot_combatgam_age_preservation.py</span></code>)</p></td>
+<td><p>00:05.448</p></td>
 <td><p>0.0</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="auto_examples/02-multisite-data/01-plot_generate_multisite_data.html#sphx-glr-auto-examples-02-multisite-data-01-plot-generate-multisite-data-py"><span class="std std-ref">Multisite data generation</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/02-multisite-data/01-plot_generate_multisite_data.py</span></code>)</p></td>
-<td><p>00:05.564</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="auto_examples/01-basic-examples/01-plot_eos_in_ml.html#sphx-glr-auto-examples-01-basic-examples-01-plot-eos-in-ml-py"><span class="std std-ref">Impact of Effects of Site in ML</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/01-basic-examples/01-plot_eos_in_ml.py</span></code>)</p></td>
+<td><p>00:04.826</p></td>
 <td><p>0.0</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="auto_examples/01-basic-examples/01-plot_eos_in_ml.html#sphx-glr-auto-examples-01-basic-examples-01-plot-eos-in-ml-py"><span class="std std-ref">Impact of Effects of Site in ML</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/01-basic-examples/01-plot_eos_in_ml.py</span></code>)</p></td>
-<td><p>00:03.720</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="auto_examples/01-basic-examples/05-plot_multisite_data_characterization.html#sphx-glr-auto-examples-01-basic-examples-05-plot-multisite-data-characterization-py"><span class="std std-ref">Characterize a multisite problem</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/01-basic-examples/05-plot_multisite_data_characterization.py</span></code>)</p></td>
+<td><p>00:04.046</p></td>
 <td><p>0.0</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="auto_examples/01-basic-examples/05-plot_multisite_data_characterization.html#sphx-glr-auto-examples-01-basic-examples-05-plot-multisite-data-characterization-py"><span class="std std-ref">Characterize a multisite problem</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/01-basic-examples/05-plot_multisite_data_characterization.py</span></code>)</p></td>
-<td><p>00:03.376</p></td>
-<td><p>0.0</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="auto_examples/03-combat-based/05-plot_combatgam_imbalance_across_sites.html#sphx-glr-auto-examples-03-combat-based-05-plot-combatgam-imbalance-across-sites-py"><span class="std std-ref">Analysing ComBatGAM behaviour with imbalance across sites</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/03-combat-based/05-plot_combatgam_imbalance_across_sites.py</span></code>)</p></td>
-<td><p>00:02.402</p></td>
-<td><p>0.0</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="auto_examples/03-combat-based/04-plot_combatgam_binary_classification.html#sphx-glr-auto-examples-03-combat-based-04-plot-combatgam-binary-classification-py"><span class="std std-ref">Binary classification with ComBatGAM</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/03-combat-based/04-plot_combatgam_binary_classification.py</span></code>)</p></td>
-<td><p>00:02.288</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="auto_examples/03-combat-based/08-plot_combatgam_effect_on_features.html#sphx-glr-auto-examples-03-combat-based-08-plot-combatgam-effect-on-features-py"><span class="std std-ref">ComBatGAM effect on features</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/03-combat-based/08-plot_combatgam_effect_on_features.py</span></code>)</p></td>
+<td><p>00:03.544</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="auto_examples/01-basic-examples/03-plot_biases_in_metrics_by_site.html#sphx-glr-auto-examples-01-basic-examples-03-plot-biases-in-metrics-by-site-py"><span class="std std-ref">Discover biases in metrics by site</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/01-basic-examples/03-plot_biases_in_metrics_by_site.py</span></code>)</p></td>
-<td><p>00:02.239</p></td>
-<td><p>0.0</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="auto_examples/04-interpolation-based/03-plot_ismi_binary_classification.html#sphx-glr-auto-examples-04-interpolation-based-03-plot-ismi-binary-classification-py"><span class="std std-ref">Multisite Harmonization using Inter-Site Matched Interpolation (ISMI)</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/04-interpolation-based/03-plot_ismi_binary_classification.py</span></code>)</p></td>
-<td><p>00:01.726</p></td>
-<td><p>0.0</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="auto_examples/03-combat-based/02-plot_neurocombat_imbalance_across_sites.html#sphx-glr-auto-examples-03-combat-based-02-plot-neurocombat-imbalance-across-sites-py"><span class="std std-ref">Analysing NeuroComBat behaviour with imbalance across sites</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/03-combat-based/02-plot_neurocombat_imbalance_across_sites.py</span></code>)</p></td>
-<td><p>00:01.625</p></td>
-<td><p>0.0</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="auto_examples/02-multisite-data/05-run_explore_onharmony_features.html#sphx-glr-auto-examples-02-multisite-data-05-run-explore-onharmony-features-py"><span class="std std-ref">Explore ON-Harmony features</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/02-multisite-data/05-run_explore_onharmony_features.py</span></code>)</p></td>
-<td><p>00:01.593</p></td>
-<td><p>0.0</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="auto_examples/04-interpolation-based/05-run_ismi_covariate_example.html#sphx-glr-auto-examples-04-interpolation-based-05-run-ismi-covariate-example-py"><span class="std std-ref">Using Inter-Site Matched Interpolation (ISMI) with matching covariates</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/04-interpolation-based/05-run_ismi_covariate_example.py</span></code>)</p></td>
-<td><p>00:01.581</p></td>
+<td><p>00:03.031</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="auto_examples/01-basic-examples/02-run_metrics_by_site.html#sphx-glr-auto-examples-01-basic-examples-02-run-metrics-by-site-py"><span class="std std-ref">Compute metrics by site</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/01-basic-examples/02-run_metrics_by_site.py</span></code>)</p></td>
-<td><p>00:01.573</p></td>
+<td><p>00:02.765</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="auto_examples/02-multisite-data/07-plot_simulate_multisite_data_with_costume_covariates.html#sphx-glr-auto-examples-02-multisite-data-07-plot-simulate-multisite-data-with-costume-covariates-py"><span class="std std-ref">Multisite data generation with covariates</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/02-multisite-data/07-plot_simulate_multisite_data_with_costume_covariates.py</span></code>)</p></td>
-<td><p>00:01.480</p></td>
+<td><p>00:02.538</p></td>
 <td><p>0.0</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="auto_examples/04-interpolation-based/02-plot_isi_multiclass_classification.html#sphx-glr-auto-examples-04-interpolation-based-02-plot-isi-multiclass-classification-py"><span class="std std-ref">Multiclass classification using ISI</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/04-interpolation-based/02-plot_isi_multiclass_classification.py</span></code>)</p></td>
-<td><p>00:01.450</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="auto_examples/03-combat-based/07-plot_neurocombat_effect_on_features.html#sphx-glr-auto-examples-03-combat-based-07-plot-neurocombat-effect-on-features-py"><span class="std std-ref">NeuroComBat effect in features</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/03-combat-based/07-plot_neurocombat_effect_on_features.py</span></code>)</p></td>
+<td><p>00:02.426</p></td>
 <td><p>0.0</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="auto_examples/02-multisite-data/06-plot_simulate_multisite_data_with_covariates.html#sphx-glr-auto-examples-02-multisite-data-06-plot-simulate-multisite-data-with-covariates-py"><span class="std std-ref">Multisite data generation with covariates</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/02-multisite-data/06-plot_simulate_multisite_data_with_covariates.py</span></code>)</p></td>
-<td><p>00:01.443</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="auto_examples/03-combat-based/02-plot_neurocombat_imbalance_across_sites.html#sphx-glr-auto-examples-03-combat-based-02-plot-neurocombat-imbalance-across-sites-py"><span class="std std-ref">Analyzing NeuroComBat behavior with imbalance across sites</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/03-combat-based/02-plot_neurocombat_imbalance_across_sites.py</span></code>)</p></td>
+<td><p>00:02.416</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="auto_examples/04-interpolation-based/03-plot_ismi_binary_classification.html#sphx-glr-auto-examples-04-interpolation-based-03-plot-ismi-binary-classification-py"><span class="std std-ref">Multisite Harmonization using Inter-Site Matched Interpolation (ISMI)</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/04-interpolation-based/03-plot_ismi_binary_classification.py</span></code>)</p></td>
+<td><p>00:02.298</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="auto_examples/03-combat-based/05-plot_combatgam_imbalance_across_sites.html#sphx-glr-auto-examples-03-combat-based-05-plot-combatgam-imbalance-across-sites-py"><span class="std std-ref">Analyzing ComBatGAM behavior with imbalance across sites</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/03-combat-based/05-plot_combatgam_imbalance_across_sites.py</span></code>)</p></td>
+<td><p>00:02.277</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="auto_examples/04-interpolation-based/05-run_ismi_covariate_example.html#sphx-glr-auto-examples-04-interpolation-based-05-run-ismi-covariate-example-py"><span class="std std-ref">Using Inter-Site Matched Interpolation (ISMI) with matching covariates</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/04-interpolation-based/05-run_ismi_covariate_example.py</span></code>)</p></td>
+<td><p>00:02.091</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="auto_examples/04-interpolation-based/02-plot_isi_multiclass_classification.html#sphx-glr-auto-examples-04-interpolation-based-02-plot-isi-multiclass-classification-py"><span class="std std-ref">Multiclass classification using ISI</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/04-interpolation-based/02-plot_isi_multiclass_classification.py</span></code>)</p></td>
+<td><p>00:02.020</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="auto_examples/02-multisite-data/06-plot_simulate_multisite_data_with_covariates.html#sphx-glr-auto-examples-02-multisite-data-06-plot-simulate-multisite-data-with-covariates-py"><span class="std std-ref">Multisite data generation with covariates</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/02-multisite-data/06-plot_simulate_multisite_data_with_covariates.py</span></code>)</p></td>
+<td><p>00:01.797</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="auto_examples/02-multisite-data/05-run_explore_onharmony_features.html#sphx-glr-auto-examples-02-multisite-data-05-run-explore-onharmony-features-py"><span class="std std-ref">Explore ON-Harmony features</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/02-multisite-data/05-run_explore_onharmony_features.py</span></code>)</p></td>
+<td><p>00:01.789</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="auto_examples/04-interpolation-based/04-plot_isi_advance_usage.html#sphx-glr-auto-examples-04-interpolation-based-04-plot-isi-advance-usage-py"><span class="std std-ref">IntraSiteInterpolation advance usage</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/04-interpolation-based/04-plot_isi_advance_usage.py</span></code>)</p></td>
-<td><p>00:01.338</p></td>
+<td><p>00:01.730</p></td>
 <td><p>0.0</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="auto_examples/03-combat-based/01-plot_neurocombat_binary_classification.html#sphx-glr-auto-examples-03-combat-based-01-plot-neurocombat-binary-classification-py"><span class="std std-ref">Binary classification with NeuroComBat</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/03-combat-based/01-plot_neurocombat_binary_classification.py</span></code>)</p></td>
-<td><p>00:01.103</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="auto_examples/02-multisite-data/02-run_load_mareos.html#sphx-glr-auto-examples-02-multisite-data-02-run-load-mareos-py"><span class="std std-ref">Load MAREoS dataset</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/02-multisite-data/02-run_load_mareos.py</span></code>)</p></td>
+<td><p>00:01.366</p></td>
 <td><p>0.0</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="auto_examples/02-multisite-data/02-run_load_mareos.html#sphx-glr-auto-examples-02-multisite-data-02-run-load-mareos-py"><span class="std std-ref">Load MAREoS dataset</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/02-multisite-data/02-run_load_mareos.py</span></code>)</p></td>
-<td><p>00:01.041</p></td>
-<td><p>0.0</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="auto_examples/05-ot-based/01-plot_binary_classification.html#sphx-glr-auto-examples-05-ot-based-01-plot-binary-classification-py"><span class="std std-ref">Binary classification using OTDA</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/05-ot-based/01-plot_binary_classification.py</span></code>)</p></td>
-<td><p>00:01.036</p></td>
-<td><p>0.0</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="auto_examples/04-interpolation-based/01-plot_isi_binary_classification.html#sphx-glr-auto-examples-04-interpolation-based-01-plot-isi-binary-classification-py"><span class="std std-ref">Binary classification using ISI</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/04-interpolation-based/01-plot_isi_binary_classification.py</span></code>)</p></td>
-<td><p>00:00.663</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="auto_examples/05-ot-based/01-plot_binary_classification.html#sphx-glr-auto-examples-05-ot-based-01-plot-binary-classification-py"><span class="std std-ref">Binary classification using OTDA</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/05-ot-based/01-plot_binary_classification.py</span></code>)</p></td>
+<td><p>00:01.288</p></td>
 <td><p>0.0</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="auto_examples/02-multisite-data/03-plot_generate_imbalance_multisite_data.html#sphx-glr-auto-examples-02-multisite-data-03-plot-generate-imbalance-multisite-data-py"><span class="std std-ref">Generate imbalance multisite data</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/02-multisite-data/03-plot_generate_imbalance_multisite_data.py</span></code>)</p></td>
-<td><p>00:00.527</p></td>
+<td><p>00:01.179</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="auto_examples/04-interpolation-based/01-plot_isi_binary_classification.html#sphx-glr-auto-examples-04-interpolation-based-01-plot-isi-binary-classification-py"><span class="std std-ref">Binary classification using ISI</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/04-interpolation-based/01-plot_isi_binary_classification.py</span></code>)</p></td>
+<td><p>00:00.815</p></td>
+<td><p>0.0</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="auto_examples/03-combat-based/01-plot_neurocombat_binary_classification.html#sphx-glr-auto-examples-03-combat-based-01-plot-neurocombat-binary-classification-py"><span class="std std-ref">Binary classification with NeuroComBat</span></a> (<code class="docutils literal notranslate"><span class="pre">../examples/03-combat-based/01-plot_neurocombat_binary_classification.py</span></code>)</p></td>
+<td><p>00:00.814</p></td>
 <td><p>0.0</p></td>
 </tr>
 </tbody>

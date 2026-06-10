@@ -92,7 +92,7 @@ Imports
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.480 seconds)
+   **Total running time of the script:** (0 minutes 2.538 seconds)
 
 
 .. _sphx_glr_download_auto_examples_02-multisite-data_07-plot_simulate_multisite_data_with_costume_covariates.py:

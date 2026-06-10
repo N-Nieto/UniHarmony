@@ -32,56 +32,56 @@ This notebook demonstrates the use of :class:`.InterSiteMatchedInterpolation` fo
 
  .. code-block:: none
 
-    2026-06-10 08:48:31 [debug    ] Total Samples to generate 3000
-    2026-06-10 08:48:31 [debug    ] Total Samples to generate per site [1000 1000 1000]
-    2026-06-10 08:48:31 [info     ] Using balanced classes: [[0.5, 0.5], [0.5, 0.5], [0.5, 0.5]]
-    2026-06-10 08:48:31 [info     ] `balance_per_site` is: [[0.5, 0.5], [0.5, 0.5], [0.5, 0.5]]
-    2026-06-10 08:48:31 [info     ] Overall class balance across sites: [0.5 0.5]
-    2026-06-10 08:48:31 [debug    ] locs: [50, 50, 50] and probs: None
-    2026-06-10 08:48:31 [debug    ] locs: None and probs: [[0.5, 0.5], [0.5, 0.5], [0.5, 0.5]]
-    2026-06-10 08:48:31 [debug    ] Covariates requested: ['age', 'sex']
-    2026-06-10 08:48:31 [info     ] For site 0
-    2026-06-10 08:48:31 [info     ] Generating 1000 samples
-    2026-06-10 08:48:31 [debug    ] Balance [0.5, 0.5] for site 0
-    2026-06-10 08:48:31 [debug    ] Site 0 — covariate 'age': mean=50.893
-    2026-06-10 08:48:31 [debug    ] Site 0 — covariate 'sex': mean=0.524
-    2026-06-10 08:48:31 [debug    ] Site 0, site effect strength [3.0, 3.0, 3.0]
-    2026-06-10 08:48:31 [info     ] For site 1
-    2026-06-10 08:48:31 [info     ] Generating 1000 samples
-    2026-06-10 08:48:31 [debug    ] Balance [0.5, 0.5] for site 1
-    2026-06-10 08:48:31 [debug    ] Site 1 — covariate 'age': mean=49.223
-    2026-06-10 08:48:31 [debug    ] Site 1 — covariate 'sex': mean=0.508
-    2026-06-10 08:48:31 [debug    ] Site 1, site effect strength [3.0, 3.0, 3.0]
-    2026-06-10 08:48:31 [info     ] For site 2
-    2026-06-10 08:48:31 [info     ] Generating 1000 samples
-    2026-06-10 08:48:31 [debug    ] Balance [0.5, 0.5] for site 2
-    2026-06-10 08:48:31 [debug    ] Site 2 — covariate 'age': mean=49.728
-    2026-06-10 08:48:31 [debug    ] Site 2 — covariate 'sex': mean=0.519
-    2026-06-10 08:48:31 [debug    ] Site 2, site effect strength [3.0, 3.0, 3.0]
-    2026-06-10 08:48:31 [info     ] Generated 3000 samples across 3 sites
-    2026-06-10 08:48:31 [info     ] Class distribution: [1500 1500]
-    2026-06-10 08:48:31 [info     ] Site distribution: [1000 1000 1000]
-    2026-06-10 08:48:31 [debug    ] Using 1 categorical covariates
-    2026-06-10 08:48:31 [debug    ] Using 1 continuous covariates with tolerance: [5.]
-    2026-06-10 08:48:31 [info     ] [ISMI] Mode: pairwise
-    2026-06-10 08:48:31 [info     ] [ISMI] Sites: [0 1 2] (3 sites, 3 pairs)
-    2026-06-10 08:48:31 [info     ] [ISMI] Alpha: uniform[0.2, 0.4]
-    2026-06-10 08:48:31 [info     ] [ISMI] Behavior: k=2 matches per sample
-    2026-06-10 08:48:31 [info     ] [ISMI] Target tolerance: None
-    2026-06-10 08:48:31 [info     ] [ISMI] Categorical covariates: 1
-    2026-06-10 08:48:31 [info     ] [ISMI] Continuous covariates: 1 (tol: [5.])
-    2026-06-10 08:48:31 [info     ] [ISMI] Processing 3 pairs
-    2026-06-10 08:48:31 [info     ] [ISMI] Pair: 0 (1000) ↔ 1 (1000)
+    2026-06-10 10:54:19 [debug    ] Total Samples to generate 3000
+    2026-06-10 10:54:19 [debug    ] Total Samples to generate per site [1000 1000 1000]
+    2026-06-10 10:54:19 [info     ] Using balanced classes: [[0.5, 0.5], [0.5, 0.5], [0.5, 0.5]]
+    2026-06-10 10:54:19 [info     ] `balance_per_site` is: [[0.5, 0.5], [0.5, 0.5], [0.5, 0.5]]
+    2026-06-10 10:54:19 [info     ] Overall class balance across sites: [0.5 0.5]
+    2026-06-10 10:54:19 [debug    ] locs: [50, 50, 50] and probs: None
+    2026-06-10 10:54:19 [debug    ] locs: None and probs: [[0.5, 0.5], [0.5, 0.5], [0.5, 0.5]]
+    2026-06-10 10:54:19 [debug    ] Covariates requested: ['age', 'sex']
+    2026-06-10 10:54:19 [info     ] For site 0
+    2026-06-10 10:54:19 [info     ] Generating 1000 samples
+    2026-06-10 10:54:19 [debug    ] Balance [0.5, 0.5] for site 0
+    2026-06-10 10:54:19 [debug    ] Site 0 — covariate 'age': mean=50.893
+    2026-06-10 10:54:19 [debug    ] Site 0 — covariate 'sex': mean=0.524
+    2026-06-10 10:54:19 [debug    ] Site 0, site effect strength [3.0, 3.0, 3.0]
+    2026-06-10 10:54:19 [info     ] For site 1
+    2026-06-10 10:54:19 [info     ] Generating 1000 samples
+    2026-06-10 10:54:19 [debug    ] Balance [0.5, 0.5] for site 1
+    2026-06-10 10:54:19 [debug    ] Site 1 — covariate 'age': mean=49.223
+    2026-06-10 10:54:19 [debug    ] Site 1 — covariate 'sex': mean=0.508
+    2026-06-10 10:54:19 [debug    ] Site 1, site effect strength [3.0, 3.0, 3.0]
+    2026-06-10 10:54:19 [info     ] For site 2
+    2026-06-10 10:54:19 [info     ] Generating 1000 samples
+    2026-06-10 10:54:19 [debug    ] Balance [0.5, 0.5] for site 2
+    2026-06-10 10:54:19 [debug    ] Site 2 — covariate 'age': mean=49.728
+    2026-06-10 10:54:19 [debug    ] Site 2 — covariate 'sex': mean=0.519
+    2026-06-10 10:54:19 [debug    ] Site 2, site effect strength [3.0, 3.0, 3.0]
+    2026-06-10 10:54:19 [info     ] Generated 3000 samples across 3 sites
+    2026-06-10 10:54:19 [info     ] Class distribution: [1500 1500]
+    2026-06-10 10:54:19 [info     ] Site distribution: [1000 1000 1000]
+    2026-06-10 10:54:19 [debug    ] Using 1 categorical covariates
+    2026-06-10 10:54:19 [debug    ] Using 1 continuous covariates with tolerance: [5.]
+    2026-06-10 10:54:19 [info     ] [ISMI] Mode: pairwise
+    2026-06-10 10:54:19 [info     ] [ISMI] Sites: [0 1 2] (3 sites, 3 pairs)
+    2026-06-10 10:54:19 [info     ] [ISMI] Alpha: uniform[0.2, 0.4]
+    2026-06-10 10:54:19 [info     ] [ISMI] Behavior: k=2 matches per sample
+    2026-06-10 10:54:19 [info     ] [ISMI] Target tolerance: None
+    2026-06-10 10:54:19 [info     ] [ISMI] Categorical covariates: 1
+    2026-06-10 10:54:19 [info     ] [ISMI] Continuous covariates: 1 (tol: [5.])
+    2026-06-10 10:54:19 [info     ] [ISMI] Processing 3 pairs
+    2026-06-10 10:54:19 [info     ] [ISMI] Pair: 0 (1000) ↔ 1 (1000)
     /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/interpolation/_inter_site_matched.py:469: UserWarning: Sample has 1 matches but k=2 requested, using all
       X_synth_1, y_synth_1, n_un_1 = self._interpolate(X1, y1, X2, y2, matches_1to2, self.alpha_min_, self.alpha_max_)
     /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/interpolation/_inter_site_matched.py:475: UserWarning: Sample has 1 matches but k=2 requested, using all
       X_synth_2, y_synth_2, n_un_2 = self._interpolate(X2, y2, X1, y1, matches_2to1, rev_min, rev_max)
-    2026-06-10 08:48:31 [info     ] [ISMI]   Generated 3970 samples (8 unmatched)
-    2026-06-10 08:48:31 [info     ] [ISMI] Pair: 0 (1000) ↔ 2 (1000)
-    2026-06-10 08:48:31 [info     ] [ISMI]   Generated 3978 samples (4 unmatched)
-    2026-06-10 08:48:31 [info     ] [ISMI] Pair: 1 (1000) ↔ 2 (1000)
-    2026-06-10 08:48:31 [info     ] [ISMI]   Generated 3970 samples (8 unmatched)
-    2026-06-10 08:48:31 [info     ] [ISMI] Complete: 3000 original + 11918 synthetic = 14918 total (397.3% increase), 20 unmatched
+    2026-06-10 10:54:20 [info     ] [ISMI]   Generated 3970 samples (8 unmatched)
+    2026-06-10 10:54:20 [info     ] [ISMI] Pair: 0 (1000) ↔ 2 (1000)
+    2026-06-10 10:54:20 [info     ] [ISMI]   Generated 3978 samples (4 unmatched)
+    2026-06-10 10:54:20 [info     ] [ISMI] Pair: 1 (1000) ↔ 2 (1000)
+    2026-06-10 10:54:20 [info     ] [ISMI]   Generated 3970 samples (8 unmatched)
+    2026-06-10 10:54:20 [info     ] [ISMI] Complete: 3000 original + 11918 synthetic = 14918 total (397.3% increase), 20 unmatched
     {(np.int64(0), np.int64(1)): 6, (np.int64(1), np.int64(0)): 2, (np.int64(0), np.int64(2)): 2, (np.int64(2), np.int64(0)): 2, (np.int64(1), np.int64(2)): 4, (np.int64(2), np.int64(1)): 4}
 
 
@@ -124,7 +124,7 @@ This notebook demonstrates the use of :class:`.InterSiteMatchedInterpolation` fo
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.581 seconds)
+   **Total running time of the script:** (0 minutes 2.091 seconds)
 
 
 .. _sphx_glr_download_auto_examples_04-interpolation-based_05-run_ismi_covariate_example.py:

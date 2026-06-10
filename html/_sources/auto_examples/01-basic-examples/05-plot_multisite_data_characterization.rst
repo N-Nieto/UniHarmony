@@ -131,55 +131,55 @@ Now let's compute some statistics
 
     Computing statistics...
     ============================================================
-    2026-06-10 08:30:17 [info     ] ============================================================
-    2026-06-10 08:30:17 [info     ] DATASET STATISTICS SUMMARY
-    2026-06-10 08:30:17 [info     ] ============================================================
-    2026-06-10 08:30:17 [info     ] 
+    2026-06-10 10:30:16 [info     ] ============================================================
+    2026-06-10 10:30:16 [info     ] DATASET STATISTICS SUMMARY
+    2026-06-10 10:30:16 [info     ] ============================================================
+    2026-06-10 10:30:16 [info     ] 
     OVERALL:
-    2026-06-10 08:30:17 [info     ]   Samples: 1000
-    2026-06-10 08:30:17 [info     ]   Features: 10
-    2026-06-10 08:30:17 [info     ]   Sites: 5
-    2026-06-10 08:30:17 [info     ]   Classes: 3
-    2026-06-10 08:30:17 [info     ] 
+    2026-06-10 10:30:16 [info     ]   Samples: 1000
+    2026-06-10 10:30:16 [info     ]   Features: 10
+    2026-06-10 10:30:16 [info     ]   Sites: 5
+    2026-06-10 10:30:16 [info     ]   Classes: 3
+    2026-06-10 10:30:16 [info     ] 
     CLASS DISTRIBUTION:
-    2026-06-10 08:30:17 [info     ]   class_0: 335 samples (33.5%)
-    2026-06-10 08:30:17 [info     ]   class_1: 335 samples (33.5%)
-    2026-06-10 08:30:17 [info     ]   class_2: 330 samples (33.0%)
-    2026-06-10 08:30:17 [info     ] 
+    2026-06-10 10:30:16 [info     ]   class_0: 335 samples (33.5%)
+    2026-06-10 10:30:16 [info     ]   class_1: 335 samples (33.5%)
+    2026-06-10 10:30:16 [info     ]   class_2: 330 samples (33.0%)
+    2026-06-10 10:30:16 [info     ] 
     SITE DISTRIBUTION:
-    2026-06-10 08:30:17 [info     ]   site_0: 200 samples (20.0%)
-    2026-06-10 08:30:17 [info     ]   site_1: 200 samples (20.0%)
-    2026-06-10 08:30:17 [info     ]   site_2: 200 samples (20.0%)
-    2026-06-10 08:30:17 [info     ]   site_3: 200 samples (20.0%)
-    2026-06-10 08:30:17 [info     ]   site_4: 200 samples (20.0%)
-    2026-06-10 08:30:17 [info     ] 
+    2026-06-10 10:30:16 [info     ]   site_0: 200 samples (20.0%)
+    2026-06-10 10:30:16 [info     ]   site_1: 200 samples (20.0%)
+    2026-06-10 10:30:16 [info     ]   site_2: 200 samples (20.0%)
+    2026-06-10 10:30:16 [info     ]   site_3: 200 samples (20.0%)
+    2026-06-10 10:30:16 [info     ]   site_4: 200 samples (20.0%)
+    2026-06-10 10:30:16 [info     ] 
     SITE STATISTICS (summary):
-    2026-06-10 08:30:17 [info     ]   site_0:
-    2026-06-10 08:30:17 [info     ]     Samples: 200
-    2026-06-10 08:30:17 [info     ]     Class distribution: {'class_0': 67, 'class_1': 67, 'class_2': 66}
-    2026-06-10 08:30:17 [info     ]   site_1:
-    2026-06-10 08:30:17 [info     ]     Samples: 200
-    2026-06-10 08:30:17 [info     ]     Class distribution: {'class_0': 67, 'class_1': 67, 'class_2': 66}
-    2026-06-10 08:30:17 [info     ]   site_2:
-    2026-06-10 08:30:17 [info     ]     Samples: 200
-    2026-06-10 08:30:17 [info     ]     Class distribution: {'class_0': 67, 'class_1': 67, 'class_2': 66}
-    2026-06-10 08:30:17 [info     ]   site_3:
-    2026-06-10 08:30:17 [info     ]     Samples: 200
-    2026-06-10 08:30:17 [info     ]     Class distribution: {'class_0': 67, 'class_1': 67, 'class_2': 66}
-    2026-06-10 08:30:17 [info     ]   site_4:
-    2026-06-10 08:30:17 [info     ]     Samples: 200
-    2026-06-10 08:30:17 [info     ]     Class distribution: {'class_0': 67, 'class_1': 67, 'class_2': 66}
-    2026-06-10 08:30:17 [info     ] 
+    2026-06-10 10:30:16 [info     ]   site_0:
+    2026-06-10 10:30:16 [info     ]     Samples: 200
+    2026-06-10 10:30:16 [info     ]     Class distribution: {'class_0': 67, 'class_1': 67, 'class_2': 66}
+    2026-06-10 10:30:16 [info     ]   site_1:
+    2026-06-10 10:30:16 [info     ]     Samples: 200
+    2026-06-10 10:30:16 [info     ]     Class distribution: {'class_0': 67, 'class_1': 67, 'class_2': 66}
+    2026-06-10 10:30:16 [info     ]   site_2:
+    2026-06-10 10:30:16 [info     ]     Samples: 200
+    2026-06-10 10:30:16 [info     ]     Class distribution: {'class_0': 67, 'class_1': 67, 'class_2': 66}
+    2026-06-10 10:30:16 [info     ]   site_3:
+    2026-06-10 10:30:16 [info     ]     Samples: 200
+    2026-06-10 10:30:16 [info     ]     Class distribution: {'class_0': 67, 'class_1': 67, 'class_2': 66}
+    2026-06-10 10:30:16 [info     ]   site_4:
+    2026-06-10 10:30:16 [info     ]     Samples: 200
+    2026-06-10 10:30:16 [info     ]     Class distribution: {'class_0': 67, 'class_1': 67, 'class_2': 66}
+    2026-06-10 10:30:16 [info     ] 
     FEATURE STATISTICS (first 5 features):
-    2026-06-10 08:30:17 [info     ]   feat_0: mean=1.6938, std=1.2506, MAD=0.8487
-    2026-06-10 08:30:17 [info     ]   feat_1: mean=0.5450, std=1.7731, MAD=1.2147
-    2026-06-10 08:30:17 [info     ]   feat_2: mean=1.7281, std=1.8574, MAD=1.2714
-    2026-06-10 08:30:17 [info     ]   feat_3: mean=1.4261, std=1.1704, MAD=0.8128
-    2026-06-10 08:30:17 [info     ]   feat_4: mean=0.9158, std=1.1701, MAD=0.8177
-    2026-06-10 08:30:17 [info     ] 
+    2026-06-10 10:30:16 [info     ]   feat_0: mean=1.6938, std=1.2506, MAD=0.8487
+    2026-06-10 10:30:16 [info     ]   feat_1: mean=0.5450, std=1.7731, MAD=1.2147
+    2026-06-10 10:30:16 [info     ]   feat_2: mean=1.7281, std=1.8574, MAD=1.2714
+    2026-06-10 10:30:16 [info     ]   feat_3: mean=1.4261, std=1.1704, MAD=0.8128
+    2026-06-10 10:30:16 [info     ]   feat_4: mean=0.9158, std=1.1701, MAD=0.8177
+    2026-06-10 10:30:16 [info     ] 
     CORRELATIONS:
-    2026-06-10 08:30:17 [info     ]   Average Inter-Site Correlation: 0.1241
-    2026-06-10 08:30:17 [info     ] ============================================================
+    2026-06-10 10:30:16 [info     ]   Average Inter-Site Correlation: 0.1241
+    2026-06-10 10:30:16 [info     ] ============================================================
 
 
 
@@ -214,7 +214,7 @@ Now let's compute some statistics
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.376 seconds)
+   **Total running time of the script:** (0 minutes 4.046 seconds)
 
 
 .. _sphx_glr_download_auto_examples_01-basic-examples_05-plot_multisite_data_characterization.py:

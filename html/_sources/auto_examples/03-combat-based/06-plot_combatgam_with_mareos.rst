@@ -99,15 +99,15 @@ Load MAREoS benchmark dataset
 
  .. code-block:: none
 
-    2026-06-10 08:31:11 [info     ] MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS
-    2026-06-10 08:31:11 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv
-    2026-06-10 08:31:11 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple2_data.csv
-    2026-06-10 08:31:11 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction1_data.csv
-    2026-06-10 08:31:11 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction2_data.csv
-    2026-06-10 08:31:11 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_simple1_data.csv
-    2026-06-10 08:31:11 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_simple2_data.csv
-    2026-06-10 08:31:11 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_interaction1_data.csv
-    2026-06-10 08:31:11 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_interaction2_data.csv
+    2026-06-10 10:31:22 [info     ] MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS
+    2026-06-10 10:31:22 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv
+    2026-06-10 10:31:22 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple2_data.csv
+    2026-06-10 10:31:22 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction1_data.csv
+    2026-06-10 10:31:22 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction2_data.csv
+    2026-06-10 10:31:22 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_simple1_data.csv
+    2026-06-10 10:31:22 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_simple2_data.csv
+    2026-06-10 10:31:22 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_interaction1_data.csv
+    2026-06-10 10:31:22 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_interaction2_data.csv
 
 
 
@@ -227,5613 +227,653 @@ Experiments
  .. code-block:: none
 
     Running experiment: true_simple1
-    2026-06-10 08:31:11 [debug    ] Fitting
-    2026-06-10 08:31:11 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:31:11 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:31:11 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:31:11 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:31:11 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:31:11 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:31:11 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:31:11 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:31:11 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:31:11 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:31:27 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:31:27 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:31:27 [debug    ]   Grand mean range: [1.5774, 3.7007] src=StandardizationMixin
-    2026-06-10 08:31:27 [debug    ]   Pooled std range: [0.1476, 0.4787] src=StandardizationMixin
-    2026-06-10 08:31:27 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:31:27 [debug    ]   Standardized data std: 1.0036 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:31:27 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ]   Gamma hat range: [-0.2719, 0.2311] src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ]   Site 0 delta range: [0.7041, 1.4152] src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ]   Site 1 delta range: [0.6168, 1.2738] src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ]   Site 2 delta range: [0.7613, 1.2790] src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ]   Site 3 delta range: [0.6940, 1.3520] src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ]   Site 4 delta range: [0.7728, 1.2707] src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ]   Site 5 delta range: [0.6689, 1.2866] src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ]   Site 6 delta range: [0.7550, 1.2527] src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ]   Site 7 delta range: [0.6654, 1.2399] src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ]   Gamma bar (mean location effect): [-0.01574326  0.00117241 -0.01156688  0.01303456  0.00155992 -0.00131986
-      0.00864478  0.00433077] src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ]   Tau^2 (variance of location effects): [0.00879426 0.00571798 0.00638334 0.00911007 0.00682202 0.00614394
-     0.00718981 0.00763316] src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ]   Mean tau^2: 0.007224 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ] Transforming
-    2026-06-10 08:31:27 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:31:27 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:31:27 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:31:27 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:31:27 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:31:27 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:31:27 [debug    ]   Grand mean range: [1.5774, 3.7007] src=StandardizationMixin
-    2026-06-10 08:31:27 [debug    ]   Pooled std range: [0.1476, 0.4787] src=StandardizationMixin
-    2026-06-10 08:31:27 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:31:27 [debug    ]   Standardized data std: 1.0036 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:31:27 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ] Transforming
-    2026-06-10 08:31:27 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:31:27 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:31:27 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:31:27 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:31:27 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:31:27 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:31:27 [debug    ]   Grand mean range: [1.5774, 3.7007] src=StandardizationMixin
-    2026-06-10 08:31:27 [debug    ]   Pooled std range: [0.1476, 0.4787] src=StandardizationMixin
-    2026-06-10 08:31:27 [debug    ]   Standardized data mean: -0.017655 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:31:27 [debug    ]   Standardized data std: 1.0128 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:31:27 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:31:27 [debug    ] Fitting
-    2026-06-10 08:31:27 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:31:27 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:31:27 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:31:27 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:31:27 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:31:27 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:31:27 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:31:27 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:31:27 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:31:27 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:31:44 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:31:44 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:31:44 [debug    ]   Grand mean range: [1.5699, 3.7008] src=StandardizationMixin
-    2026-06-10 08:31:44 [debug    ]   Pooled std range: [0.1492, 0.4759] src=StandardizationMixin
-    2026-06-10 08:31:44 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:31:44 [debug    ]   Standardized data std: 1.0035 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:31:44 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ]   Gamma hat range: [-0.2855, 0.2782] src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ]   Site 0 delta range: [0.6806, 1.3419] src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ]   Site 1 delta range: [0.6661, 1.2768] src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ]   Site 2 delta range: [0.7953, 1.2163] src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ]   Site 3 delta range: [0.7617, 1.2840] src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ]   Site 4 delta range: [0.7905, 1.3014] src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ]   Site 5 delta range: [0.5775, 1.2988] src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ]   Site 6 delta range: [0.7726, 1.2965] src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ]   Site 7 delta range: [0.7539, 1.2524] src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ]   Gamma bar (mean location effect): [-0.01507896  0.00428522 -0.02139461  0.01835383  0.00925086  0.00338217
-      0.00512425 -0.00592358] src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ]   Tau^2 (variance of location effects): [0.00721276 0.00647286 0.00778438 0.00798726 0.00668791 0.00597907
-     0.00625999 0.00817517] src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ]   Mean tau^2: 0.007070 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ] Transforming
-    2026-06-10 08:31:44 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:31:44 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:31:44 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:31:44 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:31:44 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:31:44 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:31:44 [debug    ]   Grand mean range: [1.5699, 3.7008] src=StandardizationMixin
-    2026-06-10 08:31:44 [debug    ]   Pooled std range: [0.1492, 0.4759] src=StandardizationMixin
-    2026-06-10 08:31:44 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:31:44 [debug    ]   Standardized data std: 1.0035 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:31:44 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ] Transforming
-    2026-06-10 08:31:44 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:31:44 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:31:44 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:31:44 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:31:44 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:31:44 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:31:44 [debug    ]   Grand mean range: [1.5699, 3.7008] src=StandardizationMixin
-    2026-06-10 08:31:44 [debug    ]   Pooled std range: [0.1492, 0.4759] src=StandardizationMixin
-    2026-06-10 08:31:44 [debug    ]   Standardized data mean: 0.014483 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:31:44 [debug    ]   Standardized data std: 1.0193 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:31:44 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:31:44 [debug    ] Fitting
-    2026-06-10 08:31:44 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:31:44 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:31:44 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:31:44 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:31:44 [debug    ] Sites encoded: 900 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:31:44 [debug    ] Design matrix shape: (900, 8)  src=DesignMatrixMixin
-    2026-06-10 08:31:44 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:31:44 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:31:44 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:31:44 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:32:00 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:32:00 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:32:00 [debug    ]   Grand mean range: [1.5702, 3.7112] src=StandardizationMixin
-    2026-06-10 08:32:00 [debug    ]   Pooled std range: [0.1495, 0.4710] src=StandardizationMixin
-    2026-06-10 08:32:00 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:32:00 [debug    ]   Standardized data std: 1.0038 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:32:00 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ]   Gamma hat range: [-0.2527, 0.2963] src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ]   Site 0 delta range: [0.6729, 1.3819] src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ]   Site 1 delta range: [0.6392, 1.3465] src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ]   Site 2 delta range: [0.7782, 1.2796] src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ]   Site 3 delta range: [0.7441, 1.3889] src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ]   Site 4 delta range: [0.8227, 1.2913] src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ]   Site 5 delta range: [0.6058, 1.3013] src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ]   Site 6 delta range: [0.7736, 1.2509] src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ]   Site 7 delta range: [0.7375, 1.2228] src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ]   Gamma bar (mean location effect): [-0.01932831  0.00289674 -0.01154277  0.01335068  0.00518147  0.00198318
-      0.00182107  0.00573561] src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ]   Tau^2 (variance of location effects): [0.00720212 0.00677159 0.00768511 0.00902619 0.0077673  0.00657026
-     0.00712216 0.00840048] src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ]   Mean tau^2: 0.007568 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ] _iteration_solver converged in 3 iterations (change=0.000082) src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ] _iteration_solver converged in 4 iterations (change=0.000006) src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ] Transforming
-    2026-06-10 08:32:00 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:32:00 [debug    ] Sites encoded: 900 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:32:00 [debug    ] Design matrix shape: (900, 8)  src=DesignMatrixMixin
-    2026-06-10 08:32:00 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:32:00 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:32:00 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:32:00 [debug    ]   Grand mean range: [1.5702, 3.7112] src=StandardizationMixin
-    2026-06-10 08:32:00 [debug    ]   Pooled std range: [0.1495, 0.4710] src=StandardizationMixin
-    2026-06-10 08:32:00 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:32:00 [debug    ]   Standardized data std: 1.0038 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:32:00 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ] Transforming
-    2026-06-10 08:32:00 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:32:00 [debug    ] Sites encoded: 101 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:32:00 [debug    ] Design matrix shape: (101, 8)  src=DesignMatrixMixin
-    2026-06-10 08:32:00 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:32:00 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:32:00 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:32:00 [debug    ]   Grand mean range: [1.5702, 3.7112] src=StandardizationMixin
-    2026-06-10 08:32:00 [debug    ]   Pooled std range: [0.1495, 0.4710] src=StandardizationMixin
-    2026-06-10 08:32:00 [debug    ]   Standardized data mean: 0.023707 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:32:00 [debug    ]   Standardized data std: 1.0089 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:32:00 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:32:00 [debug    ] Fitting
-    2026-06-10 08:32:00 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:32:00 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:32:00 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:32:00 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:32:00 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:32:00 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:32:00 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:32:00 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:32:00 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:32:00 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:32:17 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:32:17 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:32:17 [debug    ]   Grand mean range: [1.5705, 3.6925] src=StandardizationMixin
-    2026-06-10 08:32:17 [debug    ]   Pooled std range: [0.1490, 0.4808] src=StandardizationMixin
-    2026-06-10 08:32:17 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:32:17 [debug    ]   Standardized data std: 1.0034 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:32:17 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ]   Gamma hat range: [-0.2397, 0.2674] src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ]   Site 0 delta range: [0.7509, 1.3157] src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ]   Site 1 delta range: [0.6766, 1.3283] src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ]   Site 2 delta range: [0.7865, 1.3026] src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ]   Site 3 delta range: [0.7615, 1.3012] src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ]   Site 4 delta range: [0.7533, 1.2931] src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ]   Site 5 delta range: [0.6702, 1.2115] src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ]   Site 6 delta range: [0.7112, 1.3074] src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ]   Site 7 delta range: [0.7820, 1.2309] src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ]   Gamma bar (mean location effect): [-0.01180662  0.00975777 -0.01725904  0.01043669  0.00254762 -0.00486196
-      0.00884739  0.00275608] src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ]   Tau^2 (variance of location effects): [0.00674519 0.00617294 0.0062815  0.0082282  0.00756834 0.00517408
-     0.00694226 0.00761005] src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ]   Mean tau^2: 0.006840 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ] Transforming
-    2026-06-10 08:32:17 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:32:17 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:32:17 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:32:17 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:32:17 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:32:17 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:32:17 [debug    ]   Grand mean range: [1.5705, 3.6925] src=StandardizationMixin
-    2026-06-10 08:32:17 [debug    ]   Pooled std range: [0.1490, 0.4808] src=StandardizationMixin
-    2026-06-10 08:32:17 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:32:17 [debug    ]   Standardized data std: 1.0034 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:32:17 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ] Transforming
-    2026-06-10 08:32:17 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:32:17 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:32:17 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:32:17 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:32:17 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:32:17 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:32:17 [debug    ]   Grand mean range: [1.5705, 3.6925] src=StandardizationMixin
-    2026-06-10 08:32:17 [debug    ]   Pooled std range: [0.1490, 0.4808] src=StandardizationMixin
-    2026-06-10 08:32:17 [debug    ]   Standardized data mean: 0.009994 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:32:17 [debug    ]   Standardized data std: 1.0063 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:32:17 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:32:17 [debug    ] Fitting
-    2026-06-10 08:32:17 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:32:17 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:32:17 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:32:17 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:32:17 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:32:17 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:32:17 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:32:17 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:32:17 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:32:17 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:32:33 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:32:33 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:32:33 [debug    ]   Grand mean range: [1.5726, 3.7110] src=StandardizationMixin
-    2026-06-10 08:32:33 [debug    ]   Pooled std range: [0.1502, 0.4722] src=StandardizationMixin
-    2026-06-10 08:32:33 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:32:33 [debug    ]   Standardized data std: 1.0036 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:32:33 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ]   Gamma hat range: [-0.2758, 0.2758] src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ]   Site 0 delta range: [0.6558, 1.3236] src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ]   Site 1 delta range: [0.6941, 1.2853] src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ]   Site 2 delta range: [0.7688, 1.2317] src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ]   Site 3 delta range: [0.7471, 1.3842] src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ]   Site 4 delta range: [0.7554, 1.2861] src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ]   Site 5 delta range: [0.6318, 1.2670] src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ]   Site 6 delta range: [0.7176, 1.2418] src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ]   Site 7 delta range: [0.8050, 1.2529] src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ]   Gamma bar (mean location effect): [-0.01560911  0.00464162 -0.01857525  0.01527922  0.00625615  0.00968452
-     -0.0024627   0.00169337] src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ]   Tau^2 (variance of location effects): [0.00703363 0.00655019 0.00616736 0.00922893 0.00742539 0.00549629
-     0.0092047  0.00704741] src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ]   Mean tau^2: 0.007269 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ] Transforming
-    2026-06-10 08:32:33 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:32:33 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:32:33 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:32:33 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:32:33 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:32:33 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:32:33 [debug    ]   Grand mean range: [1.5726, 3.7110] src=StandardizationMixin
-    2026-06-10 08:32:33 [debug    ]   Pooled std range: [0.1502, 0.4722] src=StandardizationMixin
-    2026-06-10 08:32:33 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:32:33 [debug    ]   Standardized data std: 1.0036 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:32:33 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ] Transforming
-    2026-06-10 08:32:33 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:32:33 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:32:33 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:32:33 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:32:33 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:32:33 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:32:33 [debug    ]   Grand mean range: [1.5726, 3.7110] src=StandardizationMixin
-    2026-06-10 08:32:33 [debug    ]   Pooled std range: [0.1502, 0.4722] src=StandardizationMixin
-    2026-06-10 08:32:33 [debug    ]   Standardized data mean: 0.002933 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:32:33 [debug    ]   Standardized data std: 1.0075 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:32:33 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:32:33 [debug    ] Fitting
-    2026-06-10 08:32:33 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:32:33 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:32:33 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:32:33 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:32:33 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:32:33 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:32:33 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:32:33 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:32:33 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:32:33 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:32:50 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:32:50 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:32:50 [debug    ]   Grand mean range: [1.5737, 3.6998] src=StandardizationMixin
-    2026-06-10 08:32:50 [debug    ]   Pooled std range: [0.1509, 0.4770] src=StandardizationMixin
-    2026-06-10 08:32:50 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:32:50 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:32:50 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ]   Gamma hat range: [-0.2494, 0.2728] src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ]   Site 0 delta range: [0.7516, 1.3566] src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ]   Site 1 delta range: [0.6805, 1.3073] src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ]   Site 2 delta range: [0.7826, 1.2942] src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ]   Site 3 delta range: [0.7345, 1.3829] src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ]   Site 4 delta range: [0.7987, 1.3366] src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ]   Site 5 delta range: [0.6378, 1.2192] src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ]   Site 6 delta range: [0.7350, 1.2642] src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ]   Site 7 delta range: [0.7852, 1.2603] src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ]   Gamma bar (mean location effect): [-0.01380417  0.00017552 -0.01718058  0.0133509   0.00866288  0.00837695
-      0.00396152 -0.0037369 ] src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ]   Tau^2 (variance of location effects): [0.00791218 0.00772616 0.00714983 0.00820165 0.0073684  0.00632856
-     0.00757129 0.00766647] src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ]   Mean tau^2: 0.007491 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ] Transforming
-    2026-06-10 08:32:50 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:32:50 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:32:50 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:32:50 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:32:50 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:32:50 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:32:50 [debug    ]   Grand mean range: [1.5737, 3.6998] src=StandardizationMixin
-    2026-06-10 08:32:50 [debug    ]   Pooled std range: [0.1509, 0.4770] src=StandardizationMixin
-    2026-06-10 08:32:50 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:32:50 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:32:50 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ] Transforming
-    2026-06-10 08:32:50 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:32:50 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:32:50 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:32:50 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:32:50 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:32:50 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:32:50 [debug    ]   Grand mean range: [1.5737, 3.6998] src=StandardizationMixin
-    2026-06-10 08:32:50 [debug    ]   Pooled std range: [0.1509, 0.4770] src=StandardizationMixin
-    2026-06-10 08:32:50 [debug    ]   Standardized data mean: 0.002344 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:32:50 [debug    ]   Standardized data std: 0.9977 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:32:50 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:32:50 [debug    ] Fitting
-    2026-06-10 08:32:50 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:32:50 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:32:50 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:32:50 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:32:50 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:32:50 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:32:50 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:32:50 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:32:50 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:32:50 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:33:06 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:33:06 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:33:06 [debug    ]   Grand mean range: [1.5737, 3.7058] src=StandardizationMixin
-    2026-06-10 08:33:06 [debug    ]   Pooled std range: [0.1496, 0.4777] src=StandardizationMixin
-    2026-06-10 08:33:06 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:33:06 [debug    ]   Standardized data std: 1.0040 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:33:06 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ]   Gamma hat range: [-0.2979, 0.2779] src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ]   Site 0 delta range: [0.7523, 1.4846] src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ]   Site 1 delta range: [0.6408, 1.3290] src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ]   Site 2 delta range: [0.7302, 1.2880] src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ]   Site 3 delta range: [0.7606, 1.2586] src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ]   Site 4 delta range: [0.7853, 1.2522] src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ]   Site 5 delta range: [0.6279, 1.1860] src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ]   Site 6 delta range: [0.7531, 1.2856] src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ]   Site 7 delta range: [0.8107, 1.2292] src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ]   Gamma bar (mean location effect): [-0.01265913  0.00361947 -0.02232483  0.01106586  0.00780619  0.00622692
-      0.00191267  0.00239097] src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ]   Tau^2 (variance of location effects): [0.00875978 0.00654954 0.0091134  0.0099163  0.00714448 0.00630896
-     0.00795052 0.00794418] src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ]   Mean tau^2: 0.007961 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ] _iteration_solver converged in 4 iterations (change=0.000004) src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ] Transforming
-    2026-06-10 08:33:06 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:33:06 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:33:06 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:33:06 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:33:06 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:33:06 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:33:06 [debug    ]   Grand mean range: [1.5737, 3.7058] src=StandardizationMixin
-    2026-06-10 08:33:06 [debug    ]   Pooled std range: [0.1496, 0.4777] src=StandardizationMixin
-    2026-06-10 08:33:06 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:33:06 [debug    ]   Standardized data std: 1.0040 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:33:06 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ] Transforming
-    2026-06-10 08:33:06 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:33:06 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:33:06 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:33:06 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:33:06 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:33:06 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:33:06 [debug    ]   Grand mean range: [1.5737, 3.7058] src=StandardizationMixin
-    2026-06-10 08:33:06 [debug    ]   Pooled std range: [0.1496, 0.4777] src=StandardizationMixin
-    2026-06-10 08:33:06 [debug    ]   Standardized data mean: 0.008408 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:33:06 [debug    ]   Standardized data std: 1.0060 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:33:06 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:33:06 [debug    ] Fitting
-    2026-06-10 08:33:06 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:33:06 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:33:06 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:33:06 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:33:06 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:33:06 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:33:06 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:33:06 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:33:06 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:33:06 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:33:23 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:33:23 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:33:23 [debug    ]   Grand mean range: [1.5733, 3.7159] src=StandardizationMixin
-    2026-06-10 08:33:23 [debug    ]   Pooled std range: [0.1502, 0.4738] src=StandardizationMixin
-    2026-06-10 08:33:23 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:33:23 [debug    ]   Standardized data std: 1.0035 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:33:23 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ]   Gamma hat range: [-0.2998, 0.2548] src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ]   Site 0 delta range: [0.7024, 1.4353] src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ]   Site 1 delta range: [0.6829, 1.2540] src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ]   Site 2 delta range: [0.7680, 1.2712] src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ]   Site 3 delta range: [0.7701, 1.3246] src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ]   Site 4 delta range: [0.7866, 1.3538] src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ]   Site 5 delta range: [0.6370, 1.1994] src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ]   Site 6 delta range: [0.7428, 1.2669] src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ]   Site 7 delta range: [0.7863, 1.2495] src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ]   Gamma bar (mean location effect): [-0.02679242  0.00339003 -0.01105245  0.01868963  0.00389844  0.00403941
-      0.00314159  0.00499776] src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ]   Tau^2 (variance of location effects): [0.00742052 0.00601273 0.00618246 0.00934487 0.00708522 0.00585039
-     0.00612373 0.00797686] src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ]   Mean tau^2: 0.007000 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ] _iteration_solver converged in 4 iterations (change=0.000004) src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ] Transforming
-    2026-06-10 08:33:23 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:33:23 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:33:23 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:33:23 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:33:23 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:33:23 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:33:23 [debug    ]   Grand mean range: [1.5733, 3.7159] src=StandardizationMixin
-    2026-06-10 08:33:23 [debug    ]   Pooled std range: [0.1502, 0.4738] src=StandardizationMixin
-    2026-06-10 08:33:23 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:33:23 [debug    ]   Standardized data std: 1.0035 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:33:23 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ] Transforming
-    2026-06-10 08:33:23 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:33:23 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:33:23 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:33:23 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:33:23 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:33:23 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:33:23 [debug    ]   Grand mean range: [1.5733, 3.7159] src=StandardizationMixin
-    2026-06-10 08:33:23 [debug    ]   Pooled std range: [0.1502, 0.4738] src=StandardizationMixin
-    2026-06-10 08:33:23 [debug    ]   Standardized data mean: -0.020215 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:33:23 [debug    ]   Standardized data std: 1.0093 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:33:23 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:33:23 [debug    ] Fitting
-    2026-06-10 08:33:23 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:33:23 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:33:23 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:33:23 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:33:23 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:33:23 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:33:23 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:33:23 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:33:23 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:33:23 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:33:39 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:33:39 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:33:39 [debug    ]   Grand mean range: [1.5743, 3.6979] src=StandardizationMixin
-    2026-06-10 08:33:39 [debug    ]   Pooled std range: [0.1498, 0.4722] src=StandardizationMixin
-    2026-06-10 08:33:39 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:33:39 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:33:39 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ]   Gamma hat range: [-0.2615, 0.2908] src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ]   Site 0 delta range: [0.7403, 1.4124] src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ]   Site 1 delta range: [0.6471, 1.3263] src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ]   Site 2 delta range: [0.7777, 1.2616] src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ]   Site 3 delta range: [0.7191, 1.3410] src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ]   Site 4 delta range: [0.7849, 1.2516] src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ]   Site 5 delta range: [0.6026, 1.2551] src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ]   Site 6 delta range: [0.7704, 1.2372] src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ]   Site 7 delta range: [0.7580, 1.2386] src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ]   Gamma bar (mean location effect): [-0.01661906  0.00203254 -0.0233858   0.01917416  0.01080229  0.0071435
-      0.00223006 -0.00303764] src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ]   Tau^2 (variance of location effects): [0.00709959 0.00668669 0.00700987 0.00940684 0.00728525 0.00639797
-     0.00686057 0.00802837] src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ]   Mean tau^2: 0.007347 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ] _iteration_solver converged in 4 iterations (change=0.000004) src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ] Transforming
-    2026-06-10 08:33:39 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:33:39 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:33:39 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:33:39 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:33:39 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:33:39 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:33:39 [debug    ]   Grand mean range: [1.5743, 3.6979] src=StandardizationMixin
-    2026-06-10 08:33:39 [debug    ]   Pooled std range: [0.1498, 0.4722] src=StandardizationMixin
-    2026-06-10 08:33:39 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:33:39 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:33:39 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ] Transforming
-    2026-06-10 08:33:39 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:33:39 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:33:39 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:33:39 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:33:39 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:33:39 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:33:39 [debug    ]   Grand mean range: [1.5743, 3.6979] src=StandardizationMixin
-    2026-06-10 08:33:39 [debug    ]   Pooled std range: [0.1498, 0.4722] src=StandardizationMixin
-    2026-06-10 08:33:39 [debug    ]   Standardized data mean: -0.006430 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:33:39 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:33:39 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:33:39 [debug    ] Fitting
-    2026-06-10 08:33:39 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:33:39 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:33:39 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:33:39 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:33:39 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:33:39 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:33:39 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:33:39 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:33:39 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:33:39 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:33:56 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:33:56 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:33:56 [debug    ]   Grand mean range: [1.5745, 3.6967] src=StandardizationMixin
-    2026-06-10 08:33:56 [debug    ]   Pooled std range: [0.1510, 0.4796] src=StandardizationMixin
-    2026-06-10 08:33:56 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:33:56 [debug    ]   Standardized data std: 1.0036 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:33:56 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ]   Gamma hat range: [-0.2348, 0.2403] src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ]   Site 0 delta range: [0.7301, 1.3775] src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ]   Site 1 delta range: [0.6270, 1.2941] src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ]   Site 2 delta range: [0.7451, 1.2497] src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ]   Site 3 delta range: [0.7362, 1.3464] src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ]   Site 4 delta range: [0.7787, 1.3600] src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ]   Site 5 delta range: [0.6137, 1.2221] src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ]   Site 6 delta range: [0.6914, 1.3286] src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ]   Site 7 delta range: [0.7652, 1.2718] src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ]   Gamma bar (mean location effect): [-0.01954303  0.00353679 -0.01397268  0.00941195  0.00539468  0.00456038
-      0.01322638 -0.00132736] src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ]   Tau^2 (variance of location effects): [0.00704561 0.00691051 0.00743761 0.00859995 0.00654032 0.00543424
-     0.00825727 0.0076124 ] src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ]   Mean tau^2: 0.007230 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ] _iteration_solver converged in 4 iterations (change=0.000004) src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ] Transforming
-    2026-06-10 08:33:56 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:33:56 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:33:56 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:33:56 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:33:56 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:33:56 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:33:56 [debug    ]   Grand mean range: [1.5745, 3.6967] src=StandardizationMixin
-    2026-06-10 08:33:56 [debug    ]   Pooled std range: [0.1510, 0.4796] src=StandardizationMixin
-    2026-06-10 08:33:56 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:33:56 [debug    ]   Standardized data std: 1.0036 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:33:56 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:33:56 [debug    ] Transforming
-    2026-06-10 08:33:56 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:33:56 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:33:56 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:33:56 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:33:56 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:33:56 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:33:56 [debug    ]   Grand mean range: [1.5745, 3.6967] src=StandardizationMixin
-    2026-06-10 08:33:56 [debug    ]   Pooled std range: [0.1510, 0.4796] src=StandardizationMixin
-    2026-06-10 08:33:56 [debug    ]   Standardized data mean: -0.017226 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:33:56 [debug    ]   Standardized data std: 0.9984 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:33:56 [debug    ] Harmonizing data               src=LocationAndScaleMixin
+    2026-06-10 10:31:22 [debug    ] Fitting
+    2026-06-10 10:31:22 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:31:22 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:31:22 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:31:46 [debug    ] Transforming
+    2026-06-10 10:31:46 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:31:46 [debug    ] Transforming
+    2026-06-10 10:31:46 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:31:46 [debug    ] Fitting
+    2026-06-10 10:31:46 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:31:46 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:31:46 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:32:08 [debug    ] Transforming
+    2026-06-10 10:32:08 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:32:08 [debug    ] Transforming
+    2026-06-10 10:32:08 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:32:08 [debug    ] Fitting
+    2026-06-10 10:32:08 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:32:08 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:32:08 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:32:29 [debug    ] Transforming
+    2026-06-10 10:32:29 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:32:29 [debug    ] Transforming
+    2026-06-10 10:32:29 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:32:29 [debug    ] Fitting
+    2026-06-10 10:32:29 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:32:29 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:32:29 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:32:51 [debug    ] Transforming
+    2026-06-10 10:32:51 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:32:51 [debug    ] Transforming
+    2026-06-10 10:32:51 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:32:51 [debug    ] Fitting
+    2026-06-10 10:32:51 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:32:51 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:32:51 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:33:13 [debug    ] Transforming
+    2026-06-10 10:33:13 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:33:13 [debug    ] Transforming
+    2026-06-10 10:33:13 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:33:13 [debug    ] Fitting
+    2026-06-10 10:33:13 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:33:13 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:33:13 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:33:35 [debug    ] Transforming
+    2026-06-10 10:33:35 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:33:35 [debug    ] Transforming
+    2026-06-10 10:33:35 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:33:35 [debug    ] Fitting
+    2026-06-10 10:33:35 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:33:35 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:33:35 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:33:57 [debug    ] Transforming
+    2026-06-10 10:33:57 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:33:57 [debug    ] Transforming
+    2026-06-10 10:33:57 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:33:57 [debug    ] Fitting
+    2026-06-10 10:33:57 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:33:57 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:33:57 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:34:19 [debug    ] Transforming
+    2026-06-10 10:34:19 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:34:19 [debug    ] Transforming
+    2026-06-10 10:34:19 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:34:19 [debug    ] Fitting
+    2026-06-10 10:34:19 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:34:19 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:34:19 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:34:40 [debug    ] Transforming
+    2026-06-10 10:34:40 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:34:41 [debug    ] Transforming
+    2026-06-10 10:34:41 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:34:41 [debug    ] Fitting
+    2026-06-10 10:34:41 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:34:41 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:34:41 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:35:02 [debug    ] Transforming
+    2026-06-10 10:35:02 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:35:02 [debug    ] Transforming
+    2026-06-10 10:35:02 [debug    ] Setting up smoothing using B-Splines
     Running experiment: true_simple2
-    2026-06-10 08:33:56 [debug    ] Fitting
-    2026-06-10 08:33:56 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:33:56 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:33:56 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:33:56 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:33:56 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:33:56 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:33:56 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:33:56 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:33:56 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:33:56 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:34:13 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:34:13 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:34:13 [debug    ]   Grand mean range: [211.4581, 7197.5902] src=StandardizationMixin
-    2026-06-10 08:34:13 [debug    ]   Pooled std range: [37.2711, 900.5361] src=StandardizationMixin
-    2026-06-10 08:34:13 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:34:13 [debug    ]   Standardized data std: 1.0040 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:34:13 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ]   Gamma hat range: [-0.2746, 0.2605] src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ]   Site 0 delta range: [0.7609, 1.3964] src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ]   Site 1 delta range: [0.7906, 1.3453] src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ]   Site 2 delta range: [0.7270, 1.3033] src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ]   Site 3 delta range: [0.7038, 1.3667] src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ]   Site 4 delta range: [0.7339, 1.2920] src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ]   Site 5 delta range: [0.7855, 1.2786] src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ]   Site 6 delta range: [0.7341, 1.3519] src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ]   Site 7 delta range: [0.8094, 1.3145] src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ]   Gamma bar (mean location effect): [ 0.01206735 -0.02325661 -0.00202849  0.01106757  0.00336672  0.0116861
-     -0.00963144 -0.00260186] src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ]   Tau^2 (variance of location effects): [0.00776842 0.00614671 0.00823611 0.00987218 0.00541841 0.00861683
-     0.00870439 0.00919389] src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ]   Mean tau^2: 0.007995 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ] Transforming
-    2026-06-10 08:34:13 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:34:13 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:34:13 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:34:13 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:34:13 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:34:13 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:34:13 [debug    ]   Grand mean range: [211.4581, 7197.5902] src=StandardizationMixin
-    2026-06-10 08:34:13 [debug    ]   Pooled std range: [37.2711, 900.5361] src=StandardizationMixin
-    2026-06-10 08:34:13 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:34:13 [debug    ]   Standardized data std: 1.0040 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:34:13 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ] Transforming
-    2026-06-10 08:34:13 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:34:13 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:34:13 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:34:13 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:34:13 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:34:13 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:34:13 [debug    ]   Grand mean range: [211.4581, 7197.5902] src=StandardizationMixin
-    2026-06-10 08:34:13 [debug    ]   Pooled std range: [37.2711, 900.5361] src=StandardizationMixin
-    2026-06-10 08:34:13 [debug    ]   Standardized data mean: -0.013097 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:34:13 [debug    ]   Standardized data std: 1.0093 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:34:13 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:34:13 [debug    ] Fitting
-    2026-06-10 08:34:13 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:34:13 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:34:13 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:34:13 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:34:13 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:34:13 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:34:13 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:34:13 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:34:13 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:34:13 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:34:29 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:34:29 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:34:29 [debug    ]   Grand mean range: [211.1012, 7202.0533] src=StandardizationMixin
-    2026-06-10 08:34:29 [debug    ]   Pooled std range: [36.7848, 907.7379] src=StandardizationMixin
-    2026-06-10 08:34:29 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:34:29 [debug    ]   Standardized data std: 1.0038 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:34:29 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ]   Gamma hat range: [-0.2730, 0.3024] src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ]   Site 0 delta range: [0.7949, 1.3454] src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ]   Site 1 delta range: [0.7985, 1.2627] src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ]   Site 2 delta range: [0.7428, 1.3490] src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ]   Site 3 delta range: [0.7100, 1.3249] src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ]   Site 4 delta range: [0.7512, 1.2763] src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ]   Site 5 delta range: [0.7223, 1.3637] src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ]   Site 6 delta range: [0.6794, 1.3134] src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ]   Site 7 delta range: [0.7423, 1.3520] src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ]   Gamma bar (mean location effect): [ 0.00934741 -0.02105172 -0.00529472  0.00451088  0.00701974  0.01693441
-     -0.00715479 -0.00477184] src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ]   Tau^2 (variance of location effects): [0.0081647  0.00672687 0.009155   0.00980589 0.00636137 0.00688357
-     0.0069535  0.00734158] src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ]   Mean tau^2: 0.007674 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ] _iteration_solver converged in 4 iterations (change=0.000004) src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ] Transforming
-    2026-06-10 08:34:29 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:34:29 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:34:29 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:34:29 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:34:29 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:34:29 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:34:29 [debug    ]   Grand mean range: [211.1012, 7202.0533] src=StandardizationMixin
-    2026-06-10 08:34:29 [debug    ]   Pooled std range: [36.7848, 907.7379] src=StandardizationMixin
-    2026-06-10 08:34:29 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:34:29 [debug    ]   Standardized data std: 1.0038 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:34:29 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ] Transforming
-    2026-06-10 08:34:29 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:34:29 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:34:29 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:34:29 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:34:29 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:34:29 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:34:29 [debug    ]   Grand mean range: [211.1012, 7202.0533] src=StandardizationMixin
-    2026-06-10 08:34:29 [debug    ]   Pooled std range: [36.7848, 907.7379] src=StandardizationMixin
-    2026-06-10 08:34:29 [debug    ]   Standardized data mean: 0.025447 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:34:29 [debug    ]   Standardized data std: 0.9911 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:34:29 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:34:29 [debug    ] Fitting
-    2026-06-10 08:34:29 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:34:29 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:34:29 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:34:29 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:34:29 [debug    ] Sites encoded: 900 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:34:29 [debug    ] Design matrix shape: (900, 8)  src=DesignMatrixMixin
-    2026-06-10 08:34:29 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:34:29 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:34:29 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:34:29 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:34:46 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:34:46 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:34:46 [debug    ]   Grand mean range: [212.3110, 7201.5944] src=StandardizationMixin
-    2026-06-10 08:34:46 [debug    ]   Pooled std range: [37.1461, 895.8984] src=StandardizationMixin
-    2026-06-10 08:34:46 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:34:46 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:34:46 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ]   Gamma hat range: [-0.2689, 0.2973] src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ]   Site 0 delta range: [0.7823, 1.3453] src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ]   Site 1 delta range: [0.8227, 1.3147] src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ]   Site 2 delta range: [0.6878, 1.3053] src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ]   Site 3 delta range: [0.6996, 1.3096] src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ]   Site 4 delta range: [0.6962, 1.2976] src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ]   Site 5 delta range: [0.7853, 1.3895] src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ]   Site 6 delta range: [0.7223, 1.3317] src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ]   Site 7 delta range: [0.8268, 1.2417] src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ]   Gamma bar (mean location effect): [ 0.00683888 -0.02431915  0.00014137  0.0062609   0.00389312  0.00999666
-     -0.00540095  0.00290965] src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ]   Tau^2 (variance of location effects): [0.00632539 0.00748235 0.00914623 0.00893436 0.00624617 0.00902279
-     0.00666595 0.00602271] src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ]   Mean tau^2: 0.007481 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ] Transforming
-    2026-06-10 08:34:46 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:34:46 [debug    ] Sites encoded: 900 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:34:46 [debug    ] Design matrix shape: (900, 8)  src=DesignMatrixMixin
-    2026-06-10 08:34:46 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:34:46 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:34:46 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:34:46 [debug    ]   Grand mean range: [212.3110, 7201.5944] src=StandardizationMixin
-    2026-06-10 08:34:46 [debug    ]   Pooled std range: [37.1461, 895.8984] src=StandardizationMixin
-    2026-06-10 08:34:46 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:34:46 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:34:46 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ] Transforming
-    2026-06-10 08:34:46 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:34:46 [debug    ] Sites encoded: 101 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:34:46 [debug    ] Design matrix shape: (101, 8)  src=DesignMatrixMixin
-    2026-06-10 08:34:46 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:34:46 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:34:46 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:34:46 [debug    ]   Grand mean range: [212.3110, 7201.5944] src=StandardizationMixin
-    2026-06-10 08:34:46 [debug    ]   Pooled std range: [37.1461, 895.8984] src=StandardizationMixin
-    2026-06-10 08:34:46 [debug    ]   Standardized data mean: 0.013093 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:34:46 [debug    ]   Standardized data std: 1.0369 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:34:46 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:34:46 [debug    ] Fitting
-    2026-06-10 08:34:46 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:34:46 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:34:46 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:34:46 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:34:46 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:34:46 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:34:46 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:34:46 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:34:46 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:34:46 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:35:02 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:35:02 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:35:02 [debug    ]   Grand mean range: [212.4459, 7193.7069] src=StandardizationMixin
-    2026-06-10 08:35:02 [debug    ]   Pooled std range: [36.9716, 912.3300] src=StandardizationMixin
-    2026-06-10 08:35:02 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:35:02 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:35:02 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ]   Gamma hat range: [-0.2474, 0.2984] src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ]   Site 0 delta range: [0.7891, 1.3646] src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ]   Site 1 delta range: [0.7593, 1.2913] src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ]   Site 2 delta range: [0.7074, 1.3032] src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ]   Site 3 delta range: [0.6803, 1.3072] src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ]   Site 4 delta range: [0.7338, 1.2984] src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ]   Site 5 delta range: [0.7645, 1.4047] src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ]   Site 6 delta range: [0.6952, 1.2791] src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ]   Site 7 delta range: [0.8219, 1.2260] src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ]   Gamma bar (mean location effect): [ 0.01368406 -0.0220227  -0.00254239 -0.00139544  0.00635675  0.01131025
-     -0.00554149 -0.00017374] src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ]   Tau^2 (variance of location effects): [0.00704156 0.00653127 0.0082774  0.00935233 0.00679961 0.00775527
-     0.00668219 0.00721119] src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ]   Mean tau^2: 0.007456 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:35:02 [debug    ] Transforming
-    2026-06-10 08:35:02 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:35:02 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:35:02 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:35:02 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:35:02 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:35:02 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:35:02 [debug    ]   Grand mean range: [212.4459, 7193.7069] src=StandardizationMixin
-    2026-06-10 08:35:02 [debug    ]   Pooled std range: [36.9716, 912.3300] src=StandardizationMixin
-    2026-06-10 08:35:02 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:35:02 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:35:02 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:35:03 [debug    ] Transforming
-    2026-06-10 08:35:03 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:35:03 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:35:03 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:35:03 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:35:03 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:35:03 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:35:03 [debug    ]   Grand mean range: [212.4459, 7193.7069] src=StandardizationMixin
-    2026-06-10 08:35:03 [debug    ]   Pooled std range: [36.9716, 912.3300] src=StandardizationMixin
-    2026-06-10 08:35:03 [debug    ]   Standardized data mean: 0.010144 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:35:03 [debug    ]   Standardized data std: 0.9979 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:35:03 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:35:03 [debug    ] Fitting
-    2026-06-10 08:35:03 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:35:03 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:35:03 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:35:03 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:35:03 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:35:03 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:35:03 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:35:03 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:35:03 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:35:03 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:35:20 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:35:20 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:35:20 [debug    ]   Grand mean range: [212.8041, 7197.6234] src=StandardizationMixin
-    2026-06-10 08:35:20 [debug    ]   Pooled std range: [36.6442, 898.2919] src=StandardizationMixin
-    2026-06-10 08:35:20 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:35:20 [debug    ]   Standardized data std: 1.0038 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:35:20 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ]   Gamma hat range: [-0.2675, 0.2795] src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ]   Site 0 delta range: [0.7682, 1.3868] src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ]   Site 1 delta range: [0.7675, 1.3567] src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ]   Site 2 delta range: [0.7241, 1.3526] src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ]   Site 3 delta range: [0.7207, 1.3349] src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ]   Site 4 delta range: [0.7476, 1.3735] src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ]   Site 5 delta range: [0.7127, 1.3673] src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ]   Site 6 delta range: [0.7076, 1.2852] src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ]   Site 7 delta range: [0.8154, 1.3016] src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ]   Gamma bar (mean location effect): [ 0.01963863 -0.02074304 -0.00542791  0.00394233  0.00237448  0.0091236
-     -0.01386503  0.00429524] src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ]   Tau^2 (variance of location effects): [0.00674221 0.00650873 0.00756785 0.01081817 0.00738088 0.00746734
-     0.00794166 0.00627065] src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ]   Mean tau^2: 0.007587 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ] Transforming
-    2026-06-10 08:35:20 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:35:20 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:35:20 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:35:20 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:35:20 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:35:20 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:35:20 [debug    ]   Grand mean range: [212.8041, 7197.6234] src=StandardizationMixin
-    2026-06-10 08:35:20 [debug    ]   Pooled std range: [36.6442, 898.2919] src=StandardizationMixin
-    2026-06-10 08:35:20 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:35:20 [debug    ]   Standardized data std: 1.0038 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:35:20 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ] Transforming
-    2026-06-10 08:35:20 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:35:20 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:35:20 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:35:20 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:35:20 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:35:20 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:35:20 [debug    ]   Grand mean range: [212.8041, 7197.6234] src=StandardizationMixin
-    2026-06-10 08:35:20 [debug    ]   Pooled std range: [36.6442, 898.2919] src=StandardizationMixin
-    2026-06-10 08:35:20 [debug    ]   Standardized data mean: -0.007456 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:35:20 [debug    ]   Standardized data std: 1.0083 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:35:20 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:35:20 [debug    ] Fitting
-    2026-06-10 08:35:20 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:35:20 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:35:20 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:35:20 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:35:20 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:35:20 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:35:20 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:35:20 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:35:20 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:35:20 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:35:37 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:35:37 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:35:37 [debug    ]   Grand mean range: [212.9071, 7204.5928] src=StandardizationMixin
-    2026-06-10 08:35:37 [debug    ]   Pooled std range: [36.9651, 904.6344] src=StandardizationMixin
-    2026-06-10 08:35:37 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:35:37 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:35:37 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ]   Gamma hat range: [-0.2748, 0.2754] src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ]   Site 0 delta range: [0.7735, 1.3109] src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ]   Site 1 delta range: [0.7251, 1.4390] src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ]   Site 2 delta range: [0.7035, 1.2993] src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ]   Site 3 delta range: [0.6956, 1.3564] src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ]   Site 4 delta range: [0.7476, 1.3444] src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ]   Site 5 delta range: [0.7646, 1.3242] src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ]   Site 6 delta range: [0.7584, 1.2717] src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ]   Site 7 delta range: [0.7834, 1.3018] src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ]   Gamma bar (mean location effect): [ 0.00936292 -0.01989379 -0.00651472  0.0075631   0.0043193   0.01240203
-     -0.00798702  0.00013839] src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ]   Tau^2 (variance of location effects): [0.00703191 0.00828107 0.00852012 0.00887619 0.00509049 0.00768857
-     0.00656362 0.00726256] src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ]   Mean tau^2: 0.007414 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ] Transforming
-    2026-06-10 08:35:37 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:35:37 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:35:37 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:35:37 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:35:37 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:35:37 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:35:37 [debug    ]   Grand mean range: [212.9071, 7204.5928] src=StandardizationMixin
-    2026-06-10 08:35:37 [debug    ]   Pooled std range: [36.9651, 904.6344] src=StandardizationMixin
-    2026-06-10 08:35:37 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:35:37 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:35:37 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ] Transforming
-    2026-06-10 08:35:37 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:35:37 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:35:37 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:35:37 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:35:37 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:35:37 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:35:37 [debug    ]   Grand mean range: [212.9071, 7204.5928] src=StandardizationMixin
-    2026-06-10 08:35:37 [debug    ]   Pooled std range: [36.9651, 904.6344] src=StandardizationMixin
-    2026-06-10 08:35:37 [debug    ]   Standardized data mean: -0.023193 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:35:37 [debug    ]   Standardized data std: 1.0053 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:35:37 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:35:37 [debug    ] Fitting
-    2026-06-10 08:35:37 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:35:37 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:35:37 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:35:37 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:35:37 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:35:37 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:35:37 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:35:37 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:35:37 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:35:37 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:35:53 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:35:53 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:35:53 [debug    ]   Grand mean range: [211.6084, 7213.4336] src=StandardizationMixin
-    2026-06-10 08:35:53 [debug    ]   Pooled std range: [36.8478, 888.6654] src=StandardizationMixin
-    2026-06-10 08:35:53 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:35:53 [debug    ]   Standardized data std: 1.0036 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:35:53 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ]   Gamma hat range: [-0.2956, 0.2741] src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ]   Site 0 delta range: [0.7717, 1.3395] src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ]   Site 1 delta range: [0.7977, 1.3074] src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ]   Site 2 delta range: [0.6687, 1.3264] src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ]   Site 3 delta range: [0.7106, 1.3678] src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ]   Site 4 delta range: [0.7460, 1.2866] src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ]   Site 5 delta range: [0.7416, 1.3401] src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ]   Site 6 delta range: [0.7088, 1.2998] src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ]   Site 7 delta range: [0.8096, 1.2927] src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ]   Gamma bar (mean location effect): [ 0.01624157 -0.02480513 -0.00463546  0.00704742  0.00591375  0.01497312
-     -0.01258375 -0.00220682] src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ]   Tau^2 (variance of location effects): [0.00652848 0.00706516 0.00746961 0.00899108 0.00571893 0.00745289
-     0.00680084 0.00749773] src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ]   Mean tau^2: 0.007191 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ] Transforming
-    2026-06-10 08:35:53 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:35:53 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:35:53 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:35:53 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:35:53 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:35:53 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:35:53 [debug    ]   Grand mean range: [211.6084, 7213.4336] src=StandardizationMixin
-    2026-06-10 08:35:53 [debug    ]   Pooled std range: [36.8478, 888.6654] src=StandardizationMixin
-    2026-06-10 08:35:53 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:35:53 [debug    ]   Standardized data std: 1.0036 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:35:53 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ] Transforming
-    2026-06-10 08:35:53 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:35:53 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:35:53 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:35:53 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:35:53 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:35:53 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:35:53 [debug    ]   Grand mean range: [211.6084, 7213.4336] src=StandardizationMixin
-    2026-06-10 08:35:53 [debug    ]   Pooled std range: [36.8478, 888.6654] src=StandardizationMixin
-    2026-06-10 08:35:53 [debug    ]   Standardized data mean: -0.014193 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:35:53 [debug    ]   Standardized data std: 1.0145 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:35:53 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:35:53 [debug    ] Fitting
-    2026-06-10 08:35:53 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:35:53 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:35:53 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:35:53 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:35:53 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:35:53 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:35:53 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:35:53 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:35:53 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:35:53 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:36:10 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:36:10 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:36:10 [debug    ]   Grand mean range: [211.2601, 7207.3577] src=StandardizationMixin
-    2026-06-10 08:36:10 [debug    ]   Pooled std range: [36.7196, 906.7296] src=StandardizationMixin
-    2026-06-10 08:36:10 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:36:10 [debug    ]   Standardized data std: 1.0039 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:36:10 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ]   Gamma hat range: [-0.2978, 0.2967] src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ]   Site 0 delta range: [0.8123, 1.3459] src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ]   Site 1 delta range: [0.7817, 1.3415] src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ]   Site 2 delta range: [0.7326, 1.3297] src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ]   Site 3 delta range: [0.7539, 1.4363] src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ]   Site 4 delta range: [0.7347, 1.2847] src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ]   Site 5 delta range: [0.7253, 1.3945] src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ]   Site 6 delta range: [0.7831, 1.2643] src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ]   Site 7 delta range: [0.8141, 1.2613] src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ]   Gamma bar (mean location effect): [ 0.01224073 -0.02193608 -0.00794338  0.0088131   0.00737169  0.00889229
-     -0.00814676  0.00249145] src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ]   Tau^2 (variance of location effects): [0.0070735  0.00605148 0.00867902 0.01046095 0.00590808 0.00832575
-     0.00717845 0.00846005] src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ]   Mean tau^2: 0.007767 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ] Transforming
-    2026-06-10 08:36:10 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:36:10 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:36:10 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:36:10 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:36:10 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:36:10 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:36:10 [debug    ]   Grand mean range: [211.2601, 7207.3577] src=StandardizationMixin
-    2026-06-10 08:36:10 [debug    ]   Pooled std range: [36.7196, 906.7296] src=StandardizationMixin
-    2026-06-10 08:36:10 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:36:10 [debug    ]   Standardized data std: 1.0039 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:36:10 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ] Transforming
-    2026-06-10 08:36:10 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:36:10 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:36:10 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:36:10 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:36:10 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:36:10 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:36:10 [debug    ]   Grand mean range: [211.2601, 7207.3577] src=StandardizationMixin
-    2026-06-10 08:36:10 [debug    ]   Pooled std range: [36.7196, 906.7296] src=StandardizationMixin
-    2026-06-10 08:36:10 [debug    ]   Standardized data mean: -0.016038 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:36:10 [debug    ]   Standardized data std: 1.0027 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:36:10 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:36:10 [debug    ] Fitting
-    2026-06-10 08:36:10 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:36:10 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:36:10 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:36:10 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:36:10 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:36:10 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:36:10 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:36:10 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:36:10 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:36:10 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:36:26 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:36:26 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:36:26 [debug    ]   Grand mean range: [212.5890, 7162.9693] src=StandardizationMixin
-    2026-06-10 08:36:26 [debug    ]   Pooled std range: [37.3028, 891.8989] src=StandardizationMixin
-    2026-06-10 08:36:26 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:36:26 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:36:26 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ]   Gamma hat range: [-0.2841, 0.2700] src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ]   Site 0 delta range: [0.7291, 1.3053] src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ]   Site 1 delta range: [0.7597, 1.3366] src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ]   Site 2 delta range: [0.7046, 1.2432] src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ]   Site 3 delta range: [0.7234, 1.3589] src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ]   Site 4 delta range: [0.7502, 1.2789] src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ]   Site 5 delta range: [0.7802, 1.3353] src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ]   Site 6 delta range: [0.7670, 1.2712] src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ]   Site 7 delta range: [0.8050, 1.3258] src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ]   Gamma bar (mean location effect): [ 0.00658776 -0.02444232 -0.00501559  0.00861076  0.00707707  0.01384684
-     -0.00362291 -0.0030052 ] src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ]   Tau^2 (variance of location effects): [0.00657149 0.00686613 0.00925314 0.0093646  0.0056241  0.00803501
-     0.0062044  0.00725862] src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ]   Mean tau^2: 0.007397 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ] _iteration_solver converged in 4 iterations (change=0.000004) src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ] Transforming
-    2026-06-10 08:36:26 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:36:26 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:36:26 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:36:26 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:36:26 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:36:26 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:36:26 [debug    ]   Grand mean range: [212.5890, 7162.9693] src=StandardizationMixin
-    2026-06-10 08:36:26 [debug    ]   Pooled std range: [37.3028, 891.8989] src=StandardizationMixin
-    2026-06-10 08:36:26 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:36:26 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:36:26 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ] Transforming
-    2026-06-10 08:36:26 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:36:26 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:36:26 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:36:26 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:36:26 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:36:26 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:36:26 [debug    ]   Grand mean range: [212.5890, 7162.9693] src=StandardizationMixin
-    2026-06-10 08:36:26 [debug    ]   Pooled std range: [37.3028, 891.8989] src=StandardizationMixin
-    2026-06-10 08:36:26 [debug    ]   Standardized data mean: 0.020717 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:36:26 [debug    ]   Standardized data std: 1.0073 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:36:26 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:36:26 [debug    ] Fitting
-    2026-06-10 08:36:26 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:36:26 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:36:26 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:36:26 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:36:26 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:36:26 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:36:26 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:36:26 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:36:26 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:36:26 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:36:43 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:36:43 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:36:43 [debug    ]   Grand mean range: [211.0364, 7200.8799] src=StandardizationMixin
-    2026-06-10 08:36:43 [debug    ]   Pooled std range: [37.0887, 897.7983] src=StandardizationMixin
-    2026-06-10 08:36:43 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:36:43 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:36:43 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ]   Gamma hat range: [-0.2674, 0.2881] src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ]   Site 0 delta range: [0.7881, 1.3393] src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ]   Site 1 delta range: [0.7224, 1.2826] src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ]   Site 2 delta range: [0.6732, 1.3477] src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ]   Site 3 delta range: [0.7326, 1.3354] src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ]   Site 4 delta range: [0.7703, 1.3011] src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ]   Site 5 delta range: [0.7582, 1.3435] src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ]   Site 6 delta range: [0.7465, 1.2453] src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ]   Site 7 delta range: [0.7856, 1.3727] src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ]   Gamma bar (mean location effect): [ 0.00771842 -0.02417132 -0.01199569  0.00804714  0.00728898  0.01547065
-     -0.00785335  0.00560635] src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ]   Tau^2 (variance of location effects): [0.00631556 0.00580744 0.0080816  0.00896501 0.00630297 0.00753088
-     0.00750282 0.00759668] src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ]   Mean tau^2: 0.007263 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ] _iteration_solver converged in 4 iterations (change=0.000005) src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ] Transforming
-    2026-06-10 08:36:43 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:36:43 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:36:43 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:36:43 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:36:43 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:36:43 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:36:43 [debug    ]   Grand mean range: [211.0364, 7200.8799] src=StandardizationMixin
-    2026-06-10 08:36:43 [debug    ]   Pooled std range: [37.0887, 897.7983] src=StandardizationMixin
-    2026-06-10 08:36:43 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:36:43 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:36:43 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:36:43 [debug    ] Transforming
-    2026-06-10 08:36:43 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:36:43 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:36:43 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:36:43 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:36:43 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:36:43 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:36:43 [debug    ]   Grand mean range: [211.0364, 7200.8799] src=StandardizationMixin
-    2026-06-10 08:36:43 [debug    ]   Pooled std range: [37.0887, 897.7983] src=StandardizationMixin
-    2026-06-10 08:36:43 [debug    ]   Standardized data mean: 0.004193 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:36:43 [debug    ]   Standardized data std: 0.9960 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:36:43 [debug    ] Harmonizing data               src=LocationAndScaleMixin
+    2026-06-10 10:35:02 [debug    ] Fitting
+    2026-06-10 10:35:02 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:35:02 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:35:02 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:35:24 [debug    ] Transforming
+    2026-06-10 10:35:24 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:35:24 [debug    ] Transforming
+    2026-06-10 10:35:24 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:35:24 [debug    ] Fitting
+    2026-06-10 10:35:24 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:35:24 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:35:24 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:35:46 [debug    ] Transforming
+    2026-06-10 10:35:46 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:35:46 [debug    ] Transforming
+    2026-06-10 10:35:46 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:35:46 [debug    ] Fitting
+    2026-06-10 10:35:46 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:35:46 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:35:46 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:36:07 [debug    ] Transforming
+    2026-06-10 10:36:07 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:36:07 [debug    ] Transforming
+    2026-06-10 10:36:07 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:36:07 [debug    ] Fitting
+    2026-06-10 10:36:07 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:36:07 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:36:07 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:36:29 [debug    ] Transforming
+    2026-06-10 10:36:29 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:36:29 [debug    ] Transforming
+    2026-06-10 10:36:29 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:36:29 [debug    ] Fitting
+    2026-06-10 10:36:29 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:36:29 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:36:29 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:36:51 [debug    ] Transforming
+    2026-06-10 10:36:51 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:36:51 [debug    ] Transforming
+    2026-06-10 10:36:51 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:36:51 [debug    ] Fitting
+    2026-06-10 10:36:51 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:36:51 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:36:51 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:37:13 [debug    ] Transforming
+    2026-06-10 10:37:13 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:37:13 [debug    ] Transforming
+    2026-06-10 10:37:13 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:37:13 [debug    ] Fitting
+    2026-06-10 10:37:13 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:37:13 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:37:13 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:37:36 [debug    ] Transforming
+    2026-06-10 10:37:36 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:37:36 [debug    ] Transforming
+    2026-06-10 10:37:36 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:37:36 [debug    ] Fitting
+    2026-06-10 10:37:36 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:37:36 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:37:36 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:37:57 [debug    ] Transforming
+    2026-06-10 10:37:57 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:37:57 [debug    ] Transforming
+    2026-06-10 10:37:57 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:37:57 [debug    ] Fitting
+    2026-06-10 10:37:57 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:37:57 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:37:57 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:38:19 [debug    ] Transforming
+    2026-06-10 10:38:19 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:38:19 [debug    ] Transforming
+    2026-06-10 10:38:19 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:38:19 [debug    ] Fitting
+    2026-06-10 10:38:19 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:38:19 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:38:19 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:38:40 [debug    ] Transforming
+    2026-06-10 10:38:40 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:38:40 [debug    ] Transforming
+    2026-06-10 10:38:40 [debug    ] Setting up smoothing using B-Splines
     Running experiment: true_interaction1
-    2026-06-10 08:36:43 [debug    ] Fitting
-    2026-06-10 08:36:43 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:36:43 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:36:43 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:36:43 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:36:43 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:36:43 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:36:43 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:36:43 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:36:43 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:36:43 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:36:59 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:36:59 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:36:59 [debug    ]   Grand mean range: [1.6165, 3.7077] src=StandardizationMixin
-    2026-06-10 08:36:59 [debug    ]   Pooled std range: [0.1479, 0.4658] src=StandardizationMixin
-    2026-06-10 08:36:59 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:36:59 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:36:59 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ]   Gamma hat range: [-0.2664, 0.2614] src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ]   Site 0 delta range: [0.7070, 1.3963] src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ]   Site 1 delta range: [0.7444, 1.4004] src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ]   Site 2 delta range: [0.7793, 1.2172] src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ]   Site 3 delta range: [0.7081, 1.3310] src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ]   Site 4 delta range: [0.7596, 1.3838] src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ]   Site 5 delta range: [0.7755, 1.3262] src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ]   Site 6 delta range: [0.7453, 1.3376] src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ]   Site 7 delta range: [0.7694, 1.3385] src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ]   Gamma bar (mean location effect): [-0.013388   -0.00175546  0.00315823  0.02795103  0.01013579 -0.00062252
-     -0.00911423 -0.01676387] src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ]   Tau^2 (variance of location effects): [0.00816997 0.00696657 0.00444239 0.00710124 0.00648671 0.0076435
-     0.01096308 0.0073659 ] src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ]   Mean tau^2: 0.007392 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ] Transforming
-    2026-06-10 08:36:59 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:36:59 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:36:59 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:36:59 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:36:59 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:36:59 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:36:59 [debug    ]   Grand mean range: [1.6165, 3.7077] src=StandardizationMixin
-    2026-06-10 08:36:59 [debug    ]   Pooled std range: [0.1479, 0.4658] src=StandardizationMixin
-    2026-06-10 08:36:59 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:36:59 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:36:59 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ] Transforming
-    2026-06-10 08:36:59 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:36:59 [debug    ] Sites encoded: 96 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:36:59 [debug    ] Design matrix shape: (96, 8)   src=DesignMatrixMixin
-    2026-06-10 08:36:59 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:36:59 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:36:59 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:36:59 [debug    ]   Grand mean range: [1.6165, 3.7077] src=StandardizationMixin
-    2026-06-10 08:36:59 [debug    ]   Pooled std range: [0.1479, 0.4658] src=StandardizationMixin
-    2026-06-10 08:36:59 [debug    ]   Standardized data mean: -0.006814 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:36:59 [debug    ]   Standardized data std: 1.0145 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:36:59 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:36:59 [debug    ] Fitting
-    2026-06-10 08:36:59 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:36:59 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:36:59 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:36:59 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:36:59 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:36:59 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:36:59 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:36:59 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:36:59 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:36:59 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:37:15 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:37:15 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:37:15 [debug    ]   Grand mean range: [1.6196, 3.7199] src=StandardizationMixin
-    2026-06-10 08:37:15 [debug    ]   Pooled std range: [0.1502, 0.4785] src=StandardizationMixin
-    2026-06-10 08:37:15 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:37:15 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:37:15 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ]   Gamma hat range: [-0.2729, 0.2956] src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ]   Site 0 delta range: [0.5978, 1.3125] src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ]   Site 1 delta range: [0.7622, 1.2761] src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ]   Site 2 delta range: [0.7279, 1.2230] src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ]   Site 3 delta range: [0.7247, 1.3335] src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ]   Site 4 delta range: [0.7834, 1.4255] src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ]   Site 5 delta range: [0.7636, 1.3101] src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ]   Site 6 delta range: [0.7029, 1.2565] src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ]   Site 7 delta range: [0.7639, 1.3043] src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ]   Gamma bar (mean location effect): [-0.01588231 -0.00661716  0.00735541  0.03295425  0.00646306 -0.00126319
-     -0.00949137 -0.01379625] src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ]   Tau^2 (variance of location effects): [0.00775734 0.00771403 0.00384567 0.00697264 0.00632179 0.00835725
-     0.01051112 0.00705858] src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ]   Mean tau^2: 0.007317 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ] _iteration_solver converged in 4 iterations (change=0.000004) src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ] Transforming
-    2026-06-10 08:37:15 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:37:15 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:37:15 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:37:15 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:37:15 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:37:15 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:37:15 [debug    ]   Grand mean range: [1.6196, 3.7199] src=StandardizationMixin
-    2026-06-10 08:37:15 [debug    ]   Pooled std range: [0.1502, 0.4785] src=StandardizationMixin
-    2026-06-10 08:37:15 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:37:15 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:37:15 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ] Transforming
-    2026-06-10 08:37:15 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:37:15 [debug    ] Sites encoded: 95 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:37:15 [debug    ] Design matrix shape: (95, 8)   src=DesignMatrixMixin
-    2026-06-10 08:37:15 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:37:15 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:37:15 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:37:15 [debug    ]   Grand mean range: [1.6196, 3.7199] src=StandardizationMixin
-    2026-06-10 08:37:15 [debug    ]   Pooled std range: [0.1502, 0.4785] src=StandardizationMixin
-    2026-06-10 08:37:15 [debug    ]   Standardized data mean: 0.013966 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:37:15 [debug    ]   Standardized data std: 0.9980 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:37:15 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:37:15 [debug    ] Fitting
-    2026-06-10 08:37:15 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:37:15 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:37:15 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:37:15 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:37:15 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:37:15 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:37:15 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:37:15 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:37:15 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:37:15 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:37:31 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:37:31 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:37:31 [debug    ]   Grand mean range: [1.6155, 3.7152] src=StandardizationMixin
-    2026-06-10 08:37:31 [debug    ]   Pooled std range: [0.1500, 0.4787] src=StandardizationMixin
-    2026-06-10 08:37:31 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:37:31 [debug    ]   Standardized data std: 1.0035 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:37:31 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ]   Gamma hat range: [-0.2885, 0.3065] src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ]   Site 0 delta range: [0.6774, 1.3131] src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ]   Site 1 delta range: [0.7655, 1.5301] src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ]   Site 2 delta range: [0.7032, 1.2768] src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ]   Site 3 delta range: [0.6863, 1.3368] src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ]   Site 4 delta range: [0.7505, 1.2766] src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ]   Site 5 delta range: [0.7347, 1.3120] src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ]   Site 6 delta range: [0.7321, 1.3184] src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ]   Site 7 delta range: [0.7840, 1.3413] src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ]   Gamma bar (mean location effect): [-0.01210325 -0.00519202  0.0135361   0.03146718  0.01124235 -0.00302558
-     -0.01616857 -0.01926157] src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ]   Tau^2 (variance of location effects): [0.0064765  0.00720311 0.00425853 0.00579572 0.00646371 0.00792362
-     0.00955273 0.00711128] src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ]   Mean tau^2: 0.006848 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ] _iteration_solver converged in 4 iterations (change=0.000006) src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ] Transforming
-    2026-06-10 08:37:31 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:37:31 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:37:31 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:37:31 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:37:31 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:37:31 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:37:31 [debug    ]   Grand mean range: [1.6155, 3.7152] src=StandardizationMixin
-    2026-06-10 08:37:31 [debug    ]   Pooled std range: [0.1500, 0.4787] src=StandardizationMixin
-    2026-06-10 08:37:31 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:37:31 [debug    ]   Standardized data std: 1.0035 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:37:31 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ] Transforming
-    2026-06-10 08:37:31 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:37:31 [debug    ] Sites encoded: 96 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:37:31 [debug    ] Design matrix shape: (96, 8)   src=DesignMatrixMixin
-    2026-06-10 08:37:31 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:37:31 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:37:31 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:37:31 [debug    ]   Grand mean range: [1.6155, 3.7152] src=StandardizationMixin
-    2026-06-10 08:37:31 [debug    ]   Pooled std range: [0.1500, 0.4787] src=StandardizationMixin
-    2026-06-10 08:37:31 [debug    ]   Standardized data mean: 0.000763 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:37:31 [debug    ]   Standardized data std: 1.0108 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:37:31 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:37:31 [debug    ] Fitting
-    2026-06-10 08:37:31 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:37:31 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:37:31 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:37:31 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:37:31 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:37:31 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:37:31 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:37:31 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:37:31 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:37:31 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:37:47 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:37:47 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:37:47 [debug    ]   Grand mean range: [1.6224, 3.7172] src=StandardizationMixin
-    2026-06-10 08:37:47 [debug    ]   Pooled std range: [0.1510, 0.4717] src=StandardizationMixin
-    2026-06-10 08:37:47 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:37:47 [debug    ]   Standardized data std: 1.0036 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:37:47 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ]   Gamma hat range: [-0.2983, 0.3086] src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ]   Site 0 delta range: [0.6333, 1.3643] src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ]   Site 1 delta range: [0.7566, 1.5228] src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ]   Site 2 delta range: [0.7327, 1.2944] src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ]   Site 3 delta range: [0.7326, 1.3527] src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ]   Site 4 delta range: [0.7159, 1.4246] src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ]   Site 5 delta range: [0.7214, 1.3063] src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ]   Site 6 delta range: [0.7159, 1.2831] src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ]   Site 7 delta range: [0.8025, 1.3098] src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ]   Gamma bar (mean location effect): [-0.00609503 -0.00805506  0.00113683  0.03032829  0.00507364  0.0001108
-     -0.00862667 -0.01596083] src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ]   Tau^2 (variance of location effects): [0.00666351 0.00768973 0.00422276 0.00577248 0.00737914 0.00783387
-     0.01073479 0.00708648] src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ]   Mean tau^2: 0.007173 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ] _iteration_solver converged in 4 iterations (change=0.000005) src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ] Transforming
-    2026-06-10 08:37:47 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:37:47 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:37:47 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:37:47 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:37:47 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:37:47 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:37:47 [debug    ]   Grand mean range: [1.6224, 3.7172] src=StandardizationMixin
-    2026-06-10 08:37:47 [debug    ]   Pooled std range: [0.1510, 0.4717] src=StandardizationMixin
-    2026-06-10 08:37:47 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:37:47 [debug    ]   Standardized data std: 1.0036 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:37:47 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ] Transforming
-    2026-06-10 08:37:47 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:37:47 [debug    ] Sites encoded: 95 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:37:47 [debug    ] Design matrix shape: (95, 8)   src=DesignMatrixMixin
-    2026-06-10 08:37:47 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:37:47 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:37:47 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:37:47 [debug    ]   Grand mean range: [1.6224, 3.7172] src=StandardizationMixin
-    2026-06-10 08:37:47 [debug    ]   Pooled std range: [0.1510, 0.4717] src=StandardizationMixin
-    2026-06-10 08:37:47 [debug    ]   Standardized data mean: 0.006187 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:37:47 [debug    ]   Standardized data std: 0.9943 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:37:47 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:37:47 [debug    ] Fitting
-    2026-06-10 08:37:47 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:37:47 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:37:47 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:37:47 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:37:47 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:37:47 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:37:47 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:37:47 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:37:47 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:37:47 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:38:03 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:38:03 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:38:03 [debug    ]   Grand mean range: [1.6170, 3.7301] src=StandardizationMixin
-    2026-06-10 08:38:03 [debug    ]   Pooled std range: [0.1517, 0.4763] src=StandardizationMixin
-    2026-06-10 08:38:03 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:38:03 [debug    ]   Standardized data std: 1.0034 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:38:03 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ]   Gamma hat range: [-0.2502, 0.2682] src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ]   Site 0 delta range: [0.6928, 1.3423] src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ]   Site 1 delta range: [0.7210, 1.4573] src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ]   Site 2 delta range: [0.7714, 1.2323] src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ]   Site 3 delta range: [0.7024, 1.2815] src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ]   Site 4 delta range: [0.7811, 1.3976] src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ]   Site 5 delta range: [0.7451, 1.3137] src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ]   Site 6 delta range: [0.7485, 1.2545] src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ]   Site 7 delta range: [0.7457, 1.2693] src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ]   Gamma bar (mean location effect): [-1.30916529e-02  4.33718119e-05  1.00249495e-02  1.71675059e-02
-      1.17998908e-02 -4.82513943e-03 -4.07384940e-03 -1.70026918e-02] src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ]   Tau^2 (variance of location effects): [0.00680495 0.00671964 0.00399305 0.00575786 0.00692735 0.00812374
-     0.00971774 0.00618717] src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ]   Mean tau^2: 0.006779 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ] Transforming
-    2026-06-10 08:38:03 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:38:03 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:38:03 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:38:03 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:38:03 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:38:03 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:38:03 [debug    ]   Grand mean range: [1.6170, 3.7301] src=StandardizationMixin
-    2026-06-10 08:38:03 [debug    ]   Pooled std range: [0.1517, 0.4763] src=StandardizationMixin
-    2026-06-10 08:38:03 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:38:03 [debug    ]   Standardized data std: 1.0034 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:38:03 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ] Transforming
-    2026-06-10 08:38:03 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:38:03 [debug    ] Sites encoded: 95 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:38:03 [debug    ] Design matrix shape: (95, 8)   src=DesignMatrixMixin
-    2026-06-10 08:38:03 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:38:03 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:38:03 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:38:03 [debug    ]   Grand mean range: [1.6170, 3.7301] src=StandardizationMixin
-    2026-06-10 08:38:03 [debug    ]   Pooled std range: [0.1517, 0.4763] src=StandardizationMixin
-    2026-06-10 08:38:03 [debug    ]   Standardized data mean: -0.010780 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:38:03 [debug    ]   Standardized data std: 1.0198 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:38:03 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:38:03 [debug    ] Fitting
-    2026-06-10 08:38:03 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:38:03 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:38:03 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:38:03 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:38:03 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:38:03 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:38:03 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:38:03 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:38:03 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:38:03 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:38:19 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:38:19 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:38:19 [debug    ]   Grand mean range: [1.6204, 3.7299] src=StandardizationMixin
-    2026-06-10 08:38:19 [debug    ]   Pooled std range: [0.1515, 0.4731] src=StandardizationMixin
-    2026-06-10 08:38:19 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:38:19 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:38:19 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ]   Gamma hat range: [-0.3198, 0.2212] src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ]   Site 0 delta range: [0.6870, 1.3285] src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ]   Site 1 delta range: [0.7222, 1.4789] src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ]   Site 2 delta range: [0.7704, 1.1993] src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ]   Site 3 delta range: [0.7469, 1.2748] src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ]   Site 4 delta range: [0.7619, 1.4357] src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ]   Site 5 delta range: [0.7507, 1.2836] src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ]   Site 6 delta range: [0.7168, 1.3207] src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ]   Site 7 delta range: [0.7681, 1.3142] src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ]   Gamma bar (mean location effect): [-0.01520698 -0.00405728  0.00667054  0.02490547  0.0031305   0.00764313
-     -0.00725849 -0.01754726] src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ]   Tau^2 (variance of location effects): [0.00789136 0.00770366 0.00404367 0.00669763 0.00710718 0.00706276
-     0.01031338 0.00815606] src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ]   Mean tau^2: 0.007372 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ] Transforming
-    2026-06-10 08:38:19 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:38:19 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:38:19 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:38:19 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:38:19 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:38:19 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:38:19 [debug    ]   Grand mean range: [1.6204, 3.7299] src=StandardizationMixin
-    2026-06-10 08:38:19 [debug    ]   Pooled std range: [0.1515, 0.4731] src=StandardizationMixin
-    2026-06-10 08:38:19 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:38:19 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:38:19 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ] Transforming
-    2026-06-10 08:38:19 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:38:19 [debug    ] Sites encoded: 96 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:38:19 [debug    ] Design matrix shape: (96, 8)   src=DesignMatrixMixin
-    2026-06-10 08:38:19 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:38:19 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:38:19 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:38:19 [debug    ]   Grand mean range: [1.6204, 3.7299] src=StandardizationMixin
-    2026-06-10 08:38:19 [debug    ]   Pooled std range: [0.1515, 0.4731] src=StandardizationMixin
-    2026-06-10 08:38:19 [debug    ]   Standardized data mean: -0.004692 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:38:19 [debug    ]   Standardized data std: 1.0088 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:38:19 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:38:19 [debug    ] Fitting
-    2026-06-10 08:38:19 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:38:19 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:38:19 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:38:19 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:38:19 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:38:19 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:38:19 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:38:19 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:38:19 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:38:19 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:38:35 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:38:35 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:38:35 [debug    ]   Grand mean range: [1.6216, 3.7217] src=StandardizationMixin
-    2026-06-10 08:38:35 [debug    ]   Pooled std range: [0.1504, 0.4766] src=StandardizationMixin
-    2026-06-10 08:38:35 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:38:35 [debug    ]   Standardized data std: 1.0039 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:38:35 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ]   Gamma hat range: [-0.2605, 0.2533] src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ]   Site 0 delta range: [0.6352, 1.3027] src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ]   Site 1 delta range: [0.7364, 1.5195] src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ]   Site 2 delta range: [0.7876, 1.2926] src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ]   Site 3 delta range: [0.7060, 1.3165] src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ]   Site 4 delta range: [0.7768, 1.3040] src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ]   Site 5 delta range: [0.7642, 1.3055] src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ]   Site 6 delta range: [0.7242, 1.3308] src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ]   Site 7 delta range: [0.7934, 1.2965] src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ]   Gamma bar (mean location effect): [-0.00547014 -0.00150927  0.00503438  0.02655891  0.01058745 -0.00517312
-     -0.00505088 -0.02499216] src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ]   Tau^2 (variance of location effects): [0.00885134 0.01005319 0.00549541 0.00632728 0.00662738 0.0076548
-     0.01068788 0.00666357] src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ]   Mean tau^2: 0.007795 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ] Transforming
-    2026-06-10 08:38:35 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:38:35 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:38:35 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:38:35 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:38:35 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:38:35 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:38:35 [debug    ]   Grand mean range: [1.6216, 3.7217] src=StandardizationMixin
-    2026-06-10 08:38:35 [debug    ]   Pooled std range: [0.1504, 0.4766] src=StandardizationMixin
-    2026-06-10 08:38:35 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:38:35 [debug    ]   Standardized data std: 1.0039 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:38:35 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ] Transforming
-    2026-06-10 08:38:35 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:38:35 [debug    ] Sites encoded: 96 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:38:35 [debug    ] Design matrix shape: (96, 8)   src=DesignMatrixMixin
-    2026-06-10 08:38:35 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:38:35 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:38:35 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:38:35 [debug    ]   Grand mean range: [1.6216, 3.7217] src=StandardizationMixin
-    2026-06-10 08:38:35 [debug    ]   Pooled std range: [0.1504, 0.4766] src=StandardizationMixin
-    2026-06-10 08:38:35 [debug    ]   Standardized data mean: -0.006703 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:38:35 [debug    ]   Standardized data std: 0.9983 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:38:35 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:38:35 [debug    ] Fitting
-    2026-06-10 08:38:35 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:38:35 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:38:35 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:38:35 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:38:35 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:38:35 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:38:35 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:38:35 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:38:35 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:38:35 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:38:51 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:38:51 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:38:51 [debug    ]   Grand mean range: [1.6149, 3.7155] src=StandardizationMixin
-    2026-06-10 08:38:51 [debug    ]   Pooled std range: [0.1527, 0.4783] src=StandardizationMixin
-    2026-06-10 08:38:51 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:38:51 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:38:51 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ]   Gamma hat range: [-0.2876, 0.2851] src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ]   Site 0 delta range: [0.6811, 1.3899] src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ]   Site 1 delta range: [0.7447, 1.4696] src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ]   Site 2 delta range: [0.7662, 1.2126] src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ]   Site 3 delta range: [0.7077, 1.3620] src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ]   Site 4 delta range: [0.7672, 1.3211] src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ]   Site 5 delta range: [0.7633, 1.2680] src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ]   Site 6 delta range: [0.7233, 1.2908] src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ]   Site 7 delta range: [0.7818, 1.2747] src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ]   Gamma bar (mean location effect): [-0.02194798  0.00053663  0.01061655  0.03655036  0.0043704   0.00361859
-     -0.0147926  -0.01886633] src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ]   Tau^2 (variance of location effects): [0.00722901 0.00759731 0.00425844 0.00769515 0.00690224 0.00786228
-     0.01041124 0.00633557] src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ]   Mean tau^2: 0.007286 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ] _iteration_solver converged in 4 iterations (change=0.000035) src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ] Transforming
-    2026-06-10 08:38:51 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:38:51 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:38:51 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:38:51 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:38:51 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:38:51 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:38:51 [debug    ]   Grand mean range: [1.6149, 3.7155] src=StandardizationMixin
-    2026-06-10 08:38:51 [debug    ]   Pooled std range: [0.1527, 0.4783] src=StandardizationMixin
-    2026-06-10 08:38:51 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:38:51 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:38:51 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:38:51 [debug    ] Transforming
-    2026-06-10 08:38:51 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:38:51 [debug    ] Sites encoded: 96 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:38:51 [debug    ] Design matrix shape: (96, 8)   src=DesignMatrixMixin
-    2026-06-10 08:38:51 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:38:51 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:38:51 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:38:51 [debug    ]   Grand mean range: [1.6149, 3.7155] src=StandardizationMixin
-    2026-06-10 08:38:51 [debug    ]   Pooled std range: [0.1527, 0.4783] src=StandardizationMixin
-    2026-06-10 08:38:51 [debug    ]   Standardized data mean: -0.011367 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:38:51 [debug    ]   Standardized data std: 1.0077 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:38:51 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:38:52 [debug    ] Fitting
-    2026-06-10 08:38:52 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:38:52 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:38:52 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:38:52 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:38:52 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:38:52 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:38:52 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:38:52 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:38:52 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:38:52 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:39:08 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:39:08 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:39:08 [debug    ]   Grand mean range: [1.6189, 3.7184] src=StandardizationMixin
-    2026-06-10 08:39:08 [debug    ]   Pooled std range: [0.1503, 0.4735] src=StandardizationMixin
-    2026-06-10 08:39:08 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:39:08 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:39:08 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ]   Gamma hat range: [-0.2536, 0.2363] src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ]   Site 0 delta range: [0.6502, 1.3318] src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ]   Site 1 delta range: [0.7368, 1.4453] src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ]   Site 2 delta range: [0.7227, 1.2373] src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ]   Site 3 delta range: [0.7171, 1.2776] src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ]   Site 4 delta range: [0.7289, 1.4378] src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ]   Site 5 delta range: [0.7562, 1.3396] src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ]   Site 6 delta range: [0.6977, 1.3594] src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ]   Site 7 delta range: [0.7277, 1.3797] src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ]   Gamma bar (mean location effect): [-0.01530213 -0.00711727  0.01321452  0.03011658  0.00757312  0.00216316
-     -0.01092765 -0.02033686] src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ]   Tau^2 (variance of location effects): [0.00752341 0.00738519 0.00408463 0.00780016 0.00588079 0.00813457
-     0.01054736 0.00669851] src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ]   Mean tau^2: 0.007257 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ] Transforming
-    2026-06-10 08:39:08 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:39:08 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:39:08 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:39:08 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:39:08 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:39:08 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:39:08 [debug    ]   Grand mean range: [1.6189, 3.7184] src=StandardizationMixin
-    2026-06-10 08:39:08 [debug    ]   Pooled std range: [0.1503, 0.4735] src=StandardizationMixin
-    2026-06-10 08:39:08 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:39:08 [debug    ]   Standardized data std: 1.0037 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:39:08 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ] Transforming
-    2026-06-10 08:39:08 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:39:08 [debug    ] Sites encoded: 96 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:39:08 [debug    ] Design matrix shape: (96, 8)   src=DesignMatrixMixin
-    2026-06-10 08:39:08 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:39:08 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:39:08 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:39:08 [debug    ]   Grand mean range: [1.6189, 3.7184] src=StandardizationMixin
-    2026-06-10 08:39:08 [debug    ]   Pooled std range: [0.1503, 0.4735] src=StandardizationMixin
-    2026-06-10 08:39:08 [debug    ]   Standardized data mean: -0.018357 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:39:08 [debug    ]   Standardized data std: 1.0070 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:39:08 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:39:08 [debug    ] Fitting
-    2026-06-10 08:39:08 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:39:08 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:39:08 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:39:08 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:39:08 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:39:08 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:39:08 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:39:08 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:39:08 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:39:08 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:39:24 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:39:24 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:39:24 [debug    ]   Grand mean range: [1.6130, 3.7149] src=StandardizationMixin
-    2026-06-10 08:39:24 [debug    ]   Pooled std range: [0.1481, 0.4755] src=StandardizationMixin
-    2026-06-10 08:39:24 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:39:24 [debug    ]   Standardized data std: 1.0034 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:39:24 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ]   Gamma hat range: [-0.2591, 0.2391] src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ]   Site 0 delta range: [0.6863, 1.4859] src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ]   Site 1 delta range: [0.7756, 1.3536] src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ]   Site 2 delta range: [0.6948, 1.2247] src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ]   Site 3 delta range: [0.7137, 1.3407] src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ]   Site 4 delta range: [0.7512, 1.4263] src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ]   Site 5 delta range: [0.7375, 1.3115] src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ]   Site 6 delta range: [0.7383, 1.2774] src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ]   Site 7 delta range: [0.7652, 1.2500] src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ]   Gamma bar (mean location effect): [-0.01067161 -0.00212284  0.00282436  0.02681261  0.00650746 -0.00278714
-     -0.00427714 -0.0158147 ] src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ]   Tau^2 (variance of location effects): [0.00660947 0.00704717 0.0044941  0.00690965 0.00606022 0.00712218
-     0.01031743 0.00621292] src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ]   Mean tau^2: 0.006847 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ] Transforming
-    2026-06-10 08:39:24 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:39:24 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:39:24 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:39:24 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:39:24 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:39:24 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:39:24 [debug    ]   Grand mean range: [1.6130, 3.7149] src=StandardizationMixin
-    2026-06-10 08:39:24 [debug    ]   Pooled std range: [0.1481, 0.4755] src=StandardizationMixin
-    2026-06-10 08:39:24 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:39:24 [debug    ]   Standardized data std: 1.0034 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:39:24 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:39:24 [debug    ] Transforming
-    2026-06-10 08:39:24 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:39:24 [debug    ] Sites encoded: 95 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:39:24 [debug    ] Design matrix shape: (95, 8)   src=DesignMatrixMixin
-    2026-06-10 08:39:24 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:39:24 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:39:24 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:39:24 [debug    ]   Grand mean range: [1.6130, 3.7149] src=StandardizationMixin
-    2026-06-10 08:39:24 [debug    ]   Pooled std range: [0.1481, 0.4755] src=StandardizationMixin
-    2026-06-10 08:39:24 [debug    ]   Standardized data mean: 0.038784 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:39:24 [debug    ]   Standardized data std: 1.0111 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:39:24 [debug    ] Harmonizing data               src=LocationAndScaleMixin
+    2026-06-10 10:38:40 [debug    ] Fitting
+    2026-06-10 10:38:40 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:38:40 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:38:40 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:39:01 [debug    ] Transforming
+    2026-06-10 10:39:01 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:39:01 [debug    ] Transforming
+    2026-06-10 10:39:01 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:39:01 [debug    ] Fitting
+    2026-06-10 10:39:01 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:39:01 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:39:01 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:39:22 [debug    ] Transforming
+    2026-06-10 10:39:22 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:39:22 [debug    ] Transforming
+    2026-06-10 10:39:22 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:39:22 [debug    ] Fitting
+    2026-06-10 10:39:22 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:39:22 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:39:22 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:39:44 [debug    ] Transforming
+    2026-06-10 10:39:44 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:39:44 [debug    ] Transforming
+    2026-06-10 10:39:44 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:39:44 [debug    ] Fitting
+    2026-06-10 10:39:44 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:39:44 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:39:44 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:40:05 [debug    ] Transforming
+    2026-06-10 10:40:05 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:40:05 [debug    ] Transforming
+    2026-06-10 10:40:05 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:40:05 [debug    ] Fitting
+    2026-06-10 10:40:05 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:40:05 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:40:05 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:40:26 [debug    ] Transforming
+    2026-06-10 10:40:26 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:40:26 [debug    ] Transforming
+    2026-06-10 10:40:26 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:40:26 [debug    ] Fitting
+    2026-06-10 10:40:26 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:40:26 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:40:26 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:40:47 [debug    ] Transforming
+    2026-06-10 10:40:47 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:40:47 [debug    ] Transforming
+    2026-06-10 10:40:47 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:40:47 [debug    ] Fitting
+    2026-06-10 10:40:47 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:40:47 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:40:47 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:41:08 [debug    ] Transforming
+    2026-06-10 10:41:08 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:41:08 [debug    ] Transforming
+    2026-06-10 10:41:08 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:41:08 [debug    ] Fitting
+    2026-06-10 10:41:08 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:41:08 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:41:08 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:41:29 [debug    ] Transforming
+    2026-06-10 10:41:29 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:41:29 [debug    ] Transforming
+    2026-06-10 10:41:29 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:41:29 [debug    ] Fitting
+    2026-06-10 10:41:29 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:41:29 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:41:29 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:41:50 [debug    ] Transforming
+    2026-06-10 10:41:50 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:41:51 [debug    ] Transforming
+    2026-06-10 10:41:51 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:41:51 [debug    ] Fitting
+    2026-06-10 10:41:51 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:41:51 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:41:51 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:42:12 [debug    ] Transforming
+    2026-06-10 10:42:12 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:42:12 [debug    ] Transforming
+    2026-06-10 10:42:12 [debug    ] Setting up smoothing using B-Splines
     Running experiment: true_interaction2
-    2026-06-10 08:39:24 [debug    ] Fitting
-    2026-06-10 08:39:24 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:39:24 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:39:24 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:39:24 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:39:24 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:39:24 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:39:24 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:39:24 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:39:24 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:39:24 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:39:40 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:39:40 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:39:40 [debug    ]   Grand mean range: [213.6224, 7188.8509] src=StandardizationMixin
-    2026-06-10 08:39:40 [debug    ]   Pooled std range: [40.5026, 1008.0110] src=StandardizationMixin
-    2026-06-10 08:39:40 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:39:40 [debug    ]   Standardized data std: 1.0042 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:39:40 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ]   Gamma hat range: [-0.2831, 0.2906] src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ]   Site 0 delta range: [0.7528, 1.4009] src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ]   Site 1 delta range: [0.7511, 1.3553] src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ]   Site 2 delta range: [0.7320, 1.2580] src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ]   Site 3 delta range: [0.7147, 1.2812] src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ]   Site 4 delta range: [0.7416, 1.3089] src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ]   Site 5 delta range: [0.7881, 1.3199] src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ]   Site 6 delta range: [0.6825, 1.4208] src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ]   Site 7 delta range: [0.7884, 1.3851] src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ]   Gamma bar (mean location effect): [ 0.00543887  0.00055764  0.00388257  0.00883688 -0.02703882  0.02906703
-     -0.01279097 -0.00945844] src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ]   Tau^2 (variance of location effects): [0.00515889 0.00961551 0.0099185  0.0071092  0.00927003 0.00960808
-     0.00727759 0.00835934] src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ]   Mean tau^2: 0.008290 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ] _iteration_solver converged in 4 iterations (change=0.000006) src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ] _iteration_solver converged in 4 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ] Transforming
-    2026-06-10 08:39:40 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:39:40 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:39:40 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:39:40 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:39:40 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:39:40 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:39:40 [debug    ]   Grand mean range: [213.6224, 7188.8509] src=StandardizationMixin
-    2026-06-10 08:39:40 [debug    ]   Pooled std range: [40.5026, 1008.0110] src=StandardizationMixin
-    2026-06-10 08:39:40 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:39:40 [debug    ]   Standardized data std: 1.0042 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:39:40 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ] Transforming
-    2026-06-10 08:39:40 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:39:40 [debug    ] Sites encoded: 96 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:39:40 [debug    ] Design matrix shape: (96, 8)   src=DesignMatrixMixin
-    2026-06-10 08:39:40 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:39:40 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:39:40 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:39:40 [debug    ]   Grand mean range: [213.6224, 7188.8509] src=StandardizationMixin
-    2026-06-10 08:39:40 [debug    ]   Pooled std range: [40.5026, 1008.0110] src=StandardizationMixin
-    2026-06-10 08:39:40 [debug    ]   Standardized data mean: 0.010157 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:39:40 [debug    ]   Standardized data std: 1.0006 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:39:40 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:39:40 [debug    ] Fitting
-    2026-06-10 08:39:40 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:39:40 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:39:40 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:39:40 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:39:40 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:39:40 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:39:40 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:39:40 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:39:40 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:39:40 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:39:57 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:39:57 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:39:57 [debug    ]   Grand mean range: [213.4290, 7167.4248] src=StandardizationMixin
-    2026-06-10 08:39:57 [debug    ]   Pooled std range: [40.5328, 1003.5457] src=StandardizationMixin
-    2026-06-10 08:39:57 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:39:57 [debug    ]   Standardized data std: 1.0039 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:39:57 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ]   Gamma hat range: [-0.3114, 0.2738] src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ]   Site 0 delta range: [0.7191, 1.2875] src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ]   Site 1 delta range: [0.7592, 1.3559] src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ]   Site 2 delta range: [0.7584, 1.2439] src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ]   Site 3 delta range: [0.7339, 1.2674] src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ]   Site 4 delta range: [0.7192, 1.4052] src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ]   Site 5 delta range: [0.7602, 1.4008] src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ]   Site 6 delta range: [0.6319, 1.3803] src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ]   Site 7 delta range: [0.8083, 1.3303] src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ]   Gamma bar (mean location effect): [ 0.00754455  0.00611781  0.00836151  0.00662171 -0.02967508  0.02971868
-     -0.02284105 -0.00696433] src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ]   Tau^2 (variance of location effects): [0.00560753 0.00768022 0.00876423 0.00616847 0.00919565 0.00740345
-     0.00849129 0.00727939] src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ]   Mean tau^2: 0.007574 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ] _iteration_solver converged in 4 iterations (change=0.000006) src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ] _iteration_solver converged in 4 iterations (change=0.000006) src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ] Transforming
-    2026-06-10 08:39:57 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:39:57 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:39:57 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:39:57 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:39:57 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:39:57 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:39:57 [debug    ]   Grand mean range: [213.4290, 7167.4248] src=StandardizationMixin
-    2026-06-10 08:39:57 [debug    ]   Pooled std range: [40.5328, 1003.5457] src=StandardizationMixin
-    2026-06-10 08:39:57 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:39:57 [debug    ]   Standardized data std: 1.0039 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:39:57 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ] Transforming
-    2026-06-10 08:39:57 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:39:57 [debug    ] Sites encoded: 95 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:39:57 [debug    ] Design matrix shape: (95, 8)   src=DesignMatrixMixin
-    2026-06-10 08:39:57 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:39:57 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:39:57 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:39:57 [debug    ]   Grand mean range: [213.4290, 7167.4248] src=StandardizationMixin
-    2026-06-10 08:39:57 [debug    ]   Pooled std range: [40.5328, 1003.5457] src=StandardizationMixin
-    2026-06-10 08:39:57 [debug    ]   Standardized data mean: 0.010595 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:39:57 [debug    ]   Standardized data std: 1.0152 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:39:57 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:39:57 [debug    ] Fitting
-    2026-06-10 08:39:57 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:39:57 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:39:57 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:39:57 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:39:57 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:39:57 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:39:57 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:39:57 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:39:57 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:39:57 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:40:13 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:40:13 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:40:13 [debug    ]   Grand mean range: [215.0304, 7175.5219] src=StandardizationMixin
-    2026-06-10 08:40:13 [debug    ]   Pooled std range: [40.3241, 1008.2919] src=StandardizationMixin
-    2026-06-10 08:40:13 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:40:13 [debug    ]   Standardized data std: 1.0041 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:40:13 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ]   Gamma hat range: [-0.2748, 0.2924] src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ]   Site 0 delta range: [0.6398, 1.3999] src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ]   Site 1 delta range: [0.7606, 1.3369] src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ]   Site 2 delta range: [0.7658, 1.2508] src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ]   Site 3 delta range: [0.7562, 1.3427] src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ]   Site 4 delta range: [0.7010, 1.4063] src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ]   Site 5 delta range: [0.7029, 1.3473] src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ]   Site 6 delta range: [0.6821, 1.4302] src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ]   Site 7 delta range: [0.8068, 1.3513] src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ]   Gamma bar (mean location effect): [ 0.00286651  0.00440954  0.00350239  0.01050028 -0.01834423  0.02694793
-     -0.02029815 -0.00868367] src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ]   Tau^2 (variance of location effects): [0.00590067 0.00925923 0.00980066 0.006512   0.00888524 0.00850771
-     0.00852173 0.00819608] src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ]   Mean tau^2: 0.008198 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ] _iteration_solver converged in 4 iterations (change=0.000004) src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ] _iteration_solver converged in 4 iterations (change=0.000004) src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ] Transforming
-    2026-06-10 08:40:13 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:40:13 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:40:13 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:40:13 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:40:13 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:40:13 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:40:13 [debug    ]   Grand mean range: [215.0304, 7175.5219] src=StandardizationMixin
-    2026-06-10 08:40:13 [debug    ]   Pooled std range: [40.3241, 1008.2919] src=StandardizationMixin
-    2026-06-10 08:40:13 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:40:13 [debug    ]   Standardized data std: 1.0041 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:40:13 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ] Transforming
-    2026-06-10 08:40:13 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:40:13 [debug    ] Sites encoded: 96 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:40:13 [debug    ] Design matrix shape: (96, 8)   src=DesignMatrixMixin
-    2026-06-10 08:40:13 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:40:13 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:40:13 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:40:13 [debug    ]   Grand mean range: [215.0304, 7175.5219] src=StandardizationMixin
-    2026-06-10 08:40:13 [debug    ]   Pooled std range: [40.3241, 1008.2919] src=StandardizationMixin
-    2026-06-10 08:40:13 [debug    ]   Standardized data mean: 0.008635 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:40:13 [debug    ]   Standardized data std: 1.0093 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:40:13 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:40:13 [debug    ] Fitting
-    2026-06-10 08:40:13 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:40:13 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:40:13 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:40:13 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:40:13 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:40:13 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:40:13 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:40:13 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:40:13 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:40:13 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:40:29 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:40:29 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:40:29 [debug    ]   Grand mean range: [213.8079, 7186.7558] src=StandardizationMixin
-    2026-06-10 08:40:29 [debug    ]   Pooled std range: [40.7929, 993.1048] src=StandardizationMixin
-    2026-06-10 08:40:29 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:40:29 [debug    ]   Standardized data std: 1.0041 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:40:29 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ]   Gamma hat range: [-0.2487, 0.3136] src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ]   Site 0 delta range: [0.7079, 1.4471] src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ]   Site 1 delta range: [0.7685, 1.3713] src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ]   Site 2 delta range: [0.7941, 1.2235] src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ]   Site 3 delta range: [0.7551, 1.2855] src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ]   Site 4 delta range: [0.7503, 1.4242] src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ]   Site 5 delta range: [0.7618, 1.2677] src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ]   Site 6 delta range: [0.7211, 1.2998] src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ]   Site 7 delta range: [0.7459, 1.2352] src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ]   Gamma bar (mean location effect): [ 0.00865851  0.01026299  0.00150758  0.01219418 -0.0200732   0.02494128
-     -0.02383157 -0.01294892] src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ]   Tau^2 (variance of location effects): [0.00597672 0.00858834 0.00919936 0.00633875 0.00844581 0.00876604
-     0.00832965 0.00915361] src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ]   Mean tau^2: 0.008100 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ] _iteration_solver converged in 4 iterations (change=0.000007) src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ] Transforming
-    2026-06-10 08:40:29 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:40:29 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:40:29 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:40:29 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:40:29 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:40:29 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:40:29 [debug    ]   Grand mean range: [213.8079, 7186.7558] src=StandardizationMixin
-    2026-06-10 08:40:29 [debug    ]   Pooled std range: [40.7929, 993.1048] src=StandardizationMixin
-    2026-06-10 08:40:29 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:40:29 [debug    ]   Standardized data std: 1.0041 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:40:29 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ] Transforming
-    2026-06-10 08:40:29 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:40:29 [debug    ] Sites encoded: 95 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:40:29 [debug    ] Design matrix shape: (95, 8)   src=DesignMatrixMixin
-    2026-06-10 08:40:29 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:40:29 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:40:29 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:40:29 [debug    ]   Grand mean range: [213.8079, 7186.7558] src=StandardizationMixin
-    2026-06-10 08:40:29 [debug    ]   Pooled std range: [40.7929, 993.1048] src=StandardizationMixin
-    2026-06-10 08:40:29 [debug    ]   Standardized data mean: 0.020801 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:40:29 [debug    ]   Standardized data std: 1.0030 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:40:29 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:40:29 [debug    ] Fitting
-    2026-06-10 08:40:29 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:40:29 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:40:29 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:40:29 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:40:29 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:40:29 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:40:29 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:40:29 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:40:29 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:40:29 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:40:45 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:40:45 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:40:45 [debug    ]   Grand mean range: [213.8273, 7180.3035] src=StandardizationMixin
-    2026-06-10 08:40:45 [debug    ]   Pooled std range: [40.7171, 1004.4080] src=StandardizationMixin
-    2026-06-10 08:40:45 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:40:45 [debug    ]   Standardized data std: 1.0041 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:40:45 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ]   Gamma hat range: [-0.3034, 0.2928] src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ]   Site 0 delta range: [0.7291, 1.4278] src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ]   Site 1 delta range: [0.7305, 1.4064] src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ]   Site 2 delta range: [0.6922, 1.2048] src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ]   Site 3 delta range: [0.7775, 1.3621] src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ]   Site 4 delta range: [0.7349, 1.3839] src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ]   Site 5 delta range: [0.7146, 1.2420] src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ]   Site 6 delta range: [0.6538, 1.2919] src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ]   Site 7 delta range: [0.7956, 1.3663] src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ]   Gamma bar (mean location effect): [ 0.00472684  0.02086296  0.00364565 -0.00072932 -0.02537841  0.02714171
-     -0.02070023 -0.00734719] src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ]   Tau^2 (variance of location effects): [0.00529582 0.00868436 0.00872095 0.00701877 0.00889582 0.0095174
-     0.00947571 0.00731228] src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ]   Mean tau^2: 0.008115 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ] _iteration_solver converged in 4 iterations (change=0.000004) src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ] _iteration_solver converged in 4 iterations (change=0.000005) src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ] Transforming
-    2026-06-10 08:40:45 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:40:45 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:40:45 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:40:45 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:40:45 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:40:45 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:40:45 [debug    ]   Grand mean range: [213.8273, 7180.3035] src=StandardizationMixin
-    2026-06-10 08:40:45 [debug    ]   Pooled std range: [40.7171, 1004.4080] src=StandardizationMixin
-    2026-06-10 08:40:45 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:40:45 [debug    ]   Standardized data std: 1.0041 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:40:45 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ] Transforming
-    2026-06-10 08:40:45 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:40:45 [debug    ] Sites encoded: 95 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:40:45 [debug    ] Design matrix shape: (95, 8)   src=DesignMatrixMixin
-    2026-06-10 08:40:45 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:40:45 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:40:45 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:40:45 [debug    ]   Grand mean range: [213.8273, 7180.3035] src=StandardizationMixin
-    2026-06-10 08:40:45 [debug    ]   Pooled std range: [40.7171, 1004.4080] src=StandardizationMixin
-    2026-06-10 08:40:45 [debug    ]   Standardized data mean: -0.023215 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:40:45 [debug    ]   Standardized data std: 1.0064 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:40:45 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:40:45 [debug    ] Fitting
-    2026-06-10 08:40:45 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:40:45 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:40:45 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:40:45 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:40:45 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:40:45 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:40:45 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:40:45 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:40:45 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:40:45 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:41:01 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:41:01 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:41:01 [debug    ]   Grand mean range: [212.2746, 7182.7606] src=StandardizationMixin
-    2026-06-10 08:41:01 [debug    ]   Pooled std range: [40.1748, 995.6652] src=StandardizationMixin
-    2026-06-10 08:41:01 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:41:01 [debug    ]   Standardized data std: 1.0041 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:41:01 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ]   Gamma hat range: [-0.2748, 0.2768] src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ]   Site 0 delta range: [0.7208, 1.4225] src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ]   Site 1 delta range: [0.7758, 1.3537] src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ]   Site 2 delta range: [0.7313, 1.2558] src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ]   Site 3 delta range: [0.6869, 1.3261] src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ]   Site 4 delta range: [0.7282, 1.4771] src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ]   Site 5 delta range: [0.7479, 1.3004] src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ]   Site 6 delta range: [0.7066, 1.3119] src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ]   Site 7 delta range: [0.7715, 1.3437] src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ]   Gamma bar (mean location effect): [ 0.00904749  0.00770404  0.00015384  0.00888814 -0.02654776  0.02753253
-     -0.01215925 -0.01475901] src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ]   Tau^2 (variance of location effects): [0.00602492 0.00869174 0.00997315 0.00679001 0.00926693 0.0080114
-     0.0083392  0.0072368 ] src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ]   Mean tau^2: 0.008042 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ] Transforming
-    2026-06-10 08:41:01 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:41:01 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:41:01 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:41:01 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:41:01 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:41:01 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:41:01 [debug    ]   Grand mean range: [212.2746, 7182.7606] src=StandardizationMixin
-    2026-06-10 08:41:01 [debug    ]   Pooled std range: [40.1748, 995.6652] src=StandardizationMixin
-    2026-06-10 08:41:01 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:41:01 [debug    ]   Standardized data std: 1.0041 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:41:01 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ] Transforming
-    2026-06-10 08:41:01 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:41:01 [debug    ] Sites encoded: 96 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:41:01 [debug    ] Design matrix shape: (96, 8)   src=DesignMatrixMixin
-    2026-06-10 08:41:01 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:41:01 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:41:01 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:41:01 [debug    ]   Grand mean range: [212.2746, 7182.7606] src=StandardizationMixin
-    2026-06-10 08:41:01 [debug    ]   Pooled std range: [40.1748, 995.6652] src=StandardizationMixin
-    2026-06-10 08:41:01 [debug    ]   Standardized data mean: -0.005860 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:41:01 [debug    ]   Standardized data std: 1.0123 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:41:01 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:41:01 [debug    ] Fitting
-    2026-06-10 08:41:01 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:41:01 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:41:01 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:41:01 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:41:01 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:41:01 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:41:01 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:41:01 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:41:01 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:41:01 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:41:17 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:41:17 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:41:17 [debug    ]   Grand mean range: [213.7665, 7191.7162] src=StandardizationMixin
-    2026-06-10 08:41:17 [debug    ]   Pooled std range: [40.7018, 994.8067] src=StandardizationMixin
-    2026-06-10 08:41:17 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:41:17 [debug    ]   Standardized data std: 1.0041 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:41:17 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ]   Gamma hat range: [-0.3210, 0.3060] src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ]   Site 0 delta range: [0.7438, 1.3491] src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ]   Site 1 delta range: [0.6598, 1.4079] src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ]   Site 2 delta range: [0.7227, 1.2902] src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ]   Site 3 delta range: [0.7592, 1.2859] src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ]   Site 4 delta range: [0.7303, 1.4865] src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ]   Site 5 delta range: [0.7195, 1.3251] src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ]   Site 6 delta range: [0.6930, 1.3264] src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ]   Site 7 delta range: [0.7954, 1.2661] src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ]   Gamma bar (mean location effect): [ 0.00090518  0.00990205  0.00835772  0.00600705 -0.02407308  0.03068894
-     -0.01844439 -0.01287938] src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ]   Tau^2 (variance of location effects): [0.00623115 0.00853062 0.00953896 0.00613992 0.010873   0.00783349
-     0.00773619 0.0083721 ] src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ]   Mean tau^2: 0.008157 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ] _iteration_solver converged in 4 iterations (change=0.000006) src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ] Transforming
-    2026-06-10 08:41:17 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:41:17 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:41:17 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:41:17 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:41:17 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:41:17 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:41:17 [debug    ]   Grand mean range: [213.7665, 7191.7162] src=StandardizationMixin
-    2026-06-10 08:41:17 [debug    ]   Pooled std range: [40.7018, 994.8067] src=StandardizationMixin
-    2026-06-10 08:41:17 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:41:17 [debug    ]   Standardized data std: 1.0041 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:41:17 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ] Transforming
-    2026-06-10 08:41:17 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:41:17 [debug    ] Sites encoded: 96 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:41:17 [debug    ] Design matrix shape: (96, 8)   src=DesignMatrixMixin
-    2026-06-10 08:41:17 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:41:17 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:41:17 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:41:17 [debug    ]   Grand mean range: [213.7665, 7191.7162] src=StandardizationMixin
-    2026-06-10 08:41:17 [debug    ]   Pooled std range: [40.7018, 994.8067] src=StandardizationMixin
-    2026-06-10 08:41:17 [debug    ]   Standardized data mean: -0.013059 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:41:17 [debug    ]   Standardized data std: 0.9995 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:41:17 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:41:17 [debug    ] Fitting
-    2026-06-10 08:41:17 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:41:17 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:41:17 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:41:17 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:41:17 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:41:17 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:41:17 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:41:17 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:41:17 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:41:17 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:41:33 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:41:33 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:41:33 [debug    ]   Grand mean range: [213.6836, 7220.0491] src=StandardizationMixin
-    2026-06-10 08:41:33 [debug    ]   Pooled std range: [40.1121, 999.2758] src=StandardizationMixin
-    2026-06-10 08:41:33 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:41:33 [debug    ]   Standardized data std: 1.0040 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:41:33 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ]   Gamma hat range: [-0.2728, 0.2818] src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ]   Site 0 delta range: [0.7325, 1.3271] src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ]   Site 1 delta range: [0.7879, 1.4008] src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ]   Site 2 delta range: [0.7528, 1.2418] src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ]   Site 3 delta range: [0.7722, 1.2672] src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ]   Site 4 delta range: [0.6612, 1.4098] src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ]   Site 5 delta range: [0.7856, 1.3523] src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ]   Site 6 delta range: [0.7294, 1.2770] src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ]   Site 7 delta range: [0.7972, 1.3722] src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ]   Gamma bar (mean location effect): [ 0.00276623  0.01098163  0.00218577  0.00660323 -0.02053774  0.02664727
-     -0.02055832 -0.0096249 ] src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ]   Tau^2 (variance of location effects): [0.00604435 0.00852395 0.0078029  0.00632139 0.00786131 0.00892378
-     0.00985262 0.00745384] src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ]   Mean tau^2: 0.007848 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ] Transforming
-    2026-06-10 08:41:33 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:41:33 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:41:33 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:41:33 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:41:33 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:41:33 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:41:33 [debug    ]   Grand mean range: [213.6836, 7220.0491] src=StandardizationMixin
-    2026-06-10 08:41:33 [debug    ]   Pooled std range: [40.1121, 999.2758] src=StandardizationMixin
-    2026-06-10 08:41:33 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:41:33 [debug    ]   Standardized data std: 1.0040 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:41:33 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ] Transforming
-    2026-06-10 08:41:33 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:41:33 [debug    ] Sites encoded: 96 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:41:33 [debug    ] Design matrix shape: (96, 8)   src=DesignMatrixMixin
-    2026-06-10 08:41:33 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:41:33 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:41:33 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:41:33 [debug    ]   Grand mean range: [213.6836, 7220.0491] src=StandardizationMixin
-    2026-06-10 08:41:33 [debug    ]   Pooled std range: [40.1121, 999.2758] src=StandardizationMixin
-    2026-06-10 08:41:33 [debug    ]   Standardized data mean: 0.007970 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:41:33 [debug    ]   Standardized data std: 0.9951 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:41:33 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:41:33 [debug    ] Fitting
-    2026-06-10 08:41:33 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:41:33 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:41:33 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:41:33 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:41:33 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:41:33 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:41:33 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:41:33 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:41:33 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:41:33 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:41:49 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:41:49 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:41:49 [debug    ]   Grand mean range: [213.1754, 7180.6580] src=StandardizationMixin
-    2026-06-10 08:41:49 [debug    ]   Pooled std range: [39.6706, 1003.4475] src=StandardizationMixin
-    2026-06-10 08:41:49 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:41:49 [debug    ]   Standardized data std: 1.0043 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:41:49 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ]   Gamma hat range: [-0.2530, 0.2638] src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ]   Site 0 delta range: [0.6830, 1.4475] src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ]   Site 1 delta range: [0.7797, 1.3772] src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ]   Site 2 delta range: [0.7377, 1.1738] src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ]   Site 3 delta range: [0.8001, 1.2838] src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ]   Site 4 delta range: [0.7006, 1.4917] src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ]   Site 5 delta range: [0.7602, 1.3371] src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ]   Site 6 delta range: [0.6509, 1.3443] src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ]   Site 7 delta range: [0.7502, 1.3313] src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ]   Gamma bar (mean location effect): [ 0.00223009  0.0105414   0.00090554  0.010644   -0.02401986  0.02502672
-     -0.01947353 -0.00739272] src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ]   Tau^2 (variance of location effects): [0.00578352 0.0084202  0.00984472 0.00711418 0.00891611 0.00924699
-     0.00920212 0.00882308] src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ]   Mean tau^2: 0.008419 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ] Transforming
-    2026-06-10 08:41:49 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:41:49 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:41:49 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:41:49 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:41:49 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:41:49 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:41:49 [debug    ]   Grand mean range: [213.1754, 7180.6580] src=StandardizationMixin
-    2026-06-10 08:41:49 [debug    ]   Pooled std range: [39.6706, 1003.4475] src=StandardizationMixin
-    2026-06-10 08:41:49 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:41:49 [debug    ]   Standardized data std: 1.0043 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:41:49 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ] Transforming
-    2026-06-10 08:41:49 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:41:49 [debug    ] Sites encoded: 96 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:41:49 [debug    ] Design matrix shape: (96, 8)   src=DesignMatrixMixin
-    2026-06-10 08:41:49 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:41:49 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:41:49 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:41:49 [debug    ]   Grand mean range: [213.1754, 7180.6580] src=StandardizationMixin
-    2026-06-10 08:41:49 [debug    ]   Pooled std range: [39.6706, 1003.4475] src=StandardizationMixin
-    2026-06-10 08:41:49 [debug    ]   Standardized data mean: 0.001213 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:41:49 [debug    ]   Standardized data std: 1.0232 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:41:49 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:41:49 [debug    ] Fitting
-    2026-06-10 08:41:49 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:41:49 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:41:49 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:41:49 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:41:49 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:41:49 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:41:49 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:41:49 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:41:49 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:41:49 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:42:05 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:05 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:05 [debug    ]   Grand mean range: [212.9316, 7190.0897] src=StandardizationMixin
-    2026-06-10 08:42:05 [debug    ]   Pooled std range: [40.8103, 1002.4630] src=StandardizationMixin
-    2026-06-10 08:42:05 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:05 [debug    ]   Standardized data std: 1.0042 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:05 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ]   Gamma hat range: [-0.3040, 0.3166] src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ]   Site 0 delta range: [0.7262, 1.3083] src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ]   Site 1 delta range: [0.6818, 1.3753] src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ]   Site 2 delta range: [0.7378, 1.2427] src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ]   Site 3 delta range: [0.7395, 1.3109] src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ]   Site 4 delta range: [0.7455, 1.4125] src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ]   Site 5 delta range: [0.7807, 1.2963] src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ]   Site 6 delta range: [0.7164, 1.3224] src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ]   Site 7 delta range: [0.7852, 1.3358] src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ]   Gamma bar (mean location effect): [ 0.00827907  0.00551563  0.00103477  0.01441753 -0.0169588   0.02041688
-     -0.01990382 -0.01344516] src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ]   Tau^2 (variance of location effects): [0.00744601 0.00847166 0.0079504  0.00687641 0.00983614 0.0082805
-     0.00845259 0.00989839] src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ]   Mean tau^2: 0.008402 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ] _iteration_solver converged in 4 iterations (change=0.000007) src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ] _iteration_solver converged in 4 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ] _iteration_solver converged in 4 iterations (change=0.000004) src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ] Transforming
-    2026-06-10 08:42:05 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:05 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:05 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:05 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:05 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:05 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:05 [debug    ]   Grand mean range: [212.9316, 7190.0897] src=StandardizationMixin
-    2026-06-10 08:42:05 [debug    ]   Pooled std range: [40.8103, 1002.4630] src=StandardizationMixin
-    2026-06-10 08:42:05 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:05 [debug    ]   Standardized data std: 1.0042 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:05 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:42:05 [debug    ] Transforming
-    2026-06-10 08:42:05 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:05 [debug    ] Sites encoded: 95 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:05 [debug    ] Design matrix shape: (95, 8)   src=DesignMatrixMixin
-    2026-06-10 08:42:05 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:05 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:05 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:05 [debug    ]   Grand mean range: [212.9316, 7190.0897] src=StandardizationMixin
-    2026-06-10 08:42:05 [debug    ]   Pooled std range: [40.8103, 1002.4630] src=StandardizationMixin
-    2026-06-10 08:42:05 [debug    ]   Standardized data mean: -0.017488 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:05 [debug    ]   Standardized data std: 1.0093 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:05 [debug    ] Harmonizing data               src=LocationAndScaleMixin
+    2026-06-10 10:42:12 [debug    ] Fitting
+    2026-06-10 10:42:12 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:42:12 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:42:12 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:42:33 [debug    ] Transforming
+    2026-06-10 10:42:33 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:42:33 [debug    ] Transforming
+    2026-06-10 10:42:33 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:42:33 [debug    ] Fitting
+    2026-06-10 10:42:33 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:42:33 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:42:33 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:42:54 [debug    ] Transforming
+    2026-06-10 10:42:54 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:42:54 [debug    ] Transforming
+    2026-06-10 10:42:54 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:42:54 [debug    ] Fitting
+    2026-06-10 10:42:54 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:42:54 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:42:54 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:43:15 [debug    ] Transforming
+    2026-06-10 10:43:15 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:43:15 [debug    ] Transforming
+    2026-06-10 10:43:15 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:43:15 [debug    ] Fitting
+    2026-06-10 10:43:15 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:43:15 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:43:15 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:43:36 [debug    ] Transforming
+    2026-06-10 10:43:36 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:43:36 [debug    ] Transforming
+    2026-06-10 10:43:36 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:43:36 [debug    ] Fitting
+    2026-06-10 10:43:36 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:43:36 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:43:36 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:43:58 [debug    ] Transforming
+    2026-06-10 10:43:58 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:43:58 [debug    ] Transforming
+    2026-06-10 10:43:58 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:43:58 [debug    ] Fitting
+    2026-06-10 10:43:58 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:43:58 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:43:58 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:44:19 [debug    ] Transforming
+    2026-06-10 10:44:19 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:44:19 [debug    ] Transforming
+    2026-06-10 10:44:19 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:44:19 [debug    ] Fitting
+    2026-06-10 10:44:19 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:44:19 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:44:19 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:44:40 [debug    ] Transforming
+    2026-06-10 10:44:40 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:44:41 [debug    ] Transforming
+    2026-06-10 10:44:41 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:44:41 [debug    ] Fitting
+    2026-06-10 10:44:41 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:44:41 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:44:41 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:45:02 [debug    ] Transforming
+    2026-06-10 10:45:02 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:45:02 [debug    ] Transforming
+    2026-06-10 10:45:02 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:45:02 [debug    ] Fitting
+    2026-06-10 10:45:02 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:45:02 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:45:02 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:45:23 [debug    ] Transforming
+    2026-06-10 10:45:23 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:45:23 [debug    ] Transforming
+    2026-06-10 10:45:23 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:45:23 [debug    ] Fitting
+    2026-06-10 10:45:23 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:45:23 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:45:23 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:45:44 [debug    ] Transforming
+    2026-06-10 10:45:44 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:45:44 [debug    ] Transforming
+    2026-06-10 10:45:44 [debug    ] Setting up smoothing using B-Splines
     Running experiment: eos_simple1
-    2026-06-10 08:42:05 [debug    ] Fitting
-    2026-06-10 08:42:05 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:42:05 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:05 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:42:05 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:05 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:05 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:05 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:05 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:42:05 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:42:05 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:42:09 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:09 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:09 [debug    ]   Grand mean range: [595.6259, 7713.0682] src=StandardizationMixin
-    2026-06-10 08:42:09 [debug    ]   Pooled std range: [137.5593, 1188.9941] src=StandardizationMixin
-    2026-06-10 08:42:09 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:09 [debug    ]   Standardized data std: 1.2176 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:09 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ]   Gamma hat shape: (8, 14)     src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ]   Gamma hat range: [-1.5849, 2.0469] src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ]   Site 0 delta range: [0.7680, 1.3179] src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ]   Site 1 delta range: [0.7371, 1.7328] src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ]   Site 2 delta range: [0.7735, 1.2459] src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ]   Site 3 delta range: [0.8010, 1.3827] src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ]   Site 4 delta range: [0.7571, 1.3109] src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ]   Site 5 delta range: [0.7244, 1.3760] src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ]   Site 6 delta range: [0.7485, 1.1750] src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ]   Site 7 delta range: [0.6873, 1.6049] src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ]   Gamma bar (mean location effect): [ 0.18343924  0.04450373 -0.15782412 -0.15533998  0.09715606 -0.00575264
-     -0.06761452  0.18422952] src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ]   Tau^2 (variance of location effects): [0.44413281 0.76715617 0.58220322 0.32669067 0.72854764 0.43111306
-     0.37982062 0.50057253] src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ]   Mean tau^2: 0.520030 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ] _iteration_solver converged in 3 iterations (change=0.000009) src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ] Transforming
-    2026-06-10 08:42:09 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:09 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:09 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:09 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:09 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:09 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:09 [debug    ]   Grand mean range: [595.6259, 7713.0682] src=StandardizationMixin
-    2026-06-10 08:42:09 [debug    ]   Pooled std range: [137.5593, 1188.9941] src=StandardizationMixin
-    2026-06-10 08:42:09 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:09 [debug    ]   Standardized data std: 1.2176 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:09 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ] Transforming
-    2026-06-10 08:42:09 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:09 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:09 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:09 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:09 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:09 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:09 [debug    ]   Grand mean range: [595.6259, 7713.0682] src=StandardizationMixin
-    2026-06-10 08:42:09 [debug    ]   Pooled std range: [137.5593, 1188.9941] src=StandardizationMixin
-    2026-06-10 08:42:09 [debug    ]   Standardized data mean: -0.041945 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:09 [debug    ]   Standardized data std: 1.2213 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:09 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:42:09 [debug    ] Fitting
-    2026-06-10 08:42:09 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:42:09 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:09 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:42:09 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:09 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:09 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:09 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:09 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:42:09 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:42:09 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:42:12 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:12 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:12 [debug    ]   Grand mean range: [596.7503, 7690.9867] src=StandardizationMixin
-    2026-06-10 08:42:12 [debug    ]   Pooled std range: [134.4132, 1210.3786] src=StandardizationMixin
-    2026-06-10 08:42:12 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:12 [debug    ]   Standardized data std: 1.2174 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:12 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ]   Gamma hat shape: (8, 14)     src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ]   Gamma hat range: [-1.6170, 1.9916] src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ]   Site 0 delta range: [0.8055, 1.3415] src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ]   Site 1 delta range: [0.7179, 1.5804] src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ]   Site 2 delta range: [0.8492, 1.2556] src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ]   Site 3 delta range: [0.7644, 1.2842] src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ]   Site 4 delta range: [0.7904, 1.2516] src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ]   Site 5 delta range: [0.7752, 1.4232] src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ]   Site 6 delta range: [0.7776, 1.1835] src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ]   Site 7 delta range: [0.7310, 1.3312] src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ]   Gamma bar (mean location effect): [ 0.18027757  0.06716151 -0.15728495 -0.15188008  0.09349039  0.00548677
-     -0.08100608  0.14412314] src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ]   Tau^2 (variance of location effects): [0.45055196 0.72827136 0.61552584 0.31010391 0.67709853 0.46544725
-     0.39700993 0.48297709] src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ]   Mean tau^2: 0.515873 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ] _iteration_solver converged in 3 iterations (change=0.000004) src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ] Transforming
-    2026-06-10 08:42:12 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:12 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:12 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:12 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:12 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:12 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:12 [debug    ]   Grand mean range: [596.7503, 7690.9867] src=StandardizationMixin
-    2026-06-10 08:42:12 [debug    ]   Pooled std range: [134.4132, 1210.3786] src=StandardizationMixin
-    2026-06-10 08:42:12 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:12 [debug    ]   Standardized data std: 1.2174 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:12 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ] Transforming
-    2026-06-10 08:42:12 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:12 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:12 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:12 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:12 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:12 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:12 [debug    ]   Grand mean range: [596.7503, 7690.9867] src=StandardizationMixin
-    2026-06-10 08:42:12 [debug    ]   Pooled std range: [134.4132, 1210.3786] src=StandardizationMixin
-    2026-06-10 08:42:12 [debug    ]   Standardized data mean: 0.020542 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:12 [debug    ]   Standardized data std: 1.2185 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:12 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:42:12 [debug    ] Fitting
-    2026-06-10 08:42:12 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:42:12 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:12 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:42:12 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:12 [debug    ] Sites encoded: 900 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:12 [debug    ] Design matrix shape: (900, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:12 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:12 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:42:12 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:42:12 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:42:15 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:15 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:15 [debug    ]   Grand mean range: [593.9390, 7697.0168] src=StandardizationMixin
-    2026-06-10 08:42:15 [debug    ]   Pooled std range: [135.5014, 1191.4887] src=StandardizationMixin
-    2026-06-10 08:42:15 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:15 [debug    ]   Standardized data std: 1.2168 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:15 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ]   Gamma hat shape: (8, 14)     src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ]   Gamma hat range: [-1.6595, 2.1854] src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ]   Site 0 delta range: [0.7946, 1.3848] src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ]   Site 1 delta range: [0.6488, 1.6645] src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ]   Site 2 delta range: [0.7673, 1.2769] src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ]   Site 3 delta range: [0.7854, 1.2928] src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ]   Site 4 delta range: [0.7333, 1.2715] src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ]   Site 5 delta range: [0.7701, 1.3912] src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ]   Site 6 delta range: [0.7349, 1.1699] src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ]   Site 7 delta range: [0.7300, 1.6845] src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ]   Gamma bar (mean location effect): [ 0.15829909  0.06371575 -0.18749753 -0.15239987  0.09006813  0.01359562
-     -0.07281044  0.20683353] src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ]   Tau^2 (variance of location effects): [0.44785008 0.73066221 0.57119856 0.3309894  0.70171235 0.43754944
-     0.38403981 0.53348205] src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ]   Mean tau^2: 0.517185 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ] _iteration_solver converged in 3 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ] _iteration_solver converged in 3 iterations (change=0.000008) src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ] Transforming
-    2026-06-10 08:42:15 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:15 [debug    ] Sites encoded: 900 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:15 [debug    ] Design matrix shape: (900, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:15 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:15 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:15 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:15 [debug    ]   Grand mean range: [593.9390, 7697.0168] src=StandardizationMixin
-    2026-06-10 08:42:15 [debug    ]   Pooled std range: [135.5014, 1191.4887] src=StandardizationMixin
-    2026-06-10 08:42:15 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:15 [debug    ]   Standardized data std: 1.2168 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:15 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ] Transforming
-    2026-06-10 08:42:15 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:15 [debug    ] Sites encoded: 101 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:15 [debug    ] Design matrix shape: (101, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:15 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:15 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:15 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:15 [debug    ]   Grand mean range: [593.9390, 7697.0168] src=StandardizationMixin
-    2026-06-10 08:42:15 [debug    ]   Pooled std range: [135.5014, 1191.4887] src=StandardizationMixin
-    2026-06-10 08:42:15 [debug    ]   Standardized data mean: 0.040745 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:15 [debug    ]   Standardized data std: 1.2548 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:15 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:42:15 [debug    ] Fitting
-    2026-06-10 08:42:15 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:42:15 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:15 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:42:15 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:15 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:15 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:15 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:15 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:42:15 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:42:15 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:42:19 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:19 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:19 [debug    ]   Grand mean range: [594.3996, 7725.2047] src=StandardizationMixin
-    2026-06-10 08:42:19 [debug    ]   Pooled std range: [133.8652, 1206.1929] src=StandardizationMixin
-    2026-06-10 08:42:19 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:19 [debug    ]   Standardized data std: 1.2162 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:19 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ]   Gamma hat shape: (8, 14)     src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ]   Gamma hat range: [-1.5985, 1.9375] src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ]   Site 0 delta range: [0.7514, 1.4373] src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ]   Site 1 delta range: [0.7114, 1.5757] src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ]   Site 2 delta range: [0.8278, 1.2961] src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ]   Site 3 delta range: [0.7583, 1.3151] src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ]   Site 4 delta range: [0.6734, 1.2624] src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ]   Site 5 delta range: [0.8019, 1.3015] src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ]   Site 6 delta range: [0.7482, 1.1818] src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ]   Site 7 delta range: [0.6979, 1.6589] src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ]   Gamma bar (mean location effect): [ 0.18904732  0.07653054 -0.15331257 -0.13278615  0.08767484 -0.00041067
-     -0.09241581  0.15634655] src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ]   Tau^2 (variance of location effects): [0.43417864 0.76368081 0.58477312 0.3262907  0.69425682 0.45399018
-     0.3718421  0.48421024] src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ]   Mean tau^2: 0.514153 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ] _iteration_solver converged in 3 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ] _iteration_solver converged in 3 iterations (change=0.000013) src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ] Transforming
-    2026-06-10 08:42:19 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:19 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:19 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:19 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:19 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:19 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:19 [debug    ]   Grand mean range: [594.3996, 7725.2047] src=StandardizationMixin
-    2026-06-10 08:42:19 [debug    ]   Pooled std range: [133.8652, 1206.1929] src=StandardizationMixin
-    2026-06-10 08:42:19 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:19 [debug    ]   Standardized data std: 1.2162 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:19 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ] Transforming
-    2026-06-10 08:42:19 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:19 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:19 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:19 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:19 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:19 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:19 [debug    ]   Grand mean range: [594.3996, 7725.2047] src=StandardizationMixin
-    2026-06-10 08:42:19 [debug    ]   Pooled std range: [133.8652, 1206.1929] src=StandardizationMixin
-    2026-06-10 08:42:19 [debug    ]   Standardized data mean: 0.071378 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:19 [debug    ]   Standardized data std: 1.2545 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:19 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:42:19 [debug    ] Fitting
-    2026-06-10 08:42:19 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:42:19 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:19 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:42:19 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:19 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:19 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:19 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:19 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:42:19 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:42:19 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:42:22 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:22 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:22 [debug    ]   Grand mean range: [590.9956, 7759.1669] src=StandardizationMixin
-    2026-06-10 08:42:22 [debug    ]   Pooled std range: [137.9216, 1200.0744] src=StandardizationMixin
-    2026-06-10 08:42:22 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:22 [debug    ]   Standardized data std: 1.2141 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:22 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ]   Gamma hat shape: (8, 14)     src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ]   Gamma hat range: [-1.5614, 2.0182] src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ]   Site 0 delta range: [0.7633, 1.4625] src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ]   Site 1 delta range: [0.6649, 1.6812] src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ]   Site 2 delta range: [0.8438, 1.2490] src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ]   Site 3 delta range: [0.7473, 1.2979] src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ]   Site 4 delta range: [0.7202, 1.2981] src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ]   Site 5 delta range: [0.7611, 1.3563] src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ]   Site 6 delta range: [0.7633, 1.1899] src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ]   Site 7 delta range: [0.6680, 1.5281] src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ]   Gamma bar (mean location effect): [ 0.18082632  0.05702729 -0.17498016 -0.16544295  0.09406496  0.01545153
-     -0.07292678  0.14916449] src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ]   Tau^2 (variance of location effects): [0.44492621 0.73014882 0.56556529 0.31233305 0.67034162 0.41381293
-     0.38522346 0.53246358] src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ]   Mean tau^2: 0.506852 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ] _iteration_solver converged in 3 iterations (change=0.000009) src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ] Transforming
-    2026-06-10 08:42:22 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:22 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:22 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:22 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:22 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:22 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:22 [debug    ]   Grand mean range: [590.9956, 7759.1669] src=StandardizationMixin
-    2026-06-10 08:42:22 [debug    ]   Pooled std range: [137.9216, 1200.0744] src=StandardizationMixin
-    2026-06-10 08:42:22 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:22 [debug    ]   Standardized data std: 1.2141 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:22 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ] Transforming
-    2026-06-10 08:42:22 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:22 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:22 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:22 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:22 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:22 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:22 [debug    ]   Grand mean range: [590.9956, 7759.1669] src=StandardizationMixin
-    2026-06-10 08:42:22 [debug    ]   Pooled std range: [137.9216, 1200.0744] src=StandardizationMixin
-    2026-06-10 08:42:22 [debug    ]   Standardized data mean: -0.041505 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:22 [debug    ]   Standardized data std: 1.1846 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:22 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:42:22 [debug    ] Fitting
-    2026-06-10 08:42:22 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:42:22 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:22 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:42:22 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:22 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:22 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:22 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:22 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:42:22 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:42:22 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:42:25 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:25 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:25 [debug    ]   Grand mean range: [595.4955, 7707.8313] src=StandardizationMixin
-    2026-06-10 08:42:25 [debug    ]   Pooled std range: [137.2541, 1166.2142] src=StandardizationMixin
-    2026-06-10 08:42:25 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:25 [debug    ]   Standardized data std: 1.2170 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:25 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ]   Gamma hat shape: (8, 14)     src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ]   Gamma hat range: [-1.5464, 2.0294] src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ]   Site 0 delta range: [0.7123, 1.3087] src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ]   Site 1 delta range: [0.6731, 1.7695] src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ]   Site 2 delta range: [0.7853, 1.3121] src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ]   Site 3 delta range: [0.7401, 1.3491] src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ]   Site 4 delta range: [0.7805, 1.2450] src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ]   Site 5 delta range: [0.8050, 1.3808] src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ]   Site 6 delta range: [0.7215, 1.1957] src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ]   Site 7 delta range: [0.7116, 1.6077] src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ]   Gamma bar (mean location effect): [ 0.19961238  0.06023338 -0.15462168 -0.13377419  0.10457784 -0.017307
-     -0.09669951  0.14849747] src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ]   Tau^2 (variance of location effects): [0.44044281 0.74907195 0.59407055 0.32640342 0.66243522 0.43222315
-     0.38667322 0.5280601 ] src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ]   Mean tau^2: 0.514923 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ] _iteration_solver converged in 3 iterations (change=0.000010) src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ] Transforming
-    2026-06-10 08:42:25 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:25 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:25 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:25 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:25 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:25 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:25 [debug    ]   Grand mean range: [595.4955, 7707.8313] src=StandardizationMixin
-    2026-06-10 08:42:25 [debug    ]   Pooled std range: [137.2541, 1166.2142] src=StandardizationMixin
-    2026-06-10 08:42:25 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:25 [debug    ]   Standardized data std: 1.2170 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:25 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ] Transforming
-    2026-06-10 08:42:25 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:25 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:25 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:25 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:25 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:25 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:25 [debug    ]   Grand mean range: [595.4955, 7707.8313] src=StandardizationMixin
-    2026-06-10 08:42:25 [debug    ]   Pooled std range: [137.2541, 1166.2142] src=StandardizationMixin
-    2026-06-10 08:42:25 [debug    ]   Standardized data mean: 0.010063 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:25 [debug    ]   Standardized data std: 1.2159 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:25 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:42:25 [debug    ] Fitting
-    2026-06-10 08:42:25 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:42:25 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:25 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:42:25 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:25 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:25 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:25 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:25 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:42:25 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:42:25 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:42:28 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:28 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:28 [debug    ]   Grand mean range: [592.2570, 7698.7336] src=StandardizationMixin
-    2026-06-10 08:42:28 [debug    ]   Pooled std range: [137.3809, 1201.5738] src=StandardizationMixin
-    2026-06-10 08:42:28 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:28 [debug    ]   Standardized data std: 1.2173 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:28 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ]   Gamma hat shape: (8, 14)     src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ]   Gamma hat range: [-1.5712, 2.0481] src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ]   Site 0 delta range: [0.8365, 1.4739] src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ]   Site 1 delta range: [0.7103, 1.7013] src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ]   Site 2 delta range: [0.8534, 1.2923] src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ]   Site 3 delta range: [0.7620, 1.3595] src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ]   Site 4 delta range: [0.7342, 1.2099] src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ]   Site 5 delta range: [0.7561, 1.3892] src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ]   Site 6 delta range: [0.7191, 1.0961] src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ]   Site 7 delta range: [0.7301, 1.6158] src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ]   Gamma bar (mean location effect): [ 0.1599713   0.0431104  -0.13651439 -0.17655324  0.09409304  0.00779161
-     -0.07090693  0.18187439] src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ]   Tau^2 (variance of location effects): [0.46180958 0.72784564 0.58467372 0.32242432 0.69237303 0.42648895
-     0.38879249 0.51267866] src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ]   Mean tau^2: 0.514636 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ] _iteration_solver converged in 3 iterations (change=0.000008) src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ] Transforming
-    2026-06-10 08:42:28 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:28 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:28 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:28 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:28 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:28 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:28 [debug    ]   Grand mean range: [592.2570, 7698.7336] src=StandardizationMixin
-    2026-06-10 08:42:28 [debug    ]   Pooled std range: [137.3809, 1201.5738] src=StandardizationMixin
-    2026-06-10 08:42:28 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:28 [debug    ]   Standardized data std: 1.2173 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:28 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ] Transforming
-    2026-06-10 08:42:28 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:28 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:28 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:28 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:28 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:28 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:28 [debug    ]   Grand mean range: [592.2570, 7698.7336] src=StandardizationMixin
-    2026-06-10 08:42:28 [debug    ]   Pooled std range: [137.3809, 1201.5738] src=StandardizationMixin
-    2026-06-10 08:42:28 [debug    ]   Standardized data mean: -0.001770 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:28 [debug    ]   Standardized data std: 1.1997 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:28 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:42:28 [debug    ] Fitting
-    2026-06-10 08:42:28 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:42:28 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:28 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:42:28 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:28 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:28 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:28 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:28 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:42:28 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:42:28 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:42:32 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:32 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:32 [debug    ]   Grand mean range: [594.2984, 7683.3076] src=StandardizationMixin
-    2026-06-10 08:42:32 [debug    ]   Pooled std range: [138.6854, 1202.2375] src=StandardizationMixin
-    2026-06-10 08:42:32 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:32 [debug    ]   Standardized data std: 1.2172 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:32 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ]   Gamma hat shape: (8, 14)     src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ]   Gamma hat range: [-1.5975, 2.0407] src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ]   Site 0 delta range: [0.7617, 1.4257] src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ]   Site 1 delta range: [0.7008, 1.6310] src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ]   Site 2 delta range: [0.8293, 1.2164] src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ]   Site 3 delta range: [0.7904, 1.3319] src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ]   Site 4 delta range: [0.8026, 1.2736] src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ]   Site 5 delta range: [0.7703, 1.3627] src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ]   Site 6 delta range: [0.7455, 1.1660] src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ]   Site 7 delta range: [0.7483, 1.5617] src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ]   Gamma bar (mean location effect): [ 0.17463697  0.0708458  -0.1595042  -0.14356503  0.08751169 -0.00283428
-     -0.08696668  0.18991596] src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ]   Tau^2 (variance of location effects): [0.44331897 0.76750331 0.60688963 0.3153365  0.69129099 0.42593605
-     0.37721568 0.51450345] src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ]   Mean tau^2: 0.517749 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ] _iteration_solver converged in 3 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ] _iteration_solver converged in 3 iterations (change=0.000009) src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ] Transforming
-    2026-06-10 08:42:32 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:32 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:32 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:32 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:32 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:32 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:32 [debug    ]   Grand mean range: [594.2984, 7683.3076] src=StandardizationMixin
-    2026-06-10 08:42:32 [debug    ]   Pooled std range: [138.6854, 1202.2375] src=StandardizationMixin
-    2026-06-10 08:42:32 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:32 [debug    ]   Standardized data std: 1.2172 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:32 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ] Transforming
-    2026-06-10 08:42:32 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:32 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:32 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:32 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:32 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:32 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:32 [debug    ]   Grand mean range: [594.2984, 7683.3076] src=StandardizationMixin
-    2026-06-10 08:42:32 [debug    ]   Pooled std range: [138.6854, 1202.2375] src=StandardizationMixin
-    2026-06-10 08:42:32 [debug    ]   Standardized data mean: -0.014723 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:32 [debug    ]   Standardized data std: 1.2184 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:32 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:42:32 [debug    ] Fitting
-    2026-06-10 08:42:32 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:42:32 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:32 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:42:32 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:32 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:32 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:32 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:32 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:42:32 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:42:32 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:42:35 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:35 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:35 [debug    ]   Grand mean range: [594.3401, 7735.5393] src=StandardizationMixin
-    2026-06-10 08:42:35 [debug    ]   Pooled std range: [137.8448, 1188.2636] src=StandardizationMixin
-    2026-06-10 08:42:35 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:35 [debug    ]   Standardized data std: 1.2176 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:35 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ]   Gamma hat shape: (8, 14)     src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ]   Gamma hat range: [-1.5612, 2.0303] src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ]   Site 0 delta range: [0.7765, 1.3964] src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ]   Site 1 delta range: [0.7624, 1.5890] src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ]   Site 2 delta range: [0.8620, 1.2979] src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ]   Site 3 delta range: [0.7609, 1.2907] src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ]   Site 4 delta range: [0.7383, 1.2371] src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ]   Site 5 delta range: [0.7843, 1.3076] src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ]   Site 6 delta range: [0.6960, 1.2527] src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ]   Site 7 delta range: [0.7548, 1.6095] src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ]   Gamma bar (mean location effect): [ 0.17226386  0.05784489 -0.16127125 -0.16626575  0.10158318  0.00734049
-     -0.08844308  0.1895183 ] src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ]   Tau^2 (variance of location effects): [0.45474063 0.75365494 0.58551327 0.31464673 0.67094377 0.43207589
-     0.40254601 0.49262577] src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ]   Mean tau^2: 0.513343 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ] _iteration_solver converged in 3 iterations (change=0.000012) src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ] _iteration_solver converged in 3 iterations (change=0.000010) src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ] Transforming
-    2026-06-10 08:42:35 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:35 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:35 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:35 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:35 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:35 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:35 [debug    ]   Grand mean range: [594.3401, 7735.5393] src=StandardizationMixin
-    2026-06-10 08:42:35 [debug    ]   Pooled std range: [137.8448, 1188.2636] src=StandardizationMixin
-    2026-06-10 08:42:35 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:35 [debug    ]   Standardized data std: 1.2176 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:35 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ] Transforming
-    2026-06-10 08:42:35 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:35 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:35 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:35 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:35 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:35 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:35 [debug    ]   Grand mean range: [594.3401, 7735.5393] src=StandardizationMixin
-    2026-06-10 08:42:35 [debug    ]   Pooled std range: [137.8448, 1188.2636] src=StandardizationMixin
-    2026-06-10 08:42:35 [debug    ]   Standardized data mean: -0.025696 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:35 [debug    ]   Standardized data std: 1.2168 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:35 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:42:35 [debug    ] Fitting
-    2026-06-10 08:42:35 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:42:35 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:35 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:42:35 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:35 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:35 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:35 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:35 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:42:35 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:42:35 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:42:38 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:38 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:38 [debug    ]   Grand mean range: [589.3189, 7674.9570] src=StandardizationMixin
-    2026-06-10 08:42:38 [debug    ]   Pooled std range: [137.8607, 1204.8133] src=StandardizationMixin
-    2026-06-10 08:42:38 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:38 [debug    ]   Standardized data std: 1.2160 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:38 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ]   Gamma hat shape: (8, 14)     src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ]   Gamma hat range: [-1.5698, 2.1226] src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ]   Site 0 delta range: [0.7357, 1.4923] src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ]   Site 1 delta range: [0.6699, 1.7556] src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ]   Site 2 delta range: [0.8236, 1.2561] src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ]   Site 3 delta range: [0.7536, 1.3381] src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ]   Site 4 delta range: [0.7606, 1.2715] src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ]   Site 5 delta range: [0.7627, 1.3503] src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ]   Site 6 delta range: [0.7702, 1.2283] src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ]   Site 7 delta range: [0.6890, 1.3568] src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ]   Gamma bar (mean location effect): [ 0.18324925  0.06343621 -0.17583825 -0.159743    0.10174664  0.00183829
-     -0.08887401  0.19663638] src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ]   Tau^2 (variance of location effects): [0.43950482 0.73693889 0.58732775 0.32119863 0.65958286 0.4176584
-     0.38797798 0.55695814] src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ]   Mean tau^2: 0.513393 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ] _iteration_solver converged in 3 iterations (change=0.000004) src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ] Transforming
-    2026-06-10 08:42:38 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:38 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:38 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:38 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:38 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:38 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:38 [debug    ]   Grand mean range: [589.3189, 7674.9570] src=StandardizationMixin
-    2026-06-10 08:42:38 [debug    ]   Pooled std range: [137.8607, 1204.8133] src=StandardizationMixin
-    2026-06-10 08:42:38 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:38 [debug    ]   Standardized data std: 1.2160 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:38 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:42:38 [debug    ] Transforming
-    2026-06-10 08:42:38 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:38 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:38 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:38 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:38 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:38 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:38 [debug    ]   Grand mean range: [589.3189, 7674.9570] src=StandardizationMixin
-    2026-06-10 08:42:38 [debug    ]   Pooled std range: [137.8607, 1204.8133] src=StandardizationMixin
-    2026-06-10 08:42:38 [debug    ]   Standardized data mean: -0.018494 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:38 [debug    ]   Standardized data std: 1.2107 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:38 [debug    ] Harmonizing data               src=LocationAndScaleMixin
+    2026-06-10 10:45:44 [debug    ] Fitting
+    2026-06-10 10:45:44 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:45:44 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:45:44 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:45:51 [debug    ] Transforming
+    2026-06-10 10:45:51 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:45:51 [debug    ] Transforming
+    2026-06-10 10:45:51 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:45:51 [debug    ] Fitting
+    2026-06-10 10:45:51 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:45:51 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:45:51 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:45:55 [debug    ] Transforming
+    2026-06-10 10:45:55 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:45:55 [debug    ] Transforming
+    2026-06-10 10:45:55 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:45:55 [debug    ] Fitting
+    2026-06-10 10:45:55 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:45:55 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:45:55 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:45:59 [debug    ] Transforming
+    2026-06-10 10:45:59 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:45:59 [debug    ] Transforming
+    2026-06-10 10:45:59 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:45:59 [debug    ] Fitting
+    2026-06-10 10:45:59 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:45:59 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:45:59 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:46:04 [debug    ] Transforming
+    2026-06-10 10:46:04 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:46:04 [debug    ] Transforming
+    2026-06-10 10:46:04 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:46:04 [debug    ] Fitting
+    2026-06-10 10:46:04 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:46:04 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:46:04 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:46:08 [debug    ] Transforming
+    2026-06-10 10:46:08 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:46:08 [debug    ] Transforming
+    2026-06-10 10:46:08 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:46:08 [debug    ] Fitting
+    2026-06-10 10:46:08 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:46:08 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:46:08 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:46:13 [debug    ] Transforming
+    2026-06-10 10:46:13 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:46:13 [debug    ] Transforming
+    2026-06-10 10:46:13 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:46:13 [debug    ] Fitting
+    2026-06-10 10:46:13 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:46:13 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:46:13 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:46:17 [debug    ] Transforming
+    2026-06-10 10:46:17 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:46:17 [debug    ] Transforming
+    2026-06-10 10:46:17 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:46:17 [debug    ] Fitting
+    2026-06-10 10:46:17 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:46:17 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:46:17 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:46:21 [debug    ] Transforming
+    2026-06-10 10:46:21 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:46:21 [debug    ] Transforming
+    2026-06-10 10:46:21 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:46:21 [debug    ] Fitting
+    2026-06-10 10:46:21 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:46:21 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:46:21 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:46:26 [debug    ] Transforming
+    2026-06-10 10:46:26 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:46:26 [debug    ] Transforming
+    2026-06-10 10:46:26 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:46:26 [debug    ] Fitting
+    2026-06-10 10:46:26 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:46:26 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:46:26 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:46:30 [debug    ] Transforming
+    2026-06-10 10:46:30 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:46:30 [debug    ] Transforming
+    2026-06-10 10:46:30 [debug    ] Setting up smoothing using B-Splines
     Running experiment: eos_simple2
-    2026-06-10 08:42:38 [debug    ] Fitting
-    2026-06-10 08:42:38 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:42:38 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:38 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:42:38 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:38 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:38 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:38 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:38 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:42:38 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:42:38 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:42:55 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:55 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:55 [debug    ]   Grand mean range: [1.6187, 3.7092] src=StandardizationMixin
-    2026-06-10 08:42:55 [debug    ]   Pooled std range: [0.1524, 0.4647] src=StandardizationMixin
-    2026-06-10 08:42:55 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:55 [debug    ]   Standardized data std: 1.1611 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:55 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ]   Gamma hat range: [-1.0548, 0.9765] src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ]   Site 0 delta range: [0.7861, 1.4333] src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ]   Site 1 delta range: [0.8097, 1.3689] src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ]   Site 2 delta range: [0.6663, 1.3726] src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ]   Site 3 delta range: [0.7668, 1.4661] src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ]   Site 4 delta range: [0.6541, 1.2912] src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ]   Site 5 delta range: [0.6214, 1.2487] src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ]   Site 6 delta range: [0.6870, 1.1910] src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ]   Site 7 delta range: [0.4611, 1.2453] src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ]   Gamma bar (mean location effect): [ 0.57326932  0.57119217  0.57380932  0.60169252 -0.53678291 -0.55940049
-     -0.55495783 -0.55311301] src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ]   Tau^2 (variance of location effects): [0.02856697 0.03080616 0.02874228 0.03078033 0.02789241 0.03151552
-     0.02414439 0.03123854] src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ]   Mean tau^2: 0.029211 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ] _iteration_solver converged in 4 iterations (change=0.000013) src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ] _iteration_solver converged in 4 iterations (change=0.000005) src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ] _iteration_solver converged in 5 iterations (change=0.000007) src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ] _iteration_solver converged in 5 iterations (change=0.000004) src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ] _iteration_solver converged in 4 iterations (change=0.000051) src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ] _iteration_solver converged in 4 iterations (change=0.000006) src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ] _iteration_solver converged in 4 iterations (change=0.000045) src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ] _iteration_solver converged in 4 iterations (change=0.000005) src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ] Transforming
-    2026-06-10 08:42:55 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:55 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:55 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:55 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:55 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:55 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:55 [debug    ]   Grand mean range: [1.6187, 3.7092] src=StandardizationMixin
-    2026-06-10 08:42:55 [debug    ]   Pooled std range: [0.1524, 0.4647] src=StandardizationMixin
-    2026-06-10 08:42:55 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:55 [debug    ]   Standardized data std: 1.1611 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:55 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ] Transforming
-    2026-06-10 08:42:55 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:55 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:55 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:55 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:55 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:42:55 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:42:55 [debug    ]   Grand mean range: [1.6187, 3.7092] src=StandardizationMixin
-    2026-06-10 08:42:55 [debug    ]   Pooled std range: [0.1524, 0.4647] src=StandardizationMixin
-    2026-06-10 08:42:55 [debug    ]   Standardized data mean: 0.066819 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:42:55 [debug    ]   Standardized data std: 1.1771 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:42:55 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:42:55 [debug    ] Fitting
-    2026-06-10 08:42:55 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:42:55 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:55 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:42:55 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:42:55 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:42:55 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:42:55 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:42:55 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:42:55 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:42:55 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:43:11 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:43:11 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:43:11 [debug    ]   Grand mean range: [1.6189, 3.7344] src=StandardizationMixin
-    2026-06-10 08:43:11 [debug    ]   Pooled std range: [0.1507, 0.4692] src=StandardizationMixin
-    2026-06-10 08:43:11 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:43:11 [debug    ]   Standardized data std: 1.1648 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:43:11 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ]   Gamma hat range: [-1.1160, 0.9789] src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ]   Site 0 delta range: [0.7788, 1.3859] src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ]   Site 1 delta range: [0.7756, 1.4220] src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ]   Site 2 delta range: [0.6682, 1.4361] src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ]   Site 3 delta range: [0.8177, 1.3945] src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ]   Site 4 delta range: [0.6712, 1.4174] src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ]   Site 5 delta range: [0.6329, 1.2130] src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ]   Site 6 delta range: [0.6538, 1.1963] src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ]   Site 7 delta range: [0.4574, 1.2598] src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ]   Gamma bar (mean location effect): [ 0.56606775  0.56804538  0.56872886  0.59328248 -0.55327251 -0.57927858
-     -0.56654118 -0.57101959] src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ]   Tau^2 (variance of location effects): [0.03046386 0.03304066 0.03330606 0.02676319 0.03073598 0.03532035
-     0.02669457 0.035656  ] src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ]   Mean tau^2: 0.031498 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ] _iteration_solver converged in 4 iterations (change=0.000033) src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ] _iteration_solver converged in 4 iterations (change=0.000030) src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ] _iteration_solver converged in 5 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ] _iteration_solver converged in 4 iterations (change=0.000054) src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ] _iteration_solver converged in 4 iterations (change=0.000013) src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ] _iteration_solver converged in 4 iterations (change=0.000052) src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ] _iteration_solver converged in 5 iterations (change=0.000004) src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ] _iteration_solver converged in 4 iterations (change=0.000092) src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ] Transforming
-    2026-06-10 08:43:11 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:43:11 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:43:11 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:43:11 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:43:11 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:43:11 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:43:11 [debug    ]   Grand mean range: [1.6189, 3.7344] src=StandardizationMixin
-    2026-06-10 08:43:11 [debug    ]   Pooled std range: [0.1507, 0.4692] src=StandardizationMixin
-    2026-06-10 08:43:11 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:43:11 [debug    ]   Standardized data std: 1.1648 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:43:11 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ] Transforming
-    2026-06-10 08:43:11 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:43:11 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:43:11 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:43:11 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:43:11 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:43:11 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:43:11 [debug    ]   Grand mean range: [1.6189, 3.7344] src=StandardizationMixin
-    2026-06-10 08:43:11 [debug    ]   Pooled std range: [0.1507, 0.4692] src=StandardizationMixin
-    2026-06-10 08:43:11 [debug    ]   Standardized data mean: -0.042568 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:43:11 [debug    ]   Standardized data std: 1.1605 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:43:11 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:43:11 [debug    ] Fitting
-    2026-06-10 08:43:11 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:43:11 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:43:11 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:43:11 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:43:11 [debug    ] Sites encoded: 900 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:43:11 [debug    ] Design matrix shape: (900, 8)  src=DesignMatrixMixin
-    2026-06-10 08:43:11 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:43:11 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:43:11 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:43:11 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:43:27 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:43:27 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:43:27 [debug    ]   Grand mean range: [1.6156, 3.7163] src=StandardizationMixin
-    2026-06-10 08:43:27 [debug    ]   Pooled std range: [0.1523, 0.4693] src=StandardizationMixin
-    2026-06-10 08:43:27 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:43:27 [debug    ]   Standardized data std: 1.1629 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:43:27 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ]   Gamma hat range: [-1.0655, 0.9643] src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ]   Site 0 delta range: [0.8222, 1.4251] src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ]   Site 1 delta range: [0.8073, 1.3628] src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ]   Site 2 delta range: [0.6953, 1.4464] src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ]   Site 3 delta range: [0.7560, 1.4140] src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ]   Site 4 delta range: [0.6476, 1.3988] src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ]   Site 5 delta range: [0.5935, 1.1618] src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ]   Site 6 delta range: [0.6350, 1.2364] src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ]   Site 7 delta range: [0.4826, 1.2893] src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ]   Gamma bar (mean location effect): [ 0.56730024  0.55742605  0.5657854   0.59883358 -0.5477779  -0.57348424
-     -0.56809101 -0.56114345] src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ]   Tau^2 (variance of location effects): [0.02893585 0.03429256 0.03083571 0.02705004 0.03247891 0.03284726
-     0.02579723 0.03219692] src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ]   Mean tau^2: 0.030554 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ] _iteration_solver converged in 4 iterations (change=0.000074) src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ] _iteration_solver converged in 4 iterations (change=0.000016) src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ] _iteration_solver converged in 5 iterations (change=0.000004) src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ] _iteration_solver converged in 4 iterations (change=0.000035) src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ] _iteration_solver converged in 4 iterations (change=0.000006) src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ] _iteration_solver converged in 4 iterations (change=0.000056) src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ] _iteration_solver converged in 4 iterations (change=0.000033) src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ] Transforming
-    2026-06-10 08:43:27 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:43:27 [debug    ] Sites encoded: 900 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:43:27 [debug    ] Design matrix shape: (900, 8)  src=DesignMatrixMixin
-    2026-06-10 08:43:27 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:43:27 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:43:27 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:43:27 [debug    ]   Grand mean range: [1.6156, 3.7163] src=StandardizationMixin
-    2026-06-10 08:43:27 [debug    ]   Pooled std range: [0.1523, 0.4693] src=StandardizationMixin
-    2026-06-10 08:43:27 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:43:27 [debug    ]   Standardized data std: 1.1629 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:43:27 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ] Transforming
-    2026-06-10 08:43:27 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:43:27 [debug    ] Sites encoded: 101 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:43:27 [debug    ] Design matrix shape: (101, 8)  src=DesignMatrixMixin
-    2026-06-10 08:43:27 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:43:27 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:43:27 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:43:27 [debug    ]   Grand mean range: [1.6156, 3.7163] src=StandardizationMixin
-    2026-06-10 08:43:27 [debug    ]   Pooled std range: [0.1523, 0.4693] src=StandardizationMixin
-    2026-06-10 08:43:27 [debug    ]   Standardized data mean: -0.020050 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:43:27 [debug    ]   Standardized data std: 1.1625 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:43:27 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:43:27 [debug    ] Fitting
-    2026-06-10 08:43:27 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:43:27 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:43:27 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:43:27 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:43:27 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:43:27 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:43:27 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:43:27 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:43:27 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:43:27 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:43:44 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:43:44 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:43:44 [debug    ]   Grand mean range: [1.6197, 3.7331] src=StandardizationMixin
-    2026-06-10 08:43:44 [debug    ]   Pooled std range: [0.1508, 0.4695] src=StandardizationMixin
-    2026-06-10 08:43:44 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:43:44 [debug    ]   Standardized data std: 1.1621 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:43:44 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ]   Gamma hat range: [-1.0941, 0.9078] src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ]   Site 0 delta range: [0.8040, 1.4902] src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ]   Site 1 delta range: [0.6962, 1.4049] src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ]   Site 2 delta range: [0.6876, 1.4282] src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ]   Site 3 delta range: [0.7799, 1.4535] src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ]   Site 4 delta range: [0.6079, 1.3964] src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ]   Site 5 delta range: [0.6463, 1.2595] src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ]   Site 6 delta range: [0.5950, 1.2139] src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ]   Site 7 delta range: [0.5054, 1.2825] src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ]   Gamma bar (mean location effect): [ 0.56472598  0.56109115  0.56542498  0.58371462 -0.54950063 -0.57888725
-     -0.56447392 -0.56735808] src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ]   Tau^2 (variance of location effects): [0.02472482 0.03504924 0.02987812 0.02592895 0.02972179 0.03255724
-     0.02621728 0.03127309] src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ]   Mean tau^2: 0.029419 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ] _iteration_solver converged in 4 iterations (change=0.000010) src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ] _iteration_solver converged in 4 iterations (change=0.000051) src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ] _iteration_solver converged in 4 iterations (change=0.000070) src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ] _iteration_solver converged in 4 iterations (change=0.000029) src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ] _iteration_solver converged in 4 iterations (change=0.000013) src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ] _iteration_solver converged in 5 iterations (change=0.000005) src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ] _iteration_solver converged in 4 iterations (change=0.000032) src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ] Transforming
-    2026-06-10 08:43:44 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:43:44 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:43:44 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:43:44 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:43:44 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:43:44 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:43:44 [debug    ]   Grand mean range: [1.6197, 3.7331] src=StandardizationMixin
-    2026-06-10 08:43:44 [debug    ]   Pooled std range: [0.1508, 0.4695] src=StandardizationMixin
-    2026-06-10 08:43:44 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:43:44 [debug    ]   Standardized data std: 1.1621 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:43:44 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ] Transforming
-    2026-06-10 08:43:44 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:43:44 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:43:44 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:43:44 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:43:44 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:43:44 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:43:44 [debug    ]   Grand mean range: [1.6197, 3.7331] src=StandardizationMixin
-    2026-06-10 08:43:44 [debug    ]   Pooled std range: [0.1508, 0.4695] src=StandardizationMixin
-    2026-06-10 08:43:44 [debug    ]   Standardized data mean: -0.057798 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:43:44 [debug    ]   Standardized data std: 1.1699 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:43:44 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:43:44 [debug    ] Fitting
-    2026-06-10 08:43:44 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:43:44 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:43:44 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:43:44 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:43:44 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:43:44 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:43:44 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:43:44 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:43:44 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:43:44 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:44:00 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:44:00 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:44:00 [debug    ]   Grand mean range: [1.6187, 3.7257] src=StandardizationMixin
-    2026-06-10 08:44:00 [debug    ]   Pooled std range: [0.1482, 0.4649] src=StandardizationMixin
-    2026-06-10 08:44:00 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:44:00 [debug    ]   Standardized data std: 1.1626 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:44:00 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ]   Gamma hat range: [-1.1161, 0.9834] src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ]   Site 0 delta range: [0.7623, 1.3603] src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ]   Site 1 delta range: [0.8038, 1.4156] src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ]   Site 2 delta range: [0.6607, 1.4786] src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ]   Site 3 delta range: [0.6451, 1.4066] src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ]   Site 4 delta range: [0.6659, 1.3637] src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ]   Site 5 delta range: [0.6361, 1.2415] src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ]   Site 6 delta range: [0.6437, 1.2908] src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ]   Site 7 delta range: [0.4564, 1.2844] src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ]   Gamma bar (mean location effect): [ 0.56168095  0.56531678  0.56276862  0.59032441 -0.54244213 -0.58032218
-     -0.57130206 -0.56041798] src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ]   Tau^2 (variance of location effects): [0.03019604 0.03327513 0.02900097 0.02996341 0.02907462 0.03846953
-     0.02453599 0.0340369 ] src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ]   Mean tau^2: 0.031069 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ] _iteration_solver converged in 4 iterations (change=0.000009) src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ] _iteration_solver converged in 4 iterations (change=0.000018) src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ] _iteration_solver converged in 4 iterations (change=0.000018) src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ] _iteration_solver converged in 5 iterations (change=0.000007) src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ] _iteration_solver converged in 4 iterations (change=0.000069) src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ] _iteration_solver converged in 4 iterations (change=0.000012) src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ] _iteration_solver converged in 4 iterations (change=0.000037) src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ] _iteration_solver converged in 4 iterations (change=0.000032) src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ] Transforming
-    2026-06-10 08:44:00 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:44:00 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:44:00 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:44:00 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:44:00 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:44:00 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:44:00 [debug    ]   Grand mean range: [1.6187, 3.7257] src=StandardizationMixin
-    2026-06-10 08:44:00 [debug    ]   Pooled std range: [0.1482, 0.4649] src=StandardizationMixin
-    2026-06-10 08:44:00 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:44:00 [debug    ]   Standardized data std: 1.1626 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:44:00 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ] Transforming
-    2026-06-10 08:44:00 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:44:00 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:44:00 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:44:00 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:44:00 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:44:00 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:44:00 [debug    ]   Grand mean range: [1.6187, 3.7257] src=StandardizationMixin
-    2026-06-10 08:44:00 [debug    ]   Pooled std range: [0.1482, 0.4649] src=StandardizationMixin
-    2026-06-10 08:44:00 [debug    ]   Standardized data mean: -0.052255 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:44:00 [debug    ]   Standardized data std: 1.1850 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:44:00 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:44:00 [debug    ] Fitting
-    2026-06-10 08:44:00 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:44:00 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:44:00 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:44:00 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:44:00 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:44:00 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:44:00 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:44:00 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:44:00 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:44:00 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:44:16 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:44:16 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:44:16 [debug    ]   Grand mean range: [1.6115, 3.7156] src=StandardizationMixin
-    2026-06-10 08:44:16 [debug    ]   Pooled std range: [0.1538, 0.4723] src=StandardizationMixin
-    2026-06-10 08:44:16 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:44:16 [debug    ]   Standardized data std: 1.1621 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:44:16 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ]   Gamma hat range: [-1.0426, 0.9807] src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ]   Site 0 delta range: [0.7946, 1.4395] src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ]   Site 1 delta range: [0.7642, 1.4020] src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ]   Site 2 delta range: [0.6572, 1.4710] src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ]   Site 3 delta range: [0.7559, 1.4298] src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ]   Site 4 delta range: [0.6314, 1.2846] src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ]   Site 5 delta range: [0.6028, 1.2692] src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ]   Site 6 delta range: [0.6663, 1.2491] src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ]   Site 7 delta range: [0.4779, 1.2505] src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ]   Gamma bar (mean location effect): [ 0.58291603  0.57532743  0.58052379  0.60281729 -0.53538955 -0.5634181
-     -0.54874754 -0.5467382 ] src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ]   Tau^2 (variance of location effects): [0.02743884 0.0327796  0.0297728  0.03112939 0.02772616 0.03391649
-     0.02503038 0.03059882] src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ]   Mean tau^2: 0.029799 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ] _iteration_solver converged in 5 iterations (change=0.000004) src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ] _iteration_solver converged in 4 iterations (change=0.000015) src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ] _iteration_solver converged in 5 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ] _iteration_solver converged in 5 iterations (change=0.000011) src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ] _iteration_solver converged in 4 iterations (change=0.000096) src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ] _iteration_solver converged in 4 iterations (change=0.000012) src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ] _iteration_solver converged in 5 iterations (change=0.000009) src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ] _iteration_solver converged in 4 iterations (change=0.000045) src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ] Transforming
-    2026-06-10 08:44:16 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:44:16 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:44:16 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:44:16 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:44:16 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:44:16 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:44:16 [debug    ]   Grand mean range: [1.6115, 3.7156] src=StandardizationMixin
-    2026-06-10 08:44:16 [debug    ]   Pooled std range: [0.1538, 0.4723] src=StandardizationMixin
-    2026-06-10 08:44:16 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:44:16 [debug    ]   Standardized data std: 1.1621 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:44:16 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ] Transforming
-    2026-06-10 08:44:16 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:44:16 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:44:16 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:44:16 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:44:16 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:44:16 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:44:16 [debug    ]   Grand mean range: [1.6115, 3.7156] src=StandardizationMixin
-    2026-06-10 08:44:16 [debug    ]   Pooled std range: [0.1538, 0.4723] src=StandardizationMixin
-    2026-06-10 08:44:16 [debug    ]   Standardized data mean: 0.105602 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:44:16 [debug    ]   Standardized data std: 1.1372 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:44:16 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:44:16 [debug    ] Fitting
-    2026-06-10 08:44:16 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:44:16 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:44:16 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:44:16 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:44:16 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:44:16 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:44:16 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:44:16 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:44:16 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:44:16 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:44:32 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:44:32 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:44:32 [debug    ]   Grand mean range: [1.6145, 3.7132] src=StandardizationMixin
-    2026-06-10 08:44:32 [debug    ]   Pooled std range: [0.1543, 0.4643] src=StandardizationMixin
-    2026-06-10 08:44:32 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:44:32 [debug    ]   Standardized data std: 1.1638 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:44:32 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ]   Gamma hat range: [-1.0663, 0.9913] src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ]   Site 0 delta range: [0.8030, 1.3771] src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ]   Site 1 delta range: [0.7356, 1.4300] src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ]   Site 2 delta range: [0.6794, 1.4434] src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ]   Site 3 delta range: [0.7884, 1.4484] src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ]   Site 4 delta range: [0.6642, 1.4383] src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ]   Site 5 delta range: [0.5695, 1.2875] src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ]   Site 6 delta range: [0.6402, 1.2801] src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ]   Site 7 delta range: [0.4879, 1.2929] src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ]   Gamma bar (mean location effect): [ 0.56205762  0.56470884  0.57108862  0.59584174 -0.5505509  -0.57958298
-     -0.56247765 -0.56541799] src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ]   Tau^2 (variance of location effects): [0.02808692 0.03804227 0.02856183 0.02979149 0.03037113 0.03563845
-     0.02767322 0.03166476] src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ]   Mean tau^2: 0.031229 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ] _iteration_solver converged in 5 iterations (change=0.000004) src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ] _iteration_solver converged in 4 iterations (change=0.000025) src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ] _iteration_solver converged in 4 iterations (change=0.000037) src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ] _iteration_solver converged in 4 iterations (change=0.000037) src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ] _iteration_solver converged in 4 iterations (change=0.000050) src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ] _iteration_solver converged in 4 iterations (change=0.000013) src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ] _iteration_solver converged in 5 iterations (change=0.000005) src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ] _iteration_solver converged in 4 iterations (change=0.000026) src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ] Transforming
-    2026-06-10 08:44:32 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:44:32 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:44:32 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:44:32 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:44:32 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:44:32 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:44:32 [debug    ]   Grand mean range: [1.6145, 3.7132] src=StandardizationMixin
-    2026-06-10 08:44:32 [debug    ]   Pooled std range: [0.1543, 0.4643] src=StandardizationMixin
-    2026-06-10 08:44:32 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:44:32 [debug    ]   Standardized data std: 1.1638 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:44:32 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ] Transforming
-    2026-06-10 08:44:32 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:44:32 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:44:32 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:44:32 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:44:32 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:44:32 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:44:32 [debug    ]   Grand mean range: [1.6145, 3.7132] src=StandardizationMixin
-    2026-06-10 08:44:32 [debug    ]   Pooled std range: [0.1543, 0.4643] src=StandardizationMixin
-    2026-06-10 08:44:32 [debug    ]   Standardized data mean: -0.032554 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:44:32 [debug    ]   Standardized data std: 1.1620 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:44:32 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:44:32 [debug    ] Fitting
-    2026-06-10 08:44:32 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:44:32 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:44:32 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:44:32 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:44:32 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:44:32 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:44:32 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:44:32 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:44:32 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:44:32 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:44:49 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:44:49 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:44:49 [debug    ]   Grand mean range: [1.6194, 3.7208] src=StandardizationMixin
-    2026-06-10 08:44:49 [debug    ]   Pooled std range: [0.1519, 0.4602] src=StandardizationMixin
-    2026-06-10 08:44:49 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:44:49 [debug    ]   Standardized data std: 1.1631 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:44:49 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ]   Gamma hat range: [-1.0836, 0.9687] src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ]   Site 0 delta range: [0.7593, 1.4032] src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ]   Site 1 delta range: [0.7859, 1.4085] src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ]   Site 2 delta range: [0.6521, 1.4918] src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ]   Site 3 delta range: [0.7360, 1.3911] src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ]   Site 4 delta range: [0.6673, 1.3958] src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ]   Site 5 delta range: [0.6333, 1.3039] src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ]   Site 6 delta range: [0.7046, 1.2612] src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ]   Site 7 delta range: [0.4961, 1.1727] src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ]   Gamma bar (mean location effect): [ 0.58659493  0.57377061  0.57974912  0.60278458 -0.53576687 -0.56233756
-     -0.55219106 -0.55824483] src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ]   Tau^2 (variance of location effects): [0.02668137 0.03524902 0.03262018 0.02819417 0.02958929 0.03192006
-     0.02433143 0.03151411] src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ]   Mean tau^2: 0.030012 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ] _iteration_solver converged in 5 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ] _iteration_solver converged in 4 iterations (change=0.000015) src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ] _iteration_solver converged in 4 iterations (change=0.000019) src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ] _iteration_solver converged in 4 iterations (change=0.000089) src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ] _iteration_solver converged in 4 iterations (change=0.000055) src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ] _iteration_solver converged in 4 iterations (change=0.000008) src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ] _iteration_solver converged in 4 iterations (change=0.000040) src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ] _iteration_solver converged in 4 iterations (change=0.000025) src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ] Transforming
-    2026-06-10 08:44:49 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:44:49 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:44:49 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:44:49 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:44:49 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:44:49 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:44:49 [debug    ]   Grand mean range: [1.6194, 3.7208] src=StandardizationMixin
-    2026-06-10 08:44:49 [debug    ]   Pooled std range: [0.1519, 0.4602] src=StandardizationMixin
-    2026-06-10 08:44:49 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:44:49 [debug    ]   Standardized data std: 1.1631 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:44:49 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ] Transforming
-    2026-06-10 08:44:49 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:44:49 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:44:49 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:44:49 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:44:49 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:44:49 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:44:49 [debug    ]   Grand mean range: [1.6194, 3.7208] src=StandardizationMixin
-    2026-06-10 08:44:49 [debug    ]   Pooled std range: [0.1519, 0.4602] src=StandardizationMixin
-    2026-06-10 08:44:49 [debug    ]   Standardized data mean: 0.098016 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:44:49 [debug    ]   Standardized data std: 1.1697 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:44:49 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:44:49 [debug    ] Fitting
-    2026-06-10 08:44:49 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:44:49 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:44:49 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:44:49 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:44:49 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:44:49 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:44:49 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:44:49 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:44:49 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:44:49 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:45:05 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:45:05 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:45:05 [debug    ]   Grand mean range: [1.6195, 3.7270] src=StandardizationMixin
-    2026-06-10 08:45:05 [debug    ]   Pooled std range: [0.1525, 0.4701] src=StandardizationMixin
-    2026-06-10 08:45:05 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:45:05 [debug    ]   Standardized data std: 1.1630 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:45:05 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ]   Gamma hat range: [-1.1169, 0.9663] src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ]   Site 0 delta range: [0.8172, 1.4794] src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ]   Site 1 delta range: [0.7490, 1.4161] src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ]   Site 2 delta range: [0.6823, 1.4353] src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ]   Site 3 delta range: [0.7531, 1.3910] src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ]   Site 4 delta range: [0.6084, 1.3032] src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ]   Site 5 delta range: [0.5938, 1.2155] src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ]   Site 6 delta range: [0.6590, 1.2153] src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ]   Site 7 delta range: [0.4930, 1.2495] src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ]   Gamma bar (mean location effect): [ 0.56006067  0.55433562  0.56164563  0.58844209 -0.55425497 -0.58132637
-     -0.57279097 -0.56983285] src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ]   Tau^2 (variance of location effects): [0.02726243 0.03413167 0.02952015 0.02707619 0.02973321 0.03573034
-     0.02756952 0.03296956] src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ]   Mean tau^2: 0.030499 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ] _iteration_solver converged in 5 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ] _iteration_solver converged in 4 iterations (change=0.000023) src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ] _iteration_solver converged in 4 iterations (change=0.000043) src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ] _iteration_solver converged in 5 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ] _iteration_solver converged in 5 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ] _iteration_solver converged in 4 iterations (change=0.000004) src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ] _iteration_solver converged in 5 iterations (change=0.000012) src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ] _iteration_solver converged in 4 iterations (change=0.000048) src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ] Transforming
-    2026-06-10 08:45:05 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:45:05 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:45:05 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:45:05 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:45:05 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:45:05 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:45:05 [debug    ]   Grand mean range: [1.6195, 3.7270] src=StandardizationMixin
-    2026-06-10 08:45:05 [debug    ]   Pooled std range: [0.1525, 0.4701] src=StandardizationMixin
-    2026-06-10 08:45:05 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:45:05 [debug    ]   Standardized data std: 1.1630 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:45:05 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ] Transforming
-    2026-06-10 08:45:05 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:45:05 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:45:05 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:45:05 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:45:05 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:45:05 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:45:05 [debug    ]   Grand mean range: [1.6195, 3.7270] src=StandardizationMixin
-    2026-06-10 08:45:05 [debug    ]   Pooled std range: [0.1525, 0.4701] src=StandardizationMixin
-    2026-06-10 08:45:05 [debug    ]   Standardized data mean: -0.098064 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:45:05 [debug    ]   Standardized data std: 1.1485 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:45:05 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:45:05 [debug    ] Fitting
-    2026-06-10 08:45:05 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:45:05 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:45:05 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:45:05 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:45:05 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:45:05 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:45:05 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:45:05 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:45:05 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:45:05 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:45:21 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:45:21 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:45:21 [debug    ]   Grand mean range: [1.6190, 3.7238] src=StandardizationMixin
-    2026-06-10 08:45:21 [debug    ]   Pooled std range: [0.1511, 0.4638] src=StandardizationMixin
-    2026-06-10 08:45:21 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:45:21 [debug    ]   Standardized data std: 1.1621 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:45:21 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ]   Gamma hat range: [-1.0653, 0.9317] src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ]   Site 0 delta range: [0.7227, 1.3694] src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ]   Site 1 delta range: [0.6857, 1.4055] src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ]   Site 2 delta range: [0.7161, 1.4324] src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ]   Site 3 delta range: [0.8002, 1.3859] src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ]   Site 4 delta range: [0.6102, 1.3810] src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ]   Site 5 delta range: [0.5692, 1.3030] src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ]   Site 6 delta range: [0.6406, 1.2014] src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ]   Site 7 delta range: [0.4423, 1.2567] src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ]   Gamma bar (mean location effect): [ 0.56125567  0.56911413  0.57585383  0.58940829 -0.54125375 -0.57102415
-     -0.56257689 -0.55548318] src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ]   Tau^2 (variance of location effects): [0.02906835 0.03533796 0.02915829 0.03170803 0.03062714 0.03526597
-     0.02607497 0.03401371] src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ]   Mean tau^2: 0.031407 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ] _iteration_solver converged in 4 iterations (change=0.000049) src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ] _iteration_solver converged in 4 iterations (change=0.000006) src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ] _iteration_solver converged in 4 iterations (change=0.000023) src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ] _iteration_solver converged in 5 iterations (change=0.000009) src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ] _iteration_solver converged in 4 iterations (change=0.000040) src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ] _iteration_solver converged in 4 iterations (change=0.000008) src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ] _iteration_solver converged in 5 iterations (change=0.000012) src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ] _iteration_solver converged in 4 iterations (change=0.000007) src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ] Transforming
-    2026-06-10 08:45:21 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:45:21 [debug    ] Sites encoded: 901 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:45:21 [debug    ] Design matrix shape: (901, 8)  src=DesignMatrixMixin
-    2026-06-10 08:45:21 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:45:21 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:45:21 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:45:21 [debug    ]   Grand mean range: [1.6190, 3.7238] src=StandardizationMixin
-    2026-06-10 08:45:21 [debug    ]   Pooled std range: [0.1511, 0.4638] src=StandardizationMixin
-    2026-06-10 08:45:21 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:45:21 [debug    ]   Standardized data std: 1.1621 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:45:21 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:45:21 [debug    ] Transforming
-    2026-06-10 08:45:21 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:45:21 [debug    ] Sites encoded: 100 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:45:21 [debug    ] Design matrix shape: (100, 8)  src=DesignMatrixMixin
-    2026-06-10 08:45:21 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:45:21 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:45:21 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:45:21 [debug    ]   Grand mean range: [1.6190, 3.7238] src=StandardizationMixin
-    2026-06-10 08:45:21 [debug    ]   Pooled std range: [0.1511, 0.4638] src=StandardizationMixin
-    2026-06-10 08:45:21 [debug    ]   Standardized data mean: 0.034244 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:45:21 [debug    ]   Standardized data std: 1.1690 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:45:21 [debug    ] Harmonizing data               src=LocationAndScaleMixin
+    2026-06-10 10:46:30 [debug    ] Fitting
+    2026-06-10 10:46:30 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:46:30 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:46:30 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:46:52 [debug    ] Transforming
+    2026-06-10 10:46:52 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:46:52 [debug    ] Transforming
+    2026-06-10 10:46:52 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:46:52 [debug    ] Fitting
+    2026-06-10 10:46:52 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:46:52 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:46:52 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:47:13 [debug    ] Transforming
+    2026-06-10 10:47:13 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:47:13 [debug    ] Transforming
+    2026-06-10 10:47:13 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:47:13 [debug    ] Fitting
+    2026-06-10 10:47:13 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:47:13 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:47:13 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:47:35 [debug    ] Transforming
+    2026-06-10 10:47:35 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:47:35 [debug    ] Transforming
+    2026-06-10 10:47:35 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:47:35 [debug    ] Fitting
+    2026-06-10 10:47:35 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:47:35 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:47:35 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:47:56 [debug    ] Transforming
+    2026-06-10 10:47:56 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:47:56 [debug    ] Transforming
+    2026-06-10 10:47:56 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:47:56 [debug    ] Fitting
+    2026-06-10 10:47:56 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:47:56 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:47:56 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:48:18 [debug    ] Transforming
+    2026-06-10 10:48:18 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:48:18 [debug    ] Transforming
+    2026-06-10 10:48:18 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:48:18 [debug    ] Fitting
+    2026-06-10 10:48:18 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:48:18 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:48:18 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:48:40 [debug    ] Transforming
+    2026-06-10 10:48:40 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:48:40 [debug    ] Transforming
+    2026-06-10 10:48:40 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:48:40 [debug    ] Fitting
+    2026-06-10 10:48:40 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:48:40 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:48:40 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:49:01 [debug    ] Transforming
+    2026-06-10 10:49:01 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:49:01 [debug    ] Transforming
+    2026-06-10 10:49:01 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:49:01 [debug    ] Fitting
+    2026-06-10 10:49:01 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:49:01 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:49:01 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:49:23 [debug    ] Transforming
+    2026-06-10 10:49:23 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:49:23 [debug    ] Transforming
+    2026-06-10 10:49:23 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:49:23 [debug    ] Fitting
+    2026-06-10 10:49:23 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:49:23 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:49:23 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:49:45 [debug    ] Transforming
+    2026-06-10 10:49:45 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:49:45 [debug    ] Transforming
+    2026-06-10 10:49:45 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:49:45 [debug    ] Fitting
+    2026-06-10 10:49:45 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:49:45 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:49:45 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:50:06 [debug    ] Transforming
+    2026-06-10 10:50:06 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:50:06 [debug    ] Transforming
+    2026-06-10 10:50:06 [debug    ] Setting up smoothing using B-Splines
     Running experiment: eos_interaction1
-    2026-06-10 08:45:21 [debug    ] Fitting
-    2026-06-10 08:45:21 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:45:21 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:45:21 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:45:21 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:45:21 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:45:21 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:45:21 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:45:21 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:45:21 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:45:21 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:45:37 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:45:37 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:45:37 [debug    ]   Grand mean range: [210.8386, 7187.7183] src=StandardizationMixin
-    2026-06-10 08:45:37 [debug    ]   Pooled std range: [27.9310, 930.2671] src=StandardizationMixin
-    2026-06-10 08:45:37 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:45:37 [debug    ]   Standardized data std: 1.1049 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:45:37 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ]   Gamma hat range: [-2.3876, 3.2854] src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ]   Site 0 delta range: [0.5780, 1.5510] src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ]   Site 1 delta range: [0.6048, 2.0218] src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ]   Site 2 delta range: [0.5475, 1.8020] src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ]   Site 3 delta range: [0.8021, 1.5318] src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ]   Site 4 delta range: [0.3156, 1.6138] src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ]   Site 5 delta range: [0.7161, 1.6035] src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ]   Site 6 delta range: [0.3979, 1.3788] src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ]   Site 7 delta range: [0.3867, 1.7123] src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ]   Gamma bar (mean location effect): [-0.03712757 -0.01273322 -0.06009823  0.01535709  0.04531644  0.04552286
-     -0.06590859  0.0613272 ] src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ]   Tau^2 (variance of location effects): [0.2643418  0.14821046 0.18045172 0.25586901 0.18163124 0.28549842
-     0.2002262  0.29967486] src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ]   Mean tau^2: 0.226988 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ] _iteration_solver converged in 3 iterations (change=0.000020) src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ] _iteration_solver converged in 3 iterations (change=0.000046) src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ] _iteration_solver converged in 3 iterations (change=0.000010) src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ] _iteration_solver converged in 3 iterations (change=0.000059) src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ] _iteration_solver converged in 3 iterations (change=0.000015) src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ] _iteration_solver converged in 3 iterations (change=0.000041) src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ] _iteration_solver converged in 3 iterations (change=0.000027) src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ] Transforming
-    2026-06-10 08:45:37 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:45:37 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:45:37 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:45:37 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:45:37 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:45:37 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:45:37 [debug    ]   Grand mean range: [210.8386, 7187.7183] src=StandardizationMixin
-    2026-06-10 08:45:37 [debug    ]   Pooled std range: [27.9310, 930.2671] src=StandardizationMixin
-    2026-06-10 08:45:37 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:45:37 [debug    ]   Standardized data std: 1.1049 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:45:37 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ] Transforming
-    2026-06-10 08:45:37 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:45:37 [debug    ] Sites encoded: 96 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:45:37 [debug    ] Design matrix shape: (96, 8)   src=DesignMatrixMixin
-    2026-06-10 08:45:37 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:45:37 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:45:37 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:45:37 [debug    ]   Grand mean range: [210.8386, 7187.7183] src=StandardizationMixin
-    2026-06-10 08:45:37 [debug    ]   Pooled std range: [27.9310, 930.2671] src=StandardizationMixin
-    2026-06-10 08:45:37 [debug    ]   Standardized data mean: -0.025656 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:45:37 [debug    ]   Standardized data std: 1.1074 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:45:37 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:45:37 [debug    ] Fitting
-    2026-06-10 08:45:37 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:45:37 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:45:37 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:45:37 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:45:37 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:45:37 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:45:37 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:45:37 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:45:37 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:45:37 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:45:52 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:45:52 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:45:52 [debug    ]   Grand mean range: [210.1221, 7160.2990] src=StandardizationMixin
-    2026-06-10 08:45:52 [debug    ]   Pooled std range: [27.8961, 928.8621] src=StandardizationMixin
-    2026-06-10 08:45:52 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:45:52 [debug    ]   Standardized data std: 1.1055 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:45:52 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ]   Gamma hat range: [-2.3451, 3.3188] src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ]   Site 0 delta range: [0.5821, 1.6026] src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ]   Site 1 delta range: [0.5948, 2.0756] src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ]   Site 2 delta range: [0.6040, 1.6946] src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ]   Site 3 delta range: [0.8113, 1.6016] src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ]   Site 4 delta range: [0.3679, 1.4730] src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ]   Site 5 delta range: [0.5680, 1.5864] src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ]   Site 6 delta range: [0.3603, 1.4306] src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ]   Site 7 delta range: [0.3994, 1.9519] src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ]   Gamma bar (mean location effect): [-0.03541487 -0.00641179 -0.05293708  0.01362279  0.04210944  0.04480076
-     -0.06755515  0.06714725] src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ]   Tau^2 (variance of location effects): [0.25965945 0.15925726 0.1679774  0.26329173 0.18724957 0.28416017
-     0.19787651 0.30536672] src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ]   Mean tau^2: 0.228105 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ] _iteration_solver converged in 3 iterations (change=0.000028) src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ] _iteration_solver converged in 3 iterations (change=0.000041) src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ] _iteration_solver converged in 3 iterations (change=0.000009) src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ] _iteration_solver converged in 3 iterations (change=0.000059) src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ] _iteration_solver converged in 3 iterations (change=0.000012) src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ] _iteration_solver converged in 3 iterations (change=0.000041) src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ] _iteration_solver converged in 3 iterations (change=0.000022) src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ] Transforming
-    2026-06-10 08:45:52 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:45:52 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:45:52 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:45:52 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:45:52 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:45:52 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:45:52 [debug    ]   Grand mean range: [210.1221, 7160.2990] src=StandardizationMixin
-    2026-06-10 08:45:52 [debug    ]   Pooled std range: [27.8961, 928.8621] src=StandardizationMixin
-    2026-06-10 08:45:52 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:45:52 [debug    ]   Standardized data std: 1.1055 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:45:52 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ] Transforming
-    2026-06-10 08:45:52 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:45:52 [debug    ] Sites encoded: 95 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:45:52 [debug    ] Design matrix shape: (95, 8)   src=DesignMatrixMixin
-    2026-06-10 08:45:52 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:45:52 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:45:52 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:45:52 [debug    ]   Grand mean range: [210.1221, 7160.2990] src=StandardizationMixin
-    2026-06-10 08:45:52 [debug    ]   Pooled std range: [27.8961, 928.8621] src=StandardizationMixin
-    2026-06-10 08:45:52 [debug    ]   Standardized data mean: 0.007306 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:45:52 [debug    ]   Standardized data std: 1.0989 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:45:52 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:45:52 [debug    ] Fitting
-    2026-06-10 08:45:52 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:45:52 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:45:52 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:45:52 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:45:52 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:45:52 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:45:52 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:45:52 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:45:52 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:45:52 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:46:08 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:46:08 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:46:08 [debug    ]   Grand mean range: [210.7261, 7179.7732] src=StandardizationMixin
-    2026-06-10 08:46:08 [debug    ]   Pooled std range: [27.6820, 926.2671] src=StandardizationMixin
-    2026-06-10 08:46:08 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:46:08 [debug    ]   Standardized data std: 1.1065 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:46:08 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ]   Gamma hat range: [-2.3170, 3.3314] src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ]   Site 0 delta range: [0.5780, 1.6025] src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ]   Site 1 delta range: [0.5848, 1.9441] src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ]   Site 2 delta range: [0.6095, 1.7170] src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ]   Site 3 delta range: [0.8101, 1.6615] src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ]   Site 4 delta range: [0.3480, 1.5436] src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ]   Site 5 delta range: [0.6526, 1.5657] src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ]   Site 6 delta range: [0.4104, 1.4701] src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ]   Site 7 delta range: [0.3852, 1.8494] src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ]   Gamma bar (mean location effect): [-0.04752921 -0.00981388 -0.05302883  0.01223142  0.04974811  0.04814829
-     -0.07013326  0.06088211] src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ]   Tau^2 (variance of location effects): [0.26308115 0.15175923 0.17974626 0.26304323 0.1878171  0.2947123
-     0.20710158 0.29795365] src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ]   Mean tau^2: 0.230652 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ] _iteration_solver converged in 3 iterations (change=0.000023) src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ] _iteration_solver converged in 3 iterations (change=0.000046) src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ] _iteration_solver converged in 3 iterations (change=0.000009) src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ] _iteration_solver converged in 3 iterations (change=0.000049) src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ] _iteration_solver converged in 3 iterations (change=0.000019) src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ] _iteration_solver converged in 3 iterations (change=0.000033) src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ] _iteration_solver converged in 3 iterations (change=0.000025) src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ] Transforming
-    2026-06-10 08:46:08 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:46:08 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:46:08 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:46:08 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:46:08 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:46:08 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:46:08 [debug    ]   Grand mean range: [210.7261, 7179.7732] src=StandardizationMixin
-    2026-06-10 08:46:08 [debug    ]   Pooled std range: [27.6820, 926.2671] src=StandardizationMixin
-    2026-06-10 08:46:08 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:46:08 [debug    ]   Standardized data std: 1.1065 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:46:08 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ] Transforming
-    2026-06-10 08:46:08 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:46:08 [debug    ] Sites encoded: 96 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:46:08 [debug    ] Design matrix shape: (96, 8)   src=DesignMatrixMixin
-    2026-06-10 08:46:08 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:46:08 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:46:08 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:46:08 [debug    ]   Grand mean range: [210.7261, 7179.7732] src=StandardizationMixin
-    2026-06-10 08:46:08 [debug    ]   Pooled std range: [27.6820, 926.2671] src=StandardizationMixin
-    2026-06-10 08:46:08 [debug    ]   Standardized data mean: -0.007539 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:46:08 [debug    ]   Standardized data std: 1.1136 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:46:08 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:46:08 [debug    ] Fitting
-    2026-06-10 08:46:08 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:46:08 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:46:08 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:46:08 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:46:08 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:46:08 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:46:08 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:46:08 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:46:08 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:46:08 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:46:23 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:46:23 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:46:23 [debug    ]   Grand mean range: [210.9243, 7173.0248] src=StandardizationMixin
-    2026-06-10 08:46:23 [debug    ]   Pooled std range: [27.8294, 934.8651] src=StandardizationMixin
-    2026-06-10 08:46:23 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:46:23 [debug    ]   Standardized data std: 1.1064 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:46:23 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ]   Gamma hat range: [-2.3902, 3.3050] src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ]   Site 0 delta range: [0.6037, 1.5985] src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ]   Site 1 delta range: [0.6493, 2.0764] src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ]   Site 2 delta range: [0.6683, 1.6468] src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ]   Site 3 delta range: [0.8343, 1.6140] src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ]   Site 4 delta range: [0.3287, 1.5586] src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ]   Site 5 delta range: [0.6480, 1.5799] src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ]   Site 6 delta range: [0.3337, 1.4421] src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ]   Site 7 delta range: [0.3764, 1.8251] src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ]   Gamma bar (mean location effect): [-0.03631368 -0.01249757 -0.05643906  0.00990743  0.05029853  0.04310448
-     -0.06312253  0.06435   ] src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ]   Tau^2 (variance of location effects): [0.26341971 0.15646515 0.17052143 0.2562937  0.18955347 0.2939116
-     0.20457235 0.30071079] src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ]   Mean tau^2: 0.229431 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ] _iteration_solver converged in 3 iterations (change=0.000020) src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ] _iteration_solver converged in 3 iterations (change=0.000041) src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ] _iteration_solver converged in 3 iterations (change=0.000008) src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ] _iteration_solver converged in 3 iterations (change=0.000074) src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ] _iteration_solver converged in 3 iterations (change=0.000021) src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ] _iteration_solver converged in 3 iterations (change=0.000039) src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ] _iteration_solver converged in 3 iterations (change=0.000021) src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ] Transforming
-    2026-06-10 08:46:23 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:46:23 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:46:23 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:46:23 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:46:23 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:46:23 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:46:23 [debug    ]   Grand mean range: [210.9243, 7173.0248] src=StandardizationMixin
-    2026-06-10 08:46:23 [debug    ]   Pooled std range: [27.8294, 934.8651] src=StandardizationMixin
-    2026-06-10 08:46:23 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:46:23 [debug    ]   Standardized data std: 1.1064 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:46:23 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ] Transforming
-    2026-06-10 08:46:23 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:46:23 [debug    ] Sites encoded: 95 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:46:23 [debug    ] Design matrix shape: (95, 8)   src=DesignMatrixMixin
-    2026-06-10 08:46:23 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:46:23 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:46:23 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:46:23 [debug    ]   Grand mean range: [210.9243, 7173.0248] src=StandardizationMixin
-    2026-06-10 08:46:23 [debug    ]   Pooled std range: [27.8294, 934.8651] src=StandardizationMixin
-    2026-06-10 08:46:23 [debug    ]   Standardized data mean: -0.000764 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:46:23 [debug    ]   Standardized data std: 1.1051 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:46:23 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:46:23 [debug    ] Fitting
-    2026-06-10 08:46:23 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:46:23 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:46:23 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:46:23 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:46:23 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:46:23 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:46:23 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:46:23 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:46:23 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:46:23 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:46:39 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:46:39 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:46:39 [debug    ]   Grand mean range: [209.8147, 7151.2147] src=StandardizationMixin
-    2026-06-10 08:46:39 [debug    ]   Pooled std range: [28.2763, 930.9031] src=StandardizationMixin
-    2026-06-10 08:46:39 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:46:39 [debug    ]   Standardized data std: 1.1072 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:46:39 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ]   Gamma hat range: [-2.4069, 3.3881] src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ]   Site 0 delta range: [0.6095, 1.5387] src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ]   Site 1 delta range: [0.6170, 2.0406] src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ]   Site 2 delta range: [0.5962, 1.7465] src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ]   Site 3 delta range: [0.8060, 1.5731] src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ]   Site 4 delta range: [0.3511, 1.5444] src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ]   Site 5 delta range: [0.6389, 1.6381] src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ]   Site 6 delta range: [0.3397, 1.4770] src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ]   Site 7 delta range: [0.3872, 1.8912] src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ]   Gamma bar (mean location effect): [-0.04658847 -0.00794566 -0.06046505  0.00890629  0.05051841  0.04735472
-     -0.05972663  0.06233545] src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ]   Tau^2 (variance of location effects): [0.28113658 0.15389007 0.17244995 0.26513076 0.19317784 0.30152829
-     0.19134655 0.31127403] src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ]   Mean tau^2: 0.233742 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ] _iteration_solver converged in 3 iterations (change=0.000021) src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ] _iteration_solver converged in 3 iterations (change=0.000041) src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ] _iteration_solver converged in 3 iterations (change=0.000008) src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ] _iteration_solver converged in 3 iterations (change=0.000041) src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ] _iteration_solver converged in 3 iterations (change=0.000015) src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ] _iteration_solver converged in 3 iterations (change=0.000044) src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ] _iteration_solver converged in 3 iterations (change=0.000025) src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ] Transforming
-    2026-06-10 08:46:39 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:46:39 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:46:39 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:46:39 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:46:39 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:46:39 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:46:39 [debug    ]   Grand mean range: [209.8147, 7151.2147] src=StandardizationMixin
-    2026-06-10 08:46:39 [debug    ]   Pooled std range: [28.2763, 930.9031] src=StandardizationMixin
-    2026-06-10 08:46:39 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:46:39 [debug    ]   Standardized data std: 1.1072 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:46:39 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ] Transforming
-    2026-06-10 08:46:39 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:46:39 [debug    ] Sites encoded: 95 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:46:39 [debug    ] Design matrix shape: (95, 8)   src=DesignMatrixMixin
-    2026-06-10 08:46:39 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:46:39 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:46:39 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:46:39 [debug    ]   Grand mean range: [209.8147, 7151.2147] src=StandardizationMixin
-    2026-06-10 08:46:39 [debug    ]   Pooled std range: [28.2763, 930.9031] src=StandardizationMixin
-    2026-06-10 08:46:39 [debug    ]   Standardized data mean: -0.013152 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:46:39 [debug    ]   Standardized data std: 1.1238 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:46:39 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:46:39 [debug    ] Fitting
-    2026-06-10 08:46:39 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:46:39 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:46:39 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:46:39 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:46:39 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:46:39 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:46:39 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:46:39 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:46:39 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:46:39 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:46:54 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:46:54 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:46:54 [debug    ]   Grand mean range: [211.2404, 7191.6691] src=StandardizationMixin
-    2026-06-10 08:46:54 [debug    ]   Pooled std range: [27.9842, 929.9760] src=StandardizationMixin
-    2026-06-10 08:46:54 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:46:54 [debug    ]   Standardized data std: 1.1056 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:46:54 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ]   Gamma hat range: [-2.3663, 3.3369] src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ]   Site 0 delta range: [0.5643, 1.5971] src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ]   Site 1 delta range: [0.6061, 2.1034] src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ]   Site 2 delta range: [0.6551, 1.5990] src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ]   Site 3 delta range: [0.7477, 1.6362] src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ]   Site 4 delta range: [0.3289, 1.5452] src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ]   Site 5 delta range: [0.7006, 1.4964] src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ]   Site 6 delta range: [0.4117, 1.4556] src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ]   Site 7 delta range: [0.3491, 1.7684] src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ]   Gamma bar (mean location effect): [-0.04216728 -0.00361238 -0.05733874  0.0098365   0.04410174  0.04195347
-     -0.06374092  0.06727557] src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ]   Tau^2 (variance of location effects): [0.26489419 0.15484561 0.16397792 0.26963434 0.1908859  0.28476306
-     0.19371116 0.3062572 ] src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ]   Mean tau^2: 0.228621 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ] _iteration_solver converged in 3 iterations (change=0.000027) src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ] _iteration_solver converged in 3 iterations (change=0.000040) src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ] _iteration_solver converged in 3 iterations (change=0.000009) src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ] _iteration_solver converged in 3 iterations (change=0.000064) src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ] _iteration_solver converged in 3 iterations (change=0.000013) src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ] _iteration_solver converged in 3 iterations (change=0.000041) src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ] _iteration_solver converged in 3 iterations (change=0.000020) src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ] Transforming
-    2026-06-10 08:46:54 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:46:54 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:46:54 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:46:54 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:46:54 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:46:54 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:46:54 [debug    ]   Grand mean range: [211.2404, 7191.6691] src=StandardizationMixin
-    2026-06-10 08:46:54 [debug    ]   Pooled std range: [27.9842, 929.9760] src=StandardizationMixin
-    2026-06-10 08:46:54 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:46:54 [debug    ]   Standardized data std: 1.1056 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:46:54 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ] Transforming
-    2026-06-10 08:46:54 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:46:54 [debug    ] Sites encoded: 96 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:46:54 [debug    ] Design matrix shape: (96, 8)   src=DesignMatrixMixin
-    2026-06-10 08:46:54 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:46:54 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:46:54 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:46:54 [debug    ]   Grand mean range: [211.2404, 7191.6691] src=StandardizationMixin
-    2026-06-10 08:46:54 [debug    ]   Pooled std range: [27.9842, 929.9760] src=StandardizationMixin
-    2026-06-10 08:46:54 [debug    ]   Standardized data mean: -0.002433 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:46:54 [debug    ]   Standardized data std: 1.1217 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:46:54 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:46:54 [debug    ] Fitting
-    2026-06-10 08:46:54 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:46:54 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:46:54 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:46:54 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:46:54 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:46:54 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:46:54 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:46:54 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:46:54 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:46:54 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:47:10 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:47:10 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:47:10 [debug    ]   Grand mean range: [210.1894, 7161.5720] src=StandardizationMixin
-    2026-06-10 08:47:10 [debug    ]   Pooled std range: [28.0001, 928.0220] src=StandardizationMixin
-    2026-06-10 08:47:10 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:47:10 [debug    ]   Standardized data std: 1.1058 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:47:10 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ]   Gamma hat range: [-2.4198, 3.3379] src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ]   Site 0 delta range: [0.6097, 1.6225] src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ]   Site 1 delta range: [0.5866, 2.0113] src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ]   Site 2 delta range: [0.6549, 1.6598] src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ]   Site 3 delta range: [0.7857, 1.6363] src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ]   Site 4 delta range: [0.3384, 1.4706] src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ]   Site 5 delta range: [0.6803, 1.5743] src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ]   Site 6 delta range: [0.3856, 1.3311] src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ]   Site 7 delta range: [0.3736, 1.8449] src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ]   Gamma bar (mean location effect): [-0.04770515 -0.01181806 -0.05750548  0.00345034  0.05461711  0.04911441
-     -0.06834057  0.05788235] src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ]   Tau^2 (variance of location effects): [0.26806338 0.15043668 0.17841398 0.24978304 0.18380491 0.28564902
-     0.19965722 0.30667629] src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ]   Mean tau^2: 0.227811 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ] _iteration_solver converged in 3 iterations (change=0.000021) src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ] _iteration_solver converged in 3 iterations (change=0.000054) src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ] _iteration_solver converged in 3 iterations (change=0.000013) src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ] _iteration_solver converged in 3 iterations (change=0.000049) src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ] _iteration_solver converged in 3 iterations (change=0.000009) src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ] _iteration_solver converged in 3 iterations (change=0.000045) src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ] _iteration_solver converged in 3 iterations (change=0.000018) src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ] Transforming
-    2026-06-10 08:47:10 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:47:10 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:47:10 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:47:10 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:47:10 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:47:10 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:47:10 [debug    ]   Grand mean range: [210.1894, 7161.5720] src=StandardizationMixin
-    2026-06-10 08:47:10 [debug    ]   Pooled std range: [28.0001, 928.0220] src=StandardizationMixin
-    2026-06-10 08:47:10 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:47:10 [debug    ]   Standardized data std: 1.1058 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:47:10 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ] Transforming
-    2026-06-10 08:47:10 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:47:10 [debug    ] Sites encoded: 96 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:47:10 [debug    ] Design matrix shape: (96, 8)   src=DesignMatrixMixin
-    2026-06-10 08:47:10 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:47:10 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:47:10 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:47:10 [debug    ]   Grand mean range: [210.1894, 7161.5720] src=StandardizationMixin
-    2026-06-10 08:47:10 [debug    ]   Pooled std range: [28.0001, 928.0220] src=StandardizationMixin
-    2026-06-10 08:47:10 [debug    ]   Standardized data mean: -0.027856 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:47:10 [debug    ]   Standardized data std: 1.1013 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:47:10 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:47:10 [debug    ] Fitting
-    2026-06-10 08:47:10 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:47:10 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:47:10 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:47:10 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:47:10 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:47:10 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:47:10 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:47:10 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:47:10 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:47:10 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:47:25 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:47:25 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:47:25 [debug    ]   Grand mean range: [210.1913, 7211.1124] src=StandardizationMixin
-    2026-06-10 08:47:25 [debug    ]   Pooled std range: [27.9909, 936.2565] src=StandardizationMixin
-    2026-06-10 08:47:25 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:47:25 [debug    ]   Standardized data std: 1.1055 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:47:25 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ]   Gamma hat range: [-2.4597, 3.2963] src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ]   Site 0 delta range: [0.6642, 1.4161] src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ]   Site 1 delta range: [0.6330, 1.9862] src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ]   Site 2 delta range: [0.5983, 1.7399] src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ]   Site 3 delta range: [0.7916, 1.6236] src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ]   Site 4 delta range: [0.3122, 1.4259] src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ]   Site 5 delta range: [0.6176, 1.4816] src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ]   Site 6 delta range: [0.3951, 1.3143] src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ]   Site 7 delta range: [0.3433, 1.8168] src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ]   Gamma bar (mean location effect): [-0.03779763 -0.00476797 -0.06343114  0.0075547   0.04336842  0.05116544
-     -0.06871078  0.06316399] src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ]   Tau^2 (variance of location effects): [0.2757978  0.15183143 0.17076907 0.25579332 0.18791233 0.28514867
-     0.19523274 0.3027158 ] src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ]   Mean tau^2: 0.228150 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ] _iteration_solver converged in 3 iterations (change=0.000025) src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ] _iteration_solver converged in 3 iterations (change=0.000048) src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ] _iteration_solver converged in 3 iterations (change=0.000012) src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ] _iteration_solver converged in 3 iterations (change=0.000049) src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ] _iteration_solver converged in 3 iterations (change=0.000013) src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ] _iteration_solver converged in 3 iterations (change=0.000043) src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ] _iteration_solver converged in 3 iterations (change=0.000019) src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ] Transforming
-    2026-06-10 08:47:25 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:47:25 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:47:25 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:47:25 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:47:25 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:47:25 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:47:25 [debug    ]   Grand mean range: [210.1913, 7211.1124] src=StandardizationMixin
-    2026-06-10 08:47:25 [debug    ]   Pooled std range: [27.9909, 936.2565] src=StandardizationMixin
-    2026-06-10 08:47:25 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:47:25 [debug    ]   Standardized data std: 1.1055 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:47:25 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ] Transforming
-    2026-06-10 08:47:25 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:47:25 [debug    ] Sites encoded: 96 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:47:25 [debug    ] Design matrix shape: (96, 8)   src=DesignMatrixMixin
-    2026-06-10 08:47:25 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:47:25 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:47:25 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:47:25 [debug    ]   Grand mean range: [210.1913, 7211.1124] src=StandardizationMixin
-    2026-06-10 08:47:25 [debug    ]   Pooled std range: [27.9909, 936.2565] src=StandardizationMixin
-    2026-06-10 08:47:25 [debug    ]   Standardized data mean: 0.002850 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:47:25 [debug    ]   Standardized data std: 1.1033 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:47:25 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:47:25 [debug    ] Fitting
-    2026-06-10 08:47:25 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:47:25 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:47:25 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:47:25 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:47:25 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:47:25 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:47:25 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:47:25 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:47:25 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:47:25 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:47:41 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:47:41 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:47:41 [debug    ]   Grand mean range: [209.2114, 7197.7752] src=StandardizationMixin
-    2026-06-10 08:47:41 [debug    ]   Pooled std range: [27.8694, 922.9224] src=StandardizationMixin
-    2026-06-10 08:47:41 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:47:41 [debug    ]   Standardized data std: 1.1061 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:47:41 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ]   Gamma hat range: [-2.4836, 3.3917] src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ]   Site 0 delta range: [0.6316, 1.5110] src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ]   Site 1 delta range: [0.6198, 1.9890] src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ]   Site 2 delta range: [0.5992, 1.7289] src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ]   Site 3 delta range: [0.7673, 1.4915] src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ]   Site 4 delta range: [0.3538, 1.5845] src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ]   Site 5 delta range: [0.6605, 1.5985] src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ]   Site 6 delta range: [0.3706, 1.4291] src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ]   Site 7 delta range: [0.3918, 1.8697] src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ]   Gamma bar (mean location effect): [-0.0455225  -0.00159353 -0.05682274  0.0046759   0.04676548  0.05310036
-     -0.06768578  0.05843594] src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ]   Tau^2 (variance of location effects): [0.27454381 0.14898367 0.17307069 0.25854874 0.18359248 0.2993047
-     0.19417767 0.30341996] src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ]   Mean tau^2: 0.229455 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ] _iteration_solver converged in 4 iterations (change=0.000002) src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ] _iteration_solver converged in 3 iterations (change=0.000023) src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ] _iteration_solver converged in 3 iterations (change=0.000035) src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ] _iteration_solver converged in 3 iterations (change=0.000013) src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ] _iteration_solver converged in 3 iterations (change=0.000079) src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ] _iteration_solver converged in 3 iterations (change=0.000011) src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ] _iteration_solver converged in 3 iterations (change=0.000053) src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ] _iteration_solver converged in 3 iterations (change=0.000026) src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ] Transforming
-    2026-06-10 08:47:41 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:47:41 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:47:41 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:47:41 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:47:41 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:47:41 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:47:41 [debug    ]   Grand mean range: [209.2114, 7197.7752] src=StandardizationMixin
-    2026-06-10 08:47:41 [debug    ]   Pooled std range: [27.8694, 922.9224] src=StandardizationMixin
-    2026-06-10 08:47:41 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:47:41 [debug    ]   Standardized data std: 1.1061 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:47:41 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ] Transforming
-    2026-06-10 08:47:41 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:47:41 [debug    ] Sites encoded: 96 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:47:41 [debug    ] Design matrix shape: (96, 8)   src=DesignMatrixMixin
-    2026-06-10 08:47:41 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:47:41 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:47:41 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:47:41 [debug    ]   Grand mean range: [209.2114, 7197.7752] src=StandardizationMixin
-    2026-06-10 08:47:41 [debug    ]   Pooled std range: [27.8694, 922.9224] src=StandardizationMixin
-    2026-06-10 08:47:41 [debug    ]   Standardized data mean: 0.034504 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:47:41 [debug    ]   Standardized data std: 1.1024 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:47:41 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:47:41 [debug    ] Fitting
-    2026-06-10 08:47:41 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:47:41 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:47:41 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:47:41 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:47:41 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:47:41 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:47:41 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:47:41 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:47:41 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:47:41 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:47:56 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:47:56 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:47:56 [debug    ]   Grand mean range: [210.0431, 7165.9099] src=StandardizationMixin
-    2026-06-10 08:47:56 [debug    ]   Pooled std range: [28.1648, 926.1041] src=StandardizationMixin
-    2026-06-10 08:47:56 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:47:56 [debug    ]   Standardized data std: 1.1074 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:47:56 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ]   Gamma hat shape: (8, 68)     src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ]   Gamma hat range: [-2.5613, 3.3847] src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ]   Site 0 delta range: [0.5953, 1.5892] src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ]   Site 1 delta range: [0.5950, 2.0706] src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ]   Site 2 delta range: [0.6316, 1.8020] src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ]   Site 3 delta range: [0.8358, 1.5895] src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ]   Site 4 delta range: [0.3284, 1.5832] src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ]   Site 5 delta range: [0.6913, 1.5782] src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ]   Site 6 delta range: [0.4009, 1.4004] src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ]   Site 7 delta range: [0.4132, 1.7432] src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ]   Gamma bar (mean location effect): [-0.04914663 -0.00523402 -0.05879035  0.00753213  0.04980435  0.05233229
-     -0.06853047  0.06750816] src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ]   Tau^2 (variance of location effects): [0.27824395 0.15368184 0.17557446 0.25111743 0.188835   0.29590625
-     0.20491371 0.31474452] src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ]   Mean tau^2: 0.232877 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ] _iteration_solver converged in 4 iterations (change=0.000003) src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ] _iteration_solver converged in 3 iterations (change=0.000018) src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ] _iteration_solver converged in 3 iterations (change=0.000051) src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ] _iteration_solver converged in 3 iterations (change=0.000008) src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ] _iteration_solver converged in 3 iterations (change=0.000074) src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ] _iteration_solver converged in 3 iterations (change=0.000019) src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ] _iteration_solver converged in 3 iterations (change=0.000039) src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ] _iteration_solver converged in 3 iterations (change=0.000017) src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ] Transforming
-    2026-06-10 08:47:56 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:47:56 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:47:56 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:47:56 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:47:56 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:47:56 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:47:56 [debug    ]   Grand mean range: [210.0431, 7165.9099] src=StandardizationMixin
-    2026-06-10 08:47:56 [debug    ]   Pooled std range: [28.1648, 926.1041] src=StandardizationMixin
-    2026-06-10 08:47:56 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:47:56 [debug    ]   Standardized data std: 1.1074 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:47:56 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:47:56 [debug    ] Transforming
-    2026-06-10 08:47:56 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:47:56 [debug    ] Sites encoded: 95 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:47:56 [debug    ] Design matrix shape: (95, 8)   src=DesignMatrixMixin
-    2026-06-10 08:47:56 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:47:56 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:47:56 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:47:56 [debug    ]   Grand mean range: [210.0431, 7165.9099] src=StandardizationMixin
-    2026-06-10 08:47:56 [debug    ]   Pooled std range: [28.1648, 926.1041] src=StandardizationMixin
-    2026-06-10 08:47:56 [debug    ]   Standardized data mean: 0.032086 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:47:56 [debug    ]   Standardized data std: 1.1161 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:47:56 [debug    ] Harmonizing data               src=LocationAndScaleMixin
+    2026-06-10 10:50:06 [debug    ] Fitting
+    2026-06-10 10:50:06 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:50:06 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:50:06 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:50:27 [debug    ] Transforming
+    2026-06-10 10:50:27 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:50:27 [debug    ] Transforming
+    2026-06-10 10:50:27 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:50:27 [debug    ] Fitting
+    2026-06-10 10:50:27 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:50:27 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:50:27 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:50:47 [debug    ] Transforming
+    2026-06-10 10:50:47 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:50:48 [debug    ] Transforming
+    2026-06-10 10:50:48 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:50:48 [debug    ] Fitting
+    2026-06-10 10:50:48 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:50:48 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:50:48 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:51:08 [debug    ] Transforming
+    2026-06-10 10:51:08 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:51:08 [debug    ] Transforming
+    2026-06-10 10:51:08 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:51:08 [debug    ] Fitting
+    2026-06-10 10:51:08 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:51:08 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:51:08 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:51:29 [debug    ] Transforming
+    2026-06-10 10:51:29 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:51:29 [debug    ] Transforming
+    2026-06-10 10:51:29 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:51:29 [debug    ] Fitting
+    2026-06-10 10:51:29 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:51:29 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:51:29 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:51:49 [debug    ] Transforming
+    2026-06-10 10:51:49 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:51:50 [debug    ] Transforming
+    2026-06-10 10:51:50 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:51:50 [debug    ] Fitting
+    2026-06-10 10:51:50 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:51:50 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:51:50 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:52:10 [debug    ] Transforming
+    2026-06-10 10:52:10 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:52:10 [debug    ] Transforming
+    2026-06-10 10:52:10 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:52:10 [debug    ] Fitting
+    2026-06-10 10:52:10 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:52:10 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:52:10 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:52:31 [debug    ] Transforming
+    2026-06-10 10:52:31 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:52:31 [debug    ] Transforming
+    2026-06-10 10:52:31 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:52:31 [debug    ] Fitting
+    2026-06-10 10:52:31 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:52:31 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:52:31 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:52:52 [debug    ] Transforming
+    2026-06-10 10:52:52 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:52:52 [debug    ] Transforming
+    2026-06-10 10:52:52 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:52:52 [debug    ] Fitting
+    2026-06-10 10:52:52 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:52:52 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:52:52 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:53:12 [debug    ] Transforming
+    2026-06-10 10:53:12 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:53:12 [debug    ] Transforming
+    2026-06-10 10:53:12 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:53:12 [debug    ] Fitting
+    2026-06-10 10:53:12 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:53:12 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:53:12 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:53:33 [debug    ] Transforming
+    2026-06-10 10:53:33 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:53:33 [debug    ] Transforming
+    2026-06-10 10:53:33 [debug    ] Setting up smoothing using B-Splines
     Running experiment: eos_interaction2
-    2026-06-10 08:47:56 [debug    ] Fitting
-    2026-06-10 08:47:56 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:47:56 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:47:56 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:47:56 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:47:56 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:47:56 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:47:56 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:47:56 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:47:56 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:47:56 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:47:59 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:47:59 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:47:59 [debug    ]   Grand mean range: [584.2393, 7759.9200] src=StandardizationMixin
-    2026-06-10 08:47:59 [debug    ]   Pooled std range: [88.1823, 948.0247] src=StandardizationMixin
-    2026-06-10 08:47:59 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:47:59 [debug    ]   Standardized data std: 1.4718 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:47:59 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ]   Gamma hat shape: (8, 14)     src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ]   Gamma hat range: [-2.6522, 3.6302] src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ]   Site 0 delta range: [0.5156, 1.4998] src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ]   Site 1 delta range: [0.6051, 2.0612] src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ]   Site 2 delta range: [0.5084, 1.9914] src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ]   Site 3 delta range: [0.7807, 1.5590] src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ]   Site 4 delta range: [0.2480, 1.6379] src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ]   Site 5 delta range: [0.6517, 1.5998] src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ]   Site 6 delta range: [0.3201, 1.4115] src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ]   Site 7 delta range: [0.3464, 1.6706] src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ]   Gamma bar (mean location effect): [-0.1914552   0.02417751 -0.20330812  0.0967577   0.17920444  0.07371469
-     -0.40889328  0.37891934] src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ]   Tau^2 (variance of location effects): [1.46590248 0.86884152 0.90618366 1.46988452 0.98428682 1.64447479
-     0.96731264 1.47817253] src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ]   Mean tau^2: 1.223132 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ] Transforming
-    2026-06-10 08:47:59 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:47:59 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:47:59 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:47:59 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:47:59 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:47:59 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:47:59 [debug    ]   Grand mean range: [584.2393, 7759.9200] src=StandardizationMixin
-    2026-06-10 08:47:59 [debug    ]   Pooled std range: [88.1823, 948.0247] src=StandardizationMixin
-    2026-06-10 08:47:59 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:47:59 [debug    ]   Standardized data std: 1.4718 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:47:59 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ] Transforming
-    2026-06-10 08:47:59 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:47:59 [debug    ] Sites encoded: 96 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:47:59 [debug    ] Design matrix shape: (96, 8)   src=DesignMatrixMixin
-    2026-06-10 08:47:59 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:47:59 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:47:59 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:47:59 [debug    ]   Grand mean range: [584.2393, 7759.9200] src=StandardizationMixin
-    2026-06-10 08:47:59 [debug    ]   Pooled std range: [88.1823, 948.0247] src=StandardizationMixin
-    2026-06-10 08:47:59 [debug    ]   Standardized data mean: -0.010702 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:47:59 [debug    ]   Standardized data std: 1.4906 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:47:59 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:47:59 [debug    ] Fitting
-    2026-06-10 08:47:59 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:47:59 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:47:59 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:47:59 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:47:59 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:47:59 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:47:59 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:47:59 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:47:59 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:47:59 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:48:03 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:03 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:03 [debug    ]   Grand mean range: [582.9022, 7795.5994] src=StandardizationMixin
-    2026-06-10 08:48:03 [debug    ]   Pooled std range: [89.0358, 941.4116] src=StandardizationMixin
-    2026-06-10 08:48:03 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:03 [debug    ]   Standardized data std: 1.4706 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:03 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ]   Gamma hat shape: (8, 14)     src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ]   Gamma hat range: [-2.5620, 3.5741] src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ]   Site 0 delta range: [0.6145, 1.5948] src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ]   Site 1 delta range: [0.5917, 2.0829] src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ]   Site 2 delta range: [0.5528, 1.8061] src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ]   Site 3 delta range: [0.8005, 1.6487] src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ]   Site 4 delta range: [0.2858, 1.5237] src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ]   Site 5 delta range: [0.5560, 1.5854] src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ]   Site 6 delta range: [0.3054, 1.4222] src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ]   Site 7 delta range: [0.3443, 1.8685] src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ]   Gamma bar (mean location effect): [-0.16954022  0.0320889  -0.156767    0.11650043  0.15894197  0.06128233
-     -0.41476404  0.39483794] src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ]   Tau^2 (variance of location effects): [1.43123494 0.92655902 0.84902124 1.47417621 1.02336816 1.63296824
-     0.93704249 1.48650397] src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ]   Mean tau^2: 1.220109 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ] Transforming
-    2026-06-10 08:48:03 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:03 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:03 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:48:03 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:03 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:03 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:03 [debug    ]   Grand mean range: [582.9022, 7795.5994] src=StandardizationMixin
-    2026-06-10 08:48:03 [debug    ]   Pooled std range: [89.0358, 941.4116] src=StandardizationMixin
-    2026-06-10 08:48:03 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:03 [debug    ]   Standardized data std: 1.4706 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:03 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ] Transforming
-    2026-06-10 08:48:03 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:03 [debug    ] Sites encoded: 95 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:03 [debug    ] Design matrix shape: (95, 8)   src=DesignMatrixMixin
-    2026-06-10 08:48:03 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:03 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:03 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:03 [debug    ]   Grand mean range: [582.9022, 7795.5994] src=StandardizationMixin
-    2026-06-10 08:48:03 [debug    ]   Pooled std range: [89.0358, 941.4116] src=StandardizationMixin
-    2026-06-10 08:48:03 [debug    ]   Standardized data mean: 0.033519 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:03 [debug    ]   Standardized data std: 1.4740 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:03 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:48:03 [debug    ] Fitting
-    2026-06-10 08:48:03 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:48:03 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:03 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:48:03 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:03 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:03 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:48:03 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:03 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:48:03 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:48:03 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:48:06 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:06 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:06 [debug    ]   Grand mean range: [579.6018, 7777.8678] src=StandardizationMixin
-    2026-06-10 08:48:06 [debug    ]   Pooled std range: [87.7928, 938.2055] src=StandardizationMixin
-    2026-06-10 08:48:06 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:06 [debug    ]   Standardized data std: 1.4742 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:06 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ]   Gamma hat shape: (8, 14)     src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ]   Gamma hat range: [-2.5890, 3.6156] src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ]   Site 0 delta range: [0.5746, 1.6483] src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ]   Site 1 delta range: [0.6045, 2.0289] src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ]   Site 2 delta range: [0.5653, 1.8514] src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ]   Site 3 delta range: [0.7511, 1.6820] src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ]   Site 4 delta range: [0.2731, 1.5629] src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ]   Site 5 delta range: [0.5948, 1.5559] src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ]   Site 6 delta range: [0.3373, 1.4160] src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ]   Site 7 delta range: [0.3390, 1.7771] src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ]   Gamma bar (mean location effect): [-0.18306614  0.01395781 -0.17388304  0.0781106   0.18883082  0.06921433
-     -0.4176329   0.3927309 ] src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ]   Tau^2 (variance of location effects): [1.45971809 0.87238324 0.91075457 1.46729149 1.03494714 1.66045103
-     0.99296311 1.46167837] src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ]   Mean tau^2: 1.232523 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ] Transforming
-    2026-06-10 08:48:06 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:06 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:06 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:48:06 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:06 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:06 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:06 [debug    ]   Grand mean range: [579.6018, 7777.8678] src=StandardizationMixin
-    2026-06-10 08:48:06 [debug    ]   Pooled std range: [87.7928, 938.2055] src=StandardizationMixin
-    2026-06-10 08:48:06 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:06 [debug    ]   Standardized data std: 1.4742 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:06 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ] Transforming
-    2026-06-10 08:48:06 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:06 [debug    ] Sites encoded: 96 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:06 [debug    ] Design matrix shape: (96, 8)   src=DesignMatrixMixin
-    2026-06-10 08:48:06 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:06 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:06 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:06 [debug    ]   Grand mean range: [579.6018, 7777.8678] src=StandardizationMixin
-    2026-06-10 08:48:06 [debug    ]   Pooled std range: [87.7928, 938.2055] src=StandardizationMixin
-    2026-06-10 08:48:06 [debug    ]   Standardized data mean: -0.006884 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:06 [debug    ]   Standardized data std: 1.4954 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:06 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:48:06 [debug    ] Fitting
-    2026-06-10 08:48:06 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:48:06 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:06 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:48:06 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:06 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:06 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:48:06 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:06 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:48:06 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:48:06 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:48:09 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:09 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:09 [debug    ]   Grand mean range: [589.2315, 7775.0561] src=StandardizationMixin
-    2026-06-10 08:48:09 [debug    ]   Pooled std range: [88.6696, 941.9570] src=StandardizationMixin
-    2026-06-10 08:48:09 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:09 [debug    ]   Standardized data std: 1.4743 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:09 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ]   Gamma hat shape: (8, 14)     src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ]   Gamma hat range: [-2.6376, 3.6026] src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ]   Site 0 delta range: [0.5928, 1.5777] src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ]   Site 1 delta range: [0.6254, 2.1037] src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ]   Site 2 delta range: [0.6121, 1.7578] src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ]   Site 3 delta range: [0.7418, 1.6573] src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ]   Site 4 delta range: [0.2604, 1.6464] src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ]   Site 5 delta range: [0.5603, 1.5888] src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ]   Site 6 delta range: [0.2874, 1.3826] src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ]   Site 7 delta range: [0.3499, 1.7720] src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ]   Gamma bar (mean location effect): [-0.16974208  0.0145005  -0.15513115  0.08796394  0.19803422  0.05098445
-     -0.42005356  0.37772621] src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ]   Tau^2 (variance of location effects): [1.46407093 0.91119224 0.86751297 1.45044864 1.04013016 1.66777812
-     0.95146267 1.47197009] src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ]   Mean tau^2: 1.228071 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ] Transforming
-    2026-06-10 08:48:09 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:09 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:09 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:48:09 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:09 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:09 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:09 [debug    ]   Grand mean range: [589.2315, 7775.0561] src=StandardizationMixin
-    2026-06-10 08:48:09 [debug    ]   Pooled std range: [88.6696, 941.9570] src=StandardizationMixin
-    2026-06-10 08:48:09 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:09 [debug    ]   Standardized data std: 1.4743 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:09 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ] Transforming
-    2026-06-10 08:48:09 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:09 [debug    ] Sites encoded: 95 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:09 [debug    ] Design matrix shape: (95, 8)   src=DesignMatrixMixin
-    2026-06-10 08:48:09 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:09 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:09 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:09 [debug    ]   Grand mean range: [589.2315, 7775.0561] src=StandardizationMixin
-    2026-06-10 08:48:09 [debug    ]   Pooled std range: [88.6696, 941.9570] src=StandardizationMixin
-    2026-06-10 08:48:09 [debug    ]   Standardized data mean: 0.006408 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:09 [debug    ]   Standardized data std: 1.4442 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:09 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:48:09 [debug    ] Fitting
-    2026-06-10 08:48:09 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:48:09 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:09 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:48:09 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:09 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:09 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:48:09 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:09 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:48:09 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:48:09 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:48:12 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:12 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:12 [debug    ]   Grand mean range: [582.0840, 7754.5321] src=StandardizationMixin
-    2026-06-10 08:48:12 [debug    ]   Pooled std range: [87.7449, 927.1478] src=StandardizationMixin
-    2026-06-10 08:48:12 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:12 [debug    ]   Standardized data std: 1.4753 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:12 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ]   Gamma hat shape: (8, 14)     src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ]   Gamma hat range: [-2.7018, 3.6699] src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ]   Site 0 delta range: [0.5992, 1.6163] src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ]   Site 1 delta range: [0.5859, 2.0852] src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ]   Site 2 delta range: [0.5337, 1.8806] src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ]   Site 3 delta range: [0.7863, 1.6365] src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ]   Site 4 delta range: [0.2849, 1.5785] src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ]   Site 5 delta range: [0.5888, 1.6525] src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ]   Site 6 delta range: [0.3112, 1.4219] src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ]   Site 7 delta range: [0.3359, 1.7134] src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ]   Gamma bar (mean location effect): [-0.2183422   0.00164934 -0.19180234  0.10038448  0.17963275  0.08706508
-     -0.38324617  0.39924438] src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ]   Tau^2 (variance of location effects): [1.56042723 0.88235865 0.875718   1.46749911 1.05699427 1.69600106
-     0.92320453 1.49288568] src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ]   Mean tau^2: 1.244386 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ] Transforming
-    2026-06-10 08:48:12 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:12 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:12 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:48:12 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:12 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:12 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:12 [debug    ]   Grand mean range: [582.0840, 7754.5321] src=StandardizationMixin
-    2026-06-10 08:48:12 [debug    ]   Pooled std range: [87.7449, 927.1478] src=StandardizationMixin
-    2026-06-10 08:48:12 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:12 [debug    ]   Standardized data std: 1.4753 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:12 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ] Transforming
-    2026-06-10 08:48:12 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:12 [debug    ] Sites encoded: 95 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:12 [debug    ] Design matrix shape: (95, 8)   src=DesignMatrixMixin
-    2026-06-10 08:48:12 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:12 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:12 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:12 [debug    ]   Grand mean range: [582.0840, 7754.5321] src=StandardizationMixin
-    2026-06-10 08:48:12 [debug    ]   Pooled std range: [87.7449, 927.1478] src=StandardizationMixin
-    2026-06-10 08:48:12 [debug    ]   Standardized data mean: -0.038713 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:12 [debug    ]   Standardized data std: 1.5194 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:12 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:48:12 [debug    ] Fitting
-    2026-06-10 08:48:12 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:48:12 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:12 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:48:12 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:12 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:12 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:48:12 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:12 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:48:12 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:48:12 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:48:15 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:15 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:15 [debug    ]   Grand mean range: [584.5438, 7810.3642] src=StandardizationMixin
-    2026-06-10 08:48:15 [debug    ]   Pooled std range: [89.8672, 932.9820] src=StandardizationMixin
-    2026-06-10 08:48:15 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:15 [debug    ]   Standardized data std: 1.4759 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:15 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ]   Gamma hat shape: (8, 14)     src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ]   Gamma hat range: [-2.6594, 3.6291] src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ]   Site 0 delta range: [0.5599, 1.5269] src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ]   Site 1 delta range: [0.6125, 2.1558] src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ]   Site 2 delta range: [0.5917, 1.6578] src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ]   Site 3 delta range: [0.7082, 1.6669] src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ]   Site 4 delta range: [0.2802, 1.5851] src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ]   Site 5 delta range: [0.6397, 1.5144] src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ]   Site 6 delta range: [0.3429, 1.3948] src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ]   Site 7 delta range: [0.3217, 1.6794] src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ]   Gamma bar (mean location effect): [-0.18425953  0.0406724  -0.15016845  0.08842034  0.16882556  0.0493789
-     -0.40653488  0.37449745] src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ]   Tau^2 (variance of location effects): [1.48696134 0.9058586  0.84399062 1.53338309 1.0708257  1.66010632
-     0.91082482 1.52984647] src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ]   Mean tau^2: 1.242725 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ] Transforming
-    2026-06-10 08:48:15 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:15 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:15 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:48:15 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:15 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:15 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:15 [debug    ]   Grand mean range: [584.5438, 7810.3642] src=StandardizationMixin
-    2026-06-10 08:48:15 [debug    ]   Pooled std range: [89.8672, 932.9820] src=StandardizationMixin
-    2026-06-10 08:48:15 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:15 [debug    ]   Standardized data std: 1.4759 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:15 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ] Transforming
-    2026-06-10 08:48:15 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:15 [debug    ] Sites encoded: 96 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:15 [debug    ] Design matrix shape: (96, 8)   src=DesignMatrixMixin
-    2026-06-10 08:48:15 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:15 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:15 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:15 [debug    ]   Grand mean range: [584.5438, 7810.3642] src=StandardizationMixin
-    2026-06-10 08:48:15 [debug    ]   Pooled std range: [89.8672, 932.9820] src=StandardizationMixin
-    2026-06-10 08:48:15 [debug    ]   Standardized data mean: -0.017380 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:15 [debug    ]   Standardized data std: 1.5468 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:15 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:48:15 [debug    ] Fitting
-    2026-06-10 08:48:15 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:48:15 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:15 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:48:15 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:15 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:15 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:48:15 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:15 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:48:15 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:48:15 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:48:19 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:19 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:19 [debug    ]   Grand mean range: [584.8298, 7738.4889] src=StandardizationMixin
-    2026-06-10 08:48:19 [debug    ]   Pooled std range: [88.2344, 952.8407] src=StandardizationMixin
-    2026-06-10 08:48:19 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:19 [debug    ]   Standardized data std: 1.4747 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:19 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ]   Gamma hat shape: (8, 14)     src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ]   Gamma hat range: [-2.6691, 3.6325] src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ]   Site 0 delta range: [0.5891, 1.6372] src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ]   Site 1 delta range: [0.5933, 2.0637] src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ]   Site 2 delta range: [0.6065, 1.8319] src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ]   Site 3 delta range: [0.7420, 1.6773] src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ]   Site 4 delta range: [0.2735, 1.5439] src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ]   Site 5 delta range: [0.6134, 1.5706] src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ]   Site 6 delta range: [0.3313, 1.3012] src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ]   Site 7 delta range: [0.3423, 1.8005] src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ]   Gamma bar (mean location effect): [-0.19276801  0.00087934 -0.19020266  0.07151682  0.1840602   0.09574747
-     -0.42594664  0.37801674] src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ]   Tau^2 (variance of location effects): [1.49228246 0.87298466 0.89589666 1.42048361 1.00446765 1.63548067
-     0.96697951 1.52801554] src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ]   Mean tau^2: 1.227074 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ] Transforming
-    2026-06-10 08:48:19 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:19 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:19 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:48:19 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:19 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:19 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:19 [debug    ]   Grand mean range: [584.8298, 7738.4889] src=StandardizationMixin
-    2026-06-10 08:48:19 [debug    ]   Pooled std range: [88.2344, 952.8407] src=StandardizationMixin
-    2026-06-10 08:48:19 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:19 [debug    ]   Standardized data std: 1.4747 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:19 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ] Transforming
-    2026-06-10 08:48:19 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:19 [debug    ] Sites encoded: 96 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:19 [debug    ] Design matrix shape: (96, 8)   src=DesignMatrixMixin
-    2026-06-10 08:48:19 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:19 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:19 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:19 [debug    ]   Grand mean range: [584.8298, 7738.4889] src=StandardizationMixin
-    2026-06-10 08:48:19 [debug    ]   Pooled std range: [88.2344, 952.8407] src=StandardizationMixin
-    2026-06-10 08:48:19 [debug    ]   Standardized data mean: -0.081769 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:19 [debug    ]   Standardized data std: 1.4166 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:19 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:48:19 [debug    ] Fitting
-    2026-06-10 08:48:19 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:48:19 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:19 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:48:19 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:19 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:19 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:48:19 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:19 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:48:19 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:48:19 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:48:22 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:22 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:22 [debug    ]   Grand mean range: [581.3600, 7798.1197] src=StandardizationMixin
-    2026-06-10 08:48:22 [debug    ]   Pooled std range: [87.8352, 951.1853] src=StandardizationMixin
-    2026-06-10 08:48:22 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:22 [debug    ]   Standardized data std: 1.4711 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:22 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ]   Gamma hat shape: (8, 14)     src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ]   Gamma hat range: [-2.6697, 3.6026] src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ]   Site 0 delta range: [0.6593, 1.6829] src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ]   Site 1 delta range: [0.6080, 2.0055] src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ]   Site 2 delta range: [0.5587, 1.8803] src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ]   Site 3 delta range: [0.7695, 1.6334] src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ]   Site 4 delta range: [0.2613, 1.5345] src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ]   Site 5 delta range: [0.5710, 1.4909] src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ]   Site 6 delta range: [0.3399, 1.3329] src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ]   Site 7 delta range: [0.3143, 1.7375] src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ]   Gamma bar (mean location effect): [-0.17171665  0.02797746 -0.17296395  0.08708439  0.16363478  0.07595581
-     -0.41083663  0.36796052] src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ]   Tau^2 (variance of location effects): [1.50277414 0.87616331 0.87407054 1.45391426 1.04274694 1.63234342
-     0.93702717 1.48016852] src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ]   Mean tau^2: 1.224901 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ] Transforming
-    2026-06-10 08:48:22 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:22 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:22 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:48:22 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:22 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:22 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:22 [debug    ]   Grand mean range: [581.3600, 7798.1197] src=StandardizationMixin
-    2026-06-10 08:48:22 [debug    ]   Pooled std range: [87.8352, 951.1853] src=StandardizationMixin
-    2026-06-10 08:48:22 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:22 [debug    ]   Standardized data std: 1.4711 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:22 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ] Transforming
-    2026-06-10 08:48:22 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:22 [debug    ] Sites encoded: 96 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:22 [debug    ] Design matrix shape: (96, 8)   src=DesignMatrixMixin
-    2026-06-10 08:48:22 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:22 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:22 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:22 [debug    ]   Grand mean range: [581.3600, 7798.1197] src=StandardizationMixin
-    2026-06-10 08:48:22 [debug    ]   Pooled std range: [87.8352, 951.1853] src=StandardizationMixin
-    2026-06-10 08:48:22 [debug    ]   Standardized data mean: 0.030122 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:22 [debug    ]   Standardized data std: 1.4619 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:22 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:48:22 [debug    ] Fitting
-    2026-06-10 08:48:22 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:48:22 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:22 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:48:22 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:22 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:22 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:48:22 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:22 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:48:22 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:48:22 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:48:25 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:25 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:25 [debug    ]   Grand mean range: [588.9796, 7778.9830] src=StandardizationMixin
-    2026-06-10 08:48:25 [debug    ]   Pooled std range: [88.9052, 943.2953] src=StandardizationMixin
-    2026-06-10 08:48:25 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:25 [debug    ]   Standardized data std: 1.4697 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:25 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ]   Gamma hat shape: (8, 14)     src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ]   Gamma hat range: [-2.6990, 3.6565] src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ]   Site 0 delta range: [0.5672, 1.5566] src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ]   Site 1 delta range: [0.6112, 2.0235] src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ]   Site 2 delta range: [0.5594, 1.8278] src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ]   Site 3 delta range: [0.7462, 1.5664] src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ]   Site 4 delta range: [0.2808, 1.6020] src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ]   Site 5 delta range: [0.6186, 1.5828] src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ]   Site 6 delta range: [0.3202, 1.3662] src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ]   Site 7 delta range: [0.3530, 1.8064] src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ]   Gamma bar (mean location effect): [-0.19837822  0.02796999 -0.1737352   0.07315888  0.19791925  0.09369641
-     -0.41974997  0.36588244] src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ]   Tau^2 (variance of location effects): [1.49094048 0.84714528 0.87521775 1.4499311  0.99880084 1.67631225
-     0.91639355 1.48494832] src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ]   Mean tau^2: 1.217461 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ] Transforming
-    2026-06-10 08:48:25 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:25 [debug    ] Sites encoded: 860 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:25 [debug    ] Design matrix shape: (860, 8)  src=DesignMatrixMixin
-    2026-06-10 08:48:25 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:25 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:25 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:25 [debug    ]   Grand mean range: [588.9796, 7778.9830] src=StandardizationMixin
-    2026-06-10 08:48:25 [debug    ]   Pooled std range: [88.9052, 943.2953] src=StandardizationMixin
-    2026-06-10 08:48:25 [debug    ]   Standardized data mean: 0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:25 [debug    ]   Standardized data std: 1.4697 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:25 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ] Transforming
-    2026-06-10 08:48:25 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:25 [debug    ] Sites encoded: 96 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:25 [debug    ] Design matrix shape: (96, 8)   src=DesignMatrixMixin
-    2026-06-10 08:48:25 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:25 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:25 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:25 [debug    ]   Grand mean range: [588.9796, 7778.9830] src=StandardizationMixin
-    2026-06-10 08:48:25 [debug    ]   Pooled std range: [88.9052, 943.2953] src=StandardizationMixin
-    2026-06-10 08:48:25 [debug    ]   Standardized data mean: 0.007974 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:25 [debug    ]   Standardized data std: 1.4329 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:25 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:48:25 [debug    ] Fitting
-    2026-06-10 08:48:25 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
-    2026-06-10 08:48:25 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:25 [debug    ] Fitted site encoder: 8 sites   src=DesignMatrixMixin
-    2026-06-10 08:48:25 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:25 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:25 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:48:25 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:25 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
-    2026-06-10 08:48:25 [debug    ] Standardizing data across features src=StandardizationMixin
-    2026-06-10 08:48:25 [info     ] Smoothing more than 10 variables may take several minutes of computation. src=StandardizationMixin
-    2026-06-10 08:48:28 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:28 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:28 [debug    ]   Grand mean range: [584.1919, 7749.5307] src=StandardizationMixin
-    2026-06-10 08:48:28 [debug    ]   Pooled std range: [88.8392, 931.9122] src=StandardizationMixin
-    2026-06-10 08:48:28 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:28 [debug    ]   Standardized data std: 1.4796 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:28 [debug    ] Fitting L/S model              src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ] L/S Model estimates:           src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ]   Gamma hat shape: (8, 14)     src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ]   Gamma hat range: [-2.7419, 3.7531] src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ]   Site 0 delta range: [0.5801, 1.6086] src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ]   Site 1 delta range: [0.5742, 2.1200] src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ]   Site 2 delta range: [0.5810, 1.9241] src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ]   Site 3 delta range: [0.7380, 1.6393] src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ]   Site 4 delta range: [0.2501, 1.6204] src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ]   Site 5 delta range: [0.6474, 1.5857] src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ]   Site 6 delta range: [0.3361, 1.3921] src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ]   Site 7 delta range: [0.3662, 1.6383] src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ] Finding L/S model adjustments  src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ] Performing empirical Bayes     src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ] Finding priors                 src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ]   Gamma bar (mean location effect): [-0.21313371  0.00950585 -0.18869501  0.0767618   0.1912916   0.09293254
-     -0.39263464  0.4116296 ] src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ]   Tau^2 (variance of location effects): [1.50522745 0.90394464 0.89108089 1.40491634 1.03970248 1.71858525
-     0.98210374 1.53045387] src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ]   Mean tau^2: 1.247002 (higher = more heterogeneous effects) src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ] Finding parametric adjustments src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ] _iteration_solver converged in 3 iterations (change=0.000001) src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ] _iteration_solver converged in 3 iterations (change=0.000000) src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ] Transforming
-    2026-06-10 08:48:28 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:28 [debug    ] Sites encoded: 861 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:28 [debug    ] Design matrix shape: (861, 8)  src=DesignMatrixMixin
-    2026-06-10 08:48:28 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:28 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:28 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:28 [debug    ]   Grand mean range: [584.1919, 7749.5307] src=StandardizationMixin
-    2026-06-10 08:48:28 [debug    ]   Pooled std range: [88.8392, 931.9122] src=StandardizationMixin
-    2026-06-10 08:48:28 [debug    ]   Standardized data mean: -0.000000 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:28 [debug    ]   Standardized data std: 1.4796 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:28 [debug    ] Harmonizing data               src=LocationAndScaleMixin
-    2026-06-10 08:48:28 [debug    ] Transforming
-    2026-06-10 08:48:28 [debug    ] Making design matrix           src=DesignMatrixMixin
-    2026-06-10 08:48:28 [debug    ] Sites encoded: 95 samples x 8 sites src=DesignMatrixMixin
-    2026-06-10 08:48:28 [debug    ] Design matrix shape: (95, 8)   src=DesignMatrixMixin
-    2026-06-10 08:48:28 [debug    ] Setting up smoothing using B-Splines
-    2026-06-10 08:48:28 [debug    ] Standardizing new data using fitted data src=StandardizationMixin
-    2026-06-10 08:48:28 [debug    ] Standardization stats:         src=StandardizationMixin
-    2026-06-10 08:48:28 [debug    ]   Grand mean range: [584.1919, 7749.5307] src=StandardizationMixin
-    2026-06-10 08:48:28 [debug    ]   Pooled std range: [88.8392, 931.9122] src=StandardizationMixin
-    2026-06-10 08:48:28 [debug    ]   Standardized data mean: 0.078186 (should be ~0) src=StandardizationMixin
-    2026-06-10 08:48:28 [debug    ]   Standardized data std: 1.4833 (should be ~1) src=StandardizationMixin
-    2026-06-10 08:48:28 [debug    ] Harmonizing data               src=LocationAndScaleMixin
+    2026-06-10 10:53:33 [debug    ] Fitting
+    2026-06-10 10:53:33 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:53:33 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:53:33 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:53:37 [debug    ] Transforming
+    2026-06-10 10:53:37 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:53:37 [debug    ] Transforming
+    2026-06-10 10:53:37 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:53:37 [debug    ] Fitting
+    2026-06-10 10:53:37 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:53:37 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:53:37 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:53:42 [debug    ] Transforming
+    2026-06-10 10:53:42 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:53:42 [debug    ] Transforming
+    2026-06-10 10:53:42 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:53:42 [debug    ] Fitting
+    2026-06-10 10:53:42 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:53:42 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:53:42 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:53:46 [debug    ] Transforming
+    2026-06-10 10:53:46 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:53:46 [debug    ] Transforming
+    2026-06-10 10:53:46 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:53:46 [debug    ] Fitting
+    2026-06-10 10:53:46 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:53:46 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:53:46 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:53:50 [debug    ] Transforming
+    2026-06-10 10:53:50 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:53:50 [debug    ] Transforming
+    2026-06-10 10:53:50 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:53:50 [debug    ] Fitting
+    2026-06-10 10:53:50 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:53:50 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:53:50 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:53:54 [debug    ] Transforming
+    2026-06-10 10:53:54 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:53:54 [debug    ] Transforming
+    2026-06-10 10:53:54 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:53:55 [debug    ] Fitting
+    2026-06-10 10:53:55 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:53:55 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:53:55 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:53:59 [debug    ] Transforming
+    2026-06-10 10:53:59 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:53:59 [debug    ] Transforming
+    2026-06-10 10:53:59 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:53:59 [debug    ] Fitting
+    2026-06-10 10:53:59 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:53:59 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:53:59 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:54:03 [debug    ] Transforming
+    2026-06-10 10:54:03 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:54:03 [debug    ] Transforming
+    2026-06-10 10:54:03 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:54:03 [debug    ] Fitting
+    2026-06-10 10:54:03 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:54:03 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:54:03 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:54:07 [debug    ] Transforming
+    2026-06-10 10:54:07 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:54:07 [debug    ] Transforming
+    2026-06-10 10:54:07 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:54:07 [debug    ] Fitting
+    2026-06-10 10:54:07 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:54:07 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:54:07 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:54:12 [debug    ] Transforming
+    2026-06-10 10:54:12 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:54:12 [debug    ] Transforming
+    2026-06-10 10:54:12 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:54:12 [debug    ] Fitting
+    2026-06-10 10:54:12 [info     ] If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:54:12 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:54:12 [debug    ] Final formula for smoothing: y ~ x0 + x1 + x2 + x3 + x4 + x5 + x6 + x7 - 1
+    2026-06-10 10:54:16 [debug    ] Transforming
+    2026-06-10 10:54:16 [debug    ] Setting up smoothing using B-Splines
+    2026-06-10 10:54:16 [debug    ] Transforming
+    2026-06-10 10:54:16 [debug    ] Setting up smoothing using B-Splines
 
 
 
@@ -5901,7 +941,7 @@ Plotting
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (17 minutes 19.874 seconds)
+   **Total running time of the script:** (22 minutes 55.325 seconds)
 
 
 .. _sphx_glr_download_auto_examples_03-combat-based_06-plot_combatgam_with_mareos.py:

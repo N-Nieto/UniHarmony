@@ -18,7 +18,7 @@
 .. _sphx_glr_auto_examples_03-combat-based_02-plot_neurocombat_imbalance_across_sites.py:
 
 
-Analysing NeuroComBat behaviour with imbalance across sites
+Analyzing NeuroComBat behavior with imbalance across sites
 ===========================================================
 
 .. GENERATED FROM PYTHON SOURCE LINES 7-9
@@ -26,7 +26,7 @@ Analysing NeuroComBat behaviour with imbalance across sites
 Imports
 -------
 
-.. GENERATED FROM PYTHON SOURCE LINES 9-23
+.. GENERATED FROM PYTHON SOURCE LINES 9-21
 
 .. code-block:: Python
 
@@ -34,14 +34,13 @@ Imports
     import matplotlib.pyplot as plt
     import pandas as pd
     import seaborn as sns
-
-    from uniharmony import verbosity
-    from uniharmony.combat import NeuroComBat
     from uniharmony.datasets import make_multisite_classification
 
+    from uniharmony import verbosity
+    verbosity("warning")
+    from uniharmony.combat import NeuroComBat
 
     sns.set_theme(style="whitegrid")
-    verbosity("warning")
 
 
 
@@ -50,13 +49,12 @@ Imports
 
 
 
-
-.. GENERATED FROM PYTHON SOURCE LINES 24-26
+.. GENERATED FROM PYTHON SOURCE LINES 22-24
 
 Data generation
 ---------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 26-41
+.. GENERATED FROM PYTHON SOURCE LINES 24-39
 
 .. code-block:: Python
 
@@ -65,7 +63,7 @@ Data generation
         n_features=2,
         signal_strength=3,
         site_effect_strength=0,  # NO site effect
-        balance_per_site=[0.1, 0.9],
+        balance_per_site=[[0.1, 0.9],[0.9, 0.1]],
         signal_type="blobs",
     )
     df = pd.DataFrame({"Target": y, "Site": sites})
@@ -87,26 +85,26 @@ Data generation
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 42-46
+.. GENERATED FROM PYTHON SOURCE LINES 40-44
 
 .. caution::
 
-   Note that we are harmonising the whole dataset, which must be avoided in ML scenarios.
-   This is just to illustrate the effect of harmonisation.
+   Note that we are harmonizing the whole dataset, which must be avoided in ML scenarios.
+   This is just to illustrate the effect of harmonization.
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-50
+.. GENERATED FROM PYTHON SOURCE LINES 46-48
 
-Harmonisation
+Harmonization
 -------------
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-55
+.. GENERATED FROM PYTHON SOURCE LINES 48-53
 
 .. code-block:: Python
 
-
+    X_harmonized = X.copy()
     combat = NeuroComBat()
-    combat.fit(X, sites)
-    X_harmonized = combat.transform(X, sites)
+    combat.fit(X_harmonized, sites)
+    X_harmonized = combat.transform(X_harmonized, sites)
 
 
 
@@ -115,12 +113,12 @@ Harmonisation
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 56-58
+.. GENERATED FROM PYTHON SOURCE LINES 54-56
 
 Plotting
 --------
 
-.. GENERATED FROM PYTHON SOURCE LINES 58-81
+.. GENERATED FROM PYTHON SOURCE LINES 56-81
 
 .. code-block:: Python
 
@@ -137,16 +135,18 @@ Plotting
 
 
     fig, axes = plt.subplots(1, 2, figsize=(12, 5), sharex=True, sharey=True)
-    sns.scatterplot(data=df_orig, x="Feature1", y="Feature2", hue="Target", alpha=0.6, ax=axes[0])
+    sns.scatterplot(data=df_orig, x="Feature1", y="Feature2", hue="Site",style="Target", alpha=0.6, ax=axes[0])
     axes[0].set_title("Original data by site")
     axes[0].grid(alpha=0.3, color="black", linestyle="--")
 
-    sns.scatterplot(data=df_harm, x="Feature1", y="Feature2", hue="Target", alpha=0.6, ax=axes[1])
+    sns.scatterplot(data=df_harm, x="Feature1", y="Feature2", hue="Site",style="Target", alpha=0.6, ax=axes[1])
     axes[1].set_title("Harmonized data by site")
     axes[1].grid(alpha=0.3, color="black", linestyle="--")
     plt.tight_layout()
 
+    import numpy as np
 
+    np.array_equal(X, X_harmonized)
 
 
 
@@ -156,6 +156,12 @@ Plotting
    :class: sphx-glr-single-img
 
 
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+
+    False
 
 
 
@@ -180,8 +186,8 @@ Preserving the target as covariate
     # This is the key line: we need to include the target variable as a covariate
     # to preserve its relationship with the features during harmonization.
 
-    combat.fit(X, sites, categorical_covariates=y.reshape(-1, 1))
-    X_harmonized = combat.transform(X, sites, categorical_covariates=y.reshape(-1, 1))
+    combat.fit(X, sites, categorical_covariates=y)
+    X_harmonized = combat.transform(X, sites, categorical_covariates=y)
 
     df_orig = pd.DataFrame(X, columns=["Feature1", "Feature2"])
     df_orig["Site"] = sites
@@ -203,7 +209,7 @@ Preserving the target as covariate
 
  .. code-block:: none
 
-    2026-06-10 08:31:10 [warning  ] You specified categorical and/or continuous covariates to be preserved. If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
+    2026-06-10 10:31:22 [warning  ] You specified categorical and/or continuous covariates to be preserved. If you intend to build a machine learning (ML) model,then make sure that you DO *NOT* preserve the ML model's target as covariate. You will be required to provide the covariate also at transform time, and this will produce data leakage. If you are performing a statistical analysis and want to preserve a variable of interest, then it is correct to specify it as covariate.
 
 
 
@@ -218,11 +224,11 @@ Plotting
 .. code-block:: Python
 
 
-    # Plot data distribution by site before and after harmonisation
+    # Plot data distribution by site before and after harmonization
     fig, axes = plt.subplots(1, 2, figsize=(12, 5), sharex=True, sharey=True)
-    sns.scatterplot(data=df_orig, x="Feature1", y="Feature2", hue="Site", alpha=0.6, ax=axes[0])
+    sns.scatterplot(data=df_orig, x="Feature1", y="Feature2", hue="Site", style="Target", alpha=0.6, ax=axes[0])
     axes[0].set_title("Original data by site")
-    sns.scatterplot(data=df_harm, x="Feature1", y="Feature2", hue="Site", alpha=0.6, ax=axes[1])
+    sns.scatterplot(data=df_harm, x="Feature1", y="Feature2", hue="Site", style="Target",alpha=0.6, ax=axes[1])
     axes[1].set_title("Harmonized data by site")
     plt.tight_layout()
 
@@ -242,7 +248,7 @@ Plotting
 
 .. admonition:: Take-home message
 
-   ComBat cannot preserve the target variance in class imbalance scenarios unlese
+   ComBat cannot preserve the target variance in class imbalance scenarios unless
    we preserve it as covariate.
    Note that preserving the target as covariate may be suited for statistical analysis,
    but not for ML scenarios.
@@ -251,7 +257,7 @@ Plotting
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.625 seconds)
+   **Total running time of the script:** (0 minutes 2.416 seconds)
 
 
 .. _sphx_glr_download_auto_examples_03-combat-based_02-plot_neurocombat_imbalance_across_sites.py:

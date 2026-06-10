@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>ComBat-GAM &#8212; uniharmony 0.0.4.dev77 documentation</title>
+    <title>ComBat-GAM &#8212; uniharmony 0.0.5.dev3 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=ebdc74b9"></script>
+    <script src="../../_static/documentation_options.js?v=59766d8d"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.4.dev77 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.5.dev3 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -164,7 +164,7 @@
 <li class="toctree-l3"><a class="reference internal" href="covbat.html">CovBat</a></li>
 <li class="toctree-l3"><a class="reference internal" href="neuroharmony.html">Neuroharmony</a></li>
 
-<li class="toctree-l3"><a class="reference internal" href="longcombat.html">LongComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="longcombat.html">Longitudinal ComBat (LongComBat)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="deepcombat.html">DeepComBat</a></li>
 
 <li class="toctree-l3"><a class="reference internal" href="prettyharmony.html">PrettYharmonize</a></li>
@@ -180,6 +180,10 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="../iqm_based/index.html">🔬 IQM-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="../iqm_based/bartharm.html">BARTharm</a></li>
 
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ot_based/index.html">🚄 Optimal Transport for Domain Adaptation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ot_based/otda.html">Optimal Transport Domain Adaptation (OTDA)</a></li>
 </ul>
 </details></li>
 </ul>
@@ -205,10 +209,12 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/combat/index.html">ComBat Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/02-plot_neurocombat_imbalance_across_sites.html">Analysing NeuroComBat behaviour with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/05-plot_combatgam_imbalance_across_sites.html">Analyzing ComBatGAM behavior with imbalance across sites</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/01-plot_neurocombat_binary_classification.html">Binary classification with NeuroComBat</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/05-plot_combatgam_imbalance_across_sites.html">Analysing ComBatGAM behaviour with imbalance across sites</a></li>
-<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/04-plot_combatgam_binary_classification.html">Binary classification with ComBatGAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/07-plot_neurocombat_effect_on_features.html">NeuroComBat effect in features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/08-plot_combatgam_effect_on_features.html">ComBatGAM effect on features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/02-plot_neurocombat_imbalance_across_sites.html">Analyzing NeuroComBat behavior with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/04-plot_combatgam_age_preservation.html">Analyzing ComBatGAM behavior with imbalance across sites</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/03-plot_neurocombat_with_mareos.html">Using NeuroComBat with MAREoS dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/06-plot_combatgam_with_mareos.html">Using ComBatGAM with MAREoS dataset</a></li>
 </ul>
@@ -427,7 +433,23 @@
                   
   <section class="tex2jax_ignore mathjax_ignore" id="combat-gam">
 <span id="combatgam-long"></span><h1>ComBat-GAM<a class="headerlink" href="#combat-gam" title="Link to this heading">#</a></h1>
+<p>ComBat-GAM is an extension of the NeuroComBat harmonization framework that addresses a key limitation of the original method: the assumption of linear relationships between biological covariates and imaging features <a class="footnote-reference brackets" href="#id3" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>.</p>
+<p>While standard ComBat and NeuroComBat assume that covariates such as age influence brain measures linearly, neurodevelopmental and aging studies often exhibit non-linear trajectories across the lifespan. For example, cortical thickness follows an inverted U-shaped pattern across childhood and adolescence, while white matter volume shows complex non-linear changes in aging populations.</p>
+<p>ComBat-GAM overcomes this limitation by incorporating Generalized Additive Models (GAMs) into the harmonization framework. This allows the method to preserve non-linear biological effects while removing site-related variability, making it particularly suitable for:</p>
+<p>Longitudinal studies spanning wide age ranges</p>
+<p>Lifespan studies from childhood to older adulthood</p>
+<p>Developmental studies with rapid non-linear changes</p>
+<p>Any dataset where covariate effects are expected to be non-linear</p>
+<p>The method was originally developed by Pomponio et al. <a class="footnote-reference brackets" href="#id3" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a> and has been widely adopted for harmonizing large-scale multi-site neuroimaging datasets</p>
 </section>
+<hr class="footnotes docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="id3" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id1">1</a>,<a role="doc-backlink" href="#id2">2</a>)</span>
+<p>Pomponio, R., Erus, G., Habes, M., et al. (2020). Harmonization of large MRI datasets for the analysis of brain imaging patterns throughout the lifespan. <em>NeuroImage</em>, 208, 116450. <a class="reference external" href="https://doi.org/10.1016/j.neuroimage.2019.116450">https://doi.org/10.1016/j.neuroimage.2019.116450</a></p>
+</aside>
+</aside>
 
 
                 </article>

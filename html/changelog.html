@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>📂 CHANGELOG &#8212; uniharmony 0.0.4.dev77 documentation</title>
+    <title>📂 CHANGELOG &#8212; uniharmony 0.0.5.dev3 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="_static/documentation_options.js?v=ebdc74b9"></script>
+    <script src="_static/documentation_options.js?v=59766d8d"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -132,7 +132,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.4.dev77 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.5.dev3 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -163,7 +163,7 @@
 <li class="toctree-l3"><a class="reference internal" href="methods/combat_based/covbat.html">CovBat</a></li>
 <li class="toctree-l3"><a class="reference internal" href="methods/combat_based/neuroharmony.html">Neuroharmony</a></li>
 
-<li class="toctree-l3"><a class="reference internal" href="methods/combat_based/longcombat.html">LongComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="methods/combat_based/longcombat.html">Longitudinal ComBat (LongComBat)</a></li>
 <li class="toctree-l3"><a class="reference internal" href="methods/combat_based/deepcombat.html">DeepComBat</a></li>
 
 <li class="toctree-l3"><a class="reference internal" href="methods/combat_based/prettyharmony.html">PrettYharmonize</a></li>
@@ -179,6 +179,10 @@
 <li class="toctree-l2 has-children"><a class="reference internal" href="methods/iqm_based/index.html">🔬 IQM-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l3"><a class="reference internal" href="methods/iqm_based/bartharm.html">BARTharm</a></li>
 
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="methods/ot_based/index.html">🚄 Optimal Transport for Domain Adaptation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="methods/ot_based/otda.html">Optimal Transport Domain Adaptation (OTDA)</a></li>
 </ul>
 </details></li>
 </ul>
@@ -204,10 +208,12 @@
 </ul>
 </details></li>
 <li class="toctree-l2 has-children"><a class="reference internal" href="examples/combat/index.html">ComBat Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/02-plot_neurocombat_imbalance_across_sites.html">Analysing NeuroComBat behaviour with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/05-plot_combatgam_imbalance_across_sites.html">Analyzing ComBatGAM behavior with imbalance across sites</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/01-plot_neurocombat_binary_classification.html">Binary classification with NeuroComBat</a></li>
-<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/05-plot_combatgam_imbalance_across_sites.html">Analysing ComBatGAM behaviour with imbalance across sites</a></li>
-<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/04-plot_combatgam_binary_classification.html">Binary classification with ComBatGAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/07-plot_neurocombat_effect_on_features.html">NeuroComBat effect in features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/08-plot_combatgam_effect_on_features.html">ComBatGAM effect on features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/02-plot_neurocombat_imbalance_across_sites.html">Analyzing NeuroComBat behavior with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/04-plot_combatgam_age_preservation.html">Analyzing ComBatGAM behavior with imbalance across sites</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/03-plot_neurocombat_with_mareos.html">Using NeuroComBat with MAREoS dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/06-plot_combatgam_with_mareos.html">Using ComBatGAM with MAREoS dataset</a></li>
 </ul>
@@ -422,22 +428,27 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">0.0.3 - 2026-05-08</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">0.0.4 - 2026-06-10</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#added">Added</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#changed">Changed</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">0.0.2 - 2026-04-16</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">0.0.3 - 2026-05-08</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Added</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Changed</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">0.0.1 - 2026-03-26</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">0.0.2 - 2026-04-16</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Changed</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">0.0.0 - 2026-01-15</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Added</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">0.0.1 - 2026-03-26</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Added</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">0.0.0 - 2026-01-15</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Added</a></li>
 </ul>
 </li>
 </ul>
@@ -454,9 +465,24 @@
   <section class="tex2jax_ignore mathjax_ignore" id="changelog">
 <h1>📂 CHANGELOG<a class="headerlink" href="#changelog" title="Link to this heading">#</a></h1>
 <section id="id1">
-<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.3">0.0.3</a> - 2026-05-08<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.4">0.0.4</a> - 2026-06-10<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <section id="added">
 <h3>Added<a class="headerlink" href="#added" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Expose <code class="docutils literal notranslate"><span class="pre">__version__</span></code> as package-level attribute (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/73">#73</a>)</p></li>
+</ul>
+</section>
+<section id="changed">
+<h3>Changed<a class="headerlink" href="#changed" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Remove <code class="docutils literal notranslate"><span class="pre">copy</span></code> parameter from ComBat-based methods and change its default from True to False (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/65">#65</a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="id2">
+<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.3">0.0.3</a> - 2026-05-08<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<section id="id3">
+<h3>Added<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Add ComBatGAM harmonisation method (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/15">#15</a>)</p></li>
 <li><p>Add support for fetching BIDS-compatible datasets using DataLad and use ON-Harmony dataset as an example (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/58">#58</a>)</p></li>
@@ -466,8 +492,8 @@ Add covariate match interpolation to IntraSiteInterpolation class for better pre
 <li><p>Add <code class="docutils literal notranslate"><span class="pre">BaseComBat</span></code>, <code class="docutils literal notranslate"><span class="pre">DesignMatrixMixin</span></code>, <code class="docutils literal notranslate"><span class="pre">StandardizationMixin</span></code> and <code class="docutils literal notranslate"><span class="pre">LocationAndScaleMixin</span></code> for ComBat-based methods (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/64">#64</a>)</p></li>
 </ul>
 </section>
-<section id="changed">
-<h3>Changed<a class="headerlink" href="#changed" title="Link to this heading">#</a></h3>
+<section id="id4">
+<h3>Changed<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Refactor <code class="docutils literal notranslate"><span class="pre">make_multisite_classification</span></code> to use <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> functions to generate base samples (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/54">#54</a>)</p></li>
 <li><p>Expose <code class="docutils literal notranslate"><span class="pre">uniharmony.datasets</span></code> and hide previously exposed functions from it (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/58">#58</a>)</p></li>
@@ -477,18 +503,18 @@ Add covariate match interpolation to IntraSiteInterpolation class for better pre
 </ul>
 </section>
 </section>
-<section id="id2">
-<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.2">0.0.2</a> - 2026-04-16<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
-<section id="id3">
-<h3>Added<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<section id="id5">
+<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.2">0.0.2</a> - 2026-04-16<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<section id="id6">
+<h3>Added<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Introduce <code class="docutils literal notranslate"><span class="pre">uniharmony.verbosity</span></code> and <code class="docutils literal notranslate"><span class="pre">uniharmony.verbosity_context</span></code> to manage logging levels (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/10">#10</a>)</p></li>
 <li><p>Add InterSiteMatchedInterpolation harmonisation method (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/16">#16</a>)</p></li>
 <li><p>Add <code class="docutils literal notranslate"><span class="pre">plot</span></code> sub-package for providing plotting helpers (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/26">#26</a>)</p></li>
 </ul>
 </section>
-<section id="id4">
-<h3>Changed<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<section id="id7">
+<h3>Changed<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Improve <code class="docutils literal notranslate"><span class="pre">sites</span></code> validation, handling and storage across transformers (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/17">#17</a>)</p></li>
 <li><p>Split up API reference in docs (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/19">#19</a>)</p></li>
@@ -500,10 +526,10 @@ Add covariate match interpolation to IntraSiteInterpolation class for better pre
 </ul>
 </section>
 </section>
-<section id="id5">
-<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.1">0.0.1</a> - 2026-03-26<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
-<section id="id6">
-<h3>Added<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<section id="id8">
+<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.1">0.0.1</a> - 2026-03-26<a class="headerlink" href="#id8" title="Link to this heading">#</a></h2>
+<section id="id9">
+<h3>Added<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Setup documentation and add initial info (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/2">#2</a>)</p></li>
 <li><p>Add IntraSiteInterpolation harmonisation method, MAREoS dataset loading and multisite data generation functions (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/4">#4</a>)</p></li>
@@ -511,10 +537,10 @@ Add covariate match interpolation to IntraSiteInterpolation class for better pre
 </ul>
 </section>
 </section>
-<section id="id7">
-<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.0">0.0.0</a> - 2026-01-15<a class="headerlink" href="#id7" title="Link to this heading">#</a></h2>
-<section id="id8">
-<h3>Added<a class="headerlink" href="#id8" title="Link to this heading">#</a></h3>
+<section id="id10">
+<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.0">0.0.0</a> - 2026-01-15<a class="headerlink" href="#id10" title="Link to this heading">#</a></h2>
+<section id="id11">
+<h3>Added<a class="headerlink" href="#id11" title="Link to this heading">#</a></h3>
 <ul class="simple">
 <li><p>Clean up repository and publish package (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/1">#1</a>)</p></li>
 </ul>
@@ -560,22 +586,27 @@ Add covariate match interpolation to IntraSiteInterpolation class for better pre
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">0.0.3 - 2026-05-08</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">0.0.4 - 2026-06-10</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#added">Added</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#changed">Changed</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">0.0.2 - 2026-04-16</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">0.0.3 - 2026-05-08</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Added</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Changed</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">0.0.1 - 2026-03-26</a><ul class="nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">0.0.2 - 2026-04-16</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Changed</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">0.0.0 - 2026-01-15</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">Added</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">0.0.1 - 2026-03-26</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Added</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">0.0.0 - 2026-01-15</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">Added</a></li>
 </ul>
 </li>
 </ul>

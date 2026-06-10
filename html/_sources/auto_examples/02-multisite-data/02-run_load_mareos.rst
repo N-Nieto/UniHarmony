@@ -65,15 +65,15 @@ The files will be stored in the cache, so we don't have to worry about them
 
  .. code-block:: none
 
-    2026-06-10 08:31:02 [info     ] MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS
-    2026-06-10 08:31:02 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv
-    2026-06-10 08:31:02 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple2_data.csv
-    2026-06-10 08:31:02 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction1_data.csv
-    2026-06-10 08:31:02 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction2_data.csv
-    2026-06-10 08:31:02 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_simple1_data.csv
-    2026-06-10 08:31:02 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_simple2_data.csv
-    2026-06-10 08:31:02 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_interaction1_data.csv
-    2026-06-10 08:31:02 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_interaction2_data.csv
+    2026-06-10 10:31:15 [info     ] MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS
+    2026-06-10 10:31:15 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv
+    2026-06-10 10:31:15 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple2_data.csv
+    2026-06-10 10:31:15 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction1_data.csv
+    2026-06-10 10:31:15 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction2_data.csv
+    2026-06-10 10:31:15 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_simple1_data.csv
+    2026-06-10 10:31:15 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_simple2_data.csv
+    2026-06-10 10:31:15 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_interaction1_data.csv
+    2026-06-10 10:31:15 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/true_interaction2_data.csv
 
 
 
@@ -182,11 +182,11 @@ Variations
 
  .. code-block:: none
 
-    2026-06-10 08:31:02 [info     ] MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS
-    2026-06-10 08:31:02 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv
-    2026-06-10 08:31:02 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple2_data.csv
-    2026-06-10 08:31:03 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction1_data.csv
-    2026-06-10 08:31:03 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction2_data.csv
+    2026-06-10 10:31:15 [info     ] MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS
+    2026-06-10 10:31:15 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv
+    2026-06-10 10:31:15 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple2_data.csv
+    2026-06-10 10:31:15 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction1_data.csv
+    2026-06-10 10:31:15 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_interaction2_data.csv
     dict_keys(['eos_simple1', 'eos_simple2', 'eos_interaction1', 'eos_interaction2'])
 
 
@@ -208,9 +208,9 @@ Variations
 
  .. code-block:: none
 
-    2026-06-10 08:31:03 [info     ] MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS
-    2026-06-10 08:31:03 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv
-    2026-06-10 08:31:03 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple2_data.csv
+    2026-06-10 10:31:15 [info     ] MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS
+    2026-06-10 10:31:15 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv
+    2026-06-10 10:31:16 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple2_data.csv
     dict_keys(['eos_simple1', 'eos_simple2'])
 
 
@@ -232,8 +232,8 @@ Variations
 
  .. code-block:: none
 
-    2026-06-10 08:31:03 [info     ] MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS
-    2026-06-10 08:31:03 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv
+    2026-06-10 10:31:16 [info     ] MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS
+    2026-06-10 10:31:16 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv
     dict_keys(['eos_simple1'])
 
 
@@ -264,8 +264,8 @@ You can chose to load the dataset as pandas.DataFrame, with has the simulated ar
 
  .. code-block:: none
 
-    2026-06-10 08:31:03 [info     ] MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS
-    2026-06-10 08:31:03 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv
+    2026-06-10 10:31:16 [info     ] MAREoS datasets already exist at: /home/runner/.cache/uniharmony/MAREoS
+    2026-06-10 10:31:16 [info     ] Getting data file: /home/runner/.cache/uniharmony/MAREoS/public_datasets/eos_simple1_data.csv
 
 
 .. raw:: html
@@ -403,15 +403,15 @@ We will use a relative path from this example to look for appropiated path
  .. code-block:: none
 
     Unzipping contents of '/home/runner/.cache/uniharmony/public_datasets.zip' to '/home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS'
-    2026-06-10 08:31:03 [info     ] MAREoS datasets downloaded: 16 CSV files in /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS
-    2026-06-10 08:31:03 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/eos_simple1_data.csv
-    2026-06-10 08:31:03 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/eos_simple2_data.csv
-    2026-06-10 08:31:03 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/eos_interaction1_data.csv
-    2026-06-10 08:31:03 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/eos_interaction2_data.csv
-    2026-06-10 08:31:03 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/true_simple1_data.csv
-    2026-06-10 08:31:03 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/true_simple2_data.csv
-    2026-06-10 08:31:03 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/true_interaction1_data.csv
-    2026-06-10 08:31:03 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/true_interaction2_data.csv
+    2026-06-10 10:31:16 [info     ] MAREoS datasets downloaded: 16 CSV files in /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS
+    2026-06-10 10:31:16 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/eos_simple1_data.csv
+    2026-06-10 10:31:16 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/eos_simple2_data.csv
+    2026-06-10 10:31:16 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/eos_interaction1_data.csv
+    2026-06-10 10:31:16 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/eos_interaction2_data.csv
+    2026-06-10 10:31:16 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/true_simple1_data.csv
+    2026-06-10 10:31:16 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/true_simple2_data.csv
+    2026-06-10 10:31:16 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/true_interaction1_data.csv
+    2026-06-10 10:31:16 [info     ] Getting data file: /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/datasets/data/MAREoS/public_datasets/true_interaction2_data.csv
 
 
 
@@ -419,7 +419,7 @@ We will use a relative path from this example to look for appropiated path
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.041 seconds)
+   **Total running time of the script:** (0 minutes 1.366 seconds)
 
 
 .. _sphx_glr_download_auto_examples_02-multisite-data_02-run_load_mareos.py:
