@@ -1,3 +1,14 @@
+## [0.0.4](https://github.com/N-Nieto/UniHarmony/tree/0.0.4) - 2026-06-10
+
+### Added
+
+- Expose `__version__` as package-level attribute ([#73](https://github.com/N-Nieto/UniHarmony/issues/73))
+
+### Changed
+
+- Remove `copy` parameter from ComBat-based methods and change its default from True to False ([#65](https://github.com/N-Nieto/UniHarmony/issues/65))
+
+
 ## [0.0.3](https://github.com/N-Nieto/UniHarmony/tree/0.0.3) - 2026-05-08
 
 ### Added
