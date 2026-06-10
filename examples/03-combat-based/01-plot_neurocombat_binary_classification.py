@@ -46,18 +46,13 @@ y_pred_harm = clf.predict_proba(X_test_harmonized)[:,1]
 scores = roc_auc_score(y_test, y_pred)
 scores_harmonized = roc_auc_score(y_test, y_pred_harm)
 
-# Fit the model and plot the decision boundary,
-# this is just for visualization purposes, the real evaluation was be done with cross-validation
-clf.fit(X, y)
+df_orig = pd.DataFrame(X_test, columns=["Feature 1", "Feature 2"])
+df_orig["Site"] = sites_test
+df_orig["Target"] = y_test
 
-
-df_orig = pd.DataFrame(X_train, columns=["Feature 1", "Feature 2"])
-df_orig["Site"] = sites_train
-df_orig["Target"] = y_train
-
-df_harm = pd.DataFrame(X_harmonized, columns=["Feature 1", "Feature 2"])
-df_harm["Site"] = sites_train
-df_harm["Target"] = y_train
+df_harm = pd.DataFrame(X_test_harmonized, columns=["Feature 1", "Feature 2"])
+df_harm["Site"] = sites_test
+df_harm["Target"] = y_test
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 5), sharex=True, sharey=True)
 sns.scatterplot(data=df_orig, x="Feature 1", y="Feature 2", hue="Target", style="Site", alpha=0.6, ax=axes[0])
@@ -71,3 +66,5 @@ plt.tight_layout()
 clf.fit(X_harmonized, y_train)
 
 plot_decision_boundary_2d(axes[1], clf)
+
+# %%
