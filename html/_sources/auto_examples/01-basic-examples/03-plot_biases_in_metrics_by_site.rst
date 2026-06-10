@@ -350,7 +350,7 @@ If we had only reported the overall performance, we would not be able to unravel
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.714 seconds)
+   **Total running time of the script:** (0 minutes 2.239 seconds)
 
 
 .. _sphx_glr_download_auto_examples_01-basic-examples_03-plot_biases_in_metrics_by_site.py:

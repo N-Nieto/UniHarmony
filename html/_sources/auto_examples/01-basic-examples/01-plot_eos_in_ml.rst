@@ -315,7 +315,7 @@ Data generation
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.781 seconds)
+   **Total running time of the script:** (0 minutes 3.720 seconds)
 
 
 .. _sphx_glr_download_auto_examples_01-basic-examples_01-plot_eos_in_ml.py:

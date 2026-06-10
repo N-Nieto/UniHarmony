@@ -259,7 +259,7 @@ Plotting
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.970 seconds)
+   **Total running time of the script:** (0 minutes 1.103 seconds)
 
 
 .. _sphx_glr_download_auto_examples_03-combat-based_01-plot_neurocombat_binary_classification.py:

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Using Inter-Site Matched Interpolation (ISMI) with matching covariates &#8212; uniharmony 0.0.4.dev45 documentation</title>
+    <title>Using Inter-Site Matched Interpolation (ISMI) with matching covariates &#8212; uniharmony 0.0.4.dev77 documentation</title>
   
   
   
@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
 
-    <script src="../../_static/documentation_options.js?v=e392c62f"></script>
+    <script src="../../_static/documentation_options.js?v=ebdc74b9"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -133,7 +133,7 @@
   
   
   
-    <p class="title logo__title">uniharmony 0.0.4.dev45 documentation</p>
+    <p class="title logo__title">uniharmony 0.0.4.dev77 documentation</p>
   
 </a></div>
         <div class="sidebar-primary-item">
@@ -433,56 +433,56 @@ to download the full example code.</p>
 <section class="sphx-glr-example-title" id="using-inter-site-matched-interpolation-ismi-with-matching-covariates">
 <span id="sphx-glr-auto-examples-04-interpolation-based-05-run-ismi-covariate-example-py"></span><h1>Using Inter-Site Matched Interpolation (ISMI) with matching covariates<a class="headerlink" href="#using-inter-site-matched-interpolation-ismi-with-matching-covariates" title="Link to this heading">#</a></h1>
 <p>This notebook demonstrates the use of <a class="reference internal" href="../../api/interpolation_based/inter_site_matched_interpolation.html#uniharmony.interpolation.InterSiteMatchedInterpolation" title="uniharmony.interpolation.InterSiteMatchedInterpolation"><code class="xref py py-class docutils literal notranslate"><span class="pre">InterSiteMatchedInterpolation</span></code></a> for harmonizing multi-site data using matching covariates.</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-06-01 17:50:54 [debug    ] Total Samples to generate 3000
-2026-06-01 17:50:54 [debug    ] Total Samples to generate per site [1000 1000 1000]
-2026-06-01 17:50:54 [info     ] Using balanced classes: [[0.5, 0.5], [0.5, 0.5], [0.5, 0.5]]
-2026-06-01 17:50:54 [info     ] `balance_per_site` is: [[0.5, 0.5], [0.5, 0.5], [0.5, 0.5]]
-2026-06-01 17:50:54 [info     ] Overall class balance across sites: [0.5 0.5]
-2026-06-01 17:50:54 [debug    ] locs: [50, 50, 50] and probs: None
-2026-06-01 17:50:54 [debug    ] locs: None and probs: [[0.5, 0.5], [0.5, 0.5], [0.5, 0.5]]
-2026-06-01 17:50:54 [debug    ] Covariates requested: [&#39;age&#39;, &#39;sex&#39;]
-2026-06-01 17:50:54 [info     ] For site 0
-2026-06-01 17:50:54 [info     ] Generating 1000 samples
-2026-06-01 17:50:54 [debug    ] Balance [0.5, 0.5] for site 0
-2026-06-01 17:50:54 [debug    ] Site 0 — covariate &#39;age&#39;: mean=50.893
-2026-06-01 17:50:54 [debug    ] Site 0 — covariate &#39;sex&#39;: mean=0.524
-2026-06-01 17:50:54 [debug    ] Site 0, site effect strength [3.0, 3.0, 3.0]
-2026-06-01 17:50:54 [info     ] For site 1
-2026-06-01 17:50:54 [info     ] Generating 1000 samples
-2026-06-01 17:50:54 [debug    ] Balance [0.5, 0.5] for site 1
-2026-06-01 17:50:54 [debug    ] Site 1 — covariate &#39;age&#39;: mean=49.223
-2026-06-01 17:50:54 [debug    ] Site 1 — covariate &#39;sex&#39;: mean=0.508
-2026-06-01 17:50:54 [debug    ] Site 1, site effect strength [3.0, 3.0, 3.0]
-2026-06-01 17:50:54 [info     ] For site 2
-2026-06-01 17:50:54 [info     ] Generating 1000 samples
-2026-06-01 17:50:54 [debug    ] Balance [0.5, 0.5] for site 2
-2026-06-01 17:50:54 [debug    ] Site 2 — covariate &#39;age&#39;: mean=49.728
-2026-06-01 17:50:54 [debug    ] Site 2 — covariate &#39;sex&#39;: mean=0.519
-2026-06-01 17:50:54 [debug    ] Site 2, site effect strength [3.0, 3.0, 3.0]
-2026-06-01 17:50:54 [info     ] Generated 3000 samples across 3 sites
-2026-06-01 17:50:54 [info     ] Class distribution: [1500 1500]
-2026-06-01 17:50:54 [info     ] Site distribution: [1000 1000 1000]
-2026-06-01 17:50:54 [debug    ] Using 1 categorical covariates
-2026-06-01 17:50:54 [debug    ] Using 1 continuous covariates with tolerance: [5.]
-2026-06-01 17:50:54 [info     ] [ISMI] Mode: pairwise
-2026-06-01 17:50:54 [info     ] [ISMI] Sites: [0 1 2] (3 sites, 3 pairs)
-2026-06-01 17:50:54 [info     ] [ISMI] Alpha: uniform[0.2, 0.4]
-2026-06-01 17:50:54 [info     ] [ISMI] Behavior: k=2 matches per sample
-2026-06-01 17:50:54 [info     ] [ISMI] Target tolerance: None
-2026-06-01 17:50:54 [info     ] [ISMI] Categorical covariates: 1
-2026-06-01 17:50:54 [info     ] [ISMI] Continuous covariates: 1 (tol: [5.])
-2026-06-01 17:50:54 [info     ] [ISMI] Processing 3 pairs
-2026-06-01 17:50:54 [info     ] [ISMI] Pair: 0 (1000) ↔ 1 (1000)
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2026-06-10 08:48:31 [debug    ] Total Samples to generate 3000
+2026-06-10 08:48:31 [debug    ] Total Samples to generate per site [1000 1000 1000]
+2026-06-10 08:48:31 [info     ] Using balanced classes: [[0.5, 0.5], [0.5, 0.5], [0.5, 0.5]]
+2026-06-10 08:48:31 [info     ] `balance_per_site` is: [[0.5, 0.5], [0.5, 0.5], [0.5, 0.5]]
+2026-06-10 08:48:31 [info     ] Overall class balance across sites: [0.5 0.5]
+2026-06-10 08:48:31 [debug    ] locs: [50, 50, 50] and probs: None
+2026-06-10 08:48:31 [debug    ] locs: None and probs: [[0.5, 0.5], [0.5, 0.5], [0.5, 0.5]]
+2026-06-10 08:48:31 [debug    ] Covariates requested: [&#39;age&#39;, &#39;sex&#39;]
+2026-06-10 08:48:31 [info     ] For site 0
+2026-06-10 08:48:31 [info     ] Generating 1000 samples
+2026-06-10 08:48:31 [debug    ] Balance [0.5, 0.5] for site 0
+2026-06-10 08:48:31 [debug    ] Site 0 — covariate &#39;age&#39;: mean=50.893
+2026-06-10 08:48:31 [debug    ] Site 0 — covariate &#39;sex&#39;: mean=0.524
+2026-06-10 08:48:31 [debug    ] Site 0, site effect strength [3.0, 3.0, 3.0]
+2026-06-10 08:48:31 [info     ] For site 1
+2026-06-10 08:48:31 [info     ] Generating 1000 samples
+2026-06-10 08:48:31 [debug    ] Balance [0.5, 0.5] for site 1
+2026-06-10 08:48:31 [debug    ] Site 1 — covariate &#39;age&#39;: mean=49.223
+2026-06-10 08:48:31 [debug    ] Site 1 — covariate &#39;sex&#39;: mean=0.508
+2026-06-10 08:48:31 [debug    ] Site 1, site effect strength [3.0, 3.0, 3.0]
+2026-06-10 08:48:31 [info     ] For site 2
+2026-06-10 08:48:31 [info     ] Generating 1000 samples
+2026-06-10 08:48:31 [debug    ] Balance [0.5, 0.5] for site 2
+2026-06-10 08:48:31 [debug    ] Site 2 — covariate &#39;age&#39;: mean=49.728
+2026-06-10 08:48:31 [debug    ] Site 2 — covariate &#39;sex&#39;: mean=0.519
+2026-06-10 08:48:31 [debug    ] Site 2, site effect strength [3.0, 3.0, 3.0]
+2026-06-10 08:48:31 [info     ] Generated 3000 samples across 3 sites
+2026-06-10 08:48:31 [info     ] Class distribution: [1500 1500]
+2026-06-10 08:48:31 [info     ] Site distribution: [1000 1000 1000]
+2026-06-10 08:48:31 [debug    ] Using 1 categorical covariates
+2026-06-10 08:48:31 [debug    ] Using 1 continuous covariates with tolerance: [5.]
+2026-06-10 08:48:31 [info     ] [ISMI] Mode: pairwise
+2026-06-10 08:48:31 [info     ] [ISMI] Sites: [0 1 2] (3 sites, 3 pairs)
+2026-06-10 08:48:31 [info     ] [ISMI] Alpha: uniform[0.2, 0.4]
+2026-06-10 08:48:31 [info     ] [ISMI] Behavior: k=2 matches per sample
+2026-06-10 08:48:31 [info     ] [ISMI] Target tolerance: None
+2026-06-10 08:48:31 [info     ] [ISMI] Categorical covariates: 1
+2026-06-10 08:48:31 [info     ] [ISMI] Continuous covariates: 1 (tol: [5.])
+2026-06-10 08:48:31 [info     ] [ISMI] Processing 3 pairs
+2026-06-10 08:48:31 [info     ] [ISMI] Pair: 0 (1000) ↔ 1 (1000)
 /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/interpolation/_inter_site_matched.py:469: UserWarning: Sample has 1 matches but k=2 requested, using all
   X_synth_1, y_synth_1, n_un_1 = self._interpolate(X1, y1, X2, y2, matches_1to2, self.alpha_min_, self.alpha_max_)
 /home/runner/work/UniHarmony/UniHarmony/src/uniharmony/interpolation/_inter_site_matched.py:475: UserWarning: Sample has 1 matches but k=2 requested, using all
   X_synth_2, y_synth_2, n_un_2 = self._interpolate(X2, y2, X1, y1, matches_2to1, rev_min, rev_max)
-2026-06-01 17:50:54 [info     ] [ISMI]   Generated 3970 samples (8 unmatched)
-2026-06-01 17:50:54 [info     ] [ISMI] Pair: 0 (1000) ↔ 2 (1000)
-2026-06-01 17:50:54 [info     ] [ISMI]   Generated 3978 samples (4 unmatched)
-2026-06-01 17:50:54 [info     ] [ISMI] Pair: 1 (1000) ↔ 2 (1000)
-2026-06-01 17:50:54 [info     ] [ISMI]   Generated 3970 samples (8 unmatched)
-2026-06-01 17:50:54 [info     ] [ISMI] Complete: 3000 original + 11918 synthetic = 14918 total (397.3% increase), 20 unmatched
+2026-06-10 08:48:31 [info     ] [ISMI]   Generated 3970 samples (8 unmatched)
+2026-06-10 08:48:31 [info     ] [ISMI] Pair: 0 (1000) ↔ 2 (1000)
+2026-06-10 08:48:31 [info     ] [ISMI]   Generated 3978 samples (4 unmatched)
+2026-06-10 08:48:31 [info     ] [ISMI] Pair: 1 (1000) ↔ 2 (1000)
+2026-06-10 08:48:31 [info     ] [ISMI]   Generated 3970 samples (8 unmatched)
+2026-06-10 08:48:31 [info     ] [ISMI] Complete: 3000 original + 11918 synthetic = 14918 total (397.3% increase), 20 unmatched
 {(np.int64(0), np.int64(1)): 6, (np.int64(1), np.int64(0)): 2, (np.int64(0), np.int64(2)): 2, (np.int64(2), np.int64(0)): 2, (np.int64(1), np.int64(2)): 4, (np.int64(2), np.int64(1)): 4}
 </pre></div>
 </div>
@@ -517,7 +517,7 @@ to download the full example code.</p>
 <span class="nb">print</span><span class="p">(</span><a href="https://docs.python.org/3/library/stdtypes.html#dict" title="builtins.dict" class="sphx-glr-backref-module-builtins sphx-glr-backref-type-py-class sphx-glr-backref-instance"><span class="n">ismi</span><span class="o">.</span><span class="n">unmatched_samples_</span></a><span class="p">)</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.031 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.581 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-auto-examples-04-interpolation-based-05-run-ismi-covariate-example-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/db4a31e7a54daaeff7f27ae73087845c/05-run_ismi_covariate_example.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">05-run_ismi_covariate_example.ipynb</span></code></a></p>

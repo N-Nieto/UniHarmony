@@ -87,7 +87,7 @@ Data generation
 
  .. code-block:: none
 
-    2026-06-01 17:27:37 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
+    2026-06-10 08:31:09 [warning  ] signal_strength is 0. Adding a delta (1e-6) to signal_strength to avoid degenerate data.
 
 
 
@@ -266,7 +266,7 @@ Plotting
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.803 seconds)
+   **Total running time of the script:** (0 minutes 2.288 seconds)
 
 
 .. _sphx_glr_download_auto_examples_03-combat-based_04-plot_combatgam_binary_classification.py:

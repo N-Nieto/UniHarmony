@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**23:32.654** total execution time for 6 files **from auto_examples/03-combat-based**:
+**17:33.613** total execution time for 6 files **from auto_examples/03-combat-based**:
 
 .. container::
 
@@ -33,20 +33,20 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_auto_examples_03-combat-based_06-plot_combatgam_with_mareos.py` (``06-plot_combatgam_with_mareos.py``)
-     - 23:13.188
+     - 17:19.874
      - 0.0
    * - :ref:`sphx_glr_auto_examples_03-combat-based_03-plot_neurocombat_with_mareos.py` (``03-plot_neurocombat_with_mareos.py``)
-     - 00:07.511
+     - 00:06.321
      - 0.0
    * - :ref:`sphx_glr_auto_examples_03-combat-based_05-plot_combatgam_imbalance_across_sites.py` (``05-plot_combatgam_imbalance_across_sites.py``)
-     - 00:03.616
-     - 0.0
-   * - :ref:`sphx_glr_auto_examples_03-combat-based_01-plot_neurocombat_binary_classification.py` (``01-plot_neurocombat_binary_classification.py``)
-     - 00:02.970
+     - 00:02.402
      - 0.0
    * - :ref:`sphx_glr_auto_examples_03-combat-based_04-plot_combatgam_binary_classification.py` (``04-plot_combatgam_binary_classification.py``)
-     - 00:02.803
+     - 00:02.288
      - 0.0
    * - :ref:`sphx_glr_auto_examples_03-combat-based_02-plot_neurocombat_imbalance_across_sites.py` (``02-plot_neurocombat_imbalance_across_sites.py``)
-     - 00:02.565
+     - 00:01.625
+     - 0.0
+   * - :ref:`sphx_glr_auto_examples_03-combat-based_01-plot_neurocombat_binary_classification.py` (``01-plot_neurocombat_binary_classification.py``)
+     - 00:01.103
      - 0.0
