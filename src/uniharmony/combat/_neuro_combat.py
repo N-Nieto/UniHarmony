@@ -11,12 +11,7 @@
 import numpy as np
 import numpy.typing as npt
 import structlog
-from sklearn.utils.validation import (
-    FLOAT_DTYPES,
-    check_array,
-    check_consistent_length,
-    check_is_fitted,
-)
+from sklearn.utils.validation import check_is_fitted
 
 from uniharmony._utils import validate_sites
 
@@ -125,14 +120,12 @@ class NeuroComBat(BaseComBat):
         self._categorical_covariates_used = False
         if categorical_covariates is not None:
             self._categorical_covariates_used = True
-            categorical_covariates = check_array(categorical_covariates, dtype=None, estimator=self)
-            check_consistent_length(categorical_covariates, sites)
+            categorical_covariates = self._check_categorical_covariates(X, categorical_covariates)
 
         self._continuous_covariates_used = False
         if continuous_covariates is not None:
             self._continuous_covariates_used = True
-            continuous_covariates = check_array(continuous_covariates, dtype=FLOAT_DTYPES, estimator=self)
-            check_consistent_length(continuous_covariates, sites)
+            continuous_covariates = self._check_continuous_covariates(X, continuous_covariates, estimator=self)
 
         if self._categorical_covariates_used or self._continuous_covariates_used:
             logger.warning(
@@ -221,10 +214,10 @@ class NeuroComBat(BaseComBat):
         X, sites = self._check_X_sites(X, sites, estimator=self)
 
         if self._categorical_covariates_used:
-            categorical_covariates = check_array(categorical_covariates, dtype=None, estimator=self)
+            categorical_covariates = self._check_categorical_covariates(X, categorical_covariates)
 
         if self._continuous_covariates_used:
-            continuous_covariates = check_array(continuous_covariates, dtype=FLOAT_DTYPES, estimator=self)
+            continuous_covariates = self._check_continuous_covariates(X, continuous_covariates)
 
         # Transpose to conform to neuroCombat and original ComBat
         X = X.T

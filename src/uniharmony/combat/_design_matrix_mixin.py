@@ -79,7 +79,8 @@ class DesignMatrixMixin:
 
         # Fit categorical encoders if provided
         if categorical_covariates is not None:
-            n_cat_covs = categorical_covariates.shape[1]
+            cat_covs = categorical_covariates.reshape(-1, 1)
+            n_cat_covs = cat_covs.shape[1]
             self._categorical_encoders = []
 
             for i in range(n_cat_covs):
@@ -89,7 +90,7 @@ class DesignMatrixMixin:
                     drop="first",
                     handle_unknown="error",
                 )
-                cat_col = categorical_covariates[:, i].reshape(-1, 1)
+                cat_col = cat_covs[:, i].reshape(-1, 1)
                 cat_encoder.fit(cat_col)
                 self._categorical_encoders.append(cat_encoder)
 
@@ -163,8 +164,9 @@ class DesignMatrixMixin:
 
         # Transform categorical covariates
         if categorical_covariates is not None:
+            cat_covs = categorical_covariates.reshape(-1, 1)
             for i, cat_encoder in enumerate(self._categorical_encoders):
-                cat_col = categorical_covariates[:, i].reshape(-1, 1)
+                cat_col = cat_covs[:, i].reshape(-1, 1)
                 cat_encoded = cat_encoder.transform(cat_col)
 
                 design_parts.append(cat_encoded)
@@ -173,8 +175,9 @@ class DesignMatrixMixin:
 
         # Add continuous covariates
         if continuous_covariates is not None:
-            design_parts.append(continuous_covariates)
-            logger.debug(f"Added {continuous_covariates.shape[1]} continuous covariates")
+            cont_covs = continuous_covariates.reshape(-1, 1)
+            design_parts.append(cont_covs)
+            logger.debug(f"Added {cont_covs.shape[1]} continuous covariates")
 
         design = np.hstack(design_parts)
 

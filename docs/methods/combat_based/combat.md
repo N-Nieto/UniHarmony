@@ -22,7 +22,7 @@ After estimating its parameters, ComBat removes site-related variability by tran
 
 Because of its robustness and simplicity, ComBat has become a standard harmonization approach in neuroimaging and has inspired a large family of extensions and variants.
 
-A higly recomended simple and easy-to-follow explanation of ComBat, its advantajes, disandantages, limitations and mathematical fundations can be found at [^3].
+A highly recommended simple and easy-to-follow explanation of ComBat, its advantages, disadvantages, limitations and mathematical foundations can be found at [^3].
 
 ## ComBat statistical model
 

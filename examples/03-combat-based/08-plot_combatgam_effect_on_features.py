@@ -1,6 +1,6 @@
 """
-Binary classification with ComBatGAM
-====================================
+ComBatGAM effect on features
+============================
 """
 
 # %%
@@ -24,11 +24,13 @@ verbosity("warning")
 # Data generation
 # ---------------
 
-X, y, sites = make_multisite_classification(
+X, y, sites, covars = make_multisite_classification(
     n_features=2,
     site_effect_strength=10,
-    signal_strength=0,
+    signal_strength=0.01,
+    covariates=["age"]
 )
+age = covars["age"]
 df = pd.DataFrame({"Target": y, "Site": sites})
 
 plt.figure(figsize=[10, 6])
@@ -42,7 +44,7 @@ plt.grid(axis="y", color="black", alpha=0.5, linestyle="--")
 # -------------
 
 combat = ComBatGAM()
-X_harmonized = combat.fit_transform(X, sites, smooth_covariates=y.reshape(-1, 1))
+X_harmonized = combat.fit_transform(X, sites, smooth_covariates=age)
 
 df_orig = pd.DataFrame(X, columns=["Feature1", "Feature2"])
 df_orig["Site"] = sites
