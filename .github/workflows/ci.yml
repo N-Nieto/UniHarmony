@@ -27,7 +27,7 @@ jobs:
         run: |
           git config --global user.email "runner@github.com"
           git config --global user.name "GitHub Runner"
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Install Python ${{ matrix.python-version }}
         uses: actions/setup-python@v6
         with:
@@ -40,7 +40,7 @@ jobs:
         run: |
           tox
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v6
+        uses: codecov/codecov-action@v7
         with:
           fail_ci_if_error: true
         if: success() && matrix.python-version == 3.13
