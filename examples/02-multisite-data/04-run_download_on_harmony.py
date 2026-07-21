@@ -9,8 +9,6 @@ Download ON-Harmony dataset
 
 from uniharmony import verbosity
 from uniharmony.datasets import clean_tmp, download_ONharmony
-
-
 verbosity("debug")
 
 
@@ -24,6 +22,8 @@ download_ONharmony(
     modalities="anat",
     suffixes="T1w",
     extensions=".json",
+    # If you aim to download the dataset in a "permanent" folder, please set copy=True
+    copy=False,
 )
 
 

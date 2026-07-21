@@ -11,7 +11,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 from uniharmony.datasets import make_multisite_classification
-from uniharmony.datasets import Covariate, CovariateSiteDistribution
 
 from uniharmony import verbosity
 verbosity("warning")
@@ -22,8 +21,6 @@ sns.set_theme(style="whitegrid")
 # %%
 # Data generation
 # ---------------
-
-
 X, y, sites, covars = make_multisite_classification(n_features=2, signal_type="blobs",
                                                     covariates=["age", "sex"],
                                                     site_effect_strength=10)
@@ -46,8 +43,7 @@ plt.grid(axis="y", color="black", alpha=0.5, linestyle="--")
 # Harmonization
 # -------------
 combat = ComBatGAM()
-combat.fit(X, sites, smooth_covariates=covars["age"] )
-X_harmonized = combat.transform(X, sites, smooth_covariates=covars["age"])
+X_harmonized = combat.fit_transform(X, sites, smooth_covariates=covars["age"])
 
 # %%
 # Plotting
@@ -89,9 +85,7 @@ plt.tight_layout()
 combat = ComBatGAM()
 # This is the key line: we need to include the target variable as a covariate
 # to preserve its relationship with the features during harmonization.
-
-combat.fit(X, sites, smooth_covariates=covars["age"])
-X_harmonized = combat.transform(X, sites, smooth_covariates=covars["age"])
+X_harmonized = combat.fit_transform(X, sites, smooth_covariates=covars["age"])
 
 df_orig = pd.DataFrame(X, columns=["Feature1", "Feature2"])
 df_orig["Site"] = sites
