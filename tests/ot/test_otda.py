@@ -42,31 +42,6 @@ def str_sites_data():
     return X, y, sites
 
 
-# =============================================================================
-# Test OptimalTransportDomainAdaptation Initialization
-# =============================================================================
-# @pytest.mark.parametrize(
-#     "ot_method,reg,eta,expected",
-#     [
-#         pytest.param(
-#             None,
-#             None,
-#             None,
-#             None,
-#             None
-#         ),
-#         # pytest.param(datetime(2001, 12, 11), datetime(2001, 12, 12), timedelta(-1), id="backward"),
-#     ],
-# )
-# def test_init(ot_method, metric, reg, eta, expected):
-#     """Test initialization."""
-#     otda = OptimalTransportDomainAdaptation(ot_method, metric, reg, eta)
-#     assert otda.ot_method == ot_method
-#     assert otda.metric == metric
-#     assert otda.reg == reg
-#     assert otda.eta == eta
-
-
 def test_default_init():
     """Test default initialization."""
     otda = OptimalTransportDomainAdaptation()
