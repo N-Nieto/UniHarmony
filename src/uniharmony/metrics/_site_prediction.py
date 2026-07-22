@@ -1,20 +1,15 @@
 """Site-prediction diagnostics for harmonization evaluation."""
 
-from __future__ import annotations
-
-from typing import TYPE_CHECKING, Any
+from collections.abc import Callable, Iterable
+from typing import Any
 
 import numpy as np
 import numpy.typing as npt
 import structlog
-from sklearn.base import BaseEstimator, ClassifierMixin, is_classifier
+from sklearn.base import BaseEstimator, clone, is_classifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import BaseCrossValidator, cross_validate
 from sklearn.utils.validation import check_consistent_length, check_X_y
-
-
-if TYPE_CHECKING:
-    from collections.abc import Callable, Iterable
 
 
 __all__ = [
@@ -27,9 +22,9 @@ logger = structlog.get_logger()
 def evaluate_site_prediction(
     X: npt.NDArray,
     sites: npt.NDArray,
-    model: ClassifierMixin | None = None,
+    model: BaseEstimator | None = None,
     cv: BaseCrossValidator | int | Iterable | None = None,
-    metrics: str | Callable | list[str | Callable] | None = "balanced_accuracy",
+    metrics: str | Callable | list[str | Callable] | None = None,
     n_jobs: int | None = None,
     return_estimator: bool = False,
     random_state: int | np.random.RandomState = 42,
@@ -45,7 +40,7 @@ def evaluate_site_prediction(
     predict ``sites`` from ``X`` under cross-validation and reports the
     requested performance ``metrics`` on the held-out folds.
 
-    Internally, this is a thin, validated wrapper around
+    Internally, this is a validated wrapper around
     :func:`sklearn.model_selection.cross_validate`, so any scikit-learn
     classifier, cross-validation splitter, or scorer is supported.
 
@@ -63,6 +58,11 @@ def evaluate_site_prediction(
         following the sklearn classifier API (i.e. exposing ``fit`` and
         ``predict``) can be used. If None, a
         :class:`sklearn.linear_model.LogisticRegression` is used.
+        ``LogisticRegression`` natively dispatches between a binary and a
+        multinomial fit depending on the number of unique values in
+        ``sites``, so no manual binary/multiclass selection is required.
+        If a fitted or unfitted classifier is provided, it is cloned
+        before use, so the caller's estimator instance is never mutated.
 
     cv : int, cross-validation generator or iterable, optional (default None)
         Cross-validation splitting strategy, passed directly to
@@ -76,8 +76,14 @@ def evaluate_site_prediction(
     metrics : str, callable, or list of str/callable, optional (default None)
         Metric(s) used to score the held-out predictions, in any format
         accepted by the ``scoring`` argument of ``cross_validate`` (a
-        scorer name string, a scorer callable, or a list of either). If
-        None, defaults to ``["balanced_accuracy"]`` .
+        scorer name string, a scorer callable, or a list of either). Raw
+        metric functions from ``sklearn.metrics`` (e.g.
+        ``balanced_accuracy_score``) are not valid scorers on their own;
+        wrap them with :func:`sklearn.metrics.make_scorer` first. If
+        None, defaults to ``["balanced_accuracy", "roc_auc"]`` when
+        ``sites`` has 2 unique values (binary site membership), or
+        ``["balanced_accuracy", "roc_auc_ovr"]`` when it has more than 2
+        (multi-class site membership).
 
     n_jobs : int, optional (default None)
         Number of jobs to run in parallel, passed to ``cross_validate``.
@@ -108,8 +114,13 @@ def evaluate_site_prediction(
     Raises
     ------
     ValueError
-        If ``X`` and ``sites`` have mismatched lengths, or if ``sites``
-        contains fewer than 2 unique values.
+        If ``X`` and ``sites`` have mismatched lengths, if ``sites``
+        contains fewer than 2 unique values, if ``metrics`` resolves to
+        an empty list, or if scoring fails on any fold (e.g. an AUC
+        scorer that does not support multiclass targets is requested for
+        a multi-site problem). Scoring failures are raised immediately
+        rather than silently reported as ``NaN``, since silent failures
+        would defeat the purpose of a diagnostic function.
     TypeError
         If ``model`` is provided but does not follow the sklearn
         classifier API.
@@ -155,8 +166,8 @@ def evaluate_site_prediction(
 
     logger.info(f"Evaluating site prediction across {n_sites} sites and {X.shape[0]} samples")
 
-    resolved_model = _resolve_model(model, random_state)
-    scoring = _resolve_metrics(metrics)
+    resolved_model = _resolve_model(model, n_sites, random_state)
+    scoring = _resolve_metrics(metrics, n_sites)
 
     logger.debug(f"Model: {resolved_model}")
     logger.debug(f"Scoring: {list(scoring.keys())}")
@@ -170,6 +181,7 @@ def evaluate_site_prediction(
         cv=cv,
         n_jobs=n_jobs,
         return_estimator=return_estimator,
+        error_score="raise",
     )
 
     results: dict[str, Any] = {
@@ -183,7 +195,7 @@ def evaluate_site_prediction(
             "mean": float(np.mean(scores)),
             "std": float(np.std(scores)),
         }
-        logger.debug(f"{metric_name}: {np.mean(scores):.4f} +- {np.std(scores):.4f}")
+        logger.info(f"{metric_name}: {np.mean(scores):.4f} +- {np.std(scores):.4f}")
 
     if return_estimator:
         results["estimators"] = cv_results["estimator"]
@@ -192,7 +204,8 @@ def evaluate_site_prediction(
 
 
 def _resolve_model(
-    model: ClassifierMixin | BaseEstimator | None,
+    model: BaseEstimator | None,
+    n_sites: int,
     random_state: int | np.random.RandomState,
 ) -> BaseEstimator:
     """Resolve the classifier used to predict site membership.
@@ -212,8 +225,10 @@ def _resolve_model(
     Returns
     -------
     sklearn classifier
-        The resolved, unfitted classifier (a clone if ``model`` was
-        provided, to avoid mutating the caller's estimator).
+        The resolved, unfitted classifier. A clone of ``model`` is
+        returned when ``model`` is provided, so that the caller's
+        estimator instance is never fitted or otherwise mutated in
+        place.
 
     Raises
     ------
@@ -222,24 +237,32 @@ def _resolve_model(
 
     """
     if model is None:
-        logger.debug("No model provided, using LogisticRegression as default.")
-        model = LogisticRegression(max_iter=1000, random_state=random_state)
+        problem_type = "binary" if n_sites == 2 else "multinomial"
+        logger.info(f"No model provided, using LogisticRegression ({problem_type}) as default.")
+        return LogisticRegression(max_iter=1000, random_state=random_state)
 
-    elif not (hasattr(model, "fit") and hasattr(model, "predict")) or not is_classifier(model):
+    if not (hasattr(model, "fit") and hasattr(model, "predict")) or not is_classifier(model):
         raise TypeError(f"model must be a sklearn-compatible classifier, got {type(model)}")
 
-    return model
+    return clone(model)
 
 
 def _resolve_metrics(
     metrics: str | Callable | list[str | Callable] | None,
+    n_sites: int,
 ) -> dict[str, str | Callable]:
     """Resolve the metrics used to score site prediction into a scoring dict.
 
     Parameters
     ----------
     metrics : str, callable, list of str/callable, or None
-        User-provided scoring specification.
+        User-provided scoring specification. If None, defaults to
+        balanced accuracy plus an AUC variant appropriate for the number
+        of sites (``"roc_auc"`` for 2 sites, ``"roc_auc_ovr"`` for more).
+    n_sites : int
+        Number of unique sites. Used to choose between ``"roc_auc"``
+        (binary) and ``"roc_auc_ovr"`` (multi-class) when ``metrics`` is
+        None.
 
     Returns
     -------
@@ -249,14 +272,52 @@ def _resolve_metrics(
         output keys stable regardless of whether a metric was passed as a
         scorer name string or as a callable.
 
+    Raises
+    ------
+    ValueError
+        If ``metrics`` resolves to an empty list.
+
     """
     if metrics is None:
-        metrics = ["balanced_accuracy"]
+        auc_metric = "roc_auc" if n_sites == 2 else "roc_auc_ovr"
+        metrics = ["balanced_accuracy", auc_metric]
     elif not isinstance(metrics, list):
         metrics = [metrics]
 
+    if len(metrics) == 0:
+        raise ValueError("metrics must contain at least one scorer name or callable, got an empty list")
+
     scoring: dict[str, str | Callable] = {}
     for metric in metrics:
-        name = metric if isinstance(metric, str) else getattr(metric, "__name__", str(metric))
-        scoring[name] = metric
+        scoring[_metric_name(metric)] = metric
     return scoring
+
+
+def _metric_name(metric: str | Callable) -> str:
+    """Derive a human-readable key for a metric or scorer.
+
+    Parameters
+    ----------
+    metric : str or callable
+        A scorer name, a metric function (with a ``__name__``), or a
+        scorer object produced by :func:`sklearn.metrics.make_scorer`
+        (which does not expose ``__name__`` directly, but wraps the
+        original metric function in a private ``_score_func``
+        attribute).
+
+    Returns
+    -------
+    str
+        ``metric`` itself if it is already a string; the wrapped metric
+        function's name for a ``make_scorer`` object; the callable's
+        ``__name__`` otherwise; or ``str(metric)`` as a last resort.
+
+    """
+    if isinstance(metric, str):
+        return metric
+    if hasattr(metric, "__name__"):
+        return metric.__name__
+    score_func = getattr(metric, "_score_func", None)
+    if score_func is not None and hasattr(score_func, "__name__"):
+        return score_func.__name__
+    return str(metric)
