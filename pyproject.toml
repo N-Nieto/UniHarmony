@@ -156,6 +156,9 @@ addopts = [
     "--strict-markers",
     "-vv",
 ]
+markers = [
+    "docs: mark test related to docs",
+]
 
 [tool.towncrier]
 package = "uniharmony"
