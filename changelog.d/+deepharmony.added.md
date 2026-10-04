@@ -1,0 +1,1 @@
+Add `uniharmony.dl.DeepHarmony` (Dewey et al., 2019), a U-Net based contrast harmonization method for multi-contrast MR images trained on an overlap cohort, with 2.5D prediction and optional harmonization of target-protocol images. Requires the new optional `dl` extra (PyTorch).
