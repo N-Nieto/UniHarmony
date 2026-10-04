@@ -1,6 +1,9 @@
-"""Tests for NeuroComBat transformer."""
+"""NeuroComBat-specific tests.
 
-from collections.abc import Callable
+Behaviour shared by all ComBat variants (API, site validation, covariates,
+harmonization effect, sklearn compatibility) is tested in ``test_combat_common.py``.
+"""
+
 from pathlib import Path
 
 import numpy as np
@@ -9,57 +12,14 @@ import pytest
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import balanced_accuracy_score
-from sklearn.utils.estimator_checks import parametrize_with_checks
 
 from uniharmony.combat import NeuroComBat
 from uniharmony.datasets import load_MAREoS
 
 
-def _ex_failed_checks(_) -> dict[str, str]:
-    return {
-        "check_transformers_unfitted": "checked inside",
-        "check_n_features_in_after_fitting": "not needed",
-        "check_estimators_nan_inf": "checked inside",
-        "check_fit_score_takes_y": "sites instead of y",
-        "check_estimators_dtypes": "sites instead of y",
-        "check_dtype_object": "sites instead of y",
-        "check_estimators_pickle": "sites instead of y",
-        "check_f_contiguous_array_estimator": "sites instead of y",
-        "check_transformer_data_not_an_array": "sites instead of y",
-        "check_transformer_preserve_dtypes": "sites instead of y",
-        "check_transformer_general": "sites instead of y",
-        "check_methods_sample_order_invariance": "sites instead of y",
-        "check_methods_subset_invariance": "sites instead of y",
-        "check_dict_unchanged": "sites instead of y",
-        "check_fit_idempotent": "sites instead of y",
-        "check_n_features_in": "not needed",
-        "check_fit2d_predict1d": "sites instead of y",
-        "check_fit2d_1sample": "custom message",
-        "check_requires_y_none": "target cannot be None",
-    }
-
-
-@parametrize_with_checks(
-    [
-        NeuroComBat(empirical_bayes=True, parametric_adjustments=True, mean_only=True),
-        NeuroComBat(empirical_bayes=True, parametric_adjustments=True, mean_only=False),
-        NeuroComBat(empirical_bayes=False, parametric_adjustments=True, mean_only=True),
-        NeuroComBat(empirical_bayes=False, parametric_adjustments=True, mean_only=False),
-    ],
-    expected_failed_checks=_ex_failed_checks,
-)
-def test_neuro_combat_compat_sklearn(estimator: object, check: Callable) -> None:
-    """Test NeuroComBat compatibility with sklearn.
-
-    Parameters
-    ----------
-    estimator : object
-        Instance of NeuroComBat.
-    check : callable
-        sklearn fixture.
-
-    """
-    check(estimator)
+# ---------------------------------------------------------------------------
+# Original neuroCombat example data and MAREoS benchmark
+# ---------------------------------------------------------------------------
 
 
 def test_neuro_combat_ops_original() -> None:
@@ -86,134 +46,6 @@ def test_neuro_combat_ops_impl() -> None:
         continuous_covariates=covars[["age"]].to_numpy(),
     )
     assert data_combat.shape == data.shape
-
-
-def test_neuro_combat_reproducibility() -> None:
-    """Test reproducibility of NeuroComBat."""
-    data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
-    batches = np.array([1, 1, 1, 1, 1, 2, 2, 2, 2, 2])
-    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2])
-    data_combat_v1 = NeuroComBat().fit_transform(
-        data.T,
-        batches,
-        categorical_covariates=genders,
-    )
-    data_combat_v2 = NeuroComBat().fit_transform(
-        data.T,
-        batches,
-        categorical_covariates=genders,
-    )
-    np.testing.assert_array_equal(data_combat_v1, data_combat_v2, strict=True)
-
-
-def test_neuro_combat_reproducibility_categorical() -> None:
-    """Test reproducibility of NeuroComBat with categoricals."""
-    data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
-    batches = np.array([1, 1, 1, 1, 1, 2, 2, 2, 2, 2])
-    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2])
-    data_combat_v1 = NeuroComBat().fit_transform(
-        data.T,
-        batches,
-        categorical_covariates=genders,
-    )
-    data_combat_v2 = NeuroComBat().fit_transform(
-        data.T,
-        batches,
-    )
-    with pytest.raises(AssertionError):
-        np.testing.assert_array_equal(data_combat_v1, data_combat_v2, strict=True)
-
-
-def test_neuro_combat_no_parametrics() -> None:
-    """Test reproducibility of NeuroComBat with categoricals."""
-    data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
-    batches = np.array([1, 1, 1, 1, 1, 2, 2, 2, 2, 2])
-    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2])
-    _ = NeuroComBat(empirical_bayes=True, parametric_adjustments=False, mean_only=False).fit_transform(
-        data.T,
-        batches,
-        categorical_covariates=genders,
-    )
-
-
-def test_neuro_combat_site_with_nan() -> None:
-    """Test Site with nan."""
-    data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
-    batches = np.array([1, 1, 1, np.nan, 1, 2, 2, 2, 2, 2], dtype=object)
-    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2])
-    with pytest.raises(ValueError):
-        _ = NeuroComBat(empirical_bayes=True, parametric_adjustments=False, mean_only=False).fit_transform(
-            data.T,
-            batches,
-            categorical_covariates=genders,
-        )
-
-
-def test_neuro_combat_covars_with_nan() -> None:
-    """Test covars with nan."""
-    data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
-    batches = np.array([1, 1, 1, 1, 1, 2, 2, 2, 2, 2], dtype=object)
-    genders = np.array([1, 2, 1, 2, np.nan, 2, 1, 2, 1, 2], dtype=object)
-    with pytest.raises(ValueError):
-        _ = NeuroComBat(empirical_bayes=True, parametric_adjustments=False, mean_only=False).fit_transform(
-            data.T,
-            batches,
-            categorical_covariates=genders,
-        )
-
-
-def test_neuro_combat_sites_as_str() -> None:
-    """Test sites as str."""
-    data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
-    batches = ["1", "1", "1", "1", "1", "2", "2", "2", "2", "2"]
-    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2])
-
-    _ = NeuroComBat(empirical_bayes=True, parametric_adjustments=False, mean_only=False).fit_transform(
-        data.T,
-        batches,
-        categorical_covariates=genders,
-    )
-
-
-def test_neuro_combat_unseen_site() -> None:
-    """Test unseen sites."""
-    data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
-    batches = ["1", "1", "1", "1", "1", "2", "2", "2", "2", "2"]
-    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2])
-    neurocombat = NeuroComBat(empirical_bayes=True, parametric_adjustments=False, mean_only=False)
-    _ = neurocombat.fit(
-        data.T,
-        batches,
-        categorical_covariates=genders,
-    )
-    batches_unseen = ["3", "3", "3", "3", "3", "4", "4", "5", "5", "5"]
-    with pytest.raises(ValueError):
-        _ = neurocombat.transform(data.T, batches_unseen, categorical_covariates=genders)
-
-
-def test_neuro_combat_unseen_site_same_nsites() -> None:
-    """Test sites  unseen sites with matching number of sites."""
-    data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
-    batches = ["1", "1", "1", "1", "1", "2", "2", "2", "2", "2"]
-    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2])
-    neurocombat = NeuroComBat(empirical_bayes=True, parametric_adjustments=False, mean_only=False)
-    _ = neurocombat.fit(
-        data.T,
-        batches,
-        categorical_covariates=genders,
-    )
-    batches_unseen = ["3", "3", "3", "3", "3", "4", "4", "4", "4", "4"]
-    with pytest.raises(ValueError):
-        _ = neurocombat.transform(data.T, batches_unseen, categorical_covariates=genders)
-
-
-def test_neuro_combat_max_iter() -> None:
-    """Test sites max iter."""
-    data = np.genfromtxt(Path(__file__).parent / "test_data.csv", delimiter=",", skip_header=1)
-    batches = ["1", "1", "1", "1", "1", "2", "2", "2", "2", "2"]
-    genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2])
-    neurocombat = NeuroComBat(empirical_bayes=True, parametric_adjustments=True, mean_only=False)
-    _ = neurocombat.fit(data.T, batches, categorical_covariates=genders, max_iter=1)
 
 
 def test_neuro_combat_performance_mareos() -> None:
@@ -287,3 +119,49 @@ def test_neuro_combat_performance_mareos() -> None:
                     assert np.isclose(0.5, np.array(neuro_combat_bacc).mean(), atol=0.2)
                     # The baseline performance should still be high using EoS information, around 80% bacc.
                     assert np.isclose(np.array(baseline_bacc).mean(), 0.8, atol=0.2)
+
+
+# ---------------------------------------------------------------------------
+# Design matrix and agreement with the reference neuroCombat implementation
+# Data comes from the shared fixtures in tests/conftest.py
+# ---------------------------------------------------------------------------
+
+REFERENCE_COVARIATE_COMBINATIONS = [
+    (("sex", "education"), ("age",)),
+    (("sex",), ("age", "education")),
+    (("sex", "education"), ("age", "extra")),
+]
+
+
+def test_neuro_combat_design_matrix_one_block_per_covariate(multisite_data) -> None:
+    """Each covariate column gets its own block in the design matrix."""
+    d = multisite_data
+    model = NeuroComBat()
+    design = model.fit_design_matrix(
+        sites=d.sites,
+        categorical_covariates=d.get("sex", "education"),
+        continuous_covariates=d.get("age"),
+    )
+    # 3 sites + 1 sex dummy (drop-first) + 3 education dummies (drop-first) + 1 age column
+    assert design.shape == (d.n_samples, 3 + 1 + 3 + 1)
+    assert len(model._categorical_encoders) == 2
+    np.testing.assert_array_equal(design[:, -1], d.covariates["age"])
+
+
+@pytest.mark.parametrize(("categorical", "continuous"), REFERENCE_COVARIATE_COMBINATIONS)
+def test_neuro_combat_matches_reference_with_multiple_covariates(multisite_data, categorical: tuple, continuous: tuple) -> None:
+    """Results match the reference neuroCombat implementation."""
+    neuro_combat = pytest.importorskip("neuroCombat")
+    d = multisite_data
+    covars = pd.DataFrame({"batch": d.sites, **{name: d.covariates[name] for name in categorical + continuous}})
+    expected = neuro_combat.neuroCombat(
+        dat=d.X.T,
+        covars=covars,
+        batch_col="batch",
+        categorical_cols=list(categorical),
+        continuous_cols=list(continuous),
+    )["data"].T
+    result = NeuroComBat().fit_transform(
+        d.X, d.sites, categorical_covariates=d.get(*categorical), continuous_covariates=d.get(*continuous)
+    )
+    np.testing.assert_allclose(result, expected, rtol=1e-6, atol=1e-6)

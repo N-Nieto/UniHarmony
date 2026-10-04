@@ -1,0 +1,1 @@
+Fix ComBat-based methods (`NeuroComBat`, `CovBat`, `ComBatGAM`) when more than one categorical, continuous or smooth covariate column is given; columns were previously flattened into a single column. `CovBat.transform` now also accepts 1D covariates.

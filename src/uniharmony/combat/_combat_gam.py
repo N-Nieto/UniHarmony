@@ -8,6 +8,7 @@ import numpy as np
 import numpy.typing as npt
 import pandas as pd
 import structlog
+from sklearn.utils import check_random_state
 from sklearn.utils.validation import (
     check_is_fitted,
 )
@@ -16,6 +17,7 @@ from statsmodels.gam.api import BSplines
 from uniharmony._utils import validate_sites
 
 from ._base import BaseComBat
+from ._design_matrix_mixin import _as_2d_columns
 
 
 __all__ = ["ComBatGAM"]
@@ -37,6 +39,10 @@ class ComBatGAM(BaseComBat):
         Whether to perform parametric adjustments.
     mean_only : bool, optional (default False)
         Whether to only adjust mean (no scaling).
+    random_state : int, RandomState instance or None, optional (default None)
+        Controls the shuffling of the k-fold cross-validation used to select
+        the GAM penalty weights. Pass an int for reproducible results across
+        multiple calls.
 
     Attributes
     ----------
@@ -57,10 +63,12 @@ class ComBatGAM(BaseComBat):
         empirical_bayes: bool = True,
         parametric_adjustments: bool = True,
         mean_only: bool = False,
+        random_state: int | np.random.RandomState | None = None,
     ) -> None:
         self.empirical_bayes = empirical_bayes
         self.parametric_adjustments = parametric_adjustments
         self.mean_only = mean_only
+        self.random_state = random_state
 
     def fit(
         self,
@@ -159,8 +167,11 @@ class ComBatGAM(BaseComBat):
         # Setup design matrix for smoothing
         logger.debug("Setting up smoothing using B-Splines")
         # Create cubic spline basis for smooth covariates
-        x_spline = smooth_covariates.reshape(-1, 1).copy()
-        smooth_covariates_cols = smooth_covariates.reshape(-1, 1).shape[1]
+        x_spline = _as_2d_columns(smooth_covariates, "smooth_covariates").copy()
+        smooth_covariates_cols = x_spline.shape[1]
+        self._n_smooth_covariates = smooth_covariates_cols
+        if smooth_covariates_cols > 1 and smooth_covariates_bounds != (None, None):
+            raise ValueError("smooth_covariates_bounds is currently only supported for a single smooth covariate.")
         if smooth_covariates_cols == 1:
             self._bsplines = BSplines(
                 x_spline,
@@ -189,7 +200,7 @@ class ComBatGAM(BaseComBat):
             df_gam[v] = design[:, b]
         # Set data from continuous covariates
         if self._continuous_covariates_used:
-            cont_covs = continuous_covariates.reshape(-1, 1)
+            cont_covs = _as_2d_columns(continuous_covariates, "continuous_covariates")
             for c in range(cont_covs.shape[1]):
                 v = f"c{c!s}"
                 formula += f"{v} + "
@@ -210,6 +221,7 @@ class ComBatGAM(BaseComBat):
             smooth_formula=formula,
             df_gam=df_gam,
             epsilon=var_epsilon,
+            random_state=check_random_state(self.random_state),
         )
 
         self.fit_ls_model(
@@ -287,7 +299,12 @@ class ComBatGAM(BaseComBat):
         # Setup design matrix for smoothing
         logger.debug("Setting up smoothing using B-Splines")
         # Create cubic spline basis for smooth covariates
-        x_spline = smooth_covariates.reshape(-1, 1).copy()
+        x_spline = _as_2d_columns(smooth_covariates, "smooth_covariates").copy()
+        if x_spline.shape[1] != self._n_smooth_covariates:
+            raise ValueError(
+                f"smooth_covariates has {x_spline.shape[1]} columns, but {self._n_smooth_covariates} were seen during fit."
+            )
+        x_spline = self._clip_to_spline_range(x_spline)
         bs_basis = self._bsplines.transform(x_spline)
         # Construct dataframe required for GAM
         df_gam = {}
@@ -297,7 +314,7 @@ class ComBatGAM(BaseComBat):
             df_gam[v] = design[:, b]
         # Set data from continuous covariates
         if self._continuous_covariates_used:
-            cont_covs = continuous_covariates.reshape(-1, 1)
+            cont_covs = _as_2d_columns(continuous_covariates, "continuous_covariates")
             for c in range(cont_covs.shape[1]):
                 v = f"c{c!s}"
                 df_gam[v] = cont_covs[:, c].astype(float)
@@ -318,6 +335,38 @@ class ComBatGAM(BaseComBat):
         )
 
         return bayes_data.T
+
+    def _clip_to_spline_range(self, x_spline: npt.NDArray) -> npt.NDArray:
+        """Clip smooth covariates to the range covered by the fitted B-splines.
+
+        B-splines cannot be evaluated outside their outermost knots (the
+        training range, or ``smooth_covariates_bounds`` if given). Values
+        outside that range are clipped to its boundary, so the smooth effect
+        is extrapolated as a constant, and a warning is logged.
+
+        Parameters
+        ----------
+        x_spline : array, shape (n_samples, n_smooth_covariates)
+            Smooth covariates to transform.
+
+        Returns
+        -------
+        array, shape (n_samples, n_smooth_covariates)
+            The clipped smooth covariates.
+
+        """
+        x_spline = x_spline.astype(float, copy=True)
+        for i, smoother in enumerate(self._bsplines.smoothers):
+            lower, upper = smoother.knots.min(), smoother.knots.max()
+            outside = (x_spline[:, i] < lower) | (x_spline[:, i] > upper)
+            if np.any(outside):
+                logger.warning(
+                    f"{int(outside.sum())} sample(s) have smooth covariate {i} outside the fitted range "
+                    f"[{lower:.4g}, {upper:.4g}]. They are clipped to the boundary (constant extrapolation). "
+                    "Use smooth_covariates_bounds at fit time to cover the expected range."
+                )
+                x_spline[:, i] = np.clip(x_spline[:, i], lower, upper)
+        return x_spline
 
     # Overridden to allow smooth_covariates
     def fit_transform(
