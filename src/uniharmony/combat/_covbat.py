@@ -15,11 +15,7 @@ import numpy.typing as npt
 import structlog
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
-from sklearn.utils.validation import (
-    FLOAT_DTYPES,
-    check_array,
-    check_is_fitted,
-)
+from sklearn.utils.validation import check_is_fitted
 
 from ._base import BaseComBat
 from ._neuro_combat import NeuroComBat
@@ -394,10 +390,10 @@ class _ResidualNeuroComBat(NeuroComBat):
         X, sites = self._check_X_sites(X, sites, estimator=self)
 
         if self._categorical_covariates_used:
-            categorical_covariates = check_array(categorical_covariates, dtype=None, estimator=self)
+            categorical_covariates = self._check_categorical_covariates(X, categorical_covariates, estimator=self)
 
         if self._continuous_covariates_used:
-            continuous_covariates = check_array(continuous_covariates, dtype=FLOAT_DTYPES, estimator=self)
+            continuous_covariates = self._check_continuous_covariates(X, continuous_covariates, estimator=self)
 
         # neuroCombat convention: rows = features, columns = samples
         X = X.T

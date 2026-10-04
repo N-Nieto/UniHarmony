@@ -4,6 +4,7 @@ import numpy as np
 import numpy.typing as npt
 import pandas as pd
 import structlog
+from sklearn.utils import check_random_state
 from statsmodels.gam.api import GLMGam
 
 from uniharmony._utils import (
@@ -20,6 +21,56 @@ logger = structlog.get_logger()
 logger = logger.bind(src="StandardizationMixin")
 
 
+class _ShuffledKFold:
+    """K-fold splitter for statsmodels GAM penalty selection with a seedable shuffle.
+
+    ``GLMGam.select_penweight_kfold`` shuffles its default folds with an
+    unseeded generator (statsmodels >= 0.15) or the global NumPy generator
+    (statsmodels < 0.15), so results are not reproducible. This splitter
+    yields the same boolean masks as statsmodels' ``KFold`` but shuffles with
+    the given random state.
+
+    Parameters
+    ----------
+    k_folds : int, optional (default 5)
+        Number of folds (statsmodels' default).
+    random_state : RandomState instance or None, optional (default None)
+        Random generator used to shuffle the samples before splitting.
+
+    """
+
+    def __init__(self, k_folds: int = 5, random_state: np.random.RandomState | None = None) -> None:
+        self.k_folds = k_folds
+        self.random_state = check_random_state(random_state)
+
+    def split(self, X: npt.ArrayLike, y: npt.ArrayLike | None = None, label: npt.ArrayLike | None = None):
+        """Yield boolean train and test masks.
+
+        Parameters
+        ----------
+        X : array-like, shape (n_samples, ...)
+            Data, only used to get the number of samples.
+        y : array-like or None, optional (default None)
+            Unused, present for statsmodels compatibility.
+        label : array-like or None, optional (default None)
+            Unused, present for statsmodels compatibility.
+
+        Yields
+        ------
+        train_mask : ndarray of bool, shape (n_samples,)
+            Training samples of the fold.
+        test_mask : ndarray of bool, shape (n_samples,)
+            Test samples of the fold.
+
+        """
+        n_samples = np.asarray(X).shape[0]
+        index = self.random_state.permutation(n_samples)
+        for fold in np.array_split(index, self.k_folds):
+            test_mask = np.zeros(n_samples, dtype=bool)
+            test_mask[fold] = True
+            yield ~test_mask, test_mask
+
+
 class StandardizationMixin:
     """Mixin class to perform standardization of features."""
 
@@ -33,6 +84,7 @@ class StandardizationMixin:
         smooth_formula: str | None,
         df_gam: pd.DataFrame | None,
         epsilon: float = 1e-8,
+        random_state: np.random.RandomState | None = None,
     ) -> npt.NDArray:
         """Standardization of the features.
 
@@ -57,10 +109,11 @@ class StandardizationMixin:
             Smoothing formula.
         df_gam : pd.DataFrame or None
             Dataframe for GAM.
-        bsplines : statsmodels.gam.api.BSplines or None
-            BSplines for GAM.
         epsilon : float, optional (default 1e-8)
             Small constant to add to variance to avoid division by zero.
+        random_state : RandomState instance or None, optional (default None)
+            Random generator used to shuffle the k-fold cross-validation that
+            selects the GAM penalty weights. Only used when smoothing.
 
         Returns
         -------
@@ -84,7 +137,7 @@ class StandardizationMixin:
                 gam_bs.fit()
                 # Optimal penalization weights alpha can be obtained through gcv/kfold
                 # Note: kfold is faster, gcv is more robust
-                gam_bs.alpha = gam_bs.select_penweight_kfold()[0]
+                gam_bs.alpha = gam_bs.select_penweight_kfold(cv_iterator=_ShuffledKFold(random_state=random_state))[0]
                 res_bs_optim = gam_bs.fit()
                 self._beta_hat[:, i] = res_bs_optim.params
         else:
