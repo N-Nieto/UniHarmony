@@ -606,7 +606,7 @@ class DeepHarmony(TransformerMixin, BaseEstimator):
                 # Record the validation error of the final (recalibrated) network
                 history["val_mae"][-1] = (self.n_epochs, self._validation_mae(network, axis, *validation_data))
 
-        network.train(False)
+        network.eval()
         network.to("cpu")
         self.history_[key] = history
         return network
@@ -637,7 +637,7 @@ class DeepHarmony(TransformerMixin, BaseEstimator):
                 network(torch.from_numpy(x_batch).to(self._device))
         for module, momentum in zip(batch_norms, momenta, strict=True):
             module.momentum = momentum
-        network.train(False)
+        network.eval()
 
     def _validation_mae(
         self,
@@ -685,7 +685,7 @@ class DeepHarmony(TransformerMixin, BaseEstimator):
         """
         was_training = network.training
         device = next(network.parameters()).device
-        network.train(False)
+        network.eval()
         slices = np.moveaxis(volume, axis + 1, 0)  # (n_slices, n_contrasts, H, W)
         n_slices, n_contrasts, height, width = slices.shape
         padded_height = -(-height // SIZE_MULTIPLE) * SIZE_MULTIPLE

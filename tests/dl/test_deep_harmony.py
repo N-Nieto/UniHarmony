@@ -148,7 +148,7 @@ def test_unet_keras_initialization() -> None:
 
 def test_unet_output_non_negative_and_shape() -> None:
     """The final ReLU makes outputs non-negative; any size multiple of 16 works."""
-    network = DeepHarmonyUNet(3, 2).train(False)
+    network = DeepHarmonyUNet(3, 2).eval()
     out = network(torch.randn(1, 3, 48, 32))
     assert out.shape == (1, 2, 48, 32)
     assert torch.all(out >= 0)
@@ -316,7 +316,7 @@ def _training_batch_l1(network: DeepHarmonyUNet, cohort: dict, train_mode: bool)
     network.train(train_mode)
     with torch.no_grad():
         loss = float((network(torch.from_numpy(x_batch)) - torch.from_numpy(y_batch)).abs().mean())
-    network.train(False)
+    network.eval()
     return loss
 
 

@@ -98,6 +98,8 @@ extend-exclude = [
 
 [tool.ruff.lint]
 select = [
+    # flake8-bandit: builtin eval() only (method calls such as model.eval() are fine)
+    "S307",
     # flake8-bugbear
     "B",
     # flake8-blind-except
