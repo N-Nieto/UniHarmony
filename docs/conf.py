@@ -45,6 +45,9 @@ extensions = [
     "sphinx_gallery.gen_gallery",  # example gallery
 ]
 
+# PyTorch is an optional dependency (uniharmony[dl]); mock it so autodoc can document uniharmony.dl
+autodoc_mock_imports = ["torch"]
+
 templates_path = ["_templates"]
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
