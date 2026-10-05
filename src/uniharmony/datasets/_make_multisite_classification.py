@@ -121,7 +121,6 @@ def make_multisite_classification(
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, dict[str, np.ndarray], np.ndarray]: ...
 
 
-@overload
 def make_multisite_classification(
     n_sites: int = 2,
     n_samples: int | list[int] = 1000,
@@ -194,10 +193,8 @@ def make_multisite_classification(
     signal_strength : list of float or float, optional (default 1.0)
         Strength of the signal component separating classes. Passed as 'class_sep` to ``sklearn.datasets.make_classification`.
 
-
     noise_strength : list of float or float, optional (default 0.1)
         Strength of the noise component by site. If one component is passed, all sites has the same noise_strength.
-
 
     site_effect_type : str, optional (default "location")
         Type of site effect to add to the original data.
@@ -205,7 +202,6 @@ def make_multisite_classification(
 
     site_effect_strength : float, optional (default 3.0)
         Strength of site-specific effects.
-
 
     site_effect_homogeneous : bool, optional (default True)
         Whether the site effect is homogeneous (same for all samples in a site).
@@ -221,7 +217,6 @@ def make_multisite_classification(
     random_state : int or RandomState instance, (default 42)
         The seed of the pseudo random number generator or RandomState for
         reproducibility.
-
 
     kwargs : dict
         Additional keyword arguments passed to ``sklearn.datasets.make_classification``.

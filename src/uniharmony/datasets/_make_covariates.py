@@ -182,11 +182,7 @@ class Covariate:
 
 
 def make_covariate_site_distributions(
-<<<<<<< HEAD
     locs: list[float] | None = None,
-=======
-    locs: list[float],
->>>>>>> 184e0b72 (refactor: make_multisite_classification with covariates)
     scales: list[float] | float = 1.0,
     clips: list[tuple[float, float] | None] | tuple[float, float] | None = None,
     probs: list[list[float]] | list[float] | None = None,
@@ -233,7 +229,6 @@ def make_covariate_site_distributions(
     45.0
 
     """
-<<<<<<< HEAD
     logger.debug(f"locs: {locs} and probs: {probs}")
 
     # Determine number of sites
@@ -245,9 +240,6 @@ def make_covariate_site_distributions(
         raise ValueError(
             "When using a single probability vector, you must provide 'locs' (with None values) to specify the number of sites."
         )
-=======
-    n = len(locs)
->>>>>>> 184e0b72 (refactor: make_multisite_classification with covariates)
 
     # Broadcast scales
     scales_list: list[float] = [float(scales)] * n if isinstance(scales, (int, float)) else list(scales)
@@ -271,13 +263,9 @@ def make_covariate_site_distributions(
         probs_list = list(probs)
     if len(probs_list) != n:
         raise ValueError(f"'probs' has {len(probs_list)} entries but 'locs' has {n}.")
-<<<<<<< HEAD
     # Broadcast None
     if locs is None:
         locs: list = [None] * n
-=======
-
->>>>>>> 184e0b72 (refactor: make_multisite_classification with covariates)
     return [
         CovariateSiteDistribution(loc=locs[i], scale=scales_list[i], probs=probs_list[i], clip=clips_list[i]) for i in range(n)
     ]
@@ -338,13 +326,9 @@ def _make_preset_covariate(
 
     if name.lower() == "sex":
         # Equally distributed sex
-<<<<<<< HEAD
         dists = make_covariate_site_distributions(
             probs=[cast("list[float]", [0.5, 0.5])] * n_sites,
         )
-=======
-        dists = [CovariateSiteDistribution(probs=[0.5, 0.5])]
->>>>>>> 184e0b72 (refactor: make_multisite_classification with covariates)
         return Covariate(
             name="sex",
             site_distributions=dists,
