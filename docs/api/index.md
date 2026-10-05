@@ -7,5 +7,6 @@ datasets/index
 metrics/index
 combat_based/index
 interpolation_based/index
+iqm_based/index
 ot_based/index
 ```
