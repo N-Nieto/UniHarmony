@@ -1,0 +1,1 @@
+Add `uniharmony.iqm.BARTharm` (Prevot et al., 2025), which harmonizes scanner effects using image quality metrics instead of site labels, with Bayesian additive regression trees. Translated from the BARTharm R code, including the SoftBART forests (Linero & Yang, 2018), with optional site-specific variance scaling and harmonization of new subjects.
