@@ -318,35 +318,3 @@ class ComBatGAM(BaseComBat):
         )
 
         return bayes_data.T
-
-    # Overridden to allow smooth_covariates
-    def fit_transform(
-        self,
-        X: npt.ArrayLike,
-        sites: npt.ArrayLike,
-        smooth_covariates: npt.ArrayLike,
-        **fit_params,
-    ) -> npt.NDArray:
-        """Fit to data, then transform it.
-
-        Fits transformer to `X` and `sites` with optional parameters
-        `fit_params` and returns a transformed version of `X`.
-
-        Parameters
-        ----------
-        X : array-like, shape (n_samples, n_features)
-            Input samples.
-        sites : array-like, shape (n_samples, 1)
-            Sites.
-        smooth_covariates : array-like, shape (n_samples, n_smooth_terms)
-            The smooth, non-linear covariates. GAMs are used for optimal smoothing (e.g., age).
-        **fit_params : dict
-            Additional fit parameters.
-
-        Returns
-        -------
-        array, shape (n_samples, n_features)
-            Transformed array.
-
-        """
-        return self.fit(X, sites, smooth_covariates, **fit_params).transform(X, sites, smooth_covariates, **fit_params)
