@@ -1,5 +1,8 @@
 """Provide BaseComBat."""
 
+import inspect
+from typing import Any
+
 import numpy.typing as npt
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils import Tags
@@ -115,34 +118,66 @@ class BaseComBat(DesignMatrixMixin, StandardizationMixin, LocationAndScaleMixin,
         check_consistent_length(X, continuous_covariates)
         return continuous_covariates
 
-    # Overridden to allow sites
+    # Overridden to allow sites and to route arguments between fit and transform
     def fit_transform(
         self,
         X: npt.ArrayLike,
         sites: npt.ArrayLike,
-        **fit_params,
+        *args: Any,
+        **kwargs: Any,
     ) -> npt.NDArray:
         """Fit to data, then transform it.
 
-        Fits transformer to `X` and `sites` with optional parameters
-        `fit_params` and returns a transformed version of `X`.
+        Arguments are matched to the parameters of :meth:`fit` and
+        :meth:`transform` by name, so the same call works for every ComBat
+        variant:
+
+        * data shared by both (e.g., covariates) are passed to both,
+        * fit-only options (e.g., ``var_epsilon``, ``max_iter``, ``df``) only to :meth:`fit`,
+        * transform-only options only to :meth:`transform`.
+
+        Positional arguments after ``sites`` follow the order of :meth:`fit`.
 
         Parameters
         ----------
         X : array-like, shape (n_samples, n_features)
             Input samples.
-        sites : array-like, shape (n_samples, 1)
+        sites : array-like, shape (n_samples,)
             Sites.
-        **fit_params : dict
-            Additional fit parameters.
+        *args : tuple
+            Further positional arguments of :meth:`fit`.
+        **kwargs : dict
+            Keyword arguments of :meth:`fit` and/or :meth:`transform`.
 
         Returns
         -------
         array, shape (n_samples, n_features)
             Transformed array.
 
+        Raises
+        ------
+        TypeError
+            If an argument is accepted by neither :meth:`fit` nor :meth:`transform`.
+
         """
-        return self.fit(X, sites, **fit_params).transform(X, sites, **fit_params)
+        fit_params = inspect.signature(self.fit).parameters
+        transform_params = inspect.signature(self.transform).parameters
+
+        unknown = [name for name in kwargs if name not in fit_params and name not in transform_params]
+        if unknown:
+            raise TypeError(
+                f"{type(self).__name__}.fit_transform() got unexpected keyword argument(s) {unknown}; "
+                f"valid arguments are {sorted(set(fit_params) | set(transform_params))}."
+            )
+        fit_kwargs = {name: value for name, value in kwargs.items() if name in fit_params}
+        transform_only = {name: value for name, value in kwargs.items() if name not in fit_params}
+
+        # Resolve every fit argument by name (raises TypeError like a direct fit call would)
+        bound = inspect.signature(self.fit).bind(X, sites, *args, **fit_kwargs)
+        transform_kwargs = {name: value for name, value in bound.arguments.items() if name in transform_params}
+        transform_kwargs.update(transform_only)
+
+        return self.fit(*bound.args, **bound.kwargs).transform(**transform_kwargs)
 
     # Overridden for check_is_fitted() usage
     def __sklearn_is_fitted__(self) -> bool:

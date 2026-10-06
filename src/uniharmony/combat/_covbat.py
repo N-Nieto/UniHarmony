@@ -325,32 +325,6 @@ class CovBat(BaseComBat):
 
         return reconstructed
 
-    def fit_transform(
-        self,
-        X: npt.ArrayLike,
-        sites: npt.ArrayLike,
-        categorical_covariates: npt.ArrayLike | None = None,
-        continuous_covariates: npt.ArrayLike | None = None,
-        **fit_params,
-    ) -> npt.NDArray:
-        """Fit to data, then transform it.
-
-        Overrides ``BaseComBat.fit_transform`` so that fit-only parameters
-        (e.g. ``var_epsilon``) are not forwarded to ``transform``.
-        """
-        return self.fit(
-            X=X,
-            sites=sites,
-            categorical_covariates=categorical_covariates,
-            continuous_covariates=continuous_covariates,
-            **fit_params,
-        ).transform(
-            X=X,
-            sites=sites,
-            categorical_covariates=categorical_covariates,
-            continuous_covariates=continuous_covariates,
-        )
-
     # Overridden for check_is_fitted() usage
     def __sklearn_is_fitted__(self) -> bool:
         """Check fitted status."""
