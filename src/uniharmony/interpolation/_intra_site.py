@@ -48,6 +48,11 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
     For regression tasks, the continuous target is binned into discrete
     intervals and each bin is treated as a class for balancing purposes.
 
+    Original samples are returned unchanged, with their original targets.
+    Synthetic samples get the class of the samples they were generated from;
+    for regression, their target is interpolated between the targets of their
+    parent samples (see Notes).
+
     Parameters
     ----------
     interpolator : str or SamplerMixin instance, optional (default "smote")
@@ -88,8 +93,8 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         - "quantile": Bins with approximately equal number of samples.
 
     task : {"auto", "classification", "regression"}, optional (default "auto")
-        Task type. If ``"auto"``, inferred from ``y`` dtype (integer types
-        imply classification, floating types imply regression).
+        Task type. If ``"auto"``, inferred from ``y`` dtype (boolean, integer,
+        string and object types imply classification, floating types imply regression).
         A regression problem is treated as a multi-class classification problem.
 
     Attributes
@@ -114,6 +119,19 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
 
     task_ : str
         Inferred or specified task type ("classification" or "regression").
+
+    Notes
+    -----
+    The ``interpolator`` must return the original samples first, followed by
+    the synthetic ones, as all imblearn over-samplers do.
+
+    For regression, the target of a synthetic sample is reconstructed from its
+    parents: the two original samples of the same bin, ``x_a`` and ``x_b``,
+    whose segment ``[x_a, x_b]`` passes closest to the synthetic sample ``x``. With
+    ``x ~ x_a + lam * (x_b - x_a)``, ``lam`` in [0, 1], the target is
+    ``y_a + lam * (y_b - y_a)``. This recovers SMOTE's interpolation exactly
+    (and the parent's target for random over-sampling), and keeps every
+    synthetic target within its bin.
 
     """
 
@@ -219,7 +237,7 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         )
 
         interpolator_template = self._resolve_interpolator()
-        self.random_state = check_random_state(self.random_state)
+        self._rng = check_random_state(self.random_state)
 
         # For continuos covariates
         if continuous_covariate is not None:
@@ -260,7 +278,7 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
             target_N = max(Counter(yw).values()) if self.balance_strategy == "per_site" else self.target_count_
             logger.debug(f"[ISI] For site {site}, N target for per_site strategy = {target_N}")
 
-            Xr, yr = self._resample_site(
+            Xr, yr, yr_binnarized = self._resample_site(
                 Xs,
                 ys,
                 yw,
@@ -270,13 +288,9 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
                 cont_s,
             )
 
-            # Check how many samples were created in the site for each class.
+            # Check how many samples were created in the site for each class (bin for regression).
             self.samples_created_[site] = {
-                c: max(
-                    0,
-                    np.sum((self._bin_target(yr)[0] if self.task_ == "regression" else yr) == c) - np.sum(yw == c),
-                )
-                for c in unique_classes
+                c: max(0, int(np.sum(yr_binnarized == c)) - int(np.sum(yw == c))) for c in unique_classes
             }
 
             X_out.append(Xr)
@@ -489,7 +503,7 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         interpolator_template: SamplerMixin,
         cat: np.ndarray | None,
         cont: np.ndarray | None,
-    ) -> tuple[np.ndarray, np.ndarray]:
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         """Resample a single site to achieve balanced class distribution.
 
         This method handles resampling within a single site by grouping similar
@@ -521,9 +535,11 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
 
         Returns
         -------
-        tuple[np.ndarray, np.ndarray]
+        tuple[np.ndarray, np.ndarray, np.ndarray]
             - X_resampled: Resampled feature matrix (shape: N x n_features)
-            - y_resampled: Corresponding target labels (shape: N,)
+            - y_resampled: Corresponding targets, with the dtype of ``y`` (shape: N,).
+              Original samples keep their original target.
+            - y_binnarized_resampled: Corresponding classes or bins (shape: N,)
 
         Notes
         -----
@@ -550,7 +566,7 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
             group_labels = self._create_group_labels(cat, cont, n_bins_cont_cov, binning_strategy_cont_cov)
 
         # Initialize containers for resampled data from all groups
-        X_parts, y_parts = [], []
+        X_parts, y_parts, y_bin_parts = [], [], []
 
         # Step 2: Process each group independently
         for group in np.unique(group_labels):
@@ -586,42 +602,116 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
                     if np.any(mask_cls):
                         X_parts.append(Xg[mask_cls][:group_target])
                         y_parts.append(yg[mask_cls][:group_target])
+                        y_bin_parts.append(y_bin_g[mask_cls][:group_target])
                     else:
                         logger.warning(f"[ISI] samples for class {cls}")
                 continue  # Move to next group
 
             # Step 6: Apply interpolation for groups needing oversampling
-            # Clone the template to avoid modifying the original
-            interp = clone(interpolator_template)
-            interp.set_params(sampling_strategy=sampling_strategy)
-
-            # Generate synthetic samples for minority classes
-            X_tmp, y_tmp_binnarized = interp.fit_resample(Xg, y_bin_g)
-
-            y_tmp = self._reconstruct_continuous_y(
-                y_bin_new=y_tmp_binnarized,
-                y_orig=yg,  # original continuous values in this group
-                y_bin_orig=y_bin_g,  # original bins in this group
+            X_g, y_g, y_bin_g_out = self._oversample_group(
+                Xg, yg, y_bin_g, classes, group_target, sampling_strategy, interpolator_template
             )
-            # Step 7: Post-process each class to ensure exact group_target size
-            for cls in classes:
-                # Get samples of current class
-                mask_cls = y_tmp_binnarized == cls
-                X_cls, y_cls = X_tmp[mask_cls], y_tmp[mask_cls]
-
-                # If we still have fewer samples than target, bootstrap with replacement
-                if len(X_cls) < group_target:
-                    n_needed = group_target - len(X_cls)
-                    idx = np.random.choice(len(X_cls), n_needed, replace=True)
-                    X_cls = np.vstack([X_cls, X_cls[idx]])
-                    y_cls = np.concatenate([y_cls, y_cls[idx]])
-
-                # Take exactly group_target samples (first N)
-                X_parts.append(X_cls[:group_target])
-                y_parts.append(y_cls[:group_target])
+            X_parts.extend(X_g)
+            y_parts.extend(y_g)
+            y_bin_parts.extend(y_bin_g_out)
 
         # Step 8: Combine results from all groups and return
-        return np.vstack(X_parts), np.concatenate(y_parts)
+        return np.vstack(X_parts), np.concatenate(y_parts), np.concatenate(y_bin_parts)
+
+    def _oversample_group(
+        self,
+        Xg: np.ndarray,
+        yg: np.ndarray,
+        y_bin_g: np.ndarray,
+        classes: np.ndarray,
+        group_target: int,
+        sampling_strategy: dict,
+        interpolator_template: SamplerMixin,
+    ) -> tuple[list[np.ndarray], list[np.ndarray], list[np.ndarray]]:
+        """Oversample the classes of one group to ``group_target`` samples each.
+
+        Returns
+        -------
+        tuple[list[np.ndarray], list[np.ndarray], list[np.ndarray]]
+            Per class: samples, targets and classes (bins), originals first.
+
+        """
+        X_parts, y_parts, y_bin_parts = [], [], []
+        # Clone the template to avoid modifying the original
+        interp = clone(interpolator_template)
+        interp.set_params(sampling_strategy=sampling_strategy)
+
+        # Generate synthetic samples for minority classes
+        X_tmp, y_tmp_binnarized = interp.fit_resample(Xg, y_bin_g)
+        X_new, y_new_binnarized = self._split_synthetic(Xg, y_bin_g, X_tmp, y_tmp_binnarized)
+
+        # Originals keep their targets; synthetic samples get targets from their parents
+        if self.task_ == "regression":
+            y_new = self._synthesize_continuous_y(X_new, y_new_binnarized, Xg, yg, y_bin_g)
+        else:
+            y_new = y_new_binnarized.astype(yg.dtype, copy=False)
+        X_tmp = np.vstack([Xg, X_new])
+        y_tmp = np.concatenate([yg, y_new])
+        y_tmp_binnarized = np.concatenate([y_bin_g, y_new_binnarized.astype(y_bin_g.dtype, copy=False)])
+
+        # Step 7: Post-process each class to ensure exact group_target size
+        for cls in classes:
+            # Get samples of current class (originals first, then synthetic)
+            mask_cls = y_tmp_binnarized == cls
+            X_cls, y_cls, y_bin_cls = X_tmp[mask_cls], y_tmp[mask_cls], y_tmp_binnarized[mask_cls]
+
+            # If we still have fewer samples than target, bootstrap with replacement
+            if 0 < len(X_cls) < group_target:
+                idx = self._rng.choice(len(X_cls), group_target - len(X_cls), replace=True)
+                X_cls = np.vstack([X_cls, X_cls[idx]])
+                y_cls = np.concatenate([y_cls, y_cls[idx]])
+                y_bin_cls = np.concatenate([y_bin_cls, y_bin_cls[idx]])
+
+            # Take exactly group_target samples (first N, so originals are always kept)
+            X_parts.append(X_cls[:group_target])
+            y_parts.append(y_cls[:group_target])
+            y_bin_parts.append(y_bin_cls[:group_target])
+        return X_parts, y_parts, y_bin_parts
+
+    @staticmethod
+    def _split_synthetic(
+        X: np.ndarray,
+        y: np.ndarray,
+        X_resampled: np.ndarray,
+        y_resampled: np.ndarray,
+    ) -> tuple[np.ndarray, np.ndarray]:
+        """Return the synthetic samples generated by an interpolator.
+
+        Parameters
+        ----------
+        X, y : np.ndarray
+            Samples and classes passed to the interpolator.
+        X_resampled, y_resampled : np.ndarray
+            Output of the interpolator.
+
+        Returns
+        -------
+        tuple[np.ndarray, np.ndarray]
+            Synthetic samples and their classes.
+
+        Raises
+        ------
+        ValueError
+            If the interpolator does not return the original samples first,
+            unchanged, as imblearn over-samplers do.
+
+        """
+        n_samples = len(X)
+        if (
+            len(X_resampled) < n_samples
+            or not np.array_equal(X_resampled[:n_samples], X)
+            or not np.array_equal(y_resampled[:n_samples], y)
+        ):
+            raise ValueError(
+                "The interpolator must return the original samples first, unchanged, followed by the "
+                "synthetic samples (as imblearn over-samplers do)."
+            )
+        return X_resampled[n_samples:], y_resampled[n_samples:]
 
     # ------------------------------------------------------------------ #
     # Utilities
@@ -647,8 +737,8 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         Task inference logic:
             - If self.task != "auto", return self.task (user explicitly specified)
             - Otherwise, infer from y.dtype.kind:
-                * 'b' (boolean), 'i' (signed integer), 'u' (unsigned integer)
-                -> "classification"
+                * 'b' (boolean), 'i' (signed integer), 'u' (unsigned integer),
+                  'U'/'S' (strings), 'O' (objects) -> "classification"
                 * Any other dtype kind (float, complex, etc.) -> "regression"
 
         Examples
@@ -668,7 +758,7 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         # Priority 2: Automatic inference based on target data type
         # Classification: discrete labels (bool, int, uint)
         # Regression: continuous values (float, complex, etc.)
-        return "classification" if y.dtype.kind in "biu" else "regression"
+        return "classification" if y.dtype.kind in "biuUSO" else "regression"
 
     def _bin_target(self, y: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         """Bin continuous target values into discrete categories for regression tasks.
@@ -815,61 +905,72 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         tags.estimator_type = "sampler"
         return tags
 
-    def _reconstruct_continuous_y(
-        self,
+    @staticmethod
+    def _synthesize_continuous_y(
+        X_new: np.ndarray,
         y_bin_new: np.ndarray,
+        X_orig: np.ndarray,
         y_orig: np.ndarray,
         y_bin_orig: np.ndarray,
     ) -> np.ndarray:
-        """Reconstruct continuous targets from bin assignments.
+        """Interpolate continuous targets of synthetic samples from their parent samples.
 
-        For each generated sample (defined by its bin), a continuous value
-        is synthesized by interpolating between two original samples from
-        the same bin.
+        For each synthetic sample ``x`` of bin ``c``, the parents are the two
+        original samples of bin ``c``, ``x_a`` and ``x_b``, whose segment
+        ``[x_a, x_b]`` passes closest to ``x``. With ``lam`` the position of the projection of ``x`` on the
+        segment, clipped to [0, 1], the target is ``y_a + lam * (y_b - y_a)``.
 
         Parameters
         ----------
+        X_new : np.ndarray
+            Synthetic samples (shape: n_new x n_features).
         y_bin_new : np.ndarray
-            Binned targets after resampling (shape: n_samples,).
+            Bins of the synthetic samples (shape: n_new,).
+        X_orig : np.ndarray
+            Original samples they were generated from (shape: n_samples x n_features).
         y_orig : np.ndarray
             Original continuous targets (shape: n_samples,).
         y_bin_orig : np.ndarray
-            Original bin assignments (shape: n_samples,).
+            Original bins (shape: n_samples,).
 
         Returns
         -------
         np.ndarray
-            Reconstructed continuous targets (float, shape: n_samples,).
+            Continuous targets of the synthetic samples (float, shape: n_new,).
 
         Notes
         -----
-        - Ensures synthetic values remain within the distribution of each bin
-        - Equivalent to 1D SMOTE in target space
+        This recovers SMOTE-like interpolation (``x = x_a + lam * (x_b - x_a)``)
+        exactly and gives the parent's target for duplicated samples (random
+        over-sampling). The targets stay within the range of their bin.
 
         """
-        rng = check_random_state(self.random_state)
+        y_new = np.empty(len(X_new), dtype=float)
+        bin_to_indices = {cls: np.flatnonzero(y_bin_orig == cls) for cls in np.unique(y_bin_orig)}
 
-        y_new = np.empty(len(y_bin_new), dtype=float)
-
-        # Precompute indices per bin for efficiency
-        bin_to_indices = {cls: np.where(y_bin_orig == cls)[0] for cls in np.unique(y_bin_orig)}
-
-        for i, cls in enumerate(y_bin_new):
+        for i, (x, cls) in enumerate(zip(X_new, y_bin_new, strict=True)):
             idx = bin_to_indices.get(cls)
-
             if idx is None or len(idx) == 0:
                 raise RuntimeError(f"Empty bin {cls} during reconstruction.")
-
-            # If only one sample → just copy it
+            y_bin = y_orig[idx].astype(float)
             if len(idx) == 1:
-                y_new[i] = y_orig[idx[0]]
+                y_new[i] = y_bin[0]
                 continue
 
-            # SMOTE-like interpolation in target space
-            i1, i2 = rng.choice(idx, size=2, replace=True)
-            alpha = rng.rand()
-
-            y_new[i] = alpha * y_orig[i1] + (1 - alpha) * y_orig[i2]
+            # Distance from x to every segment [x_a, x_b] of two originals of the bin,
+            # from the Gram matrix of u = X_bin - x:
+            #   lam_ab = clip(-(u_a . (u_b - u_a)) / |u_b - u_a|^2, 0, 1)
+            #   residual_ab = |u_a + lam_ab (u_b - u_a)|^2
+            u = X_orig[idx] - x
+            gram = u @ u.T
+            sq = np.diag(gram)
+            cross = gram - sq[:, np.newaxis]  # (u_b - u_a) . u_a
+            norm2 = sq[:, np.newaxis] + sq[np.newaxis, :] - 2.0 * gram  # |u_b - u_a|^2
+            with np.errstate(divide="ignore", invalid="ignore"):
+                lam = np.where(norm2 > 0, np.clip(-cross / norm2, 0.0, 1.0), 0.0)
+            residual = sq[:, np.newaxis] + 2.0 * lam * cross + lam**2 * norm2
+            a, b = np.unravel_index(np.argmin(residual), residual.shape)
+            y_new[i] = y_bin[a] + lam[a, b] * (y_bin[b] - y_bin[a])
 
         return y_new
 
