@@ -1,10 +1,14 @@
-"""Test that ``fit_transform`` routes arguments to ``fit`` and ``transform`` for every ComBat variant.
+"""Test ``fit_transform`` of every ComBat variant.
 
-``BaseComBat.fit_transform`` matches arguments to the signatures of ``fit``
-and ``transform``: shared data (covariates) go to both, fit-only options
-(``var_epsilon``, ``max_iter``, ``df``, ...) only to ``fit``.
+Each variant declares ``fit_transform`` with the same, typed signature as its
+``fit`` (so IDEs and type checkers show every argument) and delegates to
+``BaseComBat._fit_then_transform``: shared data (covariates) go to ``fit`` and
+``transform``, fit-only options (``var_epsilon``, ``max_iter``, ``df``, ...)
+only to ``fit``.
 """
 
+import inspect
+import re
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -145,8 +149,23 @@ def test_keyword_data_arguments(case: RoutingCase, data) -> None:
     assert X_harmonized.shape == data["X"].shape
 
 
+def test_signature_mirrors_fit(case: RoutingCase) -> None:
+    """fit_transform declares exactly the parameters of fit (names, order, defaults, annotations)."""
+    fit = inspect.signature(case.estimator_cls.fit)
+    fit_transform = inspect.signature(case.estimator_cls.fit_transform)
+    assert list(fit_transform.parameters.values()) == list(fit.parameters.values())
+    assert fit_transform.return_annotation == inspect.signature(case.estimator_cls.transform).return_annotation
+
+
+def test_docstring_documents_every_parameter(case: RoutingCase) -> None:
+    """Every parameter of fit_transform is documented in its docstring."""
+    doc = inspect.getdoc(case.estimator_cls.fit_transform)
+    for name in list(inspect.signature(case.estimator_cls.fit_transform).parameters)[1:]:
+        assert re.search(rf"^{name} : ", doc, flags=re.MULTILINE), f"{name} is not documented"
+
+
 def test_unknown_argument_raises(case: RoutingCase, data) -> None:
-    """Arguments accepted by neither fit nor transform raise a TypeError naming them."""
+    """Arguments that fit does not accept raise a TypeError naming them."""
     with pytest.raises(TypeError, match="not_an_option"):
         case.estimator_cls().fit_transform(data["X"], data["sites"], **_data_kwargs(case, data), not_an_option=1)
 
