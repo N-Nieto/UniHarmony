@@ -1,0 +1,1 @@
+Fix `IntraSiteInterpolation` crashing on small covariate strata or small classes (neighbour counts are adapted and strata that are too small are skipped), interpolators that produce approximately the requested number of samples (SVM-SMOTE, ADASYN), and upper-case interpolator names in `create_interpolator`.
