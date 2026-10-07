@@ -135,6 +135,11 @@ For every feature independently:
 - **Biological covariates** are optional but strongly recommended: without them, biological
   variation correlated with the IQMs can be attributed to the scanner and removed. Without
   `var_scaling`, they are only needed at fit time, so `transform` does not need them.
+- **IQMs confounded with biology.** BARTharm attributes everything the IQMs can explain to the
+  scanner. If an IQM also depends on the variable of interest (e.g., head motion lowers image
+  quality more in patients), part of the biological signal is removed. Check whether the IQMs differ
+  between groups, and include the related variables as biological covariates. See the example
+  gallery for a demonstration.
 - **Location of the harmonized features.** The intercept is shared between μ and τ and is not
   identified, so harmonized features can be shifted by a constant with respect to the raw features.
   Differences between subjects, which is what downstream analyses use, are not affected.
@@ -143,8 +148,11 @@ For every feature independently:
   the training range are clipped to it. `fit_transform` uses all kept draws, as the R code does.
 - **Run time.** Every feature needs `n_iter` sweeps over `n_trees_mu + n_trees_tau` trees, which
   takes minutes per feature for typical sample sizes. Use `n_jobs` to fit features in parallel.
-- **ML pipelines.** With `var_scaling=True` the biological covariates are required at transform
-  time: never use the target of a downstream model as a biological covariate.
+- **ML pipelines.** Fit BARTharm on the training data only (e.g., inside the cross-validation loop).
+  Without `var_scaling`, the training labels of a downstream model can be passed as a biological
+  covariate, since `transform` does not need the biological covariates of the test subjects. With
+  `var_scaling=True` they are required at transform time: never use the target of a downstream
+  model as a biological covariate then.
 
 ### Differences to the R code
 
