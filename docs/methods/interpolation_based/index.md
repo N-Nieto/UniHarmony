@@ -16,11 +16,10 @@ remove effect of site.
 (intrasite-short)=
 ## [Intra Site Interpolation](#intrasite-long)
 
-IntraSiteInterpolation (ISI) balances the samples for all the presented classes in each site. At the end of the interpolation, all sites will have the
-same proportions (balanced) of samples for all classes. This will break any correlation between site and target, make it invisible for the ML
-models to pick up that signal and give you a prediction fraudulently based on EoS and not on true biological signal.
-
-At for now, the method only supports classification problems and not regression ones.
+IntraSiteInterpolation (ISI) balances the classes within each site. Minority classes are over-sampled by interpolating between samples of the
+same class and site, up to a data-driven limit, and the remaining imbalance is closed by under-sampling the larger classes. At the end, all sites
+have the same proportions (balanced) of samples for all classes. This breaks the correlation between site and target, so ML models cannot pick
+up that signal and give a prediction fraudulently based on EoS instead of the true biological signal. Classification and regression are supported.
 
 ---
 
