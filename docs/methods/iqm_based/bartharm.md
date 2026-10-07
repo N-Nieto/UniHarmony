@@ -87,5 +87,78 @@ Compared to standard harmonization:
 
 
 
-# Implementation
-- To be implemented.
+## Implementation
+
+`uniharmony.iqm.BARTharm` is a Python translation of the BARTharm R code, including the soft BART
+forests of the [SoftBart](https://github.com/theodds/SoftBART) R package (Linero & Yang, 2018) that it
+builds on. Defaults follow the R code: 5000 Gibbs iterations, 500 burn-in, thinning 2, 200 trees for
+the scanner forest and 50 for the biological forest, both with depth prior `0.95 * (1 + depth)^-2`.
+
+```python
+from uniharmony.iqm import BARTharm
+
+harmonizer = BARTharm(random_state=0, n_jobs=-1)
+
+# X: (n_samples, n_features) imaging-derived phenotypes
+# iqms: (n_samples, n_iqms) image quality metrics, e.g. SNR, CNR
+# bio: (n_samples, n_covariates) biological covariates, e.g. age, sex (numerically coded)
+X_harmonized = harmonizer.fit_transform(X, iqms, biological_covariates=bio)
+
+# New subjects only need their features and IQMs
+X_test_harmonized = harmonizer.transform(X_test, iqms_test)
+```
+
+Heteroskedastic version (site-specific variance scaling), which needs site labels at fit and
+transform time:
+
+```python
+harmonizer = BARTharm(var_scaling=True, random_state=0)
+X_harmonized = harmonizer.fit_transform(X, iqms, biological_covariates=bio, sites=sites)
+X_test_harmonized = harmonizer.transform(X_test, iqms_test, biological_covariates=bio_test, sites=sites_test)
+```
+
+### How it works
+
+For every feature independently:
+
+1. The feature is z-scored; IQMs and biological covariates are quantile normalized to [0, 1].
+2. A Gibbs sampler alternates between updating the scanner forest μ(IQMs) given τ, the biological
+   forest τ(covariates) given μ, the site variance scales (with `var_scaling=True`) and the error
+   variance (inverse-gamma prior with shape and rate 0.01).
+3. After burn-in and thinning, every kept draw gives a harmonized feature, `y - μ` or, with variance
+   scaling, `(y - μ - τ) / δ_site + τ` with the site scales `δ` normalized to geometric mean 1. The
+   draws are summarized by their mean (or median, `posterior_summary="median"`) and transformed back
+   to the original scale.
+
+### Things to know
+
+- **Biological covariates** are optional but strongly recommended: without them, biological
+  variation correlated with the IQMs can be attributed to the scanner and removed. Without
+  `var_scaling`, they are only needed at fit time, so `transform` does not need them.
+- **Location of the harmonized features.** The intercept is shared between μ and τ and is not
+  identified, so harmonized features can be shifted by a constant with respect to the raw features.
+  Differences between subjects, which is what downstream analyses use, are not affected.
+- **New data.** `transform` uses `n_stored_draws` (default 200) evenly spaced posterior draws of
+  the forests. New IQMs are normalized by interpolating the training distribution, so values outside
+  the training range are clipped to it. `fit_transform` uses all kept draws, as the R code does.
+- **Run time.** Every feature needs `n_iter` sweeps over `n_trees_mu + n_trees_tau` trees, which
+  takes minutes per feature for typical sample sizes. Use `n_jobs` to fit features in parallel.
+- **ML pipelines.** With `var_scaling=True` the biological covariates are required at transform
+  time: never use the target of a downstream model as a biological covariate.
+
+### Differences to the R code
+
+- The R code appends the integer site codes, not normalized, as an extra IQM column when site labels
+  are given. As the trees only split within [0, 1], that column carries almost no information, so
+  it is not added.
+- `transform` on new subjects is an addition; the R code only harmonizes the subjects it was fitted on.
+- Missing values raise an error (the R code drops incomplete rows), and constant features are
+  returned unchanged (the R code returns NaN).
+- When `burn_in` is not a multiple of `thinning_interval`, the R code also drops the last draw.
+- Random numbers come from NumPy, so results match the R code in distribution, not draw by draw.
+
+**References**
+
+- Linero, A. R., & Yang, Y. (2018). Bayesian regression tree ensembles that adapt to smoothness and
+  sparsity. *Journal of the Royal Statistical Society: Series B*, 80(5), 1087-1110.
+  doi:10.1111/rssb.12293
