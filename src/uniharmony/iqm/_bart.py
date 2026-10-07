@@ -24,8 +24,7 @@ from ._softbart import ForestSnapshot, SoftBARTForest, quantile_normalize_bart
 
 __all__ = ["BARTharm"]
 
-logger = structlog.get_logger()
-logger = logger.bind(src="BARTharm")
+logger = structlog.get_logger(src="BARTharm")
 
 # Shape and rate of the inverse-gamma priors on the error variance and on the
 # site variance scales (``alpha0`` and ``beta0`` in ``bartharm()``)
@@ -231,7 +230,9 @@ optional (default None)
             The biological covariates (e.g., age, sex), which model the
             biological signal that must not be removed. Strongly recommended:
             without them, biological variation correlated with the IQMs can be
-            attributed to the scanner. Categorical covariates must be numerically coded.
+            attributed to the scanner. Include the variables that the IQMs are
+            related to (e.g., a diagnosis associated with head motion).
+            Categorical covariates must be numerically coded.
         sites : array-like, shape (n_samples,) or None, optional (default None)
             Site labels. Required if ``var_scaling=True``, ignored otherwise.
 
