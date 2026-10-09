@@ -2,9 +2,10 @@
 IntraSiteInterpolation advance usage
 ====================================
 
-Interpolation cannot create information: a handful of samples cannot be interpolated into thousands. ISI therefore
-limits how many synthetic samples each class of each site receives (``max_amplification``) and closes the remaining
-imbalance with an under-sampler (``undersampler``), so both meet in the middle.
+Interpolation cannot create information: a handful of samples cannot be interpolated into thousands. ISI measures,
+for every class it over-samples, how much of the class variance interpolation keeps, and warns when balancing needs more
+synthetic samples than is safe. If you want, it can then limit interpolation (``max_amplification``) and close the
+remaining imbalance with an under-sampler (``undersampler``), so both meet in the middle.
 """
 
 # %%
@@ -37,20 +38,22 @@ X, y, sites = make_multisite_classification(
 )
 
 # %%
-# How much interpolation is allowed?
-# ----------------------------------
+# How much interpolation is safe?
+# -------------------------------
 #
-# With ``max_amplification="auto"`` (default), ISI measures for every site and class how much of the real variance the
-# synthetic samples keep (``variance_ratio``) and caps the amplification so that the class keeps at least 90% of its
-# variance (``variance_tolerance=0.1``). ``summary()`` reports what happened in every site and class.
+# By default ISI only over-samples and never removes a sample. For every class it over-samples, it measures the ratio
+# between the variance of the synthetic and of the real samples (``variance_ratio``, ``rho``) and derives the safe
+# amplification: the number of synthetic samples per real sample that keeps at least 80% of the class variance
+# (``variance_tolerance=0.2``). If balancing needs more, ISI warns. ``summary()`` reports it for every site and class.
 
 isi = IntraSiteInterpolation(interpolator="smote", random_state=42)
 X_bal, y_bal = isi.fit_resample(X, y, sites=sites)
 isi.summary().round(2)
 
 # %%
-# Different caps give different trade-offs between interpolation and under-sampling:
-# ``None`` only over-samples, ``0`` only under-samples.
+# Setting ``max_amplification`` limits interpolation and under-samples the larger classes (with ClusterCentroids by
+# default). Different caps give different trade-offs: ``None`` (default) only over-samples, ``"auto"`` uses the safe
+# amplification, ``0`` only under-samples.
 
 rows = []
 for cap in [None, "auto", 1.0, 0]:
@@ -74,9 +77,9 @@ sns.barplot(df, x="max_amplification", y="n", hue="samples")
 # ----------------
 #
 # ``balance_strategy="global_max"`` balances every site towards the largest class of any site, so sites also get
-# similar sizes (within the amplification cap).
+# similar sizes. Small sites then need much more interpolation, which the variance diagnostic may flag.
 
-isi_global = IntraSiteInterpolation(balance_strategy="global_max", max_amplification=None, random_state=42)
+isi_global = IntraSiteInterpolation(balance_strategy="global_max", random_state=42)
 _, y_global = isi_global.fit_resample(X, y, sites=sites)
 print(f"Global target count: {isi_global.target_count_}, per site: {isi_global.target_counts_}")
 
@@ -85,7 +88,7 @@ print(f"Global target count: {isi_global.target_count_}, per site: {isi_global.t
 # ---------------------
 #
 # Any imblearn over-sampler can be used to interpolate, and any under-sampler that accepts a target count per class to
-# remove samples.
+# remove samples when ``max_amplification`` is set.
 
 isi_nm = IntraSiteInterpolation(interpolator="borderline-smote", undersampler="nearmiss", max_amplification=1.0)
 X_nm, y_nm = isi_nm.fit_resample(X, y, sites=sites)
@@ -126,5 +129,5 @@ print(f"CV AUC with ISI inside the folds: {scores['test_score'].mean():.3f}")
 ###############################################################################
 # .. admonition:: Take-home message
 #
-#    ISI interpolates only as much as the data can support and under-samples the rest, so every site ends up
-#    class-balanced without inventing more data than the real samples can span.
+#    ISI balances every site by interpolation and tells you when a class is too small to be balanced without losing
+#    its variance. Only if you ask for it (``max_amplification``) does it limit interpolation and under-sample the rest.
