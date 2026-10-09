@@ -11,7 +11,6 @@ import structlog
 from imblearn.base import SamplerMixin
 from imblearn.over_sampling import RandomOverSampler
 from sklearn.base import BaseEstimator, clone
-from sklearn.neighbors import NearestNeighbors
 from sklearn.utils import Tags, check_random_state
 from sklearn.utils.validation import check_array, check_consistent_length, check_is_fitted, check_X_y
 
@@ -47,25 +46,31 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
     over-sampled by interpolating between real samples of the same class (and,
     optionally, the same covariate stratum) *of the same site*, so the
     synthetic samples carry the biological variability of that class and the
-    effect of site of that site. When interpolation cannot safely create
-    enough samples, the remaining imbalance is closed by under-sampling the
-    majority classes, so both meet in the middle.
+    effect of site of that site. By default no real sample is ever removed.
 
     For each site ``s`` and class ``c`` with ``n_sc`` real samples:
 
-    1. The amplification of the cell, ``r = n_synthetic / n_sc``, is capped
-       at ``r*_sc`` (see ``max_amplification``).
-    2. The site target is the count every class of the site is brought to::
-
-           T_s = min(n_max, min_c floor(n_sc * (1 + r*_sc)))
-
-       with ``n_max`` the largest class of the site (``"per_site"``) or the
-       largest class of any site (``"global_max"``).
-    3. Classes below ``T_s`` are over-sampled with ``interpolator``; classes
-       above ``T_s`` are under-sampled with ``undersampler``.
+    1. Every class of the site is brought to the target ``T_s``: the largest
+       class of the site (``"per_site"``) or of any site (``"global_max"``).
+    2. Classes below ``T_s`` are over-sampled with ``interpolator``.
+    3. Only if ``max_amplification`` is set, the number of synthetic samples
+       per real sample is capped at ``r*_sc``; the target then becomes
+       ``T_s = min(n_max, min_c floor(n_sc * (1 + r*_sc)))`` and the classes
+       above it are under-sampled with ``undersampler`` (both meet in the
+       middle).
 
     After resampling every class has ``T_s`` samples in site ``s``, so
     ``P(y | site)`` is uniform and the site no longer predicts the target.
+
+    **How much interpolation is advisable.** Interpolated samples are less
+    spread than real ones, so the more synthetic samples a class receives, the
+    more its variance shrinks. For every class that needs over-sampling ISI
+    measures this with a pilot batch of synthetic samples (``rho``, see
+    ``variance_tolerance``) and derives the largest amplification that keeps
+    the variance of the class within ``variance_tolerance`` of the real one
+    (``safe_amplification_``). If balancing needs more than that, ISI warns
+    and advises to set ``max_amplification``. All real samples are used for
+    this computation; nothing is removed unless ``max_amplification`` is set.
 
     Parameters
     ----------
@@ -81,17 +86,20 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
     interpolator_kwargs : dict or None, optional (default None)
         Keyword arguments for ``interpolator`` when it is given as a string.
 
-    undersampler : str, imblearn under-sampler or None, optional (default "random")
-        Under-sampler used for the classes above the site target. Strings:
-        ``"random"``, ``"nearmiss"`` (``"nearmiss-1"``), ``"nearmiss-2"``,
-        ``"nearmiss-3"``, ``"cluster-centroids"`` or ``"instance-hardness"``.
-        Any imblearn under-sampler that accepts a target count per class
-        (``dict`` ``sampling_strategy``) can be passed; cleaning methods
-        (Tomek links, ENN, ...) cannot reach an exact count and are rejected.
-        Prototype generators such as ``ClusterCentroids`` return new samples,
-        which are flagged in ``is_synthetic_``. If ``None``, no sample is
-        removed and an error is raised when the amplification cap would
-        require it.
+    undersampler : str, imblearn under-sampler or None, optional (default "cluster-centroids")
+        Under-sampler used, **only when** ``max_amplification`` is set, for the
+        classes above the capped site target. Strings: ``"cluster-centroids"``
+        (k-means on the class, keeping the real sample closest to each
+        centroid, i.e. ``ClusterCentroids(voting="hard")``, so the kept samples
+        cover the whole class), ``"nearmiss"`` (``"nearmiss-1"``),
+        ``"nearmiss-2"``, ``"nearmiss-3"``, ``"instance-hardness"`` or
+        ``"random"``. Any imblearn under-sampler that accepts a target count
+        per class (``dict`` ``sampling_strategy``) can be passed; cleaning
+        methods (Tomek links, ENN, ...) cannot reach an exact count and are
+        rejected. Prototype generators that return new samples (e.g.
+        ``ClusterCentroids(voting="soft")``) are flagged in ``is_synthetic_``.
+        If ``None``, an error is raised when the cap would require removing
+        samples.
 
     undersampler_kwargs : dict or None, optional (default None)
         Keyword arguments for ``undersampler`` when it is given as a string.
@@ -99,41 +107,50 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
     balance_strategy : {"per_site", "global_max"}, optional (default "per_site")
         - ``"per_site"``: every site is balanced to its own largest class.
         - ``"global_max"``: every site is balanced towards the largest class
-          of any site, so sites also get the same size. The amplification
-          cap still applies, so sites whose classes cannot be amplified that
-          much end up smaller (but still balanced).
+          of any site, so sites also get the same size. Small sites then need
+          much more interpolation.
 
-    max_amplification : float, "auto", callable or None, optional (default "auto")
+    max_amplification : float, "auto", callable or None, optional (default None)
         Maximum number of synthetic samples per real sample in a site-class
-        cell (``r*``).
+        cell (``r*``). Setting it allows ISI to **remove** real samples of the
+        larger classes (with ``undersampler``) when interpolation alone would
+        exceed the cap.
 
-        - ``"auto"``: variance-preservation rule. A pilot batch of synthetic
-          samples is drawn for the cell and the ratio between their variance
-          and the variance of the real samples is measured,
-          ``rho = mean_j var_synthetic_j / var_real_j``. Mixing ``r``
-          synthetic samples per real sample changes the variance of the
-          class by ``r / (1 + r) * |1 - rho|``; keeping this below
-          ``variance_tolerance`` (``eps``) gives::
-
-              r* = eps / (|1 - rho| - eps)   if |1 - rho| > eps, else no cap
-
-          ``rho`` shrinks when few samples have to span many effective
-          dimensions, so the cap depends on the number of samples, the
-          number of features and their collinearity through the data
-          themselves. Duplication (``"random"``) keeps ``rho`` close to one
-          and is therefore not capped by this rule.
+        - ``None``: no cap. ISI only over-samples and never removes a sample;
+          it warns when a class needs more interpolation than
+          ``safe_amplification_``.
+        - ``"auto"``: use ``safe_amplification_`` (the variance-preservation
+          rule, see ``variance_tolerance``) as the cap of each cell.
         - float ``>= 0``: the same cap for every cell (``0`` means pure
           under-sampling).
         - callable: ``f(X_cell) -> float`` returning the cap of a cell from
           its real samples.
-        - ``None``: no cap (pure over-sampling, as in earlier versions).
 
-        A cell with fewer real samples than the interpolator needs (two, one
-        for ``"random"``) cannot be over-sampled: its cap is ``0``.
+    variance_tolerance : float, optional (default 0.2)
+        Largest relative loss of the within-class variance considered safe
+        (``eps``). The rule works as follows. The interpolator generates
+        samples that are less spread than the real ones: for SMOTE each new
+        sample lies on the segment between a real sample and one of its
+        nearest neighbours of the same class, so it is pulled towards the
+        inside of the class. The ratio between the variance of the synthetic
+        samples and that of the real samples, ``rho`` (averaged over the
+        features), is measured on a pilot batch; it is close to 1 when many
+        samples densely cover the class (close neighbours) and falls to about
+        2/3 when the samples are sparse (two independent points mixed with a
+        uniform weight keep ``E[(1 - l)^2 + l^2] = 2/3`` of the variance), and
+        to 1/6 with only two samples (one segment). A class made of ``n`` real
+        and ``r * n`` synthetic samples keeps a fraction
+        ``(1 + r * rho) / (1 + r)`` of its real variance, i.e. it loses
+        ``r * (1 - rho) / (1 + r)``. Keeping this loss below ``eps`` gives the
+        safe amplification::
 
-    variance_tolerance : float, optional (default 0.1)
-        Maximum relative change of the within-class variance accepted by
-        ``max_amplification="auto"`` (``eps`` above).
+            r* = eps / ((1 - rho) - eps)   if 1 - rho > eps, else no limit
+
+        (``|1 - rho|`` is used, so samplers that inflate the variance are
+        limited too.) For example, with ``rho = 0.6`` and ``eps = 0.2``,
+        ``r* = 1``: at most one synthetic sample per real one. Duplication
+        (``"random"``) keeps ``rho`` close to one and is not limited by this
+        rule, although it adds no new variability.
 
     n_bins : int, optional (default 10)
         Number of bins of the target for regression.
@@ -169,6 +186,10 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
     is_synthetic_ : ndarray of shape (n_samples_new,)
         Whether each resampled sample was created by ISI.
 
+    class_counts_ : dict
+        ``{site: {class: n_real}}``, real samples per site and class before
+        resampling.
+
     target_counts_ : dict
         ``{site: T_s}``, the number of samples per class in each site after
         resampling.
@@ -181,23 +202,30 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         ``{site: {class: n_created}}``. For regression, classes are bins.
 
     samples_removed_ : dict
-        ``{site: {class: n_removed}}``.
+        ``{site: {class: n_removed}}`` (all zero unless ``max_amplification``
+        is set).
 
     amplification_ : dict
         ``{site: {class: n_created / n_real}}``.
 
-    amplification_cap_ : dict
-        ``{site: {class: r*}}`` (``inf`` when uncapped).
-
     variance_ratio_ : dict
-        ``{site: {class: rho}}`` measured by ``max_amplification="auto"``
-        (``nan`` for cells that did not need over-sampling).
+        ``{site: {class: rho}}`` measured on the pilot batch (``nan`` for
+        classes that did not need over-sampling).
+
+    safe_amplification_ : dict
+        ``{site: {class: r*}}`` from the variance rule (``inf`` when not
+        limited; ``nan`` for classes that did not need over-sampling).
+
+    amplification_cap_ : dict
+        ``{site: {class: cap}}`` actually applied (``inf`` when
+        ``max_amplification=None``).
 
     effective_dim_ : float
         Effective number of dimensions of the data (participation ratio of
         the correlation matrix of the features, centered within each
-        site-class cell). Compare it with the size of the cells: few samples
-        per effective dimension means interpolation fills the space poorly.
+        site-class cell; estimated from at most 2000 samples). Few samples
+        per effective dimension mean that interpolation fills the space
+        poorly (low ``rho``).
 
     n_features_in_ : int
         Number of features.
@@ -232,18 +260,51 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         pipe = Pipeline([("isi", isi), ("clf", LogisticRegression())])
         cross_validate(pipe, X, y, params={"sites": sites})
 
+    **Tune hyper-parameters with ISI inside the inner cross-validation.**
+    Synthetic samples are interpolated between their parents, so a model
+    validated on samples whose parents it was trained on looks better than it
+    is. Estimators that tune themselves on the data they receive (``RidgeCV``
+    and ``RidgeClassifierCV`` with generalised cross-validation,
+    ``LogisticRegressionCV``, early stopping on a validation split, ...)
+    therefore pick too little regularisation when fitted on ISI output. Put
+    ISI in the pipeline that is tuned instead, so it is re-applied to every
+    inner training split::
+
+        pipe = Pipeline([("isi", isi), ("scale", StandardScaler()), ("ridge", Ridge())])
+        search = GridSearchCV(pipe, {"ridge__alpha": np.logspace(-1, 5, 13)})
+        search.fit(X, y, sites=sites)  # with metadata routing enabled
+
+    **Strong imbalance with many features.** A model with more features
+    than samples and moderate regularisation can fit the few real samples of
+    a heavily over-sampled class one by one. Synthetic samples lie between
+    these real samples and add little to that fit, so ISI then removes the
+    site-target association only partly, like re-weighting or random
+    over-sampling with the same amplification. The remaining shortcut grows
+    with the amplification and shrinks with the regularisation;
+    under-sampling does not have this problem. When ISI warns that classes
+    exceed their safe amplification, prefer ``max_amplification="auto"``
+    (interpolate up to the safe amount, then under-sample the larger
+    classes), and check the remaining shortcut, for instance by repeating
+    the cross-validation after permuting the target within each site.
+
+    **Local and kernel models.** Interpolated classes are denser and less
+    dispersed than real ones. Nearest-neighbour models can recognise the
+    synthetic class of a site by its density, and kernel models with a
+    bandwidth estimated on the resampled data are affected too. For them,
+    prefer sample weights, under-sampling or ``interpolator="random"``
+    (duplication), and check the remaining shortcut.
+
+    Every class must have at least two samples in every site (one for
+    ``"random"``): a single sample cannot be interpolated. For regression,
+    target bins with fewer samples in a site are left as they are, with a
+    warning.
+
     Covariates (``categorical_covariate``, ``continuous_covariate``) restrict
     who is interpolated with whom: synthetic samples are interpolated between
     samples of the same class, site and covariate stratum, and they are spread
     over the strata in proportion to the real samples of that class, so
     ``P(covariates | class, site)`` is preserved. Under-sampling is stratified
     the same way.
-
-    A warning is raised when more than half of the real samples of a site
-    have to be removed, which happens when a site is extremely imbalanced and
-    its minority class is too small to be interpolated (for instance 10000
-    vs 2 samples): no method can balance such a site without either inventing
-    or discarding most of the data.
 
     Original samples are returned unchanged, with their original targets.
     For regression, the target of a synthetic sample is interpolated between
@@ -261,11 +322,11 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         undersampler: str
         | Literal["random", "nearmiss", "nearmiss-1", "nearmiss-2", "nearmiss-3", "cluster-centroids", "instance-hardness"]
         | SamplerMixin
-        | None = "random",
+        | None = "cluster-centroids",
         undersampler_kwargs: dict | None = None,
         balance_strategy: str | Literal["per_site", "global_max"] = "per_site",
-        max_amplification: float | str | Literal["auto"] | Callable[[np.ndarray], float] | None = "auto",
-        variance_tolerance: float = 0.1,
+        max_amplification: float | str | Literal["auto"] | Callable[[np.ndarray], float] | None = None,
+        variance_tolerance: float = 0.2,
         n_bins: int = 10,
         binning_strategy: str | Literal["uniform", "quantile"] = "quantile",
         task: str | Literal["auto", "classification", "regression"] = "auto",
@@ -368,12 +429,15 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         counts = {site: {c: n for c, n in cs.items() if n > 0} for site, cs in counts.items()}
         self.target_count_ = max(max(cs.values()) for cs in counts.values()) if self.balance_strategy == "global_max" else None
 
+        self._check_cell_sizes(counts)
+        self.class_counts_ = counts
+
         groups = self._group_labels(sites, cat_cov, cont_cov, n_bins_cc, strategy_cc)
         self.effective_dim_ = effective_dimension(X, groups=self._cell_labels(sites, y_cls))
 
         X_out, y_out, site_out, idx_out = [], [], [], []
         self.target_counts_, self.samples_created_, self.samples_removed_ = {}, {}, {}
-        self.amplification_, self.amplification_cap_, self.variance_ratio_ = {}, {}, {}
+        self.amplification_, self.amplification_cap_, self.variance_ratio_, self.safe_amplification_ = {}, {}, {}, {}
 
         for site in unique_sites:
             in_site = np.flatnonzero(sites == site)
@@ -389,6 +453,7 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         self.sites_resampled_ = np.concatenate(site_out)
         self.sample_indices_ = np.concatenate(idx_out)
         self.is_synthetic_ = self.sample_indices_ < 0
+        self._warn_unsafe_amplification()
         X_res, y_res = np.vstack(X_out), np.concatenate(y_out)
         if self.task_ == "classification":
             y_res = y_res.astype(y.dtype, copy=False)
@@ -402,17 +467,18 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         -------
         pandas.DataFrame
             One row per site and class with the number of real, removed,
-            created and final samples, the amplification, its cap, the
-            variance ratio of the interpolator and the number of real samples
-            per effective dimension.
+            created and final samples, the amplification, the variance ratio
+            of the interpolator (``rho``), the safe amplification derived from
+            it, the cap applied and the number of real samples per effective
+            dimension.
 
         """
         check_is_fitted(self, "target_counts_")
         rows = []
-        for site, target in self.target_counts_.items():
+        for site in self.target_counts_:
             for c, n_created in self.samples_created_[site].items():
                 n_removed = self.samples_removed_[site][c]
-                n_real = target - n_created + n_removed
+                n_real = self.class_counts_[site][c]
                 rows.append(
                     {
                         "site": site,
@@ -420,10 +486,11 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
                         "n_real": n_real,
                         "n_removed": n_removed,
                         "n_created": n_created,
-                        "n_final": target,
+                        "n_final": n_real - n_removed + n_created,
                         "amplification": self.amplification_[site][c],
-                        "amplification_cap": self.amplification_cap_[site][c],
                         "variance_ratio": self.variance_ratio_[site][c],
+                        "safe_amplification": self.safe_amplification_[site][c],
+                        "amplification_cap": self.amplification_cap_[site][c],
                         "samples_per_effective_dim": n_real / self.effective_dim_,
                     }
                 )
@@ -517,6 +584,33 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         validate_all_classes_per_site(y_cls, sites, kind="class" if is_clf else "target bin", raise_error=is_clf)
         return X, y, sites, y_cls, cat_cov, cont_cov
 
+    def _check_cell_sizes(self, counts: dict) -> None:
+        """Every class needs at least two samples per site to be interpolated (one to be duplicated).
+
+        Raises
+        ------
+        ValueError
+            For classification, if a class has too few samples in a site.
+
+        """
+        min_n = self._min_anchors()
+        small = [(site, c, n) for site, cs in counts.items() for c, n in cs.items() if n < min_n]
+        if not small:
+            return
+        detail = "; ".join(f"site {site}: class {c} has {n} sample" for site, c, n in small)
+        if self.task_ == "classification":
+            raise ValueError(
+                f"Every class needs at least {min_n} samples in every site to be interpolated (a single sample cannot be "
+                f"interpolated). Too few samples: {detail}. Remove or merge these sites."
+            )
+        warnings.warn(
+            f"Target bins with fewer than {min_n} samples in a site cannot be interpolated and are left as they are, so "
+            f"the site still carries information about the target: {detail}. Use fewer bins (n_bins), or restrict the "
+            "training data to the target range that all sites share.",
+            UserWarning,
+            stacklevel=3,
+        )
+
     def _resolve_interpolator(self) -> SamplerMixin:
         """Return the over-sampler template (never mutates ``interpolator``)."""
         if isinstance(self.interpolator, str):
@@ -577,29 +671,34 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
             If the cap requires under-sampling but ``undersampler`` is None.
 
         """
-        classes = list(counts)
-        caps, rhos = {}, {}
+        # Classes (regression bins) too small to interpolate are left as they are (see fit_resample).
+        frozen = [c for c, n in counts.items() if n < self._min_anchors()]
+        classes = [c for c in counts if c not in frozen]
+
+        # Safe amplification (variance rule) from all real samples of the site, and the cap actually applied.
+        rhos, safe, caps = {}, {}, {}
         for c in classes:
-            caps[c], rhos[c] = self._amplification_cap(Xs, ys_cls, groups, c, n_needed=n_max - counts[c], rng=rng)
+            rhos[c], safe[c] = self._safe_amplification(Xs, ys_cls, groups, c, n_needed=n_max - counts[c], rng=rng)
+            caps[c] = self._cap(Xs[ys_cls == c], safe[c]) if counts[c] < n_max else np.inf
         target = int(min([n_max] + [np.floor(counts[c] * (1 + caps[c])) for c in classes if np.isfinite(caps[c])]))
-        if target < max(counts.values()) and self.undersampler_ is None:
+        if target < max((counts[c] for c in classes), default=0) and self.undersampler_ is None:
             raise ValueError(
                 f"Site {site}: the amplification cap allows at most {target} samples per class, but the largest "
                 f"class has {max(counts.values())}. Set an `undersampler`, or relax `max_amplification`."
             )
-        logger.debug(f"[ISI] Site {site}: counts={counts}, caps={caps}, target={target}")
-        n_removed = sum(max(0, n - target) for n in counts.values())
+        logger.debug(f"[ISI] Site {site}: counts={counts}, rho={rhos}, safe={safe}, caps={caps}, target={target}")
+        n_removed = sum(max(0, counts[c] - target) for c in classes)
         if n_removed > 0.5 * sum(counts.values()):
             warnings.warn(
-                f"Site {site}: interpolation can only bring its classes to {target} samples each, so {n_removed} of its "
-                f"{sum(counts.values())} real samples are removed by under-sampling (class counts: "
-                f"{', '.join(f'{c}={n}' for c, n in counts.items())}). Consider "
-                "excluding this site, relaxing `max_amplification` / `variance_tolerance`, or checking the site's data.",
+                f"Site {site}: with the amplification cap ({self._cap_description()}) its classes can only be brought to "
+                f"{target} samples each, so {n_removed} of its {sum(counts.values())} real samples are removed by "
+                f"under-sampling (class counts: {', '.join(f'{c}={n}' for c, n in counts.items())}). Consider excluding "
+                "this site or relaxing `max_amplification`.",
                 UserWarning,
                 stacklevel=3,
             )
 
-        kept, X_new, y_new = [], [], []
+        kept, X_new, y_new = [np.flatnonzero(np.isin(ys_cls, frozen))], [], []
         for c in classes:
             if counts[c] > target:
                 kept_c, X_c, y_c = self._undersample(Xs, ys, ys_cls, groups, c, target, rng)
@@ -615,22 +714,32 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         kept_idx = np.sort(np.concatenate(kept))
 
         kept_cls = ys_cls[kept_idx]
+        final = {c: (target if c in classes else counts[c]) for c in counts}
         self.target_counts_[site] = target
-        self.samples_removed_[site] = {c: int(counts[c] - np.sum(kept_cls == c)) for c in classes}
-        self.samples_created_[site] = {c: int(target - np.sum(kept_cls == c)) for c in classes}
-        self.amplification_[site] = {c: self.samples_created_[site][c] / counts[c] for c in classes}
-        self.amplification_cap_[site] = caps
-        self.variance_ratio_[site] = rhos
+        self.samples_removed_[site] = {c: int(counts[c] - np.sum(kept_cls == c)) for c in counts}
+        self.samples_created_[site] = {c: int(final[c] - np.sum(kept_cls == c)) for c in counts}
+        self.amplification_[site] = {c: self.samples_created_[site][c] / counts[c] for c in counts}
+        self.variance_ratio_[site] = {c: rhos.get(c, np.nan) for c in counts}
+        self.safe_amplification_[site] = {c: safe.get(c, np.nan) for c in counts}
+        self.amplification_cap_[site] = {c: caps.get(c, np.inf) for c in counts}
         return np.vstack([Xs[kept_idx], *X_new]), np.concatenate([ys[kept_idx], *y_new]), kept_idx
 
     # ------------------------------------------------------------------ #
-    # Amplification cap
+    # Amplification: variance rule and cap
     # ------------------------------------------------------------------ #
+    def _n_neighbors(self) -> int:
+        """Return the number of neighbours the interpolator uses (``k_neighbors`` / ``n_neighbors``; 5 if unknown)."""
+        params = self.interpolator_.get_params()
+        for name in _ANCHOR_NEIGHBOR_PARAMS:
+            if isinstance(params.get(name), int | np.integer):
+                return int(params[name])
+        return 5
+
     def _min_anchors(self) -> int:
-        """Smallest number of real samples the interpolator needs in a cell."""
+        """Smallest number of real samples the interpolator needs in a cell (two to interpolate, one to duplicate)."""
         return 1 if isinstance(self.interpolator_, RandomOverSampler) else 2
 
-    def _amplification_cap(
+    def _safe_amplification(
         self,
         Xs: np.ndarray,
         ys_cls: np.ndarray,
@@ -639,36 +748,76 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         n_needed: int,
         rng: np.random.RandomState,
     ) -> tuple[float, float]:
-        """Return the amplification cap ``r*`` of a cell and the variance ratio used for it.
+        """Measure ``rho`` for class ``c`` of a site and derive the safe amplification ``r*``.
+
+        A pilot batch of synthetic samples is drawn with the interpolator from
+        all real samples of the site (nothing is removed). ``rho`` is the
+        ratio between the variance of these samples and that of the real
+        samples of the class; a class of ``n`` real and ``r * n`` synthetic
+        samples loses ``r * |1 - rho| / (1 + r)`` of its variance, which stays
+        below ``eps = variance_tolerance`` for ``r <= eps / (|1 - rho| - eps)``.
 
         Returns
         -------
         tuple[float, float]
-            ``(r*, rho)``; ``rho`` is ``nan`` unless measured.
+            ``(rho, r*)``; both ``nan`` if the class needs no over-sampling,
+            ``r* = inf`` if the variance loss stays below ``eps`` for any ``r``.
 
         """
-        in_cell = ys_cls == c
-        n_c = int(in_cell.sum())
         if n_needed <= 0:
-            return np.inf, np.nan
-        if n_c < self._min_anchors():
-            logger.warning(f"[ISI] Class {c!r} has {n_c} sample(s) in a site; it cannot be interpolated.")
-            return 0.0, np.nan
+            return np.nan, np.nan
+        in_cell = ys_cls == c
+        n_pilot = int(np.clip(2 * in_cell.sum(), _PILOT_MIN, _PILOT_MAX))
+        X_pilot, _ = self._oversample(Xs, None, ys_cls, groups, c, n_pilot, rng)
+        rho = variance_ratio(X_pilot, Xs[in_cell])
+        if not np.isfinite(rho):
+            return rho, np.inf
+        loss_per_sample, eps = abs(1.0 - rho), self.variance_tolerance
+        return rho, (np.inf if loss_per_sample <= eps else eps / (loss_per_sample - eps))
+
+    def _cap_description(self) -> str:
+        """Short text describing ``max_amplification`` for messages."""
+        cap = self.max_amplification
+        return "a custom function" if callable(cap) and not isinstance(cap, str) else f"max_amplification={cap!r}"
+
+    def _cap(self, X_cell: np.ndarray, safe: float) -> float:
+        """Amplification cap applied to a cell, from ``max_amplification``."""
         cap = self.max_amplification
         if cap is None:
-            return np.inf, np.nan
-        if callable(cap) and not isinstance(cap, str):
-            return float(cap(Xs[in_cell])), np.nan
+            return np.inf
         if isinstance(cap, str):  # "auto"
-            n_pilot = int(np.clip(2 * n_c, _PILOT_MIN, _PILOT_MAX))
-            X_pilot, _ = self._oversample(Xs, None, ys_cls, groups, c, n_pilot, rng)
-            rho = variance_ratio(X_pilot, Xs[in_cell])
-            if not np.isfinite(rho):
-                return np.inf, rho
-            distortion = abs(1.0 - rho)
-            eps = self.variance_tolerance
-            return (np.inf if distortion <= eps else eps / (distortion - eps)), rho
-        return float(cap), np.nan
+            return safe
+        if callable(cap):
+            return float(cap(X_cell))
+        return float(cap)
+
+    def _warn_unsafe_amplification(self) -> None:
+        """Warn, in one message, about the classes interpolated beyond their safe amplification."""
+        rows = []
+        for site, amps in self.amplification_.items():
+            for c, r in amps.items():
+                r_safe, rho = self.safe_amplification_[site][c], self.variance_ratio_[site][c]
+                if np.isfinite(r_safe) and r > r_safe + 1e-12:
+                    n_real = self.class_counts_[site][c]
+                    kept = (1 + r * rho) / (1 + r)
+                    rows.append(
+                        f"  site {site}, class {c}: {n_real} real -> {n_real + self.samples_created_[site][c]} samples "
+                        f"({r:.3g} synthetic per real sample, {r / (1 + r):.1%} of the class); safe up to {r_safe:.2g} per "
+                        f"real sample (about {int(np.floor(n_real * r_safe))} synthetic samples); the class keeps about "
+                        f"{kept:.0%} of its variance (rho={rho:.2f})."
+                    )
+        if rows:
+            warnings.warn(
+                f"IntraSiteInterpolation: {len(rows)} class(es) are too small, compared with the largest class of their "
+                f"site, to be balanced by interpolation while keeping their variance (variance_tolerance="
+                f"{self.variance_tolerance}). Most of their samples are synthetic and the class shrinks towards its "
+                "centre:\n" + "\n".join(rows) + "\nWith many features, models can also fit the few real samples of "
+                "these classes one by one, so part of the site-target association remains (see the Notes of "
+                "IntraSiteInterpolation). Consider max_amplification='auto', which limits interpolation to the safe "
+                "amount and removes samples of the larger classes with `undersampler`, or excluding these sites.",
+                UserWarning,
+                stacklevel=3,
+            )
 
     # ------------------------------------------------------------------ #
     # Over-sampling
@@ -718,7 +867,7 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
             X_parts.append(X_syn)
             if y_cell is not None:
                 if self.task_ == "regression":
-                    y_parts.append(self._parent_targets(X_syn, X_cell[anchors], y_cell[anchors]))
+                    y_parts.append(self._parent_targets(X_syn, X_cell[anchors], y_cell[anchors], k=self._n_neighbors()))
                 else:
                     y_parts.append(np.full(len(X_syn), c, dtype=ys.dtype))
         X_out = np.vstack(X_parts)
@@ -762,7 +911,10 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
             except (ValueError, RuntimeError) as err:
                 if "No samples will be generated" in str(err):  # ADASYN rounds small requests to zero: ask for more
                     continue
-                raise type(err)(f"[ISI] {type(sampler).__name__} failed for class {c!r} ({n_anchor} anchors): {err}") from err
+                raise type(err)(
+                    f"[ISI] {type(sampler).__name__} failed for class {c!r} ({n_anchor} anchors): {err} "
+                    "Use interpolator='smote', which works with any class of at least two samples."
+                ) from err
             X_syn = self._split_synthetic(X_in, y_in, X_res, y_res)
             if len(X_syn) > missing:
                 X_syn = X_syn[np.sort(rng.choice(len(X_syn), missing, replace=False))]
@@ -772,7 +924,7 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
                 return np.vstack(out)
         raise RuntimeError(
             f"[ISI] {type(self.interpolator_).__name__} produced {n_new - missing} of the {n_new} samples requested for "
-            f"class {c!r}; use another interpolator."
+            f"class {c!r}. Use interpolator='smote', which always produces the requested number of samples."
         )
 
     @staticmethod
@@ -840,15 +992,14 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
                 X_res, y_res = sampler.fit_resample(Xs[idx_in], ys_cls[idx_in])
             except (ValueError, RuntimeError) as err:
                 raise type(err)(f"[ISI] {type(sampler).__name__} failed for class {c!r}: {err}") from err
-            if hasattr(sampler, "sample_indices_"):
-                chosen = idx_in[sampler.sample_indices_]
-                chosen = chosen[ys_cls[chosen] == c]
+            chosen = self._selected_members(sampler, X_res, y_res, Xs, idx_in, members, c)
+            if chosen is not None:  # selection: real samples are kept
                 kept.append(self._exact_count(chosen, members, int(n_keep), rng))
-            else:  # prototype generation (e.g. ClusterCentroids)
+            else:  # prototype generation (e.g. ClusterCentroids(voting="soft")): new samples
                 if self.task_ == "regression":
                     raise ValueError(
-                        f"{type(sampler).__name__} creates new samples and cannot be used for regression; "
-                        "use a selection method such as RandomUnderSampler or NearMiss."
+                        f"{type(sampler).__name__} creates new samples and cannot be used for regression; use a selection "
+                        "method such as ClusterCentroids(voting='hard') (the default 'cluster-centroids') or NearMiss."
                     )
                 protos = X_res[y_res == c]
                 X_proto.append(protos)
@@ -857,6 +1008,30 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         X_p = np.vstack(X_proto) if X_proto else np.empty((0, Xs.shape[1]))
         y_p = np.concatenate(y_proto) if y_proto else np.empty(0, dtype=ys.dtype)
         return kept_idx, X_p, y_p
+
+    @staticmethod
+    def _selected_members(
+        sampler: SamplerMixin,
+        X_res: np.ndarray,
+        y_res: np.ndarray,
+        Xs: np.ndarray,
+        idx_in: np.ndarray,
+        members: np.ndarray,
+        c: Any,
+    ) -> np.ndarray | None:
+        """Local indices of the real samples of class ``c`` kept by an under-sampler, ``None`` if it made new ones.
+
+        Selection methods expose ``sample_indices_``; ``ClusterCentroids(voting="hard")`` returns copies of real
+        samples, which are matched back to their rows.
+        """
+        if hasattr(sampler, "sample_indices_"):
+            chosen = idx_in[sampler.sample_indices_]
+            return chosen[np.isin(chosen, members)]
+        lookup = {Xs[i].tobytes(): i for i in members}
+        matched = [lookup.get(row.tobytes()) for row in X_res[y_res == c]]
+        if all(m is not None for m in matched):
+            return np.unique(np.asarray(matched, dtype=int))  # hard voting may pick the same sample twice
+        return None
 
     @staticmethod
     def _exact_count(chosen: np.ndarray, members: np.ndarray, n_keep: int, rng: np.random.RandomState) -> np.ndarray:
@@ -1027,10 +1202,12 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         For each synthetic sample ``x``, the parents are the two anchors
         ``x_a``, ``x_b`` whose segment passes closest to ``x``; with ``lam``
         the position of the projection of ``x`` on the segment, the target is
-        ``y_a + lam * (y_b - y_a)``. Candidate segments join the nearest
-        anchors of ``x`` to their own nearest anchors (as in SMOTE); when no
-        candidate contains ``x`` exactly, all segments are searched for cells
-        of up to 1000 anchors.
+        ``y_a + lam * (y_b - y_a)``. All segments are searched for cells of up
+        to 300 anchors; for larger cells, the candidates join the ``max(5k, 50)``
+        nearest anchors of ``x`` to their own ``2k`` nearest anchors (SMOTE joins
+        a sample to one of its ``k`` nearest neighbours). Distances
+        are computed from inner products, so the cost does not grow with the
+        number of features once the Gram matrices are formed.
 
         Returns
         -------
@@ -1040,42 +1217,82 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         """
         n = len(X_anchor)
         y_anchor = y_anchor.astype(float)
-        if n == 1:
-            return np.full(len(X_new), y_anchor[0])
-        n_cand = min(n, max(2 * k + 1, 15))
-        cand = NearestNeighbors(n_neighbors=n_cand).fit(X_anchor).kneighbors(X_new, return_distance=False)
-        nbrs = NearestNeighbors(n_neighbors=min(n, k + 1)).fit(X_anchor).kneighbors(X_anchor, return_distance=False)
-        scale = max(1.0, float(np.mean(np.sum(X_anchor**2, axis=1))))
+        if n == 1 or len(X_new) == 0:
+            return np.full(len(X_new), y_anchor[0] if n else np.nan)
+        G = X_anchor @ X_anchor.T
+        sq = np.diag(G).copy()
+        H = X_new @ X_anchor.T
+        xx = np.einsum("ij,ij->i", X_new, X_new)
         y_new = np.empty(len(X_new))
-        for i, x in enumerate(X_new):
-            a = np.repeat(cand[i], nbrs.shape[1])
-            b = nbrs[cand[i]].ravel()
-            lam, res = IntraSiteInterpolation._project(x, X_anchor[a], X_anchor[b])
-            best = int(np.argmin(res))
-            if res[best] > 1e-12 * scale and n <= 1000:
-                a, b = np.triu_indices(n, k=1)
-                lam, res = IntraSiteInterpolation._project(x, X_anchor[a], X_anchor[b])
-                best = int(np.argmin(res))
-            y_new[i] = y_anchor[a[best]] + lam[best] * (y_anchor[b[best]] - y_anchor[a[best]])
+        if n <= 300:
+            a_all, b_all = np.triu_indices(n)  # includes a == b (duplicates)
+            chunk = max(1, int(4e6 // len(a_all)))
+            for start in range(0, len(X_new), chunk):
+                rows = np.arange(start, min(start + chunk, len(X_new)))
+                a = np.broadcast_to(a_all, (len(rows), len(a_all)))
+                b = np.broadcast_to(b_all, (len(rows), len(b_all)))
+                y_new[rows] = IntraSiteInterpolation._best_segment(rows, a, b, G, sq, H, xx, y_anchor)
+            return y_new
+        n_cand = min(n, max(5 * k, 50))
+        d2 = xx[:, np.newaxis] - 2.0 * H + sq[np.newaxis, :]
+        cand = np.argpartition(d2, n_cand - 1, axis=1)[:, :n_cand]
+        D = sq[:, np.newaxis] + sq[np.newaxis, :] - 2.0 * G
+        n_nbrs = min(n, 2 * k + 1)
+        nbrs = np.argpartition(D, n_nbrs - 1, axis=1)[:, :n_nbrs]
+        residual = np.empty(len(X_new))
+        chunk = max(1, int(4e6 // (n_cand * n_nbrs)))
+        for start in range(0, len(X_new), chunk):
+            rows = np.arange(start, min(start + chunk, len(X_new)))
+            a = np.repeat(cand[rows], n_nbrs, axis=1)
+            b = nbrs[cand[rows]].reshape(len(rows), -1)
+            y_new[rows], residual[rows] = IntraSiteInterpolation._best_segment(rows, a, b, G, sq, H, xx, y_anchor, True)
+        # exact search over all segments for the few samples whose parents were not among the candidates
+        missed = np.flatnonzero(residual > 1e-9 * max(1.0, float(np.mean(sq))))
+        if len(missed) and n <= 3000:
+            a_all, b_all = np.triu_indices(n)
+            for i in missed:
+                rows = np.array([i])
+                y_new[i] = IntraSiteInterpolation._best_segment(
+                    rows, a_all[np.newaxis], b_all[np.newaxis], G, sq, H, xx, y_anchor
+                )[0]
         return y_new
 
     @staticmethod
-    def _project(x: np.ndarray, A: np.ndarray, B: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-        """Position (clipped to [0, 1]) and squared distance of ``x`` projected on the segments ``[A_i, B_i]``.
+    def _best_segment(
+        rows: np.ndarray,
+        a: np.ndarray,
+        b: np.ndarray,
+        G: np.ndarray,
+        sq: np.ndarray,
+        H: np.ndarray,
+        xx: np.ndarray,
+        y_anchor: np.ndarray,
+        return_residual: bool = False,
+    ) -> np.ndarray | tuple[np.ndarray, np.ndarray]:
+        """Target interpolated on the closest of the candidate segments ``[a, b]`` of each synthetic sample.
 
         Returns
         -------
-        tuple[np.ndarray, np.ndarray]
-            ``lam`` and squared residual of each segment.
+        np.ndarray or tuple[np.ndarray, np.ndarray]
+            Interpolated target of each synthetic sample in ``rows`` (and the
+            squared distance to its segment if ``return_residual``).
 
         """
-        d = B - A
-        norm2 = np.einsum("ij,ij->i", d, d)
-        u = x - A
+        Hr = H[rows]
+        ha = np.take_along_axis(Hr, a, axis=1)
+        hb = np.take_along_axis(Hr, b, axis=1)
+        gab = G[a, b]
+        ud = hb - ha - gab + sq[a]  # (x - x_a) . (x_b - x_a)
+        dd = sq[a] + sq[b] - 2.0 * gab  # |x_b - x_a|^2
+        uu = xx[rows, np.newaxis] - 2.0 * ha + sq[a]  # |x - x_a|^2
         with np.errstate(divide="ignore", invalid="ignore"):
-            lam = np.where(norm2 > 0, np.clip(np.einsum("ij,ij->i", u, d) / norm2, 0.0, 1.0), 0.0)
-        r = u - lam[:, np.newaxis] * d
-        return lam, np.einsum("ij,ij->i", r, r)
+            lam = np.where(dd > 0, np.clip(ud / dd, 0.0, 1.0), 0.0)
+        res = uu - 2.0 * lam * ud + lam**2 * dd
+        best = np.argmin(res, axis=1)
+        idx = np.arange(len(rows))
+        a_best, b_best, lam_best = a[idx, best], b[idx, best], lam[idx, best]
+        y_best = y_anchor[a_best] + lam_best * (y_anchor[b_best] - y_anchor[a_best])
+        return (y_best, res[idx, best]) if return_residual else y_best
 
     def _fit_resample(self, X: npt.ArrayLike, y: npt.ArrayLike, **params: Any) -> tuple[npt.NDArray, npt.NDArray]:
         """Resample; ``sites`` must be passed as a keyword argument.

@@ -57,7 +57,7 @@ UNDERSAMPLERS: dict[str, tuple[type, dict]] = {
     "nearmiss-1": (NearMiss, {"version": 1}),
     "nearmiss-2": (NearMiss, {"version": 2}),
     "nearmiss-3": (NearMiss, {"version": 3}),
-    "cluster-centroids": (ClusterCentroids, {}),
+    "cluster-centroids": (ClusterCentroids, {"voting": "hard"}),
     "instance-hardness": (InstanceHardnessThreshold, {}),
 }
 
@@ -104,9 +104,11 @@ def create_undersampler(name: str, random_state: int | np.random.RandomState | N
     Parameters
     ----------
     name : str
-        Name of the under-sampler: ``"random"``, ``"nearmiss"`` (alias of
+        Name of the under-sampler: ``"cluster-centroids"`` (k-means on the
+        class, keeping the real sample nearest to each centroid:
+        ``ClusterCentroids(voting="hard")``), ``"nearmiss"`` (alias of
         ``"nearmiss-1"``), ``"nearmiss-2"``, ``"nearmiss-3"``,
-        ``"cluster-centroids"`` or ``"instance-hardness"``.
+        ``"instance-hardness"`` or ``"random"``.
     random_state : int, RandomState instance or None, optional (default None)
         Seed, passed to the under-sampler when it accepts one.
     **kwargs : dict
@@ -218,7 +220,12 @@ def variance_ratio(X_synthetic: npt.ArrayLike, X_real: npt.ArrayLike) -> float:
     return float(np.mean(X_synthetic[:, keep].var(axis=0, ddof=1) / var_real[keep]))
 
 
-def effective_dimension(X: npt.ArrayLike, groups: npt.ArrayLike | None = None) -> float:
+def effective_dimension(
+    X: npt.ArrayLike,
+    groups: npt.ArrayLike | None = None,
+    max_samples: int | None = 2000,
+    random_state: int | np.random.RandomState | None = 0,
+) -> float:
     """Effective number of dimensions (participation ratio) of the data.
 
     The features are centered within each group (e.g. each site-class cell),
@@ -233,6 +240,13 @@ def effective_dimension(X: npt.ArrayLike, groups: npt.ArrayLike | None = None) -
         Data.
     groups : array-like of shape (n_samples,) or None, optional (default None)
         Group labels; each group is centered separately.
+    max_samples : int or None, optional (default 2000)
+        After centering, the ratio is computed from at most this many randomly
+        chosen samples, which keeps the cost at ``O(max_samples ** 2 *
+        n_features)`` for large data sets (e.g. voxel-wise images). ``None``
+        uses all samples.
+    random_state : int, RandomState instance or None, optional (default 0)
+        Random state for the choice of samples.
 
     Returns
     -------
@@ -253,9 +267,12 @@ def effective_dimension(X: npt.ArrayLike, groups: npt.ArrayLike | None = None) -
     Xc = Xc[:, sd > 0] / sd[sd > 0]
     if Xc.shape[1] == 0:
         return float("nan")
+    if max_samples is not None and Xc.shape[0] > max_samples:
+        rows = check_random_state(random_state).choice(Xc.shape[0], max_samples, replace=False)
+        Xc = Xc[rows]
+    # the non-zero eigenvalues l of X'X and XX' coincide: sum(l) = trace, sum(l**2) = squared Frobenius norm
     gram = Xc.T @ Xc if Xc.shape[1] <= Xc.shape[0] else Xc @ Xc.T
-    eig = np.clip(np.linalg.eigvalsh(gram), 0.0, None)
-    return float(eig.sum() ** 2 / np.sum(eig**2))
+    return float(np.trace(gram) ** 2 / np.sum(gram**2))
 
 
 def validate_all_classes_per_site(y: npt.NDArray, sites: npt.NDArray, kind: str = "class", raise_error: bool = True) -> None:
@@ -291,7 +308,12 @@ def validate_all_classes_per_site(y: npt.NDArray, sites: npt.NDArray, kind: str 
         detail = "; ".join(f"site {s}: {m}" for s, m in missing.items())
         msg = (
             f"Every {kind} should be present in every site, otherwise the site still predicts the target. Missing: {detail}."
-            + (" Use fewer bins (n_bins) or binning_strategy='quantile'." if kind != "class" else "")
+            + (
+                " Use fewer bins (n_bins), or restrict the training data to the target range that all sites share; "
+                "interpolation cannot create targets that a site does not have."
+                if kind != "class"
+                else ""
+            )
         )
         if raise_error:
             raise ValueError(msg)
