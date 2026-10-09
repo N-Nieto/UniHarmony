@@ -10,14 +10,15 @@ the target.
 Minority classes are over-sampled by **interpolating between real samples of the same class and the same site** (and,
 optionally, the same covariate stratum, e.g. sex and age bin). The synthetic samples therefore keep the biological
 variability of their class *and* the site effect of their site: the site effect becomes identical across classes, so it
-can no longer be used as a shortcut. Interpolation cannot create information, so ISI limits how many synthetic samples a
-class may receive and closes the remaining imbalance by **under-sampling** the larger classes: both meet in the middle.
+can no longer be used as a shortcut. **By default no real sample is ever removed.**
 
 Key features
 ------------
 - Site-wise class balancing with any imblearn over-sampler (SMOTE and variants, ADASYN, random over-sampling).
-- A data-driven cap on the number of synthetic samples (variance preservation), or a fixed / custom cap.
-- Any count-controlled imblearn under-sampler for the remaining imbalance (random, NearMiss, ClusterCentroids, ...).
+- A diagnostic of how much interpolation each class can take without losing its variance, with a clear warning when
+  balancing needs more.
+- An optional cap on interpolation (`max_amplification`), with the remaining imbalance closed by an imblearn
+  under-sampler (ClusterCentroids by default).
 - Optional covariate strata that restrict who is interpolated with whom while preserving `P(covariates | class, site)`.
 - Classification and regression (the target is binned; synthetic targets are interpolated from their parents).
 - A full audit trail: `sample_indices_`, `is_synthetic_`, `summary()`.
@@ -28,71 +29,82 @@ Key features
 
 For every site `s` and class `c` with `n_sc` real samples:
 
-1. **Cap.** The amplification of the cell, `r = n_synthetic / n_sc`, may not exceed `r*_sc` (see below).
-2. **Target.** Every class of the site is brought to
+1. **Target.** Every class of the site is brought to `T_s`: the largest class of the site
+   (`balance_strategy="per_site"`) or the largest class of any site (`balance_strategy="global_max"`).
+2. **Interpolation.** Classes below `T_s` are over-sampled with the `interpolator`. Real samples are returned unchanged.
+3. **Diagnostic.** For every class that needs over-sampling, ISI measures how much of its variance interpolation keeps
+   and derives the *safe amplification* `r*` (next section). If balancing needs more synthetic samples than that, ISI
+   warns and advises to set `max_amplification`.
+4. **Optional cap.** Only if `max_amplification` is set, the amplification `r = n_synthetic / n_sc` of each class is
+   limited to the cap, the target becomes `T_s = min(n_max, min_c floor(n_sc * (1 + cap_sc)))`, and the classes above it
+   are under-sampled with the `undersampler`: both meet in the middle.
 
-   ```
-   T_s = min( n_max ,  min_c floor(n_sc * (1 + r*_sc)) )
-   ```
-
-   with `n_max` the largest class of the site (`balance_strategy="per_site"`) or the largest class of any site
-   (`balance_strategy="global_max"`).
-3. **Resample.** Classes below `T_s` are over-sampled with the `interpolator`; classes above `T_s` are under-sampled with
-   the `undersampler`. Kept real samples are returned unchanged.
+Every class needs at least **two samples in every site**: a single sample cannot be interpolated (ISI raises an error).
+For regression, target bins with fewer samples in a site are left as they are, with a warning.
 
 Examples (`per_site`):
 
-| Site | Class counts | Cap of the minority class | Result |
+| Site | Class counts | Setting | Result |
 |---|---|---|---|
-| A | 300 / 100 | none (`max_amplification=None`) | 300 / 300 (200 synthetic) |
-| A | 300 / 100 | 1.0 | 200 / 200 (100 synthetic, 100 real removed) |
-| A | 300 / 100 | 0 | 100 / 100 (pure under-sampling) |
-| B | 10000 / 2 | auto (two samples cannot be interpolated into thousands) | 2 / 2, with a warning |
+| A | 300 / 100 | default | 300 / 300 (200 synthetic) |
+| A | 300 / 100 | `max_amplification=1.0` | 200 / 200 (100 synthetic, 100 real removed) |
+| A | 300 / 100 | `max_amplification=0` | 100 / 100 (pure under-sampling) |
+| B | 1000 / 2 | default | 1000 / 1000, with a warning: 998 of the 1000 samples of the small class would be synthetic |
+| B | 1000 / 2 | `max_amplification="auto"` | 2 / 2, with a warning that 998 real samples were removed |
 
 ---
 
-## How many samples can be created safely? (`max_amplification="auto"`)
+## How much interpolation is safe? The variance rule
 
-SMOTE-like interpolation draws new samples on segments between a sample and one of its nearest neighbours. Such samples
-are **less spread** than real ones: their variance is a fraction `rho` of the real variance of the class. `rho` is close
-to 1 when the class is densely sampled (many samples per effective dimension, so neighbours are close) and drops to about
-0.5 when a few samples have to span many dimensions.
-
-The default `max_amplification="auto"` measures `rho` for each site-class cell, from a pilot batch of synthetic samples
-(`rho = mean_j var_synthetic_j / var_real_j`). Mixing `r` synthetic samples per real sample changes the variance of the
-class by `r / (1 + r) * |1 - rho|`; keeping this below `variance_tolerance = eps` (default 0.1) gives
+**Interpolation shrinks a class.** SMOTE creates a new sample on the segment between a real sample and one of its
+nearest neighbours of the same class. The new sample is therefore pulled towards the inside of the class: synthetic
+samples are less spread out than real ones. ISI measures this with a pilot batch of synthetic samples drawn from **all
+real samples of the site** (nothing is removed for this):
 
 ```
-r* = eps / (|1 - rho| - eps)    if |1 - rho| > eps,    otherwise no cap
+rho = variance of the synthetic samples / variance of the real samples      (per feature, averaged)
 ```
 
-The number of samples, the number of features and their collinearity therefore enter through the data themselves. In
-simulations with SMOTE (k = 5), `rho` depends mainly on the number of real samples per effective dimension `n / d_eff`
-(`d_eff` = participation ratio of the feature correlation matrix, reported as `effective_dim_`):
+- When many samples densely cover the class, neighbours are close, a new sample lands near a real one and `rho` is close
+  to 1.
+- When the samples are sparse, neighbours are far apart and a new sample lands in between, closer to the centre:
+  mixing two independent points with a uniform weight `l` keeps `E[(1 - l)^2 + l^2] = 2/3` of the variance.
+- With only **two samples**, all synthetic samples lie on one segment: `rho = 1/6`.
 
-| `n / d_eff` | < 3 | 3 – 10 | 10 – 30 | 30 – 100 | 100 – 300 | > 300 |
-|---|---|---|---|---|---|---|
-| `rho` | ~0.53 | ~0.64 | ~0.73 | ~0.80 | ~0.84 | ~0.92 |
-| `r*` (eps = 0.1) | ~0.25 | ~0.4 | ~0.55 | ~1 | ~1.5 | no cap |
+**How much variance the class keeps.** After over-sampling, a class has `n` real samples (variance `v`) and `r * n`
+synthetic samples (variance `rho * v`). Its variance is the weighted average
+
+```
+v_after = v * (1 + r * rho) / (1 + r)      ->   loss = r * (1 - rho) / (1 + r)
+```
+
+**Safe amplification.** Keeping the loss below `variance_tolerance = eps` (default 0.2, i.e. the class keeps at least
+80% of its variance) gives
+
+```
+r* = eps / ((1 - rho) - eps)     if 1 - rho > eps;   no limit otherwise
+```
+
+For example, `rho = 0.6` gives `r* = 0.2 / (0.4 - 0.2) = 1`: at most one synthetic sample per real one. A class of 100
+real samples facing a class of 500 needs `r = 4` and would keep only `(1 + 4 * 0.6) / 5 = 68%` of its variance, so ISI
+warns. Two samples (`rho = 1/6`) give `r* = 0.32`: not even one synthetic sample is safe.
+
+**Where samples, features and collinearity come in.** `rho` is measured on the data, so it reflects the number of
+samples, the number of features and their correlation together. In simulations with SMOTE (k = 5) it depends mainly on
+the number of real samples per *effective* dimension `n / d_eff` (`d_eff` = participation ratio of the feature
+correlation matrix, reported as `effective_dim_` and estimated from at most 2000 samples):
+
+| `n / d_eff` | < 3 | 3 – 10 | 10 – 30 | 30 – 100 | > 100 |
+|---|---|---|---|---|---|
+| `rho` | ~0.53 | ~0.64 | ~0.73 | ~0.80 | 0.84 – 0.92 |
+| `r*` (eps = 0.2) | ~0.65 | ~1.5 | ~2.5 | no limit | no limit |
 
 The table holds for a low effective dimension (`d_eff` up to about 10, typical of correlated imaging features). With many
-independent features (`d_eff` of 20 to 100), nearest neighbours stay far apart whatever the sample size: `rho` levels off at
-about 0.7 to 0.75 and the cap at about 0.5 to 0.7 synthetic samples per real one.
+independent features (`d_eff` of 20 to 100), nearest neighbours stay far apart whatever the sample size: `rho` levels off
+at about 0.65 to 0.75 and `r*` at about 1.5 to 3.5.
 
-For example, 30 samples of a class with 5 effective dimensions can receive about 13 synthetic samples; 3000 samples with
-3 effective dimensions are not capped; 3000 samples of 100 independent features (no collinearity) can receive about 1400.
-
-Other options:
-
-- `max_amplification=<float>`: the same cap for every cell (`0` = under-sampling only).
-- `max_amplification=<callable>`: `f(X_cell) -> float`, for custom rules.
-- `max_amplification=None`: no cap, i.e. pure over-sampling (behaviour of earlier versions).
-
-Random over-sampling (`interpolator="random"`) duplicates samples: it keeps the variance (`rho ~ 1`) and is not capped by
-this rule, but it adds no new variability. It is kept as a baseline.
-
-A cell with a single real sample cannot be interpolated (cap 0). When more than half of the real samples of a site must be
-removed, ISI warns: such a site cannot be balanced without inventing or discarding most of its data.
+Random over-sampling (`interpolator="random"`) duplicates samples: it keeps the variance (`rho ~ 1`) and is not limited
+by this rule, but it adds no new variability. It is kept as a baseline.
 
 ---
 
@@ -107,7 +119,7 @@ X, y, sites = make_multisite_classification(balance_per_site=[[0.8, 0.2], [0.3, 
 isi = IntraSiteInterpolation(interpolator="smote", random_state=42)
 X_balanced, y_balanced = isi.fit_resample(X, y, sites=sites)
 
-isi.summary()               # one row per site and class: real / removed / created samples, cap, rho
+isi.summary()               # per site and class: real / created samples, rho, safe amplification, ...
 isi.sites_resampled_        # site of each output sample
 isi.is_synthetic_           # which output samples were created
 isi.sample_indices_         # index of each real output sample in the input (-1 for synthetic samples)
@@ -132,23 +144,77 @@ scores = cross_validate(pipe, X, y, params={"sites": sites}, scoring="roc_auc")
 
 Applying ISI before splitting leaks information from the test folds into the synthetic training samples.
 
-### Choosing the samplers
+### Tune hyper-parameters with ISI inside the inner cross-validation
+
+The same leak happens *inside* the training set when a model tunes itself on ISI output. Synthetic samples are
+interpolated between their parents, so validating on a sample whose parents were used for training is optimistic.
+Estimators with built-in tuning (`RidgeCV` / `RidgeClassifierCV` with generalised cross-validation,
+`LogisticRegressionCV`, early stopping on a validation split) then select too little regularisation: in our simulations
+`RidgeCV` fitted on ISI output chose penalties about 10 times smaller for sex classification and 30-10,000 times
+smaller for age regression than with ISI nested in the tuning, which overfitted and worsened the performance on new
+sites (by 0.015 AUC and 0.9 years of mean absolute error). Tune the whole pipeline instead:
 
 ```python
-from imblearn.over_sampling import BorderlineSMOTE
-from imblearn.under_sampling import NearMiss
+from sklearn.linear_model import Ridge
+from sklearn.model_selection import GridSearchCV
+from sklearn.preprocessing import StandardScaler
 
+with sklearn.config_context(enable_metadata_routing=True):
+    isi = IntraSiteInterpolation(random_state=0).set_fit_resample_request(sites=True)
+    pipe = Pipeline([("isi", isi), ("scale", StandardScaler()), ("ridge", Ridge())])
+    search = GridSearchCV(pipe, {"ridge__alpha": np.logspace(-1, 5, 13)})
+    search.fit(X, y, sites=sites)
+```
+
+### Limiting interpolation (`max_amplification`)
+
+When ISI warns that a class needs more interpolation than is safe, you can limit it. The larger classes of the site are
+then **under-sampled** to meet the smaller ones:
+
+```python
 isi = IntraSiteInterpolation(
-    interpolator=BorderlineSMOTE(k_neighbors=3),   # or "smote", "svm-smote", "adasyn", "kmeans-smote", "random"
-    undersampler=NearMiss(version=1),               # or "random", "nearmiss-2", "cluster-centroids", ...
-    max_amplification=1.0,                          # at most one synthetic sample per real sample
+    max_amplification="auto",            # the safe amplification of each class; or a number, or f(X_cell)
+    undersampler="cluster-centroids",    # default; or "nearmiss", "nearmiss-2", "nearmiss-3", an imblearn instance, ...
 )
 ```
 
-Neighbour parameters are reduced automatically for small cells. Under-samplers must accept a target count per class;
-cleaning methods (Tomek links, ENN, ...) cannot, and should be applied before ISI if needed. Prototype generators such as
-`ClusterCentroids` create new samples, which are flagged in `is_synthetic_`. With `undersampler=None`, ISI raises an error
-if the cap would require removing samples.
+The default under-sampler, `"cluster-centroids"`, runs k-means on the class and keeps the real sample closest to each
+centroid (`ClusterCentroids(voting="hard")`), so the kept samples cover the whole class. Any imblearn under-sampler that
+accepts a target count per class can be used; cleaning methods (Tomek links, ENN, ...) cannot reach a count and are
+rejected. Prototype generators that return new samples (`ClusterCentroids(voting="soft")`) are flagged in
+`is_synthetic_`. ISI warns when more than half of the real samples of a site are removed.
+
+### When ISI is not enough
+
+- **Strong imbalance with many features.** With more features than samples (voxel-wise images), models that are only
+  moderately regularised can fit the few real samples of a heavily over-sampled class one by one, and the synthetic
+  samples add little to that fit. ISI then removes the site-target association only partly, exactly like re-weighting or
+  random over-sampling with the same amplification; under-sampling does not have this problem. If ISI warns that
+  classes exceed their safe amplification, use `max_amplification="auto"`.
+- **Local and kernel models.** Synthetic samples are denser and less dispersed than real ones. In our simulations a
+  k-nearest-neighbour classifier recognised the synthetic class of each site by its density and learned the inverse
+  shortcut, and an RBF support vector regression became worse than without correction. For such models prefer sample
+  weights where the model accepts them, under-sampling or random over-sampling (`interpolator="random"`), and check
+  the result with the probe below.
+- **Missing target ranges** (see Regression).
+
+Check what is left of the shortcut by repeating the cross-validation after permuting the target *within* each site: the
+biology is destroyed, the site-target association is kept, and any performance above chance comes from the site.
+
+```python
+rng = np.random.default_rng(0)
+y_perm = y.copy()
+for s in np.unique(sites):
+    idx = np.flatnonzero(sites == s)
+    y_perm[idx] = y[rng.permutation(idx)]
+probe = cross_validate(pipe, X, y_perm, params={"sites": sites}, scoring="roc_auc")  # ~0.5 if no shortcut is left
+```
+
+### Choosing the interpolator
+
+`"smote"` (default) works with any class of at least two samples. `"borderline-smote"`, `"svm-smote"`, `"adasyn"` and
+`"kmeans-smote"` concentrate samples near the class boundary or in dense clusters and can fail on very small classes or
+strata; the error then suggests SMOTE. Neighbour parameters are reduced automatically for small classes.
 
 ---
 
@@ -156,17 +222,17 @@ if the cap would require removing samples.
 
 Covariates restrict **who is interpolated with whom**: synthetic samples are only interpolated between samples of the same
 class, site and covariate stratum (unique combination of categorical values and continuous-covariate bins, computed within
-each site). They are spread over the strata in proportion to the real samples of the class, and under-sampling is
-stratified the same way, so the distribution of the covariates within each class and site is preserved (for example, if
-80% of the patients of a site are women, 80% of its synthetic patients are interpolated between women).
+each site). They are spread over the strata in proportion to the real samples of the class, and under-sampling (if
+enabled) is stratified the same way, so the distribution of the covariates within each class and site is preserved (for
+example, if 80% of the patients of a site are women, 80% of its synthetic patients are interpolated between women).
 
 ```python
 isi = IntraSiteInterpolation(n_bins_cont_cov=3, random_state=0)
 X_bal, y_bal = isi.fit_resample(X, y, sites=sites, categorical_covariate=sex, continuous_covariate=age)
 ```
 
-Strata with fewer samples than the interpolator needs are skipped. Covariates of the real output samples can be recovered
-with `sample_indices_`.
+Strata with fewer than two samples of a class are skipped for interpolation. Covariates of the real output samples can be
+recovered with `sample_indices_`.
 
 ---
 
@@ -174,24 +240,26 @@ with `sample_indices_`.
 
 For continuous targets (e.g. brain age), the target is binned (`n_bins`, `binning_strategy`) and each bin is treated as a
 class. The target of a synthetic sample is interpolated between its two parent samples (`y = y_a + lam * (y_b - y_a)`),
-which recovers SMOTE's interpolation exactly. A bin that is missing from a site cannot be created by interpolation; ISI
-warns and balances that site over the bins it has.
+which recovers SMOTE's interpolation exactly. Bins that are missing from a site, or have a single sample there, cannot be
+created by interpolation; ISI warns and leaves them as they are. The site then still predicts the target: if one site
+recruited only young adults and another only older adults, no within-site method can make age independent of site.
+Use few bins, and if possible restrict the training data to the target range that all sites share.
 
 ---
 
 ## Balance strategies
 
 ### `per_site` (default)
-Every site is balanced to its own largest class (within the cap).
+Every site is balanced to its own largest class.
 
-- Site A: 100 class-0, 20 class-1, no cap → 100 / 100
-- Site B: 30 class-0, 70 class-1, no cap → 70 / 70
+- Site A: 100 class-0, 20 class-1 → 100 / 100
+- Site B: 30 class-0, 70 class-1 → 70 / 70
 
 ### `global_max`
 Every site is balanced towards the largest class of any site, so sites also get similar sizes. Small sites need much more
-amplification; the cap still applies, so sites that cannot be amplified that much stay smaller (but balanced).
+interpolation, which the variance diagnostic will often flag.
 
-- Site A: 100 class-0, 20 class-1; Site B: 30 class-0, 70 class-1; no cap → both sites 100 / 100
+- Site A: 100 class-0, 20 class-1; Site B: 30 class-0, 70 class-1 → both sites 100 / 100
 
 ---
 
@@ -201,9 +269,12 @@ amplification; the cap still applies, so sites that cannot be amplified that muc
 |---|---|
 | `sites_resampled_` | Site of each output sample |
 | `sample_indices_`, `is_synthetic_` | Origin of each output sample |
+| `class_counts_` | Real samples per site and class before resampling |
 | `target_counts_` | Samples per class in each site after resampling |
-| `samples_created_`, `samples_removed_` | `{site: {class: n}}` |
-| `amplification_`, `amplification_cap_`, `variance_ratio_` | Realised amplification, its cap and the measured `rho` per site and class |
+| `samples_created_`, `samples_removed_` | `{site: {class: n}}` (nothing removed unless `max_amplification` is set) |
+| `amplification_` | Synthetic samples per real sample |
+| `variance_ratio_`, `safe_amplification_` | `rho` and `r*` of each class that needed over-sampling |
+| `amplification_cap_` | Cap applied (`inf` without `max_amplification`) |
 | `effective_dim_` | Participation ratio of the features (within site-class cells) |
 | `summary()` | All of the above as a table |
 
