@@ -4,8 +4,9 @@ IntraSiteInterpolation advance usage
 
 Interpolation cannot create information: a handful of samples cannot be interpolated into thousands. ISI measures,
 for every class it over-samples, how much of the class variance interpolation keeps, and warns when balancing needs more
-synthetic samples than is safe. If you want, it can then limit interpolation (``max_amplification``) and close the
-remaining imbalance with an under-sampler (``undersampler``), so both meet in the middle.
+synthetic samples than is safe. ISI only interpolates; ``SiteBalancedResampler`` combines it with under-sampling: it
+limits interpolation (``max_amplification``) and closes the remaining imbalance with an under-sampler, so both meet in
+the middle.
 """
 
 # %%
@@ -23,7 +24,7 @@ from sklearn.model_selection import StratifiedKFold, cross_validate
 
 from uniharmony import verbosity
 from uniharmony.datasets import make_multisite_classification
-from uniharmony.interpolation import IntraSiteInterpolation
+from uniharmony.interpolation import IntraSiteInterpolation, SiteBalancedResampler
 
 
 sns.set_theme(style="whitegrid")
@@ -41,7 +42,7 @@ X, y, sites = make_multisite_classification(
 # How much interpolation is safe?
 # -------------------------------
 #
-# By default ISI only over-samples and never removes a sample. For every class it over-samples, it measures the ratio
+# ISI only over-samples and never removes a sample. For every class it over-samples, it measures the ratio
 # between the variance of the synthetic and of the real samples (``variance_ratio``, ``rho``) and derives the safe
 # amplification: the number of synthetic samples per real sample that keeps at least 80% of the class variance
 # (``variance_tolerance=0.2``). If balancing needs more, ISI warns. ``summary()`` reports it for every site and class.
@@ -51,15 +52,23 @@ X_bal, y_bal = isi.fit_resample(X, y, sites=sites)
 isi.summary().round(2)
 
 # %%
-# Setting ``max_amplification`` limits interpolation and under-samples the larger classes (with ClusterCentroids by
-# default). Different caps give different trade-offs: ``None`` (default) only over-samples, ``"auto"`` uses the safe
-# amplification, ``0`` only under-samples.
+# The same diagnostic is available without resampling, to check a data set before choosing a method.
+
+isi.estimate_safe_amplification(X, y, sites).round(2)
+
+# %%
+# Combining interpolation with under-sampling
+# -------------------------------------------
+#
+# ``SiteBalancedResampler`` limits the amplification of every class to ``max_amplification`` and under-samples the
+# larger classes of the site (with ClusterCentroids by default) to meet the smaller ones. Different caps give different
+# trade-offs: ``None`` is ISI alone, ``"auto"`` (default) uses the safe amplification, ``0`` only under-samples.
 
 rows = []
 for cap in [None, "auto", 1.0, 0]:
-    isi_cap = IntraSiteInterpolation(interpolator="smote", max_amplification=cap, random_state=42)
-    _, y_cap = isi_cap.fit_resample(X, y, sites=sites)
-    report = isi_cap.summary()
+    sbr = SiteBalancedResampler(IntraSiteInterpolation("smote", random_state=42), max_amplification=cap, random_state=42)
+    _, y_cap = sbr.fit_resample(X, y, sites=sites)
+    report = sbr.summary()
     rows.append(
         {
             "max_amplification": str(cap),
@@ -87,12 +96,14 @@ print(f"Global target count: {isi_global.target_count_}, per site: {isi_global.t
 # Choosing the samplers
 # ---------------------
 #
-# Any imblearn over-sampler can be used to interpolate, and any under-sampler that accepts a target count per class to
-# remove samples when ``max_amplification`` is set.
+# Any imblearn over-sampler can be used to interpolate, and any under-sampler that selects real samples and accepts a
+# target count per class can be used by ``SiteBalancedResampler``.
 
-isi_nm = IntraSiteInterpolation(interpolator="borderline-smote", undersampler="nearmiss", max_amplification=1.0)
-X_nm, y_nm = isi_nm.fit_resample(X, y, sites=sites)
-print(isi_nm.target_counts_)
+sbr_nm = SiteBalancedResampler(
+    IntraSiteInterpolation(interpolator="borderline-smote"), undersampler="nearmiss", max_amplification=1.0
+)
+X_nm, y_nm = sbr_nm.fit_resample(X, y, sites=sites)
+print(sbr_nm.target_counts_)
 
 # %%
 # Covariates
@@ -130,4 +141,4 @@ print(f"CV AUC with ISI inside the folds: {scores['test_score'].mean():.3f}")
 # .. admonition:: Take-home message
 #
 #    ISI balances every site by interpolation and tells you when a class is too small to be balanced without losing
-#    its variance. Only if you ask for it (``max_amplification``) does it limit interpolation and under-sample the rest.
+#    its variance. ``SiteBalancedResampler`` limits interpolation (``max_amplification``) and under-samples the rest.
