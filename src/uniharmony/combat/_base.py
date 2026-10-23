@@ -1,5 +1,8 @@
 """Provide BaseComBat."""
 
+import inspect
+from typing import Any
+
 import numpy.typing as npt
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils import Tags
@@ -115,26 +118,25 @@ class BaseComBat(DesignMatrixMixin, StandardizationMixin, LocationAndScaleMixin,
         check_consistent_length(X, continuous_covariates)
         return continuous_covariates
 
-    # Overridden to allow sites
+    # Overridden to allow sites. Subclasses override it again with their explicit, typed signature
+    # (mirroring ``fit``) and call ``_fit_then_transform``.
     def fit_transform(
         self,
         X: npt.ArrayLike,
         sites: npt.ArrayLike,
-        **fit_params,
+        **fit_params: Any,
     ) -> npt.NDArray:
         """Fit to data, then transform it.
-
-        Fits transformer to `X` and `sites` with optional parameters
-        `fit_params` and returns a transformed version of `X`.
 
         Parameters
         ----------
         X : array-like, shape (n_samples, n_features)
             Input samples.
-        sites : array-like, shape (n_samples, 1)
+        sites : array-like, shape (n_samples,)
             Sites.
         **fit_params : dict
-            Additional fit parameters.
+            Additional arguments of :meth:`fit`. Those that :meth:`transform`
+            also accepts (e.g., covariates) are passed to it too.
 
         Returns
         -------
@@ -142,7 +144,29 @@ class BaseComBat(DesignMatrixMixin, StandardizationMixin, LocationAndScaleMixin,
             Transformed array.
 
         """
-        return self.fit(X, sites, **fit_params).transform(X, sites, **fit_params)
+        return self._fit_then_transform(X=X, sites=sites, **fit_params)
+
+    def _fit_then_transform(self, **arguments: Any) -> npt.NDArray:
+        """Call ``fit`` with all ``arguments`` and ``transform`` with those it accepts.
+
+        Data shared by ``fit`` and ``transform`` (``X``, ``sites``, covariates)
+        go to both; fit-only options (e.g., ``var_epsilon``, ``max_iter``,
+        ``df``) only to ``fit``.
+
+        Parameters
+        ----------
+        **arguments : dict
+            Keyword arguments of :meth:`fit`.
+
+        Returns
+        -------
+        array, shape (n_samples, n_features)
+            Transformed array.
+
+        """
+        transform_params = inspect.signature(self.transform).parameters
+        transform_arguments = {name: value for name, value in arguments.items() if name in transform_params}
+        return self.fit(**arguments).transform(**transform_arguments)
 
     # Overridden for check_is_fitted() usage
     def __sklearn_is_fitted__(self) -> bool:

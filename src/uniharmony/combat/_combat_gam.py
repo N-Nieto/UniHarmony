@@ -320,34 +320,71 @@ class ComBatGAM(BaseComBat):
 
         return bayes_data.T
 
-    # Overridden to allow smooth_covariates
     def fit_transform(
         self,
         X: npt.ArrayLike,
         sites: npt.ArrayLike,
         smooth_covariates: npt.ArrayLike,
-        **fit_params,
+        smooth_covariates_bounds: tuple[float, float] | None = None,
+        continuous_covariates: npt.ArrayLike | None = None,
+        df: int = 10,
+        degree: int = 3,
+        var_epsilon: float = 1e-8,
+        delta_epsilon: float = 1e-8,
+        tau_2_epsilon: float = 1e-10,
+        max_iter: int = 1000,
     ) -> npt.NDArray:
-        """Fit to data, then transform it.
+        """Fit to data, then harmonize it.
 
-        Fits transformer to `X` and `sites` with optional parameters
-        `fit_params` and returns a transformed version of `X`.
+        Equivalent to ``fit(...).transform(...)``: the covariates are used by
+        both, the remaining options only by :meth:`fit`.
 
         Parameters
         ----------
         X : array-like, shape (n_samples, n_features)
-            Input samples.
-        sites : array-like, shape (n_samples, 1)
+            The training input samples.
+        sites : array-like, shape (n_samples,)
             Sites.
-        smooth_covariates : array-like, shape (n_samples, n_smooth_terms)
+        smooth_covariates : array-like, shape (n_samples, n_smooth_covariates)
             The smooth, non-linear covariates. GAMs are used for optimal smoothing (e.g., age).
-        **fit_params : dict
-            Additional fit parameters.
+        smooth_covariates_bounds : tuple of float and float or None, optional (default None)
+            Custom boundaries of the smoothing terms useful when holdout data covers different range than
+            specify the bounds as (minimum, maximum). Currently not supported for models with multiple smooth covariates.
+        continuous_covariates : array-like, shape (n_samples, n_continuous_covariates) or None, optional (default None)
+            The continuous covariates to be preserved during harmonization
+            (e.g., clinical scores).
+        df : int, optional (default 10)
+            Number of basis functions or degrees of freedom for BSplines. Default value used in the original implementation.
+        degree : int, optional (default 3)
+            Degree(s) of the spline for BSplines. Default value used in the original implementation.
+        var_epsilon : float, optional (default 1e-8)
+            Small constant to add to variance to avoid division by zero.
+        delta_epsilon : float, optional (default 1e-8)
+            Small constant to add to delta variance to avoid division by zero in full mode.
+            This is only used if empirical_bayes=True and parametric_adjustments=True.
+        tau_2_epsilon : float, optional (default 1e-10)
+            Small constant to add to tau_2 variance to avoid division by zero in full mode.
+            This is only used if empirical_bayes=True and parametric_adjustments=True.
+        max_iter : int, optional (default 1000)
+            Maximum number of iterations for the solver in full mode.
+            This is only used if empirical_bayes=True and parametric_adjustments=True.
 
         Returns
         -------
         array, shape (n_samples, n_features)
-            Transformed array.
+            The harmonized data.
 
         """
-        return self.fit(X, sites, smooth_covariates, **fit_params).transform(X, sites, smooth_covariates, **fit_params)
+        return self._fit_then_transform(
+            X=X,
+            sites=sites,
+            smooth_covariates=smooth_covariates,
+            smooth_covariates_bounds=smooth_covariates_bounds,
+            continuous_covariates=continuous_covariates,
+            df=df,
+            degree=degree,
+            var_epsilon=var_epsilon,
+            delta_epsilon=delta_epsilon,
+            tau_2_epsilon=tau_2_epsilon,
+            max_iter=max_iter,
+        )
