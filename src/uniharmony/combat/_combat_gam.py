@@ -17,7 +17,7 @@ from statsmodels.gam.api import BSplines
 from uniharmony._utils import validate_sites
 
 from ._base import BaseComBat
-from ._design_matrix_mixin import _as_2d_columns
+from ._design_matrix_mixin import _as_columns
 
 
 __all__ = ["ComBatGAM"]
@@ -200,7 +200,7 @@ class ComBatGAM(BaseComBat):
             df_gam[v] = design[:, b]
         # Set data from continuous covariates
         if self._continuous_covariates_used:
-            cont_covs = _as_2d_columns(continuous_covariates, "continuous_covariates")
+            cont_covs = _as_columns(continuous_covariates)
             for c in range(cont_covs.shape[1]):
                 v = f"c{c!s}"
                 formula += f"{v} + "
@@ -314,7 +314,7 @@ class ComBatGAM(BaseComBat):
             df_gam[v] = design[:, b]
         # Set data from continuous covariates
         if self._continuous_covariates_used:
-            cont_covs = _as_2d_columns(continuous_covariates, "continuous_covariates")
+            cont_covs = _as_columns(continuous_covariates)
             for c in range(cont_covs.shape[1]):
                 v = f"c{c!s}"
                 df_gam[v] = cont_covs[:, c].astype(float)
@@ -336,66 +336,71 @@ class ComBatGAM(BaseComBat):
 
         return bayes_data.T
 
-    def _clip_to_spline_range(self, x_spline: npt.NDArray) -> npt.NDArray:
-        """Clip smooth covariates to the range covered by the fitted B-splines.
-
-        B-splines cannot be evaluated outside their outermost knots (the
-        training range, or ``smooth_covariates_bounds`` if given). Values
-        outside that range are clipped to its boundary, so the smooth effect
-        is extrapolated as a constant, and a warning is logged.
-
-        Parameters
-        ----------
-        x_spline : array, shape (n_samples, n_smooth_covariates)
-            Smooth covariates to transform.
-
-        Returns
-        -------
-        array, shape (n_samples, n_smooth_covariates)
-            The clipped smooth covariates.
-
-        """
-        x_spline = x_spline.astype(float, copy=True)
-        for i, smoother in enumerate(self._bsplines.smoothers):
-            lower, upper = smoother.knots.min(), smoother.knots.max()
-            outside = (x_spline[:, i] < lower) | (x_spline[:, i] > upper)
-            if np.any(outside):
-                logger.warning(
-                    f"{int(outside.sum())} sample(s) have smooth covariate {i} outside the fitted range "
-                    f"[{lower:.4g}, {upper:.4g}]. They are clipped to the boundary (constant extrapolation). "
-                    "Use smooth_covariates_bounds at fit time to cover the expected range."
-                )
-                x_spline[:, i] = np.clip(x_spline[:, i], lower, upper)
-        return x_spline
-
-    # Overridden to allow smooth_covariates
     def fit_transform(
         self,
         X: npt.ArrayLike,
         sites: npt.ArrayLike,
         smooth_covariates: npt.ArrayLike,
-        **fit_params,
+        smooth_covariates_bounds: tuple[float, float] | None = None,
+        continuous_covariates: npt.ArrayLike | None = None,
+        df: int = 10,
+        degree: int = 3,
+        var_epsilon: float = 1e-8,
+        delta_epsilon: float = 1e-8,
+        tau_2_epsilon: float = 1e-10,
+        max_iter: int = 1000,
     ) -> npt.NDArray:
-        """Fit to data, then transform it.
+        """Fit to data, then harmonize it.
 
-        Fits transformer to `X` and `sites` with optional parameters
-        `fit_params` and returns a transformed version of `X`.
+        Equivalent to ``fit(...).transform(...)``: the covariates are used by
+        both, the remaining options only by :meth:`fit`.
 
         Parameters
         ----------
         X : array-like, shape (n_samples, n_features)
-            Input samples.
-        sites : array-like, shape (n_samples, 1)
+            The training input samples.
+        sites : array-like, shape (n_samples,)
             Sites.
-        smooth_covariates : array-like, shape (n_samples, n_smooth_terms)
+        smooth_covariates : array-like, shape (n_samples, n_smooth_covariates)
             The smooth, non-linear covariates. GAMs are used for optimal smoothing (e.g., age).
-        **fit_params : dict
-            Additional fit parameters.
+        smooth_covariates_bounds : tuple of float and float or None, optional (default None)
+            Custom boundaries of the smoothing terms useful when holdout data covers different range than
+            specify the bounds as (minimum, maximum). Currently not supported for models with multiple smooth covariates.
+        continuous_covariates : array-like, shape (n_samples, n_continuous_covariates) or None, optional (default None)
+            The continuous covariates to be preserved during harmonization
+            (e.g., clinical scores).
+        df : int, optional (default 10)
+            Number of basis functions or degrees of freedom for BSplines. Default value used in the original implementation.
+        degree : int, optional (default 3)
+            Degree(s) of the spline for BSplines. Default value used in the original implementation.
+        var_epsilon : float, optional (default 1e-8)
+            Small constant to add to variance to avoid division by zero.
+        delta_epsilon : float, optional (default 1e-8)
+            Small constant to add to delta variance to avoid division by zero in full mode.
+            This is only used if empirical_bayes=True and parametric_adjustments=True.
+        tau_2_epsilon : float, optional (default 1e-10)
+            Small constant to add to tau_2 variance to avoid division by zero in full mode.
+            This is only used if empirical_bayes=True and parametric_adjustments=True.
+        max_iter : int, optional (default 1000)
+            Maximum number of iterations for the solver in full mode.
+            This is only used if empirical_bayes=True and parametric_adjustments=True.
 
         Returns
         -------
         array, shape (n_samples, n_features)
-            Transformed array.
+            The harmonized data.
 
         """
-        return self.fit(X, sites, smooth_covariates, **fit_params).transform(X, sites, smooth_covariates, **fit_params)
+        return self._fit_then_transform(
+            X=X,
+            sites=sites,
+            smooth_covariates=smooth_covariates,
+            smooth_covariates_bounds=smooth_covariates_bounds,
+            continuous_covariates=continuous_covariates,
+            df=df,
+            degree=degree,
+            var_epsilon=var_epsilon,
+            delta_epsilon=delta_epsilon,
+            tau_2_epsilon=tau_2_epsilon,
+            max_iter=max_iter,
+        )

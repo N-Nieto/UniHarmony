@@ -12,36 +12,10 @@ logger = structlog.get_logger()
 logger = logger.bind(src="DesignMatrixMixin")
 
 
-def _as_2d_columns(values: npt.ArrayLike, name: str) -> npt.NDArray:
-    """Return covariates as a 2D column array of shape (n_samples, n_columns).
-
-    A 1D array is treated as a single covariate column. 2D arrays are
-    returned unchanged, so that every column is kept as its own covariate.
-
-    Parameters
-    ----------
-    values : array-like, shape (n_samples,) or (n_samples, n_columns)
-        Covariate values.
-    name : str
-        Name of the covariate group, used in error messages.
-
-    Returns
-    -------
-    ndarray, shape (n_samples, n_columns)
-        The covariates as a 2D array.
-
-    Raises
-    ------
-    ValueError
-        If ``values`` has more than 2 dimensions.
-
-    """
-    values = np.asarray(values)
-    if values.ndim == 1:
-        return values.reshape(-1, 1)
-    if values.ndim != 2:
-        raise ValueError(f"{name} must be 1D or 2D, got array with shape {values.shape}")
-    return values
+def _as_columns(covariates: npt.ArrayLike) -> npt.NDArray:
+    """Return covariates as a 2-D array with one column per covariate (a 1-D array is one covariate)."""
+    covariates = np.asarray(covariates)
+    return covariates.reshape(-1, 1) if covariates.ndim == 1 else covariates
 
 
 class DesignMatrixMixin:
@@ -111,7 +85,7 @@ class DesignMatrixMixin:
 
         # Fit categorical encoders if provided
         if categorical_covariates is not None:
-            cat_covs = _as_2d_columns(categorical_covariates, "categorical_covariates")
+            cat_covs = _as_columns(categorical_covariates)
             n_cat_covs = cat_covs.shape[1]
             self._categorical_encoders = []
 
@@ -196,12 +170,7 @@ class DesignMatrixMixin:
 
         # Transform categorical covariates
         if categorical_covariates is not None:
-            cat_covs = _as_2d_columns(categorical_covariates, "categorical_covariates")
-            if cat_covs.shape[1] != len(self._categorical_encoders):
-                raise ValueError(
-                    f"categorical_covariates has {cat_covs.shape[1]} columns, "
-                    f"but {len(self._categorical_encoders)} were seen during fit."
-                )
+            cat_covs = _as_columns(categorical_covariates)
             for i, cat_encoder in enumerate(self._categorical_encoders):
                 cat_col = cat_covs[:, i].reshape(-1, 1)
                 cat_encoded = cat_encoder.transform(cat_col)
@@ -212,7 +181,7 @@ class DesignMatrixMixin:
 
         # Add continuous covariates
         if continuous_covariates is not None:
-            cont_covs = _as_2d_columns(continuous_covariates, "continuous_covariates")
+            cont_covs = _as_columns(continuous_covariates)
             design_parts.append(cont_covs)
             logger.debug(f"Added {cont_covs.shape[1]} continuous covariates")
 

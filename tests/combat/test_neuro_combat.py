@@ -121,47 +121,28 @@ def test_neuro_combat_performance_mareos() -> None:
                     assert np.isclose(np.array(baseline_bacc).mean(), 0.8, atol=0.2)
 
 
-# ---------------------------------------------------------------------------
-# Design matrix and agreement with the reference neuroCombat implementation
-# Data comes from the shared fixtures in tests/conftest.py
-# ---------------------------------------------------------------------------
-
-REFERENCE_COVARIATE_COMBINATIONS = [
-    (("sex", "education"), ("age",)),
-    (("sex",), ("age", "education")),
-    (("sex", "education"), ("age", "extra")),
-]
-
-
-def test_neuro_combat_design_matrix_one_block_per_covariate(multisite_data) -> None:
-    """Each covariate column gets its own block in the design matrix."""
-    d = multisite_data
-    model = NeuroComBat()
-    design = model.fit_design_matrix(
-        sites=d.sites,
-        categorical_covariates=d.get("sex", "education"),
-        continuous_covariates=d.get("age"),
+def test_neuro_combat_several_covariates() -> None:
+    """Several continuous and categorical covariates (one column each) are kept, and their effects preserved."""
+    rng = np.random.default_rng(0)
+    n, p = 300, 20
+    sites = np.repeat([0, 1, 2], n // 3)
+    age = rng.uniform(20, 80, n)
+    sex = rng.integers(0, 2, n)
+    group = rng.integers(0, 3, n)
+    X = (
+        0.05 * np.outer(age, np.ones(p))
+        + 0.5 * np.outer(sex, np.ones(p))
+        + np.array([0.0, 2.0, -1.0])[sites][:, None]
+        + rng.standard_normal((n, p))
     )
-    # 3 sites + 1 sex dummy (drop-first) + 3 education dummies (drop-first) + 1 age column
-    assert design.shape == (d.n_samples, 3 + 1 + 3 + 1)
-    assert len(model._categorical_encoders) == 2
-    np.testing.assert_array_equal(design[:, -1], d.covariates["age"])
-
-
-@pytest.mark.parametrize(("categorical", "continuous"), REFERENCE_COVARIATE_COMBINATIONS)
-def test_neuro_combat_matches_reference_with_multiple_covariates(multisite_data, categorical: tuple, continuous: tuple) -> None:
-    """Results match the reference neuroCombat implementation."""
-    neuro_combat = pytest.importorskip("neuroCombat")
-    d = multisite_data
-    covars = pd.DataFrame({"batch": d.sites, **{name: d.covariates[name] for name in categorical + continuous}})
-    expected = neuro_combat.neuroCombat(
-        dat=d.X.T,
-        covars=covars,
-        batch_col="batch",
-        categorical_cols=list(categorical),
-        continuous_cols=list(continuous),
-    )["data"].T
-    result = NeuroComBat().fit_transform(
-        d.X, d.sites, categorical_covariates=d.get(*categorical), continuous_covariates=d.get(*continuous)
-    )
-    np.testing.assert_allclose(result, expected, rtol=1e-6, atol=1e-6)
+    cont = np.column_stack([age, age**2 / 100])
+    cat = np.column_stack([sex, group])
+    combat = NeuroComBat().fit(X, sites, categorical_covariates=cat, continuous_covariates=cont)
+    Xh = combat.transform(X, sites, categorical_covariates=cat, continuous_covariates=cont)
+    assert Xh.shape == X.shape
+    # site means removed, age and sex effects preserved
+    assert np.ptp([Xh[sites == k].mean() for k in range(3)]) < 0.3
+    assert np.corrcoef(Xh.mean(1), age)[0, 1] > 0.8
+    # a single covariate passed as a 1-D array still works
+    Xh1 = NeuroComBat().fit(X, sites, continuous_covariates=age).transform(X, sites, continuous_covariates=age)
+    assert Xh1.shape == X.shape

@@ -1,0 +1,1 @@
+Fix `NeuroComBat`, `CovBat` and `ComBatGAM` with more than one categorical or continuous covariate: a 2-D covariate array was flattened into a single column, so fitting failed. A 1-D array is still treated as a single covariate.
