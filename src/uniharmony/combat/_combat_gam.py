@@ -16,6 +16,7 @@ from statsmodels.gam.api import BSplines
 from uniharmony._utils import validate_sites
 
 from ._base import BaseComBat
+from ._design_matrix_mixin import _as_columns
 
 
 __all__ = ["ComBatGAM"]
@@ -189,7 +190,7 @@ class ComBatGAM(BaseComBat):
             df_gam[v] = design[:, b]
         # Set data from continuous covariates
         if self._continuous_covariates_used:
-            cont_covs = continuous_covariates.reshape(-1, 1)
+            cont_covs = _as_columns(continuous_covariates)
             for c in range(cont_covs.shape[1]):
                 v = f"c{c!s}"
                 formula += f"{v} + "
@@ -297,7 +298,7 @@ class ComBatGAM(BaseComBat):
             df_gam[v] = design[:, b]
         # Set data from continuous covariates
         if self._continuous_covariates_used:
-            cont_covs = continuous_covariates.reshape(-1, 1)
+            cont_covs = _as_columns(continuous_covariates)
             for c in range(cont_covs.shape[1]):
                 v = f"c{c!s}"
                 df_gam[v] = cont_covs[:, c].astype(float)
