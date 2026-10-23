@@ -8,6 +8,7 @@ import numpy as np
 import numpy.typing as npt
 import pandas as pd
 import structlog
+from sklearn.utils import check_random_state
 from sklearn.utils.validation import (
     check_is_fitted,
 )
@@ -38,6 +39,10 @@ class ComBatGAM(BaseComBat):
         Whether to perform parametric adjustments.
     mean_only : bool, optional (default False)
         Whether to only adjust mean (no scaling).
+    random_state : int, RandomState instance or None, optional (default None)
+        Controls the shuffling of the k-fold cross-validation used to select
+        the GAM penalty weights. Pass an int for reproducible results across
+        multiple calls.
 
     Attributes
     ----------
@@ -58,10 +63,12 @@ class ComBatGAM(BaseComBat):
         empirical_bayes: bool = True,
         parametric_adjustments: bool = True,
         mean_only: bool = False,
+        random_state: int | np.random.RandomState | None = None,
     ) -> None:
         self.empirical_bayes = empirical_bayes
         self.parametric_adjustments = parametric_adjustments
         self.mean_only = mean_only
+        self.random_state = random_state
 
     def fit(
         self,
@@ -160,8 +167,11 @@ class ComBatGAM(BaseComBat):
         # Setup design matrix for smoothing
         logger.debug("Setting up smoothing using B-Splines")
         # Create cubic spline basis for smooth covariates
-        x_spline = smooth_covariates.reshape(-1, 1).copy()
-        smooth_covariates_cols = smooth_covariates.reshape(-1, 1).shape[1]
+        x_spline = _as_columns(smooth_covariates, "smooth_covariates").copy()
+        smooth_covariates_cols = x_spline.shape[1]
+        self._n_smooth_covariates = smooth_covariates_cols
+        if smooth_covariates_cols > 1 and smooth_covariates_bounds != (None, None):
+            raise ValueError("smooth_covariates_bounds is currently only supported for a single smooth covariate.")
         if smooth_covariates_cols == 1:
             self._bsplines = BSplines(
                 x_spline,
@@ -211,6 +221,7 @@ class ComBatGAM(BaseComBat):
             smooth_formula=formula,
             df_gam=df_gam,
             epsilon=var_epsilon,
+            random_state=check_random_state(self.random_state),
         )
 
         self.fit_ls_model(
@@ -288,7 +299,12 @@ class ComBatGAM(BaseComBat):
         # Setup design matrix for smoothing
         logger.debug("Setting up smoothing using B-Splines")
         # Create cubic spline basis for smooth covariates
-        x_spline = smooth_covariates.reshape(-1, 1).copy()
+        x_spline = _as_columns(smooth_covariates, "smooth_covariates").copy()
+        if x_spline.shape[1] != self._n_smooth_covariates:
+            raise ValueError(
+                f"smooth_covariates has {x_spline.shape[1]} columns, but {self._n_smooth_covariates} were seen during fit."
+            )
+        x_spline = self._clip_to_spline_range(x_spline)
         bs_basis = self._bsplines.transform(x_spline)
         # Construct dataframe required for GAM
         df_gam = {}
