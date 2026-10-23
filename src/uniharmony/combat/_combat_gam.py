@@ -167,7 +167,7 @@ class ComBatGAM(BaseComBat):
         # Setup design matrix for smoothing
         logger.debug("Setting up smoothing using B-Splines")
         # Create cubic spline basis for smooth covariates
-        x_spline = _as_2d_columns(smooth_covariates, "smooth_covariates").copy()
+        x_spline = _as_columns(smooth_covariates, "smooth_covariates").copy()
         smooth_covariates_cols = x_spline.shape[1]
         self._n_smooth_covariates = smooth_covariates_cols
         if smooth_covariates_cols > 1 and smooth_covariates_bounds != (None, None):
@@ -299,7 +299,7 @@ class ComBatGAM(BaseComBat):
         # Setup design matrix for smoothing
         logger.debug("Setting up smoothing using B-Splines")
         # Create cubic spline basis for smooth covariates
-        x_spline = _as_2d_columns(smooth_covariates, "smooth_covariates").copy()
+        x_spline = _as_columns(smooth_covariates, "smooth_covariates").copy()
         if x_spline.shape[1] != self._n_smooth_covariates:
             raise ValueError(
                 f"smooth_covariates has {x_spline.shape[1]} columns, but {self._n_smooth_covariates} were seen during fit."
