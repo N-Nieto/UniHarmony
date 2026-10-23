@@ -8,7 +8,7 @@ import pytest
 from imblearn.base import BaseSampler
 from imblearn.over_sampling import SMOTE
 from imblearn.pipeline import Pipeline
-from imblearn.under_sampling import ClusterCentroids, RandomUnderSampler, TomekLinks
+from imblearn.under_sampling import RandomUnderSampler
 from sklearn import config_context
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import StratifiedKFold, cross_validate
@@ -25,77 +25,8 @@ from uniharmony.interpolation._utils import (
 
 
 # ==============================================================================
-# Fixtures and helpers
+# Helpers (fixtures are in conftest.py)
 # ==============================================================================
-
-
-@pytest.fixture
-def binary_data():
-    """Generate binary classification dataset with site imbalance."""
-    return make_multisite_classification(
-        n_samples=2000,
-        n_features=4,
-        n_sites=2,
-        n_classes=2,
-        random_state=42,
-        balance_per_site=[0.1, 0.9],
-    )
-
-
-@pytest.fixture
-def opposite_sites_data():
-    """Two sites with opposite class imbalance (site predicts the target)."""
-    rng = np.random.default_rng(3)
-    n_features = 5
-    X0 = rng.standard_normal((400, n_features))
-    X1 = rng.standard_normal((400, n_features)) + 2.0
-    y0 = np.r_[np.zeros(320), np.ones(80)].astype(int)
-    y1 = np.r_[np.zeros(80), np.ones(320)].astype(int)
-    X = np.vstack([X0, X1]) + np.outer(np.r_[y0, y1], np.ones(n_features))
-    return X, np.r_[y0, y1], np.repeat([0, 1], 400)
-
-
-@pytest.fixture
-def regression_data():
-    """Generate regression dataset with continuous targets."""
-    rng = np.random.default_rng(53)
-    X = rng.standard_normal((200, 4))
-    sites = np.array([0] * 100 + [1] * 100)
-    y = rng.standard_normal(200) * 10 + 50
-    return X, y, sites
-
-
-@pytest.fixture
-def covariate_data():
-    """Generate dataset with categorical and continuous covariates."""
-    rng = np.random.default_rng(54)
-    n_samples = 2000
-
-    X, y, sites = make_multisite_classification(
-        n_samples=n_samples,
-        n_features=4,
-        n_sites=2,
-        n_classes=2,
-        random_state=42,
-        balance_per_site=[0.1, 0.9],
-    )
-
-    sex = rng.integers(0, 2, (n_samples, 1))
-    age = rng.standard_normal((n_samples, 1)) * 10 + 50
-
-    return X, y, sites, sex, age
-
-
-@pytest.fixture
-def linear_regression_data():
-    """Regression data whose target is an exact linear function of X, with imbalanced sites."""
-    rng = np.random.default_rng(7)
-    X = rng.standard_normal((200, 3))
-    weights = np.array([3.0, -2.0, 0.5])
-    y = X @ weights + 50.0
-    # Site 0 over-represents high targets, so its low bins are oversampled
-    sites = np.where(rng.random(200) < np.where(y > 50.0, 0.8, 0.3), 0, 1)
-    return X, y, sites, weights
 
 
 def _counts(yr, sr):
@@ -193,7 +124,11 @@ def test_basic_run_no_balance_small():
     _, yr = isi.fit_resample(X, y, sites=sites)
     _assert_balanced(yr, isi.sites_resampled_)
     X, y, sites = make_multisite_classification(n_samples=[2, 19])
-    with pytest.raises(ValueError, match="at least 2 samples"):
+    _, yr = isi.fit_resample(X, y, sites=sites)  # one sample per class: already balanced, nothing to interpolate
+    _assert_balanced(yr, isi.sites_resampled_)
+    X, y, sites = make_multisite_classification(n_samples=[4, 19])
+    y[sites == 0] = [1, 0, 0, 0]
+    with pytest.raises(ValueError, match="at least 2 samples"):  # 1 vs 3: one sample cannot be interpolated
         isi.fit_resample(X, y, sites=sites)
 
 
@@ -203,7 +138,7 @@ def test_small_minority_neighbors_adapted():
     X = rng.standard_normal((80, 3))
     y = np.r_[np.zeros(37), np.ones(3), np.zeros(20), np.ones(20)].astype(int)
     sites = np.repeat([0, 1], 40)
-    isi = IntraSiteInterpolation("smote", max_amplification=None, random_state=0)
+    isi = IntraSiteInterpolation("smote", random_state=0)
     _, yr = isi.fit_resample(X, y, sites=sites)
     _assert_balanced(yr, isi.sites_resampled_)
     assert isi.samples_created_[0][1] == 34
@@ -215,11 +150,10 @@ def test_small_minority_neighbors_adapted():
 
 
 @pytest.mark.parametrize("strategy", ["per_site", "global_max"])
-@pytest.mark.parametrize("max_amplification", ["auto", None, 1.0, 0])
-def test_balance_strategy(strategy, max_amplification, binary_data):
-    """Each site must be class-balanced after resampling, whatever the cap."""
+def test_balance_strategy(strategy, binary_data):
+    """Each site must be class-balanced after resampling."""
     X, y, sites = binary_data
-    isi = IntraSiteInterpolation("smote", balance_strategy=strategy, max_amplification=max_amplification, random_state=0)
+    isi = IntraSiteInterpolation("smote", balance_strategy=strategy, random_state=0)
 
     Xr, yr = isi.fit_resample(X, y, sites=sites)
     sr = isi.sites_resampled_
@@ -229,15 +163,43 @@ def test_balance_strategy(strategy, max_amplification, binary_data):
     _assert_provenance(isi, X, y, sites, Xr, yr)
 
 
-def test_global_max_equal_sites_when_uncapped(binary_data):
-    """Without cap, global_max gives every site-class the largest class count."""
+def test_global_max_equal_sites(binary_data):
+    """global_max gives every site-class the largest class count."""
     X, y, sites = binary_data
-    isi = IntraSiteInterpolation("smote", balance_strategy="global_max", max_amplification=None, random_state=0)
+    isi = IntraSiteInterpolation("smote", balance_strategy="global_max", random_state=0)
     _, yr = isi.fit_resample(X, y, sites=sites)
     largest = max(np.sum((sites == s) & (y == c)) for s in np.unique(sites) for c in np.unique(y))
     assert isi.target_count_ == largest
     assert set(isi.target_counts_.values()) == {largest}
     assert len(yr) == largest * 2 * 2
+
+
+def test_balance_strategy_dict(opposite_sites_data):
+    """A dict gives the number of samples per class of each site; ISI only adds samples."""
+    X, y, sites = opposite_sites_data
+    isi = IntraSiteInterpolation("smote", balance_strategy={0: 320, 1: 400}, random_state=0)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", UserWarning)
+        Xr, yr = isi.fit_resample(X, y, sites=sites)
+    assert _counts(yr, isi.sites_resampled_) == {0: {0: 320, 1: 320}, 1: {0: 400, 1: 400}}
+    assert isi.target_counts_ == {0: 320, 1: 400}
+    _assert_originals_unchanged(X, y, Xr, yr)
+    with pytest.raises(ValueError, match="only adds samples"):
+        IntraSiteInterpolation(balance_strategy={0: 100, 1: 400}).fit_resample(X, y, sites=sites)
+    with pytest.raises(ValueError, match="no target for site"):
+        IntraSiteInterpolation(balance_strategy={0: 400}).fit_resample(X, y, sites=sites)
+
+
+def test_bin_edges(regression_data):
+    """n_bins can give the bin edges of the regression target."""
+    X, y, sites = regression_data
+    edges = np.quantile(y, [0, 0.25, 0.5, 0.75, 1])
+    isi = IntraSiteInterpolation("random", n_bins=edges, random_state=0)
+    isi.fit_resample(X, y, sites=sites)
+    np.testing.assert_array_equal(isi.bins_, edges)
+    assert set(isi.class_counts_[0]) == {0, 1, 2, 3}
+    with pytest.raises(ValueError, match="n_bins"):
+        IntraSiteInterpolation("random", n_bins=[3.0, 1.0, 2.0]).fit_resample(X, y, sites=sites)
 
 
 @pytest.mark.parametrize("strategy", ["uniform", "quantile"])
@@ -276,28 +238,27 @@ def test_invalid_n_bins(regression_data, n_bins):
 
 
 # ==============================================================================
-# Amplification cap and under-sampling
+# Variance rule (diagnostic)
 # ==============================================================================
 
 
 def test_defaults():
-    """No cap by default: ISI never removes samples unless asked to."""
+    """ISI only interpolates: it has no under-sampling parameters."""
     isi = IntraSiteInterpolation()
-    assert isi.max_amplification is None
     assert isi.variance_tolerance == 0.2
-    assert isi.undersampler == "cluster-centroids"
+    assert isi.balance_strategy == "per_site"
+    for name in ("max_amplification", "undersampler", "undersampler_kwargs"):
+        assert name not in isi.get_params()
 
 
 @pytest.mark.parametrize("interpolator", ["smote", "random"])
 def test_default_keeps_all_originals(opposite_sites_data, interpolator):
-    """Without cap ISI only over-samples: every real sample is kept."""
+    """ISI only over-samples: every real sample is kept."""
     X, y, sites = opposite_sites_data
     isi = IntraSiteInterpolation(interpolator, random_state=0)
     Xr, yr = isi.fit_resample(X, y, sites=sites)
     _assert_originals_unchanged(X, y, Xr, yr)
-    assert all(v == 0 for d in isi.samples_removed_.values() for v in d.values())
     assert isi.samples_created_ == {0: {0: 0, 1: 240}, 1: {0: 240, 1: 0}}
-    assert all(np.isinf(v) for d in isi.amplification_cap_.values() for v in d.values())
 
 
 def _extreme_data():
@@ -309,13 +270,13 @@ def _extreme_data():
 
 
 def test_default_warns_when_interpolation_is_unsafe():
-    """1000 vs 2: no sample is dropped, but a clear warning advises the cap."""
+    """1000 vs 2: no sample is dropped, but a clear warning advises SiteBalancedResampler."""
     X, y, sites = _extreme_data()
     isi = IntraSiteInterpolation("smote", random_state=0)
     with pytest.warns(UserWarning, match="too small, compared with the largest class") as record:
         Xr, yr = isi.fit_resample(X, y, sites=sites)
     message = str(record[0].message)
-    assert "max_amplification='auto'" in message
+    assert "SiteBalancedResampler" in message
     assert "site 0, class 1: 2 real -> 1000 samples" in message
     _assert_originals_unchanged(X, y, Xr, yr)
     _assert_balanced(yr, isi.sites_resampled_)
@@ -346,62 +307,39 @@ def test_two_samples_keep_one_sixth_of_the_variance():
     assert isi.safe_amplification_[0][1] * 2 < 1  # not even one synthetic sample is safe
 
 
-def test_auto_cap_removes_samples_with_warning():
-    """max_amplification='auto' applies the safe amplification and under-samples the rest, with a warning."""
-    X, y, sites = _extreme_data()
-    isi = IntraSiteInterpolation("smote", max_amplification="auto", random_state=0)
-    with pytest.warns(UserWarning, match="removed by under-sampling"):
-        Xr, yr = isi.fit_resample(X, y, sites=sites)
-    assert len(yr) < 20
-    assert isi.amplification_cap_[0][1] == isi.safe_amplification_[0][1]
-    _assert_balanced(yr, isi.sites_resampled_)
-    _assert_provenance(isi, X, y, sites, Xr, yr)
-
-
 def test_safe_amplification_follows_variance_rule(opposite_sites_data):
-    """r* = eps / (|1 - rho| - eps) from the measured variance ratio; 'auto' applies it."""
+    """r* = eps / (|1 - rho| - eps) from the measured variance ratio; ISI reports it but does not apply it."""
     X, y, sites = opposite_sites_data
     eps = 0.1
-    isi = IntraSiteInterpolation("smote", max_amplification="auto", variance_tolerance=eps, random_state=0)
-    isi.fit_resample(X, y, sites=sites)
+    isi = IntraSiteInterpolation("smote", variance_tolerance=eps, random_state=0)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", UserWarning)
+        isi.fit_resample(X, y, sites=sites)
     for site, minority in [(0, 1), (1, 0)]:
         rho = isi.variance_ratio_[site][minority]
         assert 0 < rho < 1
         expected = np.inf if abs(1 - rho) <= eps else eps / (abs(1 - rho) - eps)
         assert isi.safe_amplification_[site][minority] == pytest.approx(expected)
-        assert isi.amplification_cap_[site][minority] == pytest.approx(expected)
-        assert isi.amplification_[site][minority] <= expected + 1e-12
-        # majority classes are not over-sampled, so they are neither measured nor capped
+        assert isi.amplification_[site][minority] == pytest.approx(3.0)  # 80 -> 320: never capped
+        # majority classes are not over-sampled, so they are not measured
         assert np.isnan(isi.safe_amplification_[site][1 - minority])
-        assert np.isinf(isi.amplification_cap_[site][1 - minority])
 
 
-def test_safe_amplification_computed_from_all_samples(opposite_sites_data):
-    """The safe amplification is the same with and without cap: it never depends on removed samples."""
+def test_estimate_safe_amplification(opposite_sites_data):
+    """The estimate without resampling uses the same rule as fit_resample."""
     X, y, sites = opposite_sites_data
-    plain = IntraSiteInterpolation("smote", random_state=0)
-    capped = IntraSiteInterpolation("smote", max_amplification="auto", random_state=0)
-    plain.fit_resample(X, y, sites=sites)
-    capped.fit_resample(X, y, sites=sites)
-    assert plain.safe_amplification_ == capped.safe_amplification_
-    assert plain.variance_ratio_ == capped.variance_ratio_
-
-
-@pytest.mark.parametrize("cap", [0, 0.5, 1, 2])
-def test_numeric_cap(opposite_sites_data, cap):
-    """A numeric cap bounds the synthetic samples per real sample; the majority is under-sampled to meet."""
-    X, y, sites = opposite_sites_data
-    isi = IntraSiteInterpolation("smote", max_amplification=cap, random_state=0)
-    Xr, yr = isi.fit_resample(X, y, sites=sites)
-    expected = min(320, int(np.floor(80 * (1 + cap))))
-    assert isi.target_counts_ == {0: expected, 1: expected}
-    assert isi.samples_created_[0][1] == expected - 80
-    assert isi.samples_removed_[0][0] == 320 - expected
-    assert all(a <= cap + 1e-12 for d in isi.amplification_.values() for a in d.values())
-    _assert_balanced(yr, isi.sites_resampled_)
-    _assert_provenance(isi, X, y, sites, Xr, yr)
-    if cap == 0:
-        assert not isi.is_synthetic_.any()
+    df = IntraSiteInterpolation("smote", random_state=0).estimate_safe_amplification(X, y, sites)
+    assert len(df) == 4
+    assert set(df.columns) >= {"site", "class", "n_real", "variance_ratio", "safe_amplification"}
+    fitted = IntraSiteInterpolation("smote", random_state=0)
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore", UserWarning)
+        fitted.fit_resample(X, y, sites=sites)
+    for site, minority in [(0, 1), (1, 0)]:
+        row = df[(df.site == site) & (df["class"] == minority)].iloc[0]
+        assert row.n_real == 80
+        # different pilot draws; with 5 features the estimate of rho varies by a few hundredths
+        assert row.variance_ratio == pytest.approx(fitted.variance_ratio_[site][minority], abs=0.15)
 
 
 def test_safe_amplification_grows_with_samples():
@@ -429,21 +367,6 @@ def test_random_oversampling_not_limited_by_variance_rule(opposite_sites_data):
     assert isi.variance_ratio_[0][1] == pytest.approx(1.0, abs=0.1)
 
 
-def test_callable_cap(opposite_sites_data):
-    """A callable receives the real samples of the cell and returns its cap."""
-    X, y, sites = opposite_sites_data
-    seen = []
-
-    def cap(X_cell):
-        seen.append(len(X_cell))
-        return 0.25
-
-    isi = IntraSiteInterpolation("smote", max_amplification=cap, random_state=0)
-    isi.fit_resample(X, y, sites=sites)
-    assert seen == [80, 80]
-    assert isi.target_counts_ == {0: 100, 1: 100}
-
-
 def _single_sample_data():
     rng = np.random.default_rng(4)
     X = rng.standard_normal((60, 3))
@@ -464,55 +387,6 @@ def test_single_sample_class_can_be_duplicated():
     isi = IntraSiteInterpolation("random", random_state=0)
     _, yr = isi.fit_resample(X, y, sites=sites)
     _assert_balanced(yr, isi.sites_resampled_)
-
-
-def test_cap_without_undersampler_raises(opposite_sites_data):
-    """If the cap requires removing samples but no undersampler is set, fail loudly."""
-    X, y, sites = opposite_sites_data
-    isi = IntraSiteInterpolation("smote", max_amplification=1, undersampler=None)
-    with pytest.raises(ValueError, match="undersampler"):
-        isi.fit_resample(X, y, sites=sites)
-
-
-@pytest.mark.parametrize(
-    "undersampler",
-    [
-        "cluster-centroids",
-        ClusterCentroids(voting="hard"),
-        "nearmiss",
-        "nearmiss-2",
-        "nearmiss-3",
-        "instance-hardness",
-        "random",
-        RandomUnderSampler(replacement=False),
-    ],
-)
-def test_undersamplers(opposite_sites_data, undersampler):
-    """Count-controlled imblearn under-samplers close the remaining imbalance; kept rows are real samples."""
-    X, y, sites = opposite_sites_data
-    isi = IntraSiteInterpolation("smote", undersampler=undersampler, max_amplification=0.5, random_state=0)
-    Xr, yr = isi.fit_resample(X, y, sites=sites)
-    assert isi.target_counts_ == {0: 120, 1: 120}
-    _assert_balanced(yr, isi.sites_resampled_)
-    _assert_provenance(isi, X, y, sites, Xr, yr)
-    assert isi.is_synthetic_.sum() == 80
-
-
-def test_cluster_centroids_soft_prototypes_flagged(opposite_sites_data):
-    """ClusterCentroids with soft voting returns centroids (new samples), flagged as synthetic."""
-    X, y, sites = opposite_sites_data
-    isi = IntraSiteInterpolation("smote", undersampler=ClusterCentroids(voting="soft"), max_amplification=0.5, random_state=0)
-    Xr, yr = isi.fit_resample(X, y, sites=sites)
-    _assert_balanced(yr, isi.sites_resampled_)
-    assert isi.is_synthetic_.sum() == 2 * 40 + 2 * 120
-    _assert_provenance(isi, X, y, sites, Xr, yr)
-
-
-def test_cleaning_undersampler_rejected(opposite_sites_data):
-    """Cleaning methods cannot reach a count, so they are rejected."""
-    X, y, sites = opposite_sites_data
-    with pytest.raises(ValueError, match="cleaning method"):
-        IntraSiteInterpolation(undersampler=TomekLinks(), max_amplification=0.5).fit_resample(X, y, sites=sites)
 
 
 def test_undersampler_as_interpolator_rejected(opposite_sites_data):
@@ -542,14 +416,6 @@ def test_interpolator_failure_suggests_smote(opposite_sites_data):
         IntraSiteInterpolation(_FailingOverSampler()).fit_resample(X, y, sites=sites)
 
 
-@pytest.mark.parametrize("value", ["max", -1, "1"])
-def test_invalid_max_amplification(opposite_sites_data, value):
-    """Invalid caps raise."""
-    X, y, sites = opposite_sites_data
-    with pytest.raises(ValueError, match="max_amplification"):
-        IntraSiteInterpolation(max_amplification=value).fit_resample(X, y, sites=sites)
-
-
 @pytest.mark.parametrize("value", [0, 1, -0.1])
 def test_invalid_variance_tolerance(opposite_sites_data, value):
     """variance_tolerance must be in (0, 1)."""
@@ -559,11 +425,10 @@ def test_invalid_variance_tolerance(opposite_sites_data, value):
 
 
 @pytest.mark.parametrize("interpolator", ["smote", "borderline-smote", "svm-smote", "adasyn", "random"])
-@pytest.mark.parametrize("max_amplification", [None, "auto"])
-def test_interpolators(opposite_sites_data, interpolator, max_amplification):
-    """All built-in interpolators work, with and without cap."""
+def test_interpolators(opposite_sites_data, interpolator):
+    """All built-in interpolators work."""
     X, y, sites = opposite_sites_data
-    isi = IntraSiteInterpolation(interpolator, max_amplification=max_amplification, random_state=0)
+    isi = IntraSiteInterpolation(interpolator, random_state=0)
     Xr, yr = isi.fit_resample(X, y, sites=sites)
     _assert_balanced(yr, isi.sites_resampled_)
     _assert_provenance(isi, X, y, sites, Xr, yr)
@@ -592,11 +457,11 @@ def test_samples_created(binary_data):
 def test_summary(opposite_sites_data):
     """summary() reports one consistent row per site-class cell."""
     X, y, sites = opposite_sites_data
-    isi = IntraSiteInterpolation("smote", max_amplification=1, random_state=0)
+    isi = IntraSiteInterpolation("smote", random_state=0)
     _, yr = isi.fit_resample(X, y, sites=sites)
     df = isi.summary()
     assert len(df) == 4
-    assert (df.n_real - df.n_removed + df.n_created == df.n_final).all()
+    assert (df.n_real + df.n_created == df.n_final).all()
     assert df.n_final.sum() == len(yr)
     assert df.n_real.sum() == len(y)
     assert 1 <= isi.effective_dim_ <= X.shape[1]
@@ -717,21 +582,18 @@ def test_covariates_requires_bins(covariate_data):
         isi.fit_resample(X, y, sites=sites, continuous_covariate=age)
 
 
-@pytest.mark.parametrize("max_amplification", [None, "auto"])
-def test_global_max_covariates_no_explosion(covariate_data, max_amplification):
+def test_global_max_covariates_no_explosion(covariate_data):
     """Strata share the (site, class) target: covariates do not multiply the output size."""
     X, y, sites, sex, age = covariate_data
-    kwargs = {"balance_strategy": "global_max", "max_amplification": max_amplification, "random_state": 0}
+    kwargs = {"balance_strategy": "global_max", "random_state": 0}
     _, y_plain = IntraSiteInterpolation("smote", **kwargs).fit_resample(X, y, sites=sites)
     isi = IntraSiteInterpolation("smote", n_bins_cont_cov=3, **kwargs)
     _, y_cov = isi.fit_resample(X, y, sites=sites, categorical_covariate=sex, continuous_covariate=age)
-    if max_amplification is None:
-        assert len(y_cov) == len(y_plain) == isi.target_count_ * 2 * 2
+    assert len(y_cov) == len(y_plain) == isi.target_count_ * 2 * 2
     assert len(y_cov) == sum(isi.target_counts_.values()) * 2
 
 
-@pytest.mark.parametrize("max_amplification", [None, 1])
-def test_covariates_preserve_distribution(max_amplification):
+def test_covariates_preserve_distribution():
     """Covariates restrict interpolation partners but keep P(covariate | class, site)."""
     rng = np.random.default_rng(6)
     n = 2000
@@ -739,7 +601,7 @@ def test_covariates_preserve_distribution(max_amplification):
         n_sites=2, n_samples=n, n_features=4, balance_per_site=[[0.7, 0.3], [0.3, 0.7]], random_state=3
     )
     sex = (rng.random(n) < np.where(y == 1, 0.8, 0.3)).astype(int)
-    isi = IntraSiteInterpolation("random", max_amplification=max_amplification, random_state=0)
+    isi = IntraSiteInterpolation("random", random_state=0)
     Xr, yr = isi.fit_resample(X, y, sites=sites, categorical_covariate=sex)
     # random over-sampling duplicates real rows, so the covariate of every output row is known
     lut = {tuple(r): s for r, s in zip(X, sex, strict=True)}
@@ -759,7 +621,7 @@ def test_covariates_interpolate_within_strata():
     y = np.r_[np.zeros(160), np.ones(40), np.zeros(40), np.ones(160)].astype(int)
     sites = np.repeat([0, 1], 200)
     sex = rng.integers(0, 2, 400)
-    isi = IntraSiteInterpolation("smote", max_amplification=None, random_state=0)
+    isi = IntraSiteInterpolation("smote", random_state=0)
     Xr, yr = isi.fit_resample(X, y, sites=sites, categorical_covariate=sex)
     sr = isi.sites_resampled_
     for x, label, site in zip(Xr[isi.is_synthetic_][:40], yr[isi.is_synthetic_][:40], sr[isi.is_synthetic_][:40], strict=True):
@@ -804,36 +666,25 @@ def test_regression_runs(strategy, regression_data):
 def test_regression_keeps_original_targets(linear_regression_data, interpolator, strategy):
     """Original samples keep their exact original target (regression, no cap)."""
     X, y, sites, _ = linear_regression_data
-    isi = IntraSiteInterpolation(
-        interpolator, task="regression", n_bins=4, balance_strategy=strategy, max_amplification=None, random_state=0
-    )
+    isi = IntraSiteInterpolation(interpolator, task="regression", n_bins=4, balance_strategy=strategy, random_state=0)
     Xr, yr = isi.fit_resample(X, y, sites=sites)
     is_original = _assert_originals_unchanged(X, y, Xr, yr)
     assert (~is_original).sum() > 0
-
-
-def test_regression_hybrid_keeps_targets_of_kept_samples(linear_regression_data):
-    """With a cap, the kept real samples keep their targets."""
-    X, y, sites, _ = linear_regression_data
-    isi = IntraSiteInterpolation("smote", task="regression", n_bins=4, max_amplification="auto", random_state=0)
-    Xr, yr = isi.fit_resample(X, y, sites=sites)
-    _assert_provenance(isi, X, y, sites, Xr, yr)
 
 
 def test_regression_keeps_original_targets_with_covariates(linear_regression_data):
     """Original targets are kept when interpolating within covariate strata."""
     X, y, sites, _ = linear_regression_data
     sex = (np.arange(len(y)) % 2)[:, np.newaxis]
-    isi = IntraSiteInterpolation("smote", task="regression", n_bins=3, max_amplification=None, random_state=0)
+    isi = IntraSiteInterpolation("smote", task="regression", n_bins=3, random_state=0)
     Xr, yr = isi.fit_resample(X, y, sites=sites, categorical_covariate=sex)
     _assert_originals_unchanged(X, y, Xr, yr)
 
 
-@pytest.mark.parametrize("max_amplification", [None, "auto"])
-def test_regression_smote_targets_follow_parents(linear_regression_data, max_amplification):
+def test_regression_smote_targets_follow_parents(linear_regression_data):
     """SMOTE targets are interpolated like their features: y = X @ w holds for synthetic samples too."""
     X, y, sites, weights = linear_regression_data
-    isi = IntraSiteInterpolation("smote", task="regression", n_bins=4, max_amplification=max_amplification, random_state=0)
+    isi = IntraSiteInterpolation("smote", task="regression", n_bins=4, random_state=0)
     Xr, yr = isi.fit_resample(X, y, sites=sites)
     synthetic = isi.is_synthetic_
     assert synthetic.sum() > 0
@@ -864,9 +715,7 @@ def test_regression_synthetic_targets_stay_in_bin(regression_data, interpolator)
         assert np.all(yr[synthetic][synthetic_bins == b] >= in_bin.min())
         assert np.all(yr[synthetic][synthetic_bins == b] <= in_bin.max())
     n_created = sum(sum(per_class.values()) for per_class in isi.samples_created_.values())
-    n_removed = sum(sum(per_class.values()) for per_class in isi.samples_removed_.values())
-    assert n_created == synthetic.sum()
-    assert n_created - n_removed == len(yr) - len(y)
+    assert n_created == synthetic.sum() == len(yr) - len(y)
 
 
 def test_regression_missing_bin_warns_and_balances_present_bins(regression_data):
@@ -904,19 +753,17 @@ def test_regression_single_sample_bin_left_as_is(regression_data):
     "labels",
     [np.array([0, 1]), np.array([3, 7], dtype=np.int32), np.array(["AD", "CN"]), np.array([False, True])],
 )
-@pytest.mark.parametrize("max_amplification", [None, "auto"])
-def test_classification_keeps_labels_and_dtype(binary_data, interpolator, labels, max_amplification):
+def test_classification_keeps_labels_and_dtype(binary_data, interpolator, labels):
     """Classification labels are neither reconstructed nor cast to float; real samples are kept unchanged."""
     X, y, sites = binary_data
     y_labels = labels[y]
-    isi = IntraSiteInterpolation(interpolator, max_amplification=max_amplification, random_state=0)
+    isi = IntraSiteInterpolation(interpolator, random_state=0)
     Xr, yr = isi.fit_resample(X, y_labels, sites=sites)
     assert isi.task_ == "classification"
     assert yr.dtype == y_labels.dtype
     assert set(np.unique(yr)) <= set(labels)
     _assert_provenance(isi, X, y_labels, sites, Xr, yr)
-    if max_amplification is None:
-        _assert_originals_unchanged(X, y_labels, Xr, yr)
+    _assert_originals_unchanged(X, y_labels, Xr, yr)
 
 
 def test_classification_synthetic_labels_from_parents(binary_data):
@@ -947,7 +794,7 @@ class _ShuffledOverSampler(BaseSampler):
 def test_interpolator_must_keep_originals_first(binary_data):
     """Interpolators that reorder the original samples are rejected with a clear error."""
     X, y, sites = binary_data
-    isi = IntraSiteInterpolation(_ShuffledOverSampler(), max_amplification=None)
+    isi = IntraSiteInterpolation(_ShuffledOverSampler())
     with pytest.raises(ValueError, match="original samples first"):
         isi.fit_resample(X, y, sites=sites)
 
@@ -1007,12 +854,11 @@ def test_nested_tuning_with_metadata_routing(opposite_sites_data):
 # ==============================================================================
 
 
-@pytest.mark.parametrize("max_amplification", [None, "auto"])
-def test_reproducibility(binary_data, max_amplification):
+def test_reproducibility(binary_data):
     """Same random_state must produce identical results, also when refitting the same object."""
     X, y, sites = binary_data
-    isi1 = IntraSiteInterpolation("smote", max_amplification=max_amplification, random_state=42)
-    isi2 = IntraSiteInterpolation("smote", max_amplification=max_amplification, random_state=42)
+    isi1 = IntraSiteInterpolation("smote", random_state=42)
+    isi2 = IntraSiteInterpolation("smote", random_state=42)
     X1, y1 = isi1.fit_resample(X, y, sites=sites)
     X2, y2 = isi2.fit_resample(X, y, sites=sites)
     X3, y3 = isi1.fit_resample(X, y, sites=sites)
@@ -1039,7 +885,7 @@ def test_sites_get_different_random_streams():
     X0 = rng.standard_normal((100, 3))
     y0 = np.r_[np.zeros(80), np.ones(20)].astype(int)
     X, y, sites = np.vstack([X0, X0]), np.r_[y0, y0], np.repeat([0, 1], 100)
-    isi = IntraSiteInterpolation("smote", max_amplification=None, random_state=0)
+    isi = IntraSiteInterpolation("smote", random_state=0)
     Xr, _ = isi.fit_resample(X, y, sites=sites)
     syn = isi.is_synthetic_
     sr = isi.sites_resampled_
