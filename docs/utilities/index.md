@@ -6,4 +6,5 @@ load_mareos_datasets
 load_onharmony_dataset
 datalad_integration
 report_metric_by_site
+site_centroid_distance
 ```
