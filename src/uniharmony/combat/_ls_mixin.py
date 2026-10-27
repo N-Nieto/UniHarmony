@@ -11,8 +11,7 @@ from uniharmony._utils import handle_near_zero_values, solve_ordinary_least_squa
 
 __all__ = ["LocationAndScaleMixin"]
 
-logger = structlog.get_logger()
-logger = logger.bind(src="LocationAndScaleMixin")
+logger = structlog.get_logger(src="LocationAndScaleMixin")  # lazy: honours later `uniharmony.verbosity` calls
 
 
 class LocationAndScaleMixin:
