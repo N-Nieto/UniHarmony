@@ -20,8 +20,7 @@ from ._base import BaseComBat
 
 __all__ = ["NeuroComBat"]
 
-logger = structlog.get_logger()
-logger.bind(src="NeuroComBat")
+logger = structlog.get_logger(src="NeuroComBat")  # lazy: honours later `uniharmony.verbosity` calls
 
 
 class NeuroComBat(BaseComBat):
