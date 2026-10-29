@@ -132,7 +132,7 @@ plt.tight_layout()
 
 fig, axes = plt.subplots(1, 5, figsize=[20, 7])
 
-for idx, signal_type in enumerate(["linear", "moons", "circles", "blobs", "make_gaussian_quantiles"]):
+for idx, signal_type in enumerate(["linear", "moons", "circles", "blobs", "gaussian_quantiles"]):
     X, y, sites = make_multisite_classification(
         n_features=2,
         signal_type=signal_type,
