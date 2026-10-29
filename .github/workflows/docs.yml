@@ -6,6 +6,7 @@ on:
       - main
     paths:
       - 'docs/**'
+      - 'examples/**'
   workflow_dispatch: {}
 
 permissions:
@@ -15,15 +16,6 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Install system dependencies
-        run: |
-          sudo apt-get -qq update
-          sudo apt-get -qq install -y \
-          git-annex
-      - name: Configure Git for DataLad
-        run: |
-          git config --global user.email "runner@github.com"
-          git config --global user.name "GitHub Runner"
       - uses: actions/checkout@v7
         with:
           fetch-depth: 0
@@ -37,7 +29,17 @@ jobs:
           cd docs
           make html
           cd ..
+      - name: Check size of the built docs
+        # GitHub rejects files over 100 MB; a huge page means an example printed too much
+        run: |
+          large=$(find docs/_build/html -type f -size +20M)
+          if [ -n "$large" ]; then
+            echo "::error::Built docs contain files over 20 MB:"
+            ls -lh $large
+            exit 1
+          fi
       - uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: docs/_build
+          publish_dir: docs/_build/html
+          force_orphan: true
