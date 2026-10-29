@@ -369,7 +369,7 @@ def test_apply_site_effect_shape_preserved(effect_type):
 @pytest.mark.parametrize("effect_type", ["location", "scale", "location+scale"])
 def test_apply_site_effect_modifies_data(effect_type):
     """Test."""
-    X = np.ones((50, 8))
+    X = _rng(1).normal(size=(50, 8))  # not constant: "scale" multiplies the deviations from the mean
     X_out = _apply_site_effect(
         X=X,
         site_effect_type=effect_type,
@@ -824,3 +824,22 @@ def test_site_effect_does_not_alter_y():
         random_state=0,
     )
     np.testing.assert_array_equal(y1, y2)
+
+
+@pytest.mark.parametrize("rho", [-0.5, 0.0, 0.3, 0.8])
+def test_x_correlation_is_the_pearson_correlation(rho):
+    """The covariate has correlation x_correlation with the first feature and keeps its scale."""
+    cov = Covariate(name="age", site_distributions=[CovariateSiteDistribution(loc=50.0, scale=10.0)], x_correlation=rho)
+    X = _rng(0).normal(size=(20000, 3))
+    age = _make_covariate([cov], site_idx=0, n_samples_site=20000, X=X, random_state=_rng(1))["age"]
+    assert np.corrcoef(age, X[:, 0])[0, 1] == pytest.approx(rho, abs=0.02)
+    assert age.std() == pytest.approx(10.0, rel=0.03)
+
+
+def test_covariate_is_not_modified_and_can_be_reused():
+    """Broadcasting to n_sites works on a copy, so the same Covariate can be reused."""
+    cov = _age_cov()
+    make_multisite_classification(n_sites=2, n_samples=100, covariates=[cov])
+    assert len(cov.site_distributions) == 1
+    _, _, _, covariates = make_multisite_classification(n_sites=3, n_samples=90, covariates=[cov])
+    assert covariates["age"].shape == (90,)
