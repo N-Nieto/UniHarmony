@@ -134,11 +134,11 @@ To address this, ComBat allows users to include biological variables as **covari
 
 However, this introduces an issue in **machine-learning pipelines**.
 
-If the covariate being preserved is also the **target variable of the ML model**, then the target must be known during harmonization. In real-world prediction scenarios this information is unavailable, creating a new form of **data leakage** ${^6}$.
+If the covariate being preserved is also the **target variable of the ML model**, then the target must be known during harmonization. In real-world prediction scenarios this information is unavailable, creating a new form of **data leakage** [^prettyharmony].
 
 Even if harmonization parameters are estimated using only the training set, the transformation of test data still requires the target variable.
 
-A suitable alternative in these scenarios is **PrettYharmonize**, which allows ComBat-based harmonization to be integrated into ML pipelines **without requiring the target variable during inference** [^prettyharmony].
+A suitable alternative in these scenarios is **PrettYharmonize**, which allows ComBat-based harmonization to be integrated into ML pipelines **without requiring the target variable during inference** [^prettyharmony]. It is available as {class}`~uniharmony.prettyharmonize.PrettYharmonizeClassifier` and {class}`~uniharmony.prettyharmonize.PrettYharmonizeRegressor`.
 
 
 [^prettyharmony]: Nieto, N., Eickhoff, S. B., Jung, C., Reuter, M., Diers, K., Kelm, M., ... & Patil, K. R. (2026). Impact of leakage on data harmonization in machine learning pipelines in class imbalance across sites. Neurocomputing, 133146. https://doi.org/10.1016/j.neucom.2026.133146

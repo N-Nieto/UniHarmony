@@ -28,6 +28,7 @@ uv add uniharmony
 #### ComBat methods
 
 - [NeuroComBat](#neurocombat-long)
+- [PrettYharmonize](#prettyharmonize-long): leakage-free ComBat for ML when class balance differs across sites
 
 #### Interpolation models
 
