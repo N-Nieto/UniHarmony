@@ -1,5 +1,6 @@
 """Provide function to configure logging."""
 
+from collections.abc import Iterator
 from contextlib import contextmanager
 from typing import Literal
 
@@ -33,7 +34,7 @@ def verbosity(min_level="info") -> None:
 
 
 @contextmanager
-def verbosity_context(min_level="info") -> None:
+def verbosity_context(min_level="info") -> Iterator[None]:
     """Context manager to control the logger verbosity.
 
     Parameters

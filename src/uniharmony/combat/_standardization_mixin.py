@@ -17,8 +17,7 @@ from uniharmony._utils import (
 
 __all__ = ["StandardizationMixin"]
 
-logger = structlog.get_logger()
-logger = logger.bind(src="StandardizationMixin")
+logger = structlog.get_logger(src="StandardizationMixin")  # lazy: honours later `uniharmony.verbosity` calls
 
 
 class _ShuffledKFold:

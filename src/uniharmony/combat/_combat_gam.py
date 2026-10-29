@@ -22,8 +22,7 @@ from ._design_matrix_mixin import _as_columns
 
 __all__ = ["ComBatGAM"]
 
-logger = structlog.get_logger()
-logger.bind(src="ComBatGAM")
+logger = structlog.get_logger(src="ComBatGAM")  # lazy: honours later `uniharmony.verbosity` calls
 
 
 class ComBatGAM(BaseComBat):

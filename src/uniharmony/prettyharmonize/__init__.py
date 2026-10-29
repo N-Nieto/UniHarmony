@@ -1,4 +1,4 @@
-"""Unified harmonization methods for ML and DL."""
+"""PrettYharmonize: leakage-free ComBat harmonization for machine learning."""
 
 import lazy_loader as lazy
 

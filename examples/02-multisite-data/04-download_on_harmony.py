@@ -1,6 +1,12 @@
 """
 Download ON-Harmony dataset
-=======================
+===========================
+
+.. note::
+
+   This example downloads files from the ON-Harmony dataset with DataLad
+   (which requires ``git-annex``), so it is not executed when building the
+   documentation. Run it locally.
 """
 
 # %%
@@ -9,7 +15,9 @@ Download ON-Harmony dataset
 
 from uniharmony import verbosity
 from uniharmony.datasets import clean_tmp, download_ONharmony
-verbosity("debug")
+
+
+verbosity("warning")
 
 
 # %%

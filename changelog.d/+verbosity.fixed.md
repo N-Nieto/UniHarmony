@@ -1,0 +1,1 @@
+Fix `uniharmony.verbosity` having no effect on the ComBat-based harmonizers when it was called after importing them: their loggers were bound at import time. The `src` field is now also added to the logs of `NeuroComBat`, `CovBat` and `ComBatGAM`.

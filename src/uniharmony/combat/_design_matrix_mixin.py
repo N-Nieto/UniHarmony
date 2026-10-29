@@ -8,8 +8,7 @@ from sklearn.preprocessing import OneHotEncoder
 
 __all__ = ["DesignMatrixMixin"]
 
-logger = structlog.get_logger()
-logger = logger.bind(src="DesignMatrixMixin")
+logger = structlog.get_logger(src="DesignMatrixMixin")  # lazy: honours later `uniharmony.verbosity` calls
 
 
 def _as_columns(covariates: npt.ArrayLike) -> npt.NDArray:

@@ -1,6 +1,11 @@
 """
 Characterise a multisite problem with MAREoS
 ============================================
+
+.. note::
+
+   This example downloads the MAREoS datasets (about 3 MB), so it is not
+   executed when building the documentation. Run it locally to see the figures.
 """
 
 # %%
@@ -25,8 +30,6 @@ verbosity("warning")
 # ---------------
 # Let's load the MAREoS datasets, which simulates several datasets with and without Effects of Site (EoS)
 
-# Initialize a tSNE object
-tsne = TSNE(n_components=2, random_state=42, perplexity=30, max_iter=1000, learning_rate="auto")
 # Load the MAREoS dataset
 datasets = load_MAREoS()
 print(datasets.keys())
@@ -73,10 +76,10 @@ plot_2d_components_by_value(tsne_df_true, "target", "tSNE", ax4)
 
 
 ###############################################################################
-# We see that, for the EoS signal, the main tSNE components are related with the sites, which are also realted with the targets.
+# We see that, for the EoS signal, the main tSNE components are related with the sites, which are also related with the targets.
 # On the other hand, there is not a clear relationship between the sites nor the target for the True signal.
 #
-# Now let's use the ``plot_tsne`` funtion which can simplify the code and will allowd us a fast and simple exploration
+# Now let's use the :func:`~uniharmony.plot.plot_2d_projection` function, which simplifies the code and allows a fast exploration
 
 # %%
 
@@ -85,31 +88,14 @@ dataset = datasets["eos_simple2"]
 X = dataset["X"]
 y = dataset["y"]
 sites = dataset["sites"]
-plot_2d_projection(X, y, sites, tsne)
+plot_2d_projection(X, sites, y, dim_reductor=tsne)
 
 # True signal
 dataset = datasets["true_simple2"]
 X = dataset["X"]
 y = dataset["y"]
 sites = dataset["sites"]
-plot_2d_projection(X, y, sites, tsne)
-
-
-# %%
-
-# EoS signal
-dataset = datasets["eos_simple2"]
-X = dataset["X"]
-y = dataset["y"]
-sites = dataset["sites"]
-plot_2d_projection(X, y, sites, tsne)
-
-# True signal
-dataset = datasets["true_simple2"]
-X = dataset["X"]
-y = dataset["y"]
-sites = dataset["sites"]
-plot_2d_projection(X, y, sites, tsne)
+plot_2d_projection(X, sites, y, dim_reductor=tsne)
 
 
 # %%
@@ -119,7 +105,7 @@ dataset = datasets["eos_interaction1"]
 X = dataset["X"]
 y = dataset["y"]
 sites = dataset["sites"]
-plot_2d_projection(X, y, sites, tsne)
+plot_2d_projection(X, sites, y, dim_reductor=tsne)
 
 
 # True Signal
@@ -127,7 +113,7 @@ dataset = datasets["true_interaction1"]
 X = dataset["X"]
 y = dataset["y"]
 sites = dataset["sites"]
-plot_2d_projection(X, y, sites, tsne)
+plot_2d_projection(X, sites, y, dim_reductor=tsne)
 
 
 # %%
@@ -137,7 +123,7 @@ dataset = datasets["eos_interaction2"]
 X = dataset["X"]
 y = dataset["y"]
 sites = dataset["sites"]
-plot_2d_projection(X, y, sites, tsne)
+plot_2d_projection(X, sites, y, dim_reductor=tsne)
 
 
 # True signal
@@ -145,4 +131,4 @@ dataset = datasets["true_interaction2"]
 X = dataset["X"]
 y = dataset["y"]
 sites = dataset["sites"]
-plot_2d_projection(X, y, sites, tsne)
+plot_2d_projection(X, sites, y, dim_reductor=tsne)
