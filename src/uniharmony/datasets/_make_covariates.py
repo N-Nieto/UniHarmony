@@ -1,6 +1,6 @@
 """Multisite classification dataset generator with covariate support."""
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Literal, cast, get_args
 
 import numpy as np
@@ -115,9 +115,11 @@ class Covariate:
         for continuous covariates.
 
     x_correlation : float, default 0.0
-        Strength of the linear correlation between this covariate and the
-        *pre-site-effect* feature matrix. ``0.0`` = independent,
-        ``1.0`` = perfectly correlated with the first feature of X.
+        Pearson correlation, within each site, between this continuous
+        covariate and the first feature of the *pre-site-effect* feature
+        matrix, in [-1, 1]. ``0.0`` = independent. The covariate keeps the
+        site's ``loc`` and ``scale`` (before clipping). Ignored for
+        categorical covariates.
 
     Raises
     ------
@@ -218,7 +220,7 @@ def make_covariate_site_distributions(
     --------
     Three sites with different means, same sd, same clip:
 
-    >>> dists = make_site_distributions(
+    >>> dists = make_covariate_site_distributions(
     ...     locs=[30.0, 45.0, 60.0],
     ...     scales=10.0,
     ...     clips=(18.0, 90.0),
@@ -288,12 +290,13 @@ def _make_preset_covariate(
     name : {"age", "sex", "quality"}
         Preset identifier:
 
-        - ``"age"``: continuous Gaussian, site means 50 and std 25,
-        clipped to [0, 100], mild positive correlation with X.
-        - ``"sex"``: binary categorical (0 = male, 1 = female), site
-          prevalence spread symmetrically around 50 %.
-        - ``"quality"``: continuous IQM-like score in [0, 1]; quality is
-          inversely proportional to ``noise_strength`` at each site.
+        - ``"age"``: continuous Gaussian with mean 50 and std 20 at every
+          site, clipped to [0, 110], correlation 0.2 with the first feature.
+        - ``"sex"``: binary categorical (0 = male, 1 = female), 50 % at
+          every site.
+        - ``"quality"``: continuous IQM-like score with std 0.08 and site
+          means spread linearly from 0.1 to 5, clipped to [0, 5]. It is not
+          linked to ``noise_strength``.
 
     n_sites : int
         Number of sites.
@@ -304,7 +307,7 @@ def _make_preset_covariate(
 
     Examples
     --------
-    >>> spec = make_covariate_spec("age", n_sites=3)
+    >>> spec = _make_preset_covariate("age", n_sites=3)
     >>> len(spec.site_distributions)
     3
     >>> spec.site_distributions[0].loc  # All sites with the same age range
@@ -312,7 +315,6 @@ def _make_preset_covariate(
 
     """
     if name.lower() == "age":
-        # Site means spread linearly from 35 to 60
         dists = make_covariate_site_distributions(
             locs=[50] * n_sites,
             scales=20.0,
@@ -336,7 +338,7 @@ def _make_preset_covariate(
         )
 
     if name.lower() == "quality":
-        # High noise → lower quality mean (shift down by up to -0.4)
+        # Site means spread linearly from 0.1 to 5
         locs = np.linspace(0.1, 5, n_sites).tolist()
         dists = make_covariate_site_distributions(
             locs=locs,
@@ -364,7 +366,8 @@ def _resolve_covariates(covariates: list[Covariate | str] | None, n_sites: int) 
                     )
                 )
             elif isinstance(entry, Covariate):
-                resolved_specs.append(entry)
+                # Copy, so that broadcasting to n_sites does not modify the user's object
+                resolved_specs.append(replace(entry, site_distributions=list(entry.site_distributions)))
             else:
                 raise TypeError(
                     f"Each entry in 'covariates' must be a CovariateSpec or a str preset name, got {type(entry).__name__}."
@@ -414,17 +417,15 @@ def _make_covariate(
         sd = covar.site_distributions[site_idx]
 
         if covar.kind == "continuous":
-            values = random_state.normal(loc=sd.loc, scale=sd.scale, size=n_samples_site)
-            # Mix with the first feature of X (mean-centred, unit variance)
-            # *before* site effects — this encodes a biological covariance
+            # Correlate with the first feature of X *before* site effects (a biological relation):
+            # z = rho * z_x + sqrt(1 - rho^2) * z_noise has unit variance and correlation rho with z_x.
             # TODO: Now covariates are related with the first feature. We should expand this for other alternatives.
-            alpha = float(np.clip(covar.x_correlation, 0.0, 1.0))
-            if alpha > 0.0 and X.shape[1] > 0:
-                x_col = X[:, 0].copy()
-                x_std = x_col.std()
-                if x_std > 0:
-                    x_col = (x_col - x_col.mean()) / x_std * sd.scale + sd.loc
-                    values = (1.0 - alpha) * values + alpha * x_col
+            rho = float(np.clip(covar.x_correlation, -1.0, 1.0))
+            z = random_state.normal(size=n_samples_site)
+            x_std = X[:, 0].std()
+            if rho != 0.0 and x_std > 0:
+                z = rho * (X[:, 0] - X[:, 0].mean()) / x_std + np.sqrt(1.0 - rho**2) * z
+            values = sd.loc + sd.scale * z
 
             if sd.clip is not None:
                 values = np.clip(values, sd.clip[0], sd.clip[1])
