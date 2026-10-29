@@ -306,8 +306,8 @@ def test_balance_combinations_binary() -> None:
             n_sites=4,
             balance_per_site=balance_per_site,
         )
-    # Wrong type (all should be float)
-    with pytest.raises(TypeError):
+    # Integer proportions are accepted, but these values are invalid
+    with pytest.raises(ValueError):
         balance_per_site = [
             [1, 1],  # Site 0: 20% class 0, 30% class 1, 50% class 2
             [11, 0],  # Site 1: 40% class 0, 40% class 1, 20% class 2
@@ -735,3 +735,103 @@ def test_invalid_moons():
     _, _, _ = make_multisite_classification(n_classes=3, signal_type="moons")
 
     assert X.shape[1] == 2
+
+
+# --------------------------------------------------------------------------- #
+# Regression tests for the 0.0.5 simulator fixes
+# --------------------------------------------------------------------------- #
+
+
+def test_gaussian_quantiles_name_and_deprecated_alias():
+    """The documented name works; the old one still works with a FutureWarning."""
+    X, _, _ = make_multisite_classification(n_samples=100, signal_type="gaussian_quantiles")
+    with pytest.warns(FutureWarning, match="gaussian_quantiles"):
+        X_old, _, _ = make_multisite_classification(n_samples=100, signal_type="make_gaussian_quantiles")
+    np.testing.assert_array_equal(X, X_old)
+
+
+def test_base_data_is_row_aligned():
+    """X - X_base is exactly the EoS of each sample's site (no noise here)."""
+    X, _, sites, X_base = make_multisite_classification(n_sites=3, n_samples=300, noise_strength=0, return_base_data=True)
+    assert X_base.shape == X.shape
+    for site in range(3):
+        offsets = X[sites == site] - X_base[sites == site]
+        np.testing.assert_allclose(offsets, offsets[[0]].repeat(len(offsets), axis=0))
+
+
+@pytest.mark.parametrize("signal_type", ["linear", "blobs", "gaussian_quantiles", "moons", "circles"])
+def test_no_base_sample_is_used_twice(signal_type):
+    """Strong class imbalance and unequal site sizes never reuse a base sample."""
+    _, y, _, X_base = make_multisite_classification(
+        n_sites=2,
+        n_samples=[100, 900],
+        balance_per_site=[[0.0, 1.0], [1.0, 0.0]],
+        signal_type=signal_type,
+        return_base_data=True,
+    )
+    assert len(np.unique(X_base, axis=0)) == len(X_base)
+    np.testing.assert_array_equal(np.bincount(y), [900, 100])
+
+
+def test_class_counts_use_largest_remainder():
+    """A class with proportion 0 gets no samples; counts follow the proportions."""
+    _, y, sites = make_multisite_classification(
+        n_sites=2, n_samples=[10, 7], n_classes=3, balance_per_site=[[0.0, 0.33, 0.67], [0.5, 0.25, 0.25]]
+    )
+    np.testing.assert_array_equal(np.bincount(y[sites == 0], minlength=3), [0, 3, 7])
+    np.testing.assert_array_equal(np.bincount(y[sites == 1], minlength=3), [3, 2, 2])  # 3.5, 1.75, 1.75
+
+
+def test_zero_strength_inside_lists():
+    """A site can have no EoS and no noise when strengths are given per site."""
+    X, _, sites, X_base = make_multisite_classification(
+        n_samples=100, site_effect_strength=[0, 2], noise_strength=[0, 0.1], return_base_data=True
+    )
+    np.testing.assert_array_equal(X[sites == 0], X_base[sites == 0])
+    assert not np.allclose(X[sites == 1], X_base[sites == 1])
+
+
+@pytest.mark.parametrize("n_samples", [np.array([30, 70]), np.int64(100), (30, 70)])
+def test_numpy_and_tuple_n_samples(n_samples):
+    """NumPy integers and arrays are accepted for n_samples."""
+    X, _, _ = make_multisite_classification(n_samples=n_samples)
+    assert len(X) == 100
+
+
+def test_site_without_samples_raises():
+    """Every site needs samples."""
+    with pytest.raises(ValueError, match="at least 1 sample"):
+        make_multisite_classification(n_samples=[100, 0])
+
+
+@pytest.mark.parametrize("balance", [[1, 0], np.array([0.5, 0.5]), [[1, 0], [0, 1]]])
+def test_integer_and_array_balance(balance):
+    """Integer proportions and arrays are accepted."""
+    _, y, _ = make_multisite_classification(n_samples=100, balance_per_site=balance)
+    assert len(y) == 100
+
+
+def test_scale_effect_keeps_means_and_is_centred():
+    """The scale EoS multiplies deviations from the global mean by exp(U(-0.1 s, 0.1 s))."""
+    strength = 5.0
+    X, _, sites, X_base = make_multisite_classification(
+        n_samples=4000, site_effect_type="scale", site_effect_strength=strength, noise_strength=0, return_base_data=True
+    )
+    center = X_base.mean(axis=0)
+    for site in (0, 1):
+        ratio = (X[sites == site] - center) / (X_base[sites == site] - center)
+        factor = np.median(ratio, axis=0)
+        np.testing.assert_allclose(ratio, np.broadcast_to(factor, ratio.shape), rtol=1e-8)
+        assert ((factor >= np.exp(-0.1 * strength)) & (factor <= np.exp(0.1 * strength))).all()
+    np.testing.assert_allclose(X.mean(axis=0), X_base.mean(axis=0), atol=0.2)
+
+
+def test_heterogeneous_effect_keeps_sites_distinct():
+    """Heterogeneous EoS varies around a site offset, so sites with the same strength still differ."""
+    X, _, sites, X_base = make_multisite_classification(
+        n_samples=4000, site_effect_homogeneous=False, site_effect_strength=3, noise_strength=0, return_base_data=True
+    )
+    offsets = X - X_base
+    mean_difference = np.abs(offsets[sites == 0].mean(axis=0) - offsets[sites == 1].mean(axis=0))
+    assert mean_difference.max() > 0.5
+    assert offsets[sites == 0].std(axis=0).min() > 0.5  # per-sample jitter
