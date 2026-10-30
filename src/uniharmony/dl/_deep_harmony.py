@@ -22,8 +22,7 @@ from uniharmony.dl._torch import torch
 
 __all__ = ["DeepHarmony"]
 
-logger = structlog.get_logger()
-logger = logger.bind(src="DeepHarmony")
+logger = structlog.get_logger(src="DeepHarmony")
 
 #: Spatial axis of a (n_contrasts, X, Y, Z) volume that is sliced for each orientation.
 #: Assumes volumes in a canonical orientation (e.g., RAS: X = left-right,
