@@ -1,0 +1,888 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>BARTharm &#8212; uniharmony 0.0.5.dev212 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../../_static/documentation_options.js?v=ee7f1294"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/iqm_based/bartharm';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="uniharmony.ot" href="../ot_based/index.html" />
+    <link rel="prev" title="uniharmony.iqm" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">uniharmony 0.0.5.dev212 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">▶️ Getting Started</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../utilities/index.html">🛠️ Utilities</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/simulate_multisite_data.html">Multisite Data Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/load_mareos_datasets.html">MAREoS Benchmark Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/datalad_integration.html">Datalad Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/report_metric_by_site.html">Site-Stratified Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/site_centroid_distance.html">Site Centroid Distance</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../methods/index.html">🧮 Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../methods/combat_based/index.html">🤺 ComBat-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/combat.html">ComBat and neuroComBat</a></li>
+
+
+
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/combat_gam.html">ComBat-GAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/covbat.html">CovBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/neuroharmony.html">Neuroharmony</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/longcombat.html">Longitudinal ComBat (LongComBat)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/deepcombat.html">DeepComBat</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/prettyharmony.html">PrettYharmonize</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../methods/interpolation_based/index.html">📈 Interpolation-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/interpolation_based/inter_site_matched_interpolation.html">Inter-Site Matched Interpolation (ISMI)</a></li>
+
+
+<li class="toctree-l3"><a class="reference internal" href="../../methods/interpolation_based/intra_site_interpolation.html">Intra-Site Interpolation (ISI)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../methods/iqm_based/index.html">🔬 IQM-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/iqm_based/bartharm.html">BARTharm</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../methods/ot_based/index.html">🚄 Optimal Transport for Domain Adaptation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/ot_based/otda.html">Optimal Transport Domain Adaptation (OTDA)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../methods/dl_based/index.html">🧠 Deep learning based</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/dl_based/deepharmony.html">DeepHarmony</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../examples/index.html">🎛️ Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/basic/index.html">Basic examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/05-plot_multisite_data_characterization.html">Characterize a multisite problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/07-run_site_prediction.html">Evaluate site predictability</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/04-plot_eos_with_dimensionality_reduction.html">Explore EoS with dimensionality reduction techniques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/02-run_metrics_by_site.html">Compute metrics by site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/06-mareos_with_tsne.html">Characterise a multisite problem with MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/08-plot_site_centroid_distance.html">Measure the Effect of Site with centroid distances</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/09-plot_site_centroid_map.html">Map the distances between site centroids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/03-plot_biases_in_metrics_by_site.html">Discover biases in metrics by site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/01-plot_eos_in_ml.html">Impact of Effects of Site in ML</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/multisite_data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/04-download_on_harmony.html">Download ON-Harmony dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/05-plot_simulate_multisite_data_with_covariates.html">Multisite data generation with covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/06-plot_simulate_multisite_data_with_costume_covariates.html">Multisite data generation with covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/02-load_mareos.html">Load MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/03-plot_generate_imbalance_multisite_data.html">Generate imbalance multisite data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/01-plot_generate_multisite_data.html">Multisite data generation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/combat/index.html">ComBat Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/05-plot_combatgam_imbalance_across_sites.html">Analyzing ComBatGAM behavior with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/01-plot_neurocombat_binary_classification.html">Binary classification with NeuroComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/10-plot_prettyharmonize_regression.html">PrettYharmonize for regression</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/07-plot_neurocombat_effect_on_features.html">NeuroComBat effect in features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/08-plot_combatgam_effect_on_features.html">ComBatGAM effect on features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/04-plot_combatgam_age_preservation.html">Analyzing ComBatGAM behavior with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/02-plot_neurocombat_imbalance_across_sites.html">Analyzing NeuroComBat behavior with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/03-neurocombat_with_mareos.html">Using NeuroComBat with MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/06-combatgam_with_mareos.html">Using ComBatGAM with MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/09-plot_prettyharmonize_imbalance_across_sites.html">PrettYharmonize: leakage-free ComBat with class imbalance across sites</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/interpolation/index.html">Interpolation Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/01-plot_isi_binary_classification.html">Binary classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/05-run_ismi_covariate_example.html">Using Inter-Site Matched Interpolation (ISMI) with matching covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/02-plot_isi_multiclass_classification.html">Multiclass classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/04-plot_ismi_binary_classification.html">Multisite Harmonization using Inter-Site Matched Interpolation (ISMI)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/03-plot_isi_advance_usage.html">IntraSiteInterpolation advance usage</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/ot/index.html">Optimal Transport based Domain Adaptation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/05-ot-based/01-plot_binary_classification.html">Binary classification using OTDA</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/iqm/index.html">IQM-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/06-iqm-based/01-plot_bartharm_binary_classification.html">Binary classification with BARTharm</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/conformance/index.html">Implementations conformance</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/07-implementations_conformance/01-plot_neurocombat_conformance.html">NeuroComBat: conformance with R sva and neuroCombat</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">🗺️ API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../utils/index.html">uniharmony</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../utils/verbosity.html">verbosity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../utils/verbosity_context.html">verbosity_context</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../datasets/index.html">uniharmony.datasets</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../datasets/make_multisite_classification.html">make_multisite_classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../datasets/load_mareos.html">load_MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../datasets/load_on_harmony.html">load_ONharmony</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../datasets/download_bids_dataset.html">download_bids_dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../datasets/clean_tmp.html">clean_tmp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../datasets/list_available_files.html">list_available_files</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../metrics/index.html">uniharmony.metrics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../metrics/report_metrics_by_site.html">report_metrics_by_site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metrics/site_centroid_distance.html">site_centroid_distance</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../combat_based/index.html">uniharmony.combat</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../combat_based/combat.html">NeuroComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../combat_based/combat_gam.html">ComBatGAM</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../prettyharmonize/index.html">uniharmony.prettyharmonize</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../prettyharmonize/prettyharmonize_classifier.html">PrettYharmonizeClassifier</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../prettyharmonize/prettyharmonize_regressor.html">PrettYharmonizeRegressor</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../interpolation_based/index.html">uniharmony.interpolation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../interpolation_based/inter_site_matched_interpolation.html">InterSiteMatchedInterpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interpolation_based/intra_site_interpolation.html">IntraSiteInterpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interpolation_based/site_balanced_resampler.html">SiteBalancedResampler</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">uniharmony.iqm</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">BARTharm</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ot_based/index.html">uniharmony.ot</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ot_based/otda.html">OptimalTransportDomainAdaptation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../dl_based/index.html">uniharmony.dl</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dl_based/deepharmony.html">DeepHarmony</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">📂 CHANGELOG</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/N-Nieto/uniharmony" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/api/iqm_based/bartharm.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>BARTharm</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.iqm.BARTharm"><code class="docutils literal notranslate"><span class="pre">BARTharm</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.iqm.BARTharm.fit"><code class="docutils literal notranslate"><span class="pre">BARTharm.fit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.iqm.BARTharm.fit_transform"><code class="docutils literal notranslate"><span class="pre">BARTharm.fit_transform()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.iqm.BARTharm.transform"><code class="docutils literal notranslate"><span class="pre">BARTharm.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="bartharm">
+<h1>BARTharm<a class="headerlink" href="#bartharm" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="uniharmony.iqm.BARTharm">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">uniharmony.iqm.</span></span><span class="sig-name descname"><span class="pre">BARTharm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_iter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">burn_in</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thinning_interval</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_trees_mu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_trees_tau</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta_mu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta_tau</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">2.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_mu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.95</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma_tau</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.95</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">var_scaling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">posterior_summary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'mean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_stored_draws</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_jobs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/random/legacy.html#numpy.random.RandomState" title="(in NumPy v2.5)"><span class="pre">RandomState</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#uniharmony.iqm.BARTharm" title="Link to this definition">#</a></dt>
+<dd><p>Harmonize scanner effects using image quality metrics (IQMs).</p>
+<p>BARTharm <a class="reference internal" href="#rc96ece675a82-1" id="id1"><span>[Rc96ece675a82-1]</span></a> models every imaging-derived phenotype (feature) <code class="docutils literal notranslate"><span class="pre">y</span></code> as</p>
+<div class="math notranslate nohighlight">
+\[y = \mu(\text{IQMs}) + \tau(\text{biological covariates}) + \epsilon,
+\quad \epsilon \sim N(0, \sigma^2),\]</div>
+<p>where the scanner effect <span class="math notranslate nohighlight">\(\mu\)</span> and the biological effect <span class="math notranslate nohighlight">\(\tau\)</span>
+are soft Bayesian additive regression tree (SoftBART) ensembles <a class="reference internal" href="#rc96ece675a82-2" id="id2"><span>[Rc96ece675a82-2]</span></a> fitted
+jointly by Gibbs sampling. The harmonized feature is the observed feature
+minus the posterior estimate of the scanner effect, <span class="math notranslate nohighlight">\(y - \hat\mu\)</span>,
+so no site labels are needed.</p>
+<p>With <code class="docutils literal notranslate"><span class="pre">var_scaling=True</span></code> the error variance is additionally allowed to
+differ between sites, <span class="math notranslate nohighlight">\(\epsilon_i \sim N(0, \sigma^2 \delta_{s(i)}^2)\)</span>,
+and the harmonized feature is
+<span class="math notranslate nohighlight">\((y - \mu - \tau) / \delta_{s(i)} + \tau\)</span>, with the site scales
+<span class="math notranslate nohighlight">\(\delta\)</span> normalized to a geometric mean of 1 in every draw.</p>
+<p>Each feature is z-scored before fitting and transformed back afterwards;
+the IQMs and biological covariates are quantile normalized to [0, 1].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n_iter</strong><span class="classifier">int, optional (default 5000)</span></dt><dd><p>Number of Gibbs iterations.</p>
+</dd>
+<dt><strong>burn_in</strong><span class="classifier">int, optional (default 500)</span></dt><dd><p>Number of initial iterations discarded from the posterior.</p>
+</dd>
+<dt><strong>thinning_interval</strong><span class="classifier">int, optional (default 2)</span></dt><dd><p>Keep every <code class="docutils literal notranslate"><span class="pre">thinning_interval</span></code>-th iteration.</p>
+</dd>
+<dt><strong>n_trees_mu</strong><span class="classifier">int, optional (default 200)</span></dt><dd><p>Number of trees of the scanner effect (IQM) forest.</p>
+</dd>
+<dt><strong>n_trees_tau</strong><span class="classifier">int, optional (default 50)</span></dt><dd><p>Number of trees of the biological effect forest.</p>
+</dd>
+<dt><strong>beta_mu, beta_tau</strong><span class="classifier">float, optional (default 2.0)</span></dt><dd><p>Power of the tree depth prior, <code class="docutils literal notranslate"><span class="pre">gamma</span> <span class="pre">*</span> <span class="pre">(1</span> <span class="pre">+</span> <span class="pre">depth)^(-beta)</span></code>, of the
+scanner and biological forests. Larger values give shallower trees.</p>
+</dd>
+<dt><strong>gamma_mu, gamma_tau</strong><span class="classifier">float, optional (default 0.95)</span></dt><dd><p>Base of the tree depth prior of the scanner and biological forests.</p>
+</dd>
+<dt><strong>var_scaling</strong><span class="classifier">bool, optional (default False)</span></dt><dd><p>Whether to also harmonize site-specific error variances. Requires
+<code class="docutils literal notranslate"><span class="pre">sites</span></code> in <a class="reference internal" href="#uniharmony.iqm.BARTharm.fit" title="uniharmony.iqm.BARTharm.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a> and <a class="reference internal" href="#uniharmony.iqm.BARTharm.transform" title="uniharmony.iqm.BARTharm.transform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">transform()</span></code></a>.</p>
+</dd>
+<dt><strong>posterior_summary</strong><span class="classifier">{“mean”, “median”}, optional (default “mean”)</span></dt><dd><p>Summary of the posterior draws of the harmonized features.</p>
+</dd>
+<dt><strong>n_stored_draws</strong><span class="classifier">int, optional (default 200)</span></dt><dd><p>Number of posterior draws (evenly spaced among the kept ones) whose
+forests are stored to harmonize new data in <a class="reference internal" href="#uniharmony.iqm.BARTharm.transform" title="uniharmony.iqm.BARTharm.transform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">transform()</span></code></a>.
+Memory grows linearly with it.</p>
+</dd>
+<dt><strong>n_jobs</strong><span class="classifier">int or None, optional (default None)</span></dt><dd><p>Number of features fitted in parallel. <code class="docutils literal notranslate"><span class="pre">None</span></code> means 1 unless in a
+<code class="xref py py-obj docutils literal notranslate"><span class="pre">joblib.parallel_backend</span></code> context, <code class="docutils literal notranslate"><span class="pre">-1</span></code> means all processors.</p>
+</dd>
+<dt><strong>random_state</strong><span class="classifier">int, RandomState instance or None, optional (default None)</span></dt><dd><p>Seed of the Gibbs sampler. Pass an int for reproducible results.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>n_features_in_</strong><span class="classifier">int</span></dt><dd><p>Number of features seen during <a class="reference internal" href="#uniharmony.iqm.BARTharm.fit" title="uniharmony.iqm.BARTharm.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a>.</p>
+</dd>
+<dt><strong>n_iqm_covariates_</strong><span class="classifier">int</span></dt><dd><p>Number of IQMs seen during <a class="reference internal" href="#uniharmony.iqm.BARTharm.fit" title="uniharmony.iqm.BARTharm.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a>.</p>
+</dd>
+<dt><strong>n_biological_covariates_</strong><span class="classifier">int</span></dt><dd><p>Number of biological covariates seen during <a class="reference internal" href="#uniharmony.iqm.BARTharm.fit" title="uniharmony.iqm.BARTharm.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a> (0 if none).</p>
+</dd>
+<dt><strong>feature_means_</strong><span class="classifier">ndarray, shape (n_features,)</span></dt><dd><p>Means used to z-score the features.</p>
+</dd>
+<dt><strong>feature_stds_</strong><span class="classifier">ndarray, shape (n_features,)</span></dt><dd><p>Standard deviations (<code class="docutils literal notranslate"><span class="pre">ddof=1</span></code>) used to z-score the features.</p>
+</dd>
+<dt><strong>rmse_</strong><span class="classifier">ndarray, shape (n_features,)</span></dt><dd><p>Root mean squared error, on the z-scored scale, of the posterior mean
+prediction <span class="math notranslate nohighlight">\(\hat\mu + \hat\tau\)</span> on the training data.</p>
+</dd>
+<dt><strong>sigma_draws_</strong><span class="classifier">ndarray, shape (n_features, n_kept_draws)</span></dt><dd><p>Kept posterior draws of the error standard deviation (z-scored scale;
+with <code class="docutils literal notranslate"><span class="pre">var_scaling=True</span></code>, not rescaled by the alignment of the site scales).</p>
+</dd>
+<dt><strong>sites_</strong><span class="classifier">ndarray, shape (n_sites,)</span></dt><dd><p>Fitted site labels. Only with <code class="docutils literal notranslate"><span class="pre">var_scaling=True</span></code>.</p>
+</dd>
+<dt><strong>site_scales_</strong><span class="classifier">ndarray, shape (n_features, n_sites)</span></dt><dd><p>Posterior means of the site scales <span class="math notranslate nohighlight">\(\delta\)</span> (geometric mean 1
+per draw). Only with <code class="docutils literal notranslate"><span class="pre">var_scaling=True</span></code>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony.iqm.BARTharm.fit" title="uniharmony.iqm.BARTharm.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X, iqm_covariates[, ...])</p></td>
+<td><p>Fit the BARTharm model to every feature.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#uniharmony.iqm.BARTharm.fit_transform" title="uniharmony.iqm.BARTharm.fit_transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit_transform</span></code></a>(X, iqm_covariates[, ...])</p></td>
+<td><p>Fit the model and harmonize the training data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony.iqm.BARTharm.transform" title="uniharmony.iqm.BARTharm.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X, iqm_covariates[, ...])</p></td>
+<td><p>Harmonize (new) data with the stored posterior draws.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="rubric">Notes</p>
+<p>The translation follows the BARTharm R code rather than the paper where the
+two differ (default number of trees and depth prior of <span class="math notranslate nohighlight">\(\tau\)</span>, number
+of iterations and burn-in, and the order of the Gibbs updates).</p>
+<p>Differences to the R code:</p>
+<ul class="simple">
+<li><p><a class="reference internal" href="#uniharmony.iqm.BARTharm.transform" title="uniharmony.iqm.BARTharm.transform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">transform()</span></code></a> harmonizes new samples with the stored posterior draws
+of the forests (the R code only harmonizes the samples it was fitted on).
+New IQMs and biological covariates are normalized by interpolating the
+empirical distribution of the training data. <a class="reference internal" href="#uniharmony.iqm.BARTharm.fit_transform" title="uniharmony.iqm.BARTharm.fit_transform"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit_transform()</span></code></a> uses
+all kept draws, so it can differ slightly from <code class="docutils literal notranslate"><span class="pre">fit().transform()</span></code>.</p></li>
+<li><p>The R code appends the integer site codes, not normalized, as an extra
+IQM column when site labels are given. As the forests only split in
+[0, 1], that column carries almost no information; it is not added here.</p></li>
+<li><p>All saved draws after <code class="docutils literal notranslate"><span class="pre">burn_in</span></code> are kept. When <code class="docutils literal notranslate"><span class="pre">burn_in</span></code> is not a
+multiple of <code class="docutils literal notranslate"><span class="pre">thinning_interval</span></code>, the R code also drops the last draw.</p></li>
+<li><p>Missing values are not allowed (the R code drops incomplete rows).</p></li>
+<li><p>Features with zero variance are returned unchanged (the R code returns NaN).</p></li>
+</ul>
+<p>Fitting is slow: every feature needs <code class="docutils literal notranslate"><span class="pre">n_iter</span></code> sweeps over
+<code class="docutils literal notranslate"><span class="pre">n_trees_mu</span> <span class="pre">+</span> <span class="pre">n_trees_tau</span></code> trees. Use <code class="docutils literal notranslate"><span class="pre">n_jobs</span></code> to fit features in
+parallel.</p>
+<p class="rubric">References</p>
+<div role="list" class="citation-list">
+<div class="citation" id="rc96ece675a82-1" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>Prevot E, et al., (2025).
+BARTharm: MRI Harmonization Using Image Quality Metrics and Bayesian Non-parametric.
+bioRxiv. Published online 2025.
+doi:10.1101/2025.06.04.657792</p>
+</div>
+<div class="citation" id="rc96ece675a82-2" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></span>
+<p>Linero, A. R., &amp; Yang, Y. (2018).
+Bayesian regression tree ensembles that adapt to smoothness and sparsity.
+Journal of the Royal Statistical Society: Series B, 80(5), 1087-1110.
+doi:10.1111/rssb.12293</p>
+</div>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.iqm</span><span class="w"> </span><span class="kn">import</span> <span class="n">BARTharm</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">harmonizer</span> <span class="o">=</span> <span class="n">BARTharm</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_harmonized</span> <span class="o">=</span> <span class="n">harmonizer</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">iqms</span><span class="p">,</span> <span class="n">biological_covariates</span><span class="o">=</span><span class="n">age_sex</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_test_harmonized</span> <span class="o">=</span> <span class="n">harmonizer</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">iqms_test</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="uniharmony.iqm.BARTharm.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iqm_covariates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">biological_covariates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sites</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#uniharmony.iqm.BARTharm" title="uniharmony.iqm._bart.BARTharm"><span class="pre">BARTharm</span></a></span></span><a class="headerlink" href="#uniharmony.iqm.BARTharm.fit" title="Link to this definition">#</a></dt>
+<dd><p>Fit the BARTharm model to every feature.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>The imaging-derived features to harmonize.</p>
+</dd>
+<dt><strong>iqm_covariates</strong><span class="classifier">array-like, shape (n_samples, n_iqm_covariates) or (n_samples,)</span></dt><dd><p>The image quality metrics, which model the scanner effects.</p>
+</dd>
+<dt><strong>biological_covariates</strong><span class="classifier">array-like, shape (n_samples, n_biological_covariates) or (n_samples,) or None, optional (default None)</span></dt><dd><p>The biological covariates (e.g., age, sex), which model the
+biological signal that must not be removed. Strongly recommended:
+without them, biological variation correlated with the IQMs can be
+attributed to the scanner. Include the variables that the IQMs are
+related to (e.g., a diagnosis associated with head motion).
+Categorical covariates must be numerically coded.</p>
+</dd>
+<dt><strong>sites</strong><span class="classifier">array-like, shape (n_samples,) or None, optional (default None)</span></dt><dd><p>Site labels. Required if <code class="docutils literal notranslate"><span class="pre">var_scaling=True</span></code>, ignored otherwise.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>self</strong><span class="classifier">BARTharm</span></dt><dd><p>The fitted transformer.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="uniharmony.iqm.BARTharm.fit_transform">
+<span class="sig-name descname"><span class="pre">fit_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iqm_covariates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">biological_covariates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sites</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NDArray</span></span></span><a class="headerlink" href="#uniharmony.iqm.BARTharm.fit_transform" title="Link to this definition">#</a></dt>
+<dd><p>Fit the model and harmonize the training data.</p>
+<p>The harmonized data are summarized over all kept posterior draws, as in
+the BARTharm R code.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>The imaging-derived features to harmonize.</p>
+</dd>
+<dt><strong>iqm_covariates</strong><span class="classifier">array-like, shape (n_samples, n_iqm_covariates) or (n_samples,)</span></dt><dd><p>The image quality metrics.</p>
+</dd>
+<dt><strong>biological_covariates</strong><span class="classifier">array-like, shape (n_samples, n_biological_covariates) or (n_samples,) or None, optional (default None)</span></dt><dd><p>The biological covariates.</p>
+</dd>
+<dt><strong>sites</strong><span class="classifier">array-like, shape (n_samples,) or None, optional (default None)</span></dt><dd><p>Site labels. Required if <code class="docutils literal notranslate"><span class="pre">var_scaling=True</span></code>, ignored otherwise.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>ndarray, shape (n_samples, n_features)</dt><dd><p>The harmonized features.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="uniharmony.iqm.BARTharm.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iqm_covariates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">biological_covariates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sites</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ArrayLike</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NDArray</span></span></span><a class="headerlink" href="#uniharmony.iqm.BARTharm.transform" title="Link to this definition">#</a></dt>
+<dd><p>Harmonize (new) data with the stored posterior draws.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like, shape (n_samples, n_features)</span></dt><dd><p>The imaging-derived features to harmonize.</p>
+</dd>
+<dt><strong>iqm_covariates</strong><span class="classifier">array-like, shape (n_samples, n_iqm_covariates) or (n_samples,)</span></dt><dd><p>The image quality metrics.</p>
+</dd>
+<dt><strong>biological_covariates</strong><span class="classifier">array-like, shape (n_samples, n_biological_covariates) or (n_samples,) or None, optional (default None)</span></dt><dd><p>The biological covariates. Only needed (and then required) if
+<code class="docutils literal notranslate"><span class="pre">var_scaling=True</span></code> and they were given in <a class="reference internal" href="#uniharmony.iqm.BARTharm.fit" title="uniharmony.iqm.BARTharm.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a>.</p>
+</dd>
+<dt><strong>sites</strong><span class="classifier">array-like, shape (n_samples,) or None, optional (default None)</span></dt><dd><p>Site labels, all seen in <a class="reference internal" href="#uniharmony.iqm.BARTharm.fit" title="uniharmony.iqm.BARTharm.fit"><code class="xref py py-meth docutils literal notranslate"><span class="pre">fit()</span></code></a>. Required if <code class="docutils literal notranslate"><span class="pre">var_scaling=True</span></code>.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>ndarray, shape (n_samples, n_features)</dt><dd><p>The harmonized features.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<section id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Link to this heading">#</a></h2>
+<div class="sphx-glr-thumbnails"><div class="sphx-glr-thumbcontainer" tooltip="BARTharm removes scanner effects using image quality metrics (IQMs) instead of site labels. Here, the sites differ in their IQMs (a quality score and the signal-to-noise ratio), so the IQMs carry the information about the scanner effect, and BARTharm learns it without ever seeing the site labels."><img alt="" src="../../_images/sphx_glr_01-plot_bartharm_binary_classification_thumb.png" />
+<p><a class="reference internal" href="../../auto_examples/06-iqm-based/01-plot_bartharm_binary_classification.html"><span class="doc">Binary classification with BARTharm</span></a></p>
+  <div class="sphx-glr-thumbnail-title">Binary classification with BARTharm</div>
+</div></div></section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">uniharmony.iqm</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../ot_based/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">uniharmony.ot</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.iqm.BARTharm"><code class="docutils literal notranslate"><span class="pre">BARTharm</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.iqm.BARTharm.fit"><code class="docutils literal notranslate"><span class="pre">BARTharm.fit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.iqm.BARTharm.fit_transform"><code class="docutils literal notranslate"><span class="pre">BARTharm.fit_transform()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.iqm.BARTharm.transform"><code class="docutils literal notranslate"><span class="pre">BARTharm.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#examples">Examples</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By uniharmony Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026, uniharmony Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

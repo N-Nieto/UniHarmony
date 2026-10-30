@@ -1,0 +1,923 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>DeepHarmony &#8212; uniharmony 0.0.5.dev212 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../../_static/documentation_options.js?v=ee7f1294"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'api/dl_based/deepharmony';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="📂 CHANGELOG" href="../../changelog.html" />
+    <link rel="prev" title="uniharmony.dl" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">uniharmony 0.0.5.dev212 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">▶️ Getting Started</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../utilities/index.html">🛠️ Utilities</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/simulate_multisite_data.html">Multisite Data Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/load_mareos_datasets.html">MAREoS Benchmark Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/datalad_integration.html">Datalad Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/report_metric_by_site.html">Site-Stratified Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/site_centroid_distance.html">Site Centroid Distance</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../methods/index.html">🧮 Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../methods/combat_based/index.html">🤺 ComBat-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/combat.html">ComBat and neuroComBat</a></li>
+
+
+
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/combat_gam.html">ComBat-GAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/covbat.html">CovBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/neuroharmony.html">Neuroharmony</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/longcombat.html">Longitudinal ComBat (LongComBat)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/deepcombat.html">DeepComBat</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../../methods/combat_based/prettyharmony.html">PrettYharmonize</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../methods/interpolation_based/index.html">📈 Interpolation-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/interpolation_based/inter_site_matched_interpolation.html">Inter-Site Matched Interpolation (ISMI)</a></li>
+
+
+<li class="toctree-l3"><a class="reference internal" href="../../methods/interpolation_based/intra_site_interpolation.html">Intra-Site Interpolation (ISI)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../methods/iqm_based/index.html">🔬 IQM-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/iqm_based/bartharm.html">BARTharm</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../methods/ot_based/index.html">🚄 Optimal Transport for Domain Adaptation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/ot_based/otda.html">Optimal Transport Domain Adaptation (OTDA)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../methods/dl_based/index.html">🧠 Deep learning based</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../methods/dl_based/deepharmony.html">DeepHarmony</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../examples/index.html">🎛️ Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/basic/index.html">Basic examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/05-plot_multisite_data_characterization.html">Characterize a multisite problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/07-run_site_prediction.html">Evaluate site predictability</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/04-plot_eos_with_dimensionality_reduction.html">Explore EoS with dimensionality reduction techniques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/02-run_metrics_by_site.html">Compute metrics by site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/06-mareos_with_tsne.html">Characterise a multisite problem with MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/08-plot_site_centroid_distance.html">Measure the Effect of Site with centroid distances</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/09-plot_site_centroid_map.html">Map the distances between site centroids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/03-plot_biases_in_metrics_by_site.html">Discover biases in metrics by site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/01-plot_eos_in_ml.html">Impact of Effects of Site in ML</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/multisite_data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/04-download_on_harmony.html">Download ON-Harmony dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/05-plot_simulate_multisite_data_with_covariates.html">Multisite data generation with covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/06-plot_simulate_multisite_data_with_costume_covariates.html">Multisite data generation with covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/02-load_mareos.html">Load MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/03-plot_generate_imbalance_multisite_data.html">Generate imbalance multisite data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/01-plot_generate_multisite_data.html">Multisite data generation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/combat/index.html">ComBat Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/05-plot_combatgam_imbalance_across_sites.html">Analyzing ComBatGAM behavior with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/01-plot_neurocombat_binary_classification.html">Binary classification with NeuroComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/10-plot_prettyharmonize_regression.html">PrettYharmonize for regression</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/07-plot_neurocombat_effect_on_features.html">NeuroComBat effect in features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/08-plot_combatgam_effect_on_features.html">ComBatGAM effect on features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/04-plot_combatgam_age_preservation.html">Analyzing ComBatGAM behavior with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/02-plot_neurocombat_imbalance_across_sites.html">Analyzing NeuroComBat behavior with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/03-neurocombat_with_mareos.html">Using NeuroComBat with MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/06-combatgam_with_mareos.html">Using ComBatGAM with MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/09-plot_prettyharmonize_imbalance_across_sites.html">PrettYharmonize: leakage-free ComBat with class imbalance across sites</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/interpolation/index.html">Interpolation Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/01-plot_isi_binary_classification.html">Binary classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/05-run_ismi_covariate_example.html">Using Inter-Site Matched Interpolation (ISMI) with matching covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/02-plot_isi_multiclass_classification.html">Multiclass classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/04-plot_ismi_binary_classification.html">Multisite Harmonization using Inter-Site Matched Interpolation (ISMI)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/03-plot_isi_advance_usage.html">IntraSiteInterpolation advance usage</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/ot/index.html">Optimal Transport based Domain Adaptation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/05-ot-based/01-plot_binary_classification.html">Binary classification using OTDA</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/iqm/index.html">IQM-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/06-iqm-based/01-plot_bartharm_binary_classification.html">Binary classification with BARTharm</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/conformance/index.html">Implementations conformance</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/07-implementations_conformance/01-plot_neurocombat_conformance.html">NeuroComBat: conformance with R sva and neuroCombat</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">🗺️ API Reference</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../utils/index.html">uniharmony</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../utils/verbosity.html">verbosity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../utils/verbosity_context.html">verbosity_context</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../datasets/index.html">uniharmony.datasets</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../datasets/make_multisite_classification.html">make_multisite_classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../datasets/load_mareos.html">load_MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../datasets/load_on_harmony.html">load_ONharmony</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../datasets/download_bids_dataset.html">download_bids_dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../datasets/clean_tmp.html">clean_tmp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../datasets/list_available_files.html">list_available_files</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../metrics/index.html">uniharmony.metrics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../metrics/report_metrics_by_site.html">report_metrics_by_site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../metrics/site_centroid_distance.html">site_centroid_distance</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../combat_based/index.html">uniharmony.combat</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../combat_based/combat.html">NeuroComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../combat_based/combat_gam.html">ComBatGAM</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../prettyharmonize/index.html">uniharmony.prettyharmonize</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../prettyharmonize/prettyharmonize_classifier.html">PrettYharmonizeClassifier</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../prettyharmonize/prettyharmonize_regressor.html">PrettYharmonizeRegressor</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../interpolation_based/index.html">uniharmony.interpolation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../interpolation_based/inter_site_matched_interpolation.html">InterSiteMatchedInterpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interpolation_based/intra_site_interpolation.html">IntraSiteInterpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../interpolation_based/site_balanced_resampler.html">SiteBalancedResampler</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../iqm_based/index.html">uniharmony.iqm</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../iqm_based/bartharm.html">BARTharm</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ot_based/index.html">uniharmony.ot</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ot_based/otda.html">OptimalTransportDomainAdaptation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">uniharmony.dl</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">DeepHarmony</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">📂 CHANGELOG</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/N-Nieto/uniharmony" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/api/dl_based/deepharmony.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>DeepHarmony</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.dl.DeepHarmony"><code class="docutils literal notranslate"><span class="pre">DeepHarmony</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.dl.DeepHarmony.fit"><code class="docutils literal notranslate"><span class="pre">DeepHarmony.fit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.dl.DeepHarmony.transform"><code class="docutils literal notranslate"><span class="pre">DeepHarmony.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.dl.DeepHarmonyUNet"><code class="docutils literal notranslate"><span class="pre">DeepHarmonyUNet</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.dl.DeepHarmonyUNet.forward"><code class="docutils literal notranslate"><span class="pre">DeepHarmonyUNet.forward()</span></code></a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="deepharmony">
+<h1>DeepHarmony<a class="headerlink" href="#deepharmony" title="Link to this heading">#</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="uniharmony.dl.DeepHarmony">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">uniharmony.dl.</span></span><span class="sig-name descname"><span class="pre">DeepHarmony</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">orientations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.15)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.15)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'axial'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'coronal'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'sagittal'</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">('axial',</span> <span class="pre">'coronal',</span> <span class="pre">'sagittal')</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">128</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batches_per_epoch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">250</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_epochs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">120</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">harmonize_target</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><span class="pre">bool</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bn_recalibration_batches</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inference_batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">16</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_frequency</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#int" title="(in Python v3.15)"><span class="pre">int</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://numpy.org/doc/stable/reference/random/legacy.html#numpy.random.RandomState" title="(in NumPy v2.5)"><span class="pre">RandomState</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#uniharmony.dl.DeepHarmony" title="Link to this definition">#</a></dt>
+<dd><p>DeepHarmony: deep learning contrast harmonization across scanner changes.</p>
+<p>DeepHarmony <a class="reference internal" href="#r991dd0ee09ce-1" id="id1"><span>[R991dd0ee09ce-1]</span></a> learns to map multi-contrast MR images acquired with one
+protocol (or scanner), the <em>source</em>, to the contrasts of another protocol,
+the <em>target</em>. It is trained on an <em>overlap cohort</em>: subjects scanned with
+both protocols, whose images are co-registered.</p>
+<p>The method, as described in the paper:</p>
+<ul class="simple">
+<li><p>A 2D U-Net (<a class="reference internal" href="#uniharmony.dl.DeepHarmonyUNet" title="uniharmony.dl.DeepHarmonyUNet"><code class="xref py py-class docutils literal notranslate"><span class="pre">DeepHarmonyUNet</span></code></a>) maps all input
+contrasts to all output contrasts at once (multi-contrast training).</p></li>
+<li><p>Training uses 128 x 128 patches centered on random non-zero voxels,
+sampled with replacement, the mean absolute error (L1) loss and Adam
+(learning rate 0.001), without regularization or dropout.</p></li>
+<li><p>2.5D prediction: one network is trained per orientation (axial, coronal
+and sagittal) and their predicted volumes are combined with a voxel-wise
+median.</p></li>
+<li><p>Optionally (<code class="docutils literal notranslate"><span class="pre">harmonize_target=True</span></code>), a secondary set of networks is
+trained to pass target-protocol images through the same synthesis
+process: target images are the input and the <em>harmonized</em> source images
+are the targets. This gives harmonized images of both protocols the same
+(synthetic) noise characteristics.</p></li>
+</ul>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>orientations</strong><span class="classifier">sequence of {“axial”, “coronal”, “sagittal”}, optional (default (“axial”, “coronal”, “sagittal”))</span></dt><dd><p>Orientations to train one network for. The paper’s 2.5D model uses all
+three; <code class="docutils literal notranslate"><span class="pre">(&quot;axial&quot;,)</span></code> gives its single-orientation variant.</p>
+</dd>
+<dt><strong>patch_size</strong><span class="classifier">int, optional (default 128)</span></dt><dd><p>Height and width of the training patches. Must be a multiple of 16.</p>
+</dd>
+<dt><strong>batch_size</strong><span class="classifier">int, optional (default 8)</span></dt><dd><p>Number of patches per training batch.</p>
+</dd>
+<dt><strong>batches_per_epoch</strong><span class="classifier">int, optional (default 250)</span></dt><dd><p>Number of batches per epoch.</p>
+</dd>
+<dt><strong>n_epochs</strong><span class="classifier">int, optional (default 120)</span></dt><dd><p>Number of training epochs per network. The paper trained for 200 epochs
+and selected the models at epoch 120 using validation data.</p>
+</dd>
+<dt><strong>learning_rate</strong><span class="classifier">float, optional (default 0.001)</span></dt><dd><p>Learning rate of the Adam optimizer.</p>
+</dd>
+<dt><strong>harmonize_target</strong><span class="classifier">bool, optional (default False)</span></dt><dd><p>Whether to also train the secondary networks that harmonize
+target-protocol images (see <code class="docutils literal notranslate"><span class="pre">transform(...,</span> <span class="pre">domain=&quot;target&quot;)</span></code>).</p>
+</dd>
+<dt><strong>bn_recalibration_batches</strong><span class="classifier">int, optional (default 100)</span></dt><dd><p>After training each network, re-estimate the batch normalization
+statistics used at prediction time as exact averages over this many
+training batches, with the weights frozen (“precise BN”). The running
+averages kept during training (Keras-like momentum of 0.99) lag behind
+the evolving activations and only become accurate after many updates
+(the paper used 30,000); without recalibration, shorter trainings give
+a mismatch between training and prediction. Set to 0 to keep the
+running averages, as in the original implementation.</p>
+</dd>
+<dt><strong>inference_batch_size</strong><span class="classifier">int, optional (default 16)</span></dt><dd><p>Number of slices per forward pass at prediction time.</p>
+</dd>
+<dt><strong>validation_frequency</strong><span class="classifier">int, optional (default 5)</span></dt><dd><p>If validation data is passed to <code class="docutils literal notranslate"><span class="pre">fit</span></code>, compute the validation error
+every <code class="docutils literal notranslate"><span class="pre">validation_frequency</span></code> epochs (the paper saved the weights
+every 5 epochs for post-hoc validation).</p>
+</dd>
+<dt><strong>device</strong><span class="classifier">str or None, optional (default None)</span></dt><dd><p>PyTorch device (e.g., “cpu”, “cuda”, “cuda:1”). If None, use CUDA when
+available and the CPU otherwise.</p>
+</dd>
+<dt><strong>random_state</strong><span class="classifier">int, RandomState instance or None, optional (default None)</span></dt><dd><p>Seed controlling weight initialization and patch sampling. Pass an int
+for reproducible training (exactly reproducible on CPU; GPU kernels may
+be non-deterministic).</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>networks_</strong><span class="classifier">dict of str to DeepHarmonyUNet</span></dt><dd><p>Trained source-to-target network for each orientation.</p>
+</dd>
+<dt><strong>target_networks_</strong><span class="classifier">dict of str to DeepHarmonyUNet</span></dt><dd><p>Trained secondary (target-protocol) network for each orientation.
+Empty if <code class="docutils literal notranslate"><span class="pre">harmonize_target=False</span></code>.</p>
+</dd>
+<dt><strong>n_input_contrasts_</strong><span class="classifier">int</span></dt><dd><p>Number of contrasts of the source images.</p>
+</dd>
+<dt><strong>n_output_contrasts_</strong><span class="classifier">int</span></dt><dd><p>Number of contrasts of the target images.</p>
+</dd>
+<dt><strong>history_</strong><span class="classifier">dict of str to dict</span></dt><dd><p>Training history per network, keyed <code class="docutils literal notranslate"><span class="pre">&quot;source/&lt;orientation&gt;&quot;</span></code> or
+<code class="docutils literal notranslate"><span class="pre">&quot;target/&lt;orientation&gt;&quot;</span></code>. Each entry has <code class="docutils literal notranslate"><span class="pre">&quot;loss&quot;</span></code> (mean training
+L1 loss per epoch) and <code class="docutils literal notranslate"><span class="pre">&quot;val_mae&quot;</span></code> (list of <code class="docutils literal notranslate"><span class="pre">(epoch,</span> <span class="pre">mae)</span></code> pairs,
+empty without validation data). The validation error is the mean
+absolute error of that orientation’s network alone (not of the 2.5D
+median), within the voxels that are non-zero in any input contrast.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony.dl.DeepHarmony.fit" title="uniharmony.dl.DeepHarmony.fit"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fit</span></code></a>(X[, y, validation_data])</p></td>
+<td><p>Train DeepHarmony on an overlap cohort.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#uniharmony.dl.DeepHarmony.transform" title="uniharmony.dl.DeepHarmony.transform"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transform</span></code></a>(X[, domain])</p></td>
+<td><p>Harmonize volumes.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="rubric">Notes</p>
+<p>Input volumes must be preprocessed as in the paper before using this
+estimator; DeepHarmony does not do it:</p>
+<ul class="simple">
+<li><p>Inhomogeneity (bias field) correction, e.g., N4.</p></li>
+<li><p>Resampling of all contrasts to a common grid (the paper super-resolved
+2D acquisitions with SMORE).</p></li>
+<li><p>Rigid co-registration of all contrasts of both protocols of each subject
+to a common reference image (the paper used the target-protocol
+T1-weighted image).</p></li>
+<li><p>Intensity gain correction, e.g., linear scaling so that the white matter
+peak is at the same intensity for all images.</p></li>
+<li><p>A common orientation (see <code class="docutils literal notranslate"><span class="pre">ORIENTATION_AXES</span></code>): axis 0, 1 and 2 of the
+spatial dimensions are sliced for the sagittal, coronal and axial
+networks, respectively.</p></li>
+</ul>
+<p>The background (voxels that are zero in every input contrast) is not used
+as patch center. The final ReLU makes all outputs non-negative, so target
+intensities should be non-negative.</p>
+<p class="rubric">References</p>
+<div role="list" class="citation-list">
+<div class="citation" id="r991dd0ee09ce-1" role="doc-biblioentry">
+<span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
+<p>Dewey, B. E., Zhao, C., Reinhold, J. C., Carass, A., Fitzgerald, K. C.,
+Sotirchos, E. S., Saidha, S., Oh, J., Pham, D. L., Calabresi, P. A.,
+van Zijl, P. C. M., &amp; Prince, J. L. (2019).
+“DeepHarmony: A deep learning approach to contrast harmonization
+across scanner changes.” Magnetic Resonance Imaging, 64, 160-170.
+<a class="reference external" href="https://doi.org/10.1016/j.mri.2019.05.041">https://doi.org/10.1016/j.mri.2019.05.041</a></p>
+</div>
+</div>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># X_source, X_target: lists of co-registered volumes, shape (n_contrasts, X, Y, Z)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span> <span class="o">=</span> <span class="n">DeepHarmony</span><span class="p">(</span><span class="n">harmonize_target</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_source_train</span><span class="p">,</span> <span class="n">X_target_train</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_source_harmonized</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_source_new</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">X_target_harmonized</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_target_new</span><span class="p">,</span> <span class="n">domain</span><span class="o">=</span><span class="s2">"target"</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="uniharmony.dl.DeepHarmony.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">NDArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.15)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><span class="pre">ArrayLike</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">NDArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.15)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><span class="pre">ArrayLike</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><span class="pre">NDArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.15)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><span class="pre">ArrayLike</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">NDArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.15)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><span class="pre">ArrayLike</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#uniharmony.dl.DeepHarmony" title="uniharmony.dl._deep_harmony.DeepHarmony"><span class="pre">DeepHarmony</span></a></span></span><a class="headerlink" href="#uniharmony.dl.DeepHarmony.fit" title="Link to this definition">#</a></dt>
+<dd><p>Train DeepHarmony on an overlap cohort.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like or sequence of array-like</span></dt><dd><p>Source-protocol volumes of the overlap cohort, each of shape
+(n_input_contrasts, X, Y, Z). A sequence (one volume per subject),
+an array of shape (n_subjects, n_input_contrasts, X, Y, Z) or a
+single volume.</p>
+</dd>
+<dt><strong>y</strong><span class="classifier">array-like or sequence of array-like</span></dt><dd><p>Target-protocol volumes of the same subjects, in the same order,
+each of shape (n_output_contrasts, X, Y, Z) and co-registered with
+the corresponding volume in <code class="docutils literal notranslate"><span class="pre">X</span></code>.</p>
+</dd>
+<dt><strong>validation_data</strong><span class="classifier">tuple of (X_val, y_val) or None, optional (default None)</span></dt><dd><p>Paired held-out volumes. If given, the mean absolute error within
+the foreground of <code class="docutils literal notranslate"><span class="pre">X_val</span></code> is recorded in <code class="docutils literal notranslate"><span class="pre">history_</span></code> every
+<code class="docutils literal notranslate"><span class="pre">validation_frequency</span></code> epochs.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>self</strong><span class="classifier">DeepHarmony</span></dt><dd><p>The fitted estimator.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="uniharmony.dl.DeepHarmony.transform">
+<span class="sig-name descname"><span class="pre">transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">X</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">NDArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence" title="(in Python v3.15)"><span class="pre">Sequence</span></a><span class="p"><span class="pre">[</span></span><span class="pre">ArrayLike</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Literal" title="(in Python v3.15)"><span class="pre">Literal</span></a><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'source'</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="s"><span class="pre">'target'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'source'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">NDArray</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><span class="pre">NDArray</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#uniharmony.dl.DeepHarmony.transform" title="Link to this definition">#</a></dt>
+<dd><p>Harmonize volumes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>X</strong><span class="classifier">array-like or sequence of array-like</span></dt><dd><p>Volumes to harmonize, each of shape (n_contrasts, X, Y, Z). The
+contrasts must be those of the source protocol (<code class="docutils literal notranslate"><span class="pre">domain=&quot;source&quot;</span></code>)
+or of the target protocol (<code class="docutils literal notranslate"><span class="pre">domain=&quot;target&quot;</span></code>), in the training order.</p>
+</dd>
+<dt><strong>domain</strong><span class="classifier">{“source”, “target”}, optional (default “source”)</span></dt><dd><p>Protocol the volumes were acquired with. <code class="docutils literal notranslate"><span class="pre">&quot;target&quot;</span></code> requires
+<code class="docutils literal notranslate"><span class="pre">harmonize_target=True</span></code> at fit time.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>ndarray or list of ndarray</dt><dd><p>Harmonized volumes, each of shape (n_output_contrasts, X, Y, Z),
+in the target-protocol contrasts. A single array if a single volume
+was given, otherwise a list.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt>ValueError</dt><dd><p>If <code class="docutils literal notranslate"><span class="pre">domain</span></code> is invalid, the secondary networks were not trained,
+or the number of contrasts does not match.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="uniharmony.dl.DeepHarmonyUNet">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">uniharmony.dl.</span></span><span class="sig-name descname"><span class="pre">DeepHarmonyUNet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#uniharmony.dl.DeepHarmonyUNet" title="Link to this definition">#</a></dt>
+<dd><p>2D U-Net of DeepHarmony (Dewey et al., 2019, Fig. 2).</p>
+<p>Differences to the original U-Net, as described in the paper:</p>
+<ul class="simple">
+<li><p>Downsampling with 4x4 convolutions of stride 2 and upsampling with 4x4
+transposed convolutions of stride 1/2 (no pooling or interpolation).</p></li>
+<li><p>Fewer feature maps: 16, 32, 64 and 128 per level and 256 at the bottleneck.</p></li>
+<li><p>The input contrasts are concatenated to the last feature map, so the
+final 1x1 convolution only <em>augments</em> the inputs.</p></li>
+<li><p>Every convolution is followed by ReLU and batch normalization, except the
+final 1x1 convolution, which is followed by ReLU only.</p></li>
+</ul>
+<p>Weights are initialized like Keras (Glorot-uniform kernels, zero biases),
+the framework of the original implementation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n_input_contrasts</strong><span class="classifier">int</span></dt><dd><p>Number of input contrasts (channels), <span class="math notranslate nohighlight">\(C_I\)</span> in the paper.</p>
+</dd>
+<dt><strong>n_output_contrasts</strong><span class="classifier">int</span></dt><dd><p>Number of output contrasts (channels), <span class="math notranslate nohighlight">\(C_O\)</span> in the paper.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#uniharmony.dl.DeepHarmonyUNet.forward" title="uniharmony.dl.DeepHarmonyUNet.forward"><code class="xref py py-obj docutils literal notranslate"><span class="pre">forward</span></code></a>(x)</p></td>
+<td><p>Map input contrasts to output contrasts.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="rubric">Notes</p>
+<p>Height and width of the input must be multiples of 16.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="uniharmony.dl.DeepHarmonyUNet.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">torch.Tensor</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">torch.Tensor</span></span></span><a class="headerlink" href="#uniharmony.dl.DeepHarmonyUNet.forward" title="Link to this definition">#</a></dt>
+<dd><p>Map input contrasts to output contrasts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>x</strong><span class="classifier">torch.Tensor, shape (batch, n_input_contrasts, height, width)</span></dt><dd><p>Input images. Height and width must be multiples of 16.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><dl class="simple">
+<dt>torch.Tensor, shape (batch, n_output_contrasts, height, width)</dt><dd><p>Harmonized images.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">uniharmony.dl</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../../changelog.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">📂 CHANGELOG</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.dl.DeepHarmony"><code class="docutils literal notranslate"><span class="pre">DeepHarmony</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.dl.DeepHarmony.fit"><code class="docutils literal notranslate"><span class="pre">DeepHarmony.fit()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.dl.DeepHarmony.transform"><code class="docutils literal notranslate"><span class="pre">DeepHarmony.transform()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.dl.DeepHarmonyUNet"><code class="docutils literal notranslate"><span class="pre">DeepHarmonyUNet</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#uniharmony.dl.DeepHarmonyUNet.forward"><code class="docutils literal notranslate"><span class="pre">DeepHarmonyUNet.forward()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By uniharmony Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026, uniharmony Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,1130 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Intra-Site Interpolation (ISI) &#8212; uniharmony 0.0.5.dev212 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../../_static/documentation_options.js?v=ee7f1294"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'methods/interpolation_based/intra_site_interpolation';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="🔬 IQM-based Harmonization" href="../iqm_based/index.html" />
+    <link rel="prev" title="Inter-Site Matched Interpolation (ISMI)" href="inter_site_matched_interpolation.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">uniharmony 0.0.5.dev212 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">▶️ Getting Started</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../utilities/index.html">🛠️ Utilities</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/simulate_multisite_data.html">Multisite Data Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/load_mareos_datasets.html">MAREoS Benchmark Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/datalad_integration.html">Datalad Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/report_metric_by_site.html">Site-Stratified Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/site_centroid_distance.html">Site Centroid Distance</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">🧮 Methods</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 has-children"><a class="reference internal" href="../combat_based/index.html">🤺 ComBat-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../combat_based/combat.html">ComBat and neuroComBat</a></li>
+
+
+
+<li class="toctree-l3"><a class="reference internal" href="../combat_based/combat_gam.html">ComBat-GAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../combat_based/covbat.html">CovBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../combat_based/neuroharmony.html">Neuroharmony</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../combat_based/longcombat.html">Longitudinal ComBat (LongComBat)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../combat_based/deepcombat.html">DeepComBat</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../combat_based/prettyharmony.html">PrettYharmonize</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 current active has-children"><a class="reference internal" href="index.html">📈 Interpolation-based Harmonization</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="inter_site_matched_interpolation.html">Inter-Site Matched Interpolation (ISMI)</a></li>
+
+
+<li class="toctree-l3 current active"><a class="current reference internal" href="#">Intra-Site Interpolation (ISI)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../iqm_based/index.html">🔬 IQM-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../iqm_based/bartharm.html">BARTharm</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ot_based/index.html">🚄 Optimal Transport for Domain Adaptation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ot_based/otda.html">Optimal Transport Domain Adaptation (OTDA)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../dl_based/index.html">🧠 Deep learning based</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dl_based/deepharmony.html">DeepHarmony</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../examples/index.html">🎛️ Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/basic/index.html">Basic examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/05-plot_multisite_data_characterization.html">Characterize a multisite problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/07-run_site_prediction.html">Evaluate site predictability</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/04-plot_eos_with_dimensionality_reduction.html">Explore EoS with dimensionality reduction techniques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/02-run_metrics_by_site.html">Compute metrics by site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/06-mareos_with_tsne.html">Characterise a multisite problem with MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/08-plot_site_centroid_distance.html">Measure the Effect of Site with centroid distances</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/09-plot_site_centroid_map.html">Map the distances between site centroids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/03-plot_biases_in_metrics_by_site.html">Discover biases in metrics by site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/01-plot_eos_in_ml.html">Impact of Effects of Site in ML</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/multisite_data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/04-download_on_harmony.html">Download ON-Harmony dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/05-plot_simulate_multisite_data_with_covariates.html">Multisite data generation with covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/06-plot_simulate_multisite_data_with_costume_covariates.html">Multisite data generation with covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/02-load_mareos.html">Load MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/03-plot_generate_imbalance_multisite_data.html">Generate imbalance multisite data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/01-plot_generate_multisite_data.html">Multisite data generation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/combat/index.html">ComBat Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/05-plot_combatgam_imbalance_across_sites.html">Analyzing ComBatGAM behavior with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/01-plot_neurocombat_binary_classification.html">Binary classification with NeuroComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/10-plot_prettyharmonize_regression.html">PrettYharmonize for regression</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/07-plot_neurocombat_effect_on_features.html">NeuroComBat effect in features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/08-plot_combatgam_effect_on_features.html">ComBatGAM effect on features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/04-plot_combatgam_age_preservation.html">Analyzing ComBatGAM behavior with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/02-plot_neurocombat_imbalance_across_sites.html">Analyzing NeuroComBat behavior with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/03-neurocombat_with_mareos.html">Using NeuroComBat with MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/06-combatgam_with_mareos.html">Using ComBatGAM with MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/09-plot_prettyharmonize_imbalance_across_sites.html">PrettYharmonize: leakage-free ComBat with class imbalance across sites</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/interpolation/index.html">Interpolation Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/01-plot_isi_binary_classification.html">Binary classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/05-run_ismi_covariate_example.html">Using Inter-Site Matched Interpolation (ISMI) with matching covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/02-plot_isi_multiclass_classification.html">Multiclass classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/04-plot_ismi_binary_classification.html">Multisite Harmonization using Inter-Site Matched Interpolation (ISMI)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/03-plot_isi_advance_usage.html">IntraSiteInterpolation advance usage</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/ot/index.html">Optimal Transport based Domain Adaptation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/05-ot-based/01-plot_binary_classification.html">Binary classification using OTDA</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/iqm/index.html">IQM-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/06-iqm-based/01-plot_bartharm_binary_classification.html">Binary classification with BARTharm</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/conformance/index.html">Implementations conformance</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/07-implementations_conformance/01-plot_neurocombat_conformance.html">NeuroComBat: conformance with R sva and neuroCombat</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/index.html">🗺️ API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/utils/index.html">uniharmony</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/utils/verbosity.html">verbosity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/utils/verbosity_context.html">verbosity_context</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/datasets/index.html">uniharmony.datasets</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/datasets/make_multisite_classification.html">make_multisite_classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/datasets/load_mareos.html">load_MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/datasets/load_on_harmony.html">load_ONharmony</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/datasets/download_bids_dataset.html">download_bids_dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/datasets/clean_tmp.html">clean_tmp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/datasets/list_available_files.html">list_available_files</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/metrics/index.html">uniharmony.metrics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/metrics/report_metrics_by_site.html">report_metrics_by_site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/metrics/site_centroid_distance.html">site_centroid_distance</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/combat_based/index.html">uniharmony.combat</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/combat_based/combat.html">NeuroComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/combat_based/combat_gam.html">ComBatGAM</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/prettyharmonize/index.html">uniharmony.prettyharmonize</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/prettyharmonize/prettyharmonize_classifier.html">PrettYharmonizeClassifier</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/prettyharmonize/prettyharmonize_regressor.html">PrettYharmonizeRegressor</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/interpolation_based/index.html">uniharmony.interpolation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/interpolation_based/inter_site_matched_interpolation.html">InterSiteMatchedInterpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/interpolation_based/intra_site_interpolation.html">IntraSiteInterpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/interpolation_based/site_balanced_resampler.html">SiteBalancedResampler</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/iqm_based/index.html">uniharmony.iqm</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/iqm_based/bartharm.html">BARTharm</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/ot_based/index.html">uniharmony.ot</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/ot_based/otda.html">OptimalTransportDomainAdaptation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/dl_based/index.html">uniharmony.dl</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/dl_based/deepharmony.html">DeepHarmony</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">📂 CHANGELOG</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/N-Nieto/uniharmony" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/methods/interpolation_based/intra_site_interpolation.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Intra-Site Interpolation (ISI)</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">Key features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm">Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-much-interpolation-is-safe-the-variance-rule">How much interpolation is safe? The variance rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-usage">Basic usage</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-it-on-training-data-only">Use it on training data only</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tune-hyper-parameters-with-isi-inside-the-inner-cross-validation">Tune hyper-parameters with ISI inside the inner cross-validation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combining-interpolation-with-under-sampling-sitebalancedresampler">Combining interpolation with under-sampling: <code class="docutils literal notranslate"><span class="pre">SiteBalancedResampler</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-isi-is-not-enough">When ISI is not enough</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-the-interpolator">Choosing the interpolator</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#two-further-uses">Two further uses</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-sanity-check-how-much-of-my-score-comes-from-the-site">A sanity check: how much of my score comes from the site?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonisation-without-the-target-isi-before-combat">Harmonisation without the target: ISI before ComBat</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covariates">Covariates</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression">Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#balance-strategies">Balance strategies</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#per-site-default"><code class="docutils literal notranslate"><span class="pre">per_site</span></code> (default)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#global-max"><code class="docutils literal notranslate"><span class="pre">global_max</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#site-n"><code class="docutils literal notranslate"><span class="pre">{site:</span> <span class="pre">n}</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attributes">Attributes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference-implementation">Reference implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citation">Citation</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="intra-site-interpolation-isi">
+<span id="intrasite-long"></span><h1>Intra-Site Interpolation (ISI)<a class="headerlink" href="#intra-site-interpolation-isi" title="Link to this heading">#</a></h1>
+<p>Intra-Site Interpolation (ISI) removes the association between acquisition site and target in a training set by
+<strong>balancing the classes within every site</strong>. When one site recruits mostly patients and another mostly controls, a
+machine-learning model can predict the diagnosis from the effect of site (EoS) instead of from biology. After ISI, every
+class has the same number of samples in every site, so <code class="docutils literal notranslate"><span class="pre">P(y</span> <span class="pre">|</span> <span class="pre">site)</span></code> is uniform and the site carries no information about
+the target.</p>
+<p>Minority classes are over-sampled by <strong>interpolating between real samples of the same class and the same site</strong> (and,
+optionally, the same covariate stratum, e.g. sex and age bin). The synthetic samples therefore keep the biological
+variability of their class <em>and</em> the site effect of their site: the site effect becomes identical across classes, so it
+can no longer be used as a shortcut. <strong>ISI only adds samples: no real sample is ever removed.</strong></p>
+<section id="key-features">
+<h2>Key features<a class="headerlink" href="#key-features" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Site-wise class balancing with any imblearn over-sampler (SMOTE and variants, ADASYN, random over-sampling).</p></li>
+<li><p>A diagnostic of how much interpolation each class can take without losing its variance, with a clear warning when
+balancing needs more.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">SiteBalancedResampler</span></code>, a separate wrapper that limits interpolation to a cap (for example the safe amount) and
+closes the remaining imbalance by under-sampling the larger classes (see below).</p></li>
+<li><p>Optional covariate strata that restrict who is interpolated with whom while preserving <code class="docutils literal notranslate"><span class="pre">P(covariates</span> <span class="pre">|</span> <span class="pre">class,</span> <span class="pre">site)</span></code>.</p></li>
+<li><p>Classification and regression (the target is binned; synthetic targets are interpolated from their parents).</p></li>
+<li><p>A full audit trail: <code class="docutils literal notranslate"><span class="pre">sample_indices_</span></code>, <code class="docutils literal notranslate"><span class="pre">is_synthetic_</span></code>, <code class="docutils literal notranslate"><span class="pre">summary()</span></code>.</p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="algorithm">
+<h2>Algorithm<a class="headerlink" href="#algorithm" title="Link to this heading">#</a></h2>
+<p>For every site <code class="docutils literal notranslate"><span class="pre">s</span></code> and class <code class="docutils literal notranslate"><span class="pre">c</span></code> with <code class="docutils literal notranslate"><span class="pre">n_sc</span></code> real samples:</p>
+<ol class="arabic simple">
+<li><p><strong>Target.</strong> Every class of the site is brought to <code class="docutils literal notranslate"><span class="pre">T_s</span></code>: the largest class of the site
+(<code class="docutils literal notranslate"><span class="pre">balance_strategy=&quot;per_site&quot;</span></code>), the largest class of any site (<code class="docutils literal notranslate"><span class="pre">balance_strategy=&quot;global_max&quot;</span></code>) or a given number per
+site (<code class="docutils literal notranslate"><span class="pre">balance_strategy={site:</span> <span class="pre">T_s}</span></code>, at least the largest class of the site).</p></li>
+<li><p><strong>Interpolation.</strong> Classes below <code class="docutils literal notranslate"><span class="pre">T_s</span></code> are over-sampled with the <code class="docutils literal notranslate"><span class="pre">interpolator</span></code>. Real samples are returned unchanged.</p></li>
+<li><p><strong>Diagnostic.</strong> For every class that needs over-sampling, ISI measures how much of its variance interpolation keeps
+and derives the <em>safe amplification</em> <code class="docutils literal notranslate"><span class="pre">r*</span></code> (next section). If balancing needs more synthetic samples than that, ISI
+warns and points to <code class="docutils literal notranslate"><span class="pre">SiteBalancedResampler</span></code>.</p></li>
+</ol>
+<p>Every class needs at least <strong>two samples in every site</strong>: a single sample cannot be interpolated (ISI raises an error).
+For regression, target bins with fewer samples in a site are left as they are, with a warning.</p>
+<p>Examples (<code class="docutils literal notranslate"><span class="pre">per_site</span></code>):</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Site</p></th>
+<th class="head"><p>Class counts</p></th>
+<th class="head"><p>Result</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>A</p></td>
+<td><p>300 / 100</p></td>
+<td><p>300 / 300 (200 synthetic)</p></td>
+</tr>
+<tr class="row-odd"><td><p>B</p></td>
+<td><p>1000 / 2</p></td>
+<td><p>1000 / 1000, with a warning: 998 of the 1000 samples of the small class are synthetic</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<hr class="docutils" />
+<section id="how-much-interpolation-is-safe-the-variance-rule">
+<h2>How much interpolation is safe? The variance rule<a class="headerlink" href="#how-much-interpolation-is-safe-the-variance-rule" title="Link to this heading">#</a></h2>
+<p><strong>Interpolation shrinks a class.</strong> SMOTE creates a new sample on the segment between a real sample and one of its
+nearest neighbours of the same class. The new sample is therefore pulled towards the inside of the class: synthetic
+samples are less spread out than real ones. ISI measures this with a pilot batch of synthetic samples drawn from <strong>all
+real samples of the site</strong> (nothing is removed for this):</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rho</span> <span class="o">=</span> <span class="n">variance</span> <span class="n">of</span> <span class="n">the</span> <span class="n">synthetic</span> <span class="n">samples</span> <span class="o">/</span> <span class="n">variance</span> <span class="n">of</span> <span class="n">the</span> <span class="n">real</span> <span class="n">samples</span>      <span class="p">(</span><span class="n">per</span> <span class="n">feature</span><span class="p">,</span> <span class="n">averaged</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>When many samples densely cover the class, neighbours are close, a new sample lands near a real one and <code class="docutils literal notranslate"><span class="pre">rho</span></code> is close
+to 1.</p></li>
+<li><p>When the samples are sparse, neighbours are far apart and a new sample lands in between, closer to the centre:
+mixing two independent points with a uniform weight <code class="docutils literal notranslate"><span class="pre">l</span></code> keeps <code class="docutils literal notranslate"><span class="pre">E[(1</span> <span class="pre">-</span> <span class="pre">l)^2</span> <span class="pre">+</span> <span class="pre">l^2]</span> <span class="pre">=</span> <span class="pre">2/3</span></code> of the variance.</p></li>
+<li><p>With only <strong>two samples</strong>, all synthetic samples lie on one segment: <code class="docutils literal notranslate"><span class="pre">rho</span> <span class="pre">=</span> <span class="pre">1/6</span></code>.</p></li>
+</ul>
+<p><strong>How much variance the class keeps.</strong> After over-sampling, a class has <code class="docutils literal notranslate"><span class="pre">n</span></code> real samples (variance <code class="docutils literal notranslate"><span class="pre">v</span></code>) and <code class="docutils literal notranslate"><span class="pre">r</span> <span class="pre">*</span> <span class="pre">n</span></code>
+synthetic samples (variance <code class="docutils literal notranslate"><span class="pre">rho</span> <span class="pre">*</span> <span class="pre">v</span></code>). Its variance is the weighted average</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">v_after</span> <span class="o">=</span> <span class="n">v</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">r</span> <span class="o">*</span> <span class="n">rho</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span>      <span class="o">-&gt;</span>   <span class="n">loss</span> <span class="o">=</span> <span class="n">r</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">rho</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">r</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Safe amplification.</strong> Keeping the loss below <code class="docutils literal notranslate"><span class="pre">variance_tolerance</span> <span class="pre">=</span> <span class="pre">eps</span></code> (default 0.2, i.e. the class keeps at least
+80% of its variance) gives</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">r</span><span class="o">*</span> <span class="o">=</span> <span class="n">eps</span> <span class="o">/</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">rho</span><span class="p">)</span> <span class="o">-</span> <span class="n">eps</span><span class="p">)</span>     <span class="k">if</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">rho</span> <span class="o">&gt;</span> <span class="n">eps</span><span class="p">;</span>   <span class="n">no</span> <span class="n">limit</span> <span class="n">otherwise</span>
+</pre></div>
+</div>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">rho</span> <span class="pre">=</span> <span class="pre">0.6</span></code> gives <code class="docutils literal notranslate"><span class="pre">r*</span> <span class="pre">=</span> <span class="pre">0.2</span> <span class="pre">/</span> <span class="pre">(0.4</span> <span class="pre">-</span> <span class="pre">0.2)</span> <span class="pre">=</span> <span class="pre">1</span></code>: at most one synthetic sample per real one. A class of 100
+real samples facing a class of 500 needs <code class="docutils literal notranslate"><span class="pre">r</span> <span class="pre">=</span> <span class="pre">4</span></code> and would keep only <code class="docutils literal notranslate"><span class="pre">(1</span> <span class="pre">+</span> <span class="pre">4</span> <span class="pre">*</span> <span class="pre">0.6)</span> <span class="pre">/</span> <span class="pre">5</span> <span class="pre">=</span> <span class="pre">68%</span></code> of its variance, so ISI
+warns. Two samples (<code class="docutils literal notranslate"><span class="pre">rho</span> <span class="pre">=</span> <span class="pre">1/6</span></code>) give <code class="docutils literal notranslate"><span class="pre">r*</span> <span class="pre">=</span> <span class="pre">0.32</span></code>: not even one synthetic sample is safe.</p>
+<p><strong>Where samples, features and collinearity come in.</strong> <code class="docutils literal notranslate"><span class="pre">rho</span></code> is measured on the data, so it reflects the number of
+samples, the number of features and their correlation together. In simulations with SMOTE (k = 5) it depends mainly on
+the number of real samples per <em>effective</em> dimension <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">/</span> <span class="pre">d_eff</span></code> (<code class="docutils literal notranslate"><span class="pre">d_eff</span></code> = participation ratio of the feature
+correlation matrix, reported as <code class="docutils literal notranslate"><span class="pre">effective_dim_</span></code> and estimated from at most 2000 samples):</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p><code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">/</span> <span class="pre">d_eff</span></code></p></th>
+<th class="head"><p>&lt; 3</p></th>
+<th class="head"><p>3 – 10</p></th>
+<th class="head"><p>10 – 30</p></th>
+<th class="head"><p>30 – 100</p></th>
+<th class="head"><p>&gt; 100</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">rho</span></code></p></td>
+<td><p>~0.53</p></td>
+<td><p>~0.64</p></td>
+<td><p>~0.73</p></td>
+<td><p>~0.80</p></td>
+<td><p>0.84 – 0.92</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">r*</span></code> (eps = 0.2)</p></td>
+<td><p>~0.65</p></td>
+<td><p>~1.5</p></td>
+<td><p>~2.5</p></td>
+<td><p>no limit</p></td>
+<td><p>no limit</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The table holds for a low effective dimension (<code class="docutils literal notranslate"><span class="pre">d_eff</span></code> up to about 10, typical of correlated imaging features). With many
+independent features (<code class="docutils literal notranslate"><span class="pre">d_eff</span></code> of 20 to 100), nearest neighbours stay far apart whatever the sample size: <code class="docutils literal notranslate"><span class="pre">rho</span></code> levels off
+at about 0.65 to 0.75 and <code class="docutils literal notranslate"><span class="pre">r*</span></code> at about 1.5 to 3.5.</p>
+<p>Random over-sampling (<code class="docutils literal notranslate"><span class="pre">interpolator=&quot;random&quot;</span></code>) duplicates samples: it keeps the variance (<code class="docutils literal notranslate"><span class="pre">rho</span> <span class="pre">~</span> <span class="pre">1</span></code>) and is not limited
+by this rule, but it adds no new variability. It is kept as a baseline.</p>
+<p><code class="docutils literal notranslate"><span class="pre">estimate_safe_amplification(X,</span> <span class="pre">y,</span> <span class="pre">sites)</span></code> returns <code class="docutils literal notranslate"><span class="pre">rho</span></code> and <code class="docutils literal notranslate"><span class="pre">r*</span></code> of every site and class without resampling, to check a
+data set before choosing a method.</p>
+</section>
+<hr class="docutils" />
+<section id="basic-usage">
+<h2>Basic usage<a class="headerlink" href="#basic-usage" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_multisite_classification</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.interpolation</span><span class="w"> </span><span class="kn">import</span> <span class="n">IntraSiteInterpolation</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span><span class="n">balance_per_site</span><span class="o">=</span><span class="p">[[</span><span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.7</span><span class="p">]])</span>
+
+<span class="n">isi</span> <span class="o">=</span> <span class="n">IntraSiteInterpolation</span><span class="p">(</span><span class="n">interpolator</span><span class="o">=</span><span class="s2">"smote"</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">X_balanced</span><span class="p">,</span> <span class="n">y_balanced</span> <span class="o">=</span> <span class="n">isi</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span><span class="o">=</span><span class="n">sites</span><span class="p">)</span>
+
+<span class="n">isi</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>               <span class="c1"># per site and class: real / created samples, rho, safe amplification, ...</span>
+<span class="n">isi</span><span class="o">.</span><span class="n">sites_resampled_</span>        <span class="c1"># site of each output sample</span>
+<span class="n">isi</span><span class="o">.</span><span class="n">is_synthetic_</span>           <span class="c1"># which output samples were created</span>
+<span class="n">isi</span><span class="o">.</span><span class="n">sample_indices_</span>         <span class="c1"># index of each real output sample in the input (-1 for synthetic samples)</span>
+</pre></div>
+</div>
+<section id="use-it-on-training-data-only">
+<h3>Use it on training data only<a class="headerlink" href="#use-it-on-training-data-only" title="Link to this heading">#</a></h3>
+<p>ISI must only see training data. In cross-validation, put it in an <code class="docutils literal notranslate"><span class="pre">imblearn.pipeline.Pipeline</span></code> and route <code class="docutils literal notranslate"><span class="pre">sites</span></code> with
+scikit-learn metadata routing:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sklearn</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">imblearn.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">cross_validate</span>
+
+<span class="n">sklearn</span><span class="o">.</span><span class="n">set_config</span><span class="p">(</span><span class="n">enable_metadata_routing</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">isi</span> <span class="o">=</span> <span class="n">IntraSiteInterpolation</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">set_fit_resample_request</span><span class="p">(</span><span class="n">sites</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s2">"isi"</span><span class="p">,</span> <span class="n">isi</span><span class="p">),</span> <span class="p">(</span><span class="s2">"clf"</span><span class="p">,</span> <span class="n">LogisticRegression</span><span class="p">())])</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">"sites"</span><span class="p">:</span> <span class="n">sites</span><span class="p">},</span> <span class="n">scoring</span><span class="o">=</span><span class="s2">"roc_auc"</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Applying ISI before splitting leaks information from the test folds into the synthetic training samples.</p>
+</section>
+<section id="tune-hyper-parameters-with-isi-inside-the-inner-cross-validation">
+<h3>Tune hyper-parameters with ISI inside the inner cross-validation<a class="headerlink" href="#tune-hyper-parameters-with-isi-inside-the-inner-cross-validation" title="Link to this heading">#</a></h3>
+<p>The same leak happens <em>inside</em> the training set when a model tunes itself on ISI output. Synthetic samples are
+interpolated between their parents, so validating on a sample whose parents were used for training is optimistic.
+Estimators with built-in tuning (<code class="docutils literal notranslate"><span class="pre">RidgeCV</span></code> / <code class="docutils literal notranslate"><span class="pre">RidgeClassifierCV</span></code> with generalised cross-validation,
+<code class="docutils literal notranslate"><span class="pre">LogisticRegressionCV</span></code>, early stopping on a validation split) then select too little regularisation: in our simulations
+<code class="docutils literal notranslate"><span class="pre">RidgeCV</span></code> fitted on ISI output chose penalties about 10 times smaller for sex classification and 30-10,000 times
+smaller for age regression than with ISI nested in the tuning, which overfitted and worsened the performance on new
+sites (by 0.015 AUC and 0.9 years of mean absolute error). Tune the whole pipeline instead:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">Ridge</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">GridSearchCV</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+
+<span class="k">with</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">config_context</span><span class="p">(</span><span class="n">enable_metadata_routing</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">isi</span> <span class="o">=</span> <span class="n">IntraSiteInterpolation</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">set_fit_resample_request</span><span class="p">(</span><span class="n">sites</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">pipe</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s2">"isi"</span><span class="p">,</span> <span class="n">isi</span><span class="p">),</span> <span class="p">(</span><span class="s2">"scale"</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span> <span class="p">(</span><span class="s2">"ridge"</span><span class="p">,</span> <span class="n">Ridge</span><span class="p">())])</span>
+    <span class="n">search</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="p">{</span><span class="s2">"ridge__alpha"</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">logspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">13</span><span class="p">)})</span>
+    <span class="n">search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span><span class="o">=</span><span class="n">sites</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="combining-interpolation-with-under-sampling-sitebalancedresampler">
+<h3>Combining interpolation with under-sampling: <code class="docutils literal notranslate"><span class="pre">SiteBalancedResampler</span></code><a class="headerlink" href="#combining-interpolation-with-under-sampling-sitebalancedresampler" title="Link to this heading">#</a></h3>
+<p>ISI itself only interpolates. When it warns that a class needs more interpolation than is safe, wrap it in
+<code class="docutils literal notranslate"><span class="pre">SiteBalancedResampler</span></code>, which limits the amplification of every class to a cap and <strong>under-samples</strong> the larger classes
+of the site to meet the smaller ones:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.interpolation</span><span class="w"> </span><span class="kn">import</span> <span class="n">IntraSiteInterpolation</span><span class="p">,</span> <span class="n">SiteBalancedResampler</span>
+
+<span class="n">sbr</span> <span class="o">=</span> <span class="n">SiteBalancedResampler</span><span class="p">(</span>
+    <span class="n">IntraSiteInterpolation</span><span class="p">(</span><span class="s2">"smote"</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span>  <span class="c1"># any interpolator, also "random" (duplication)</span>
+    <span class="n">max_amplification</span><span class="o">=</span><span class="s2">"auto"</span><span class="p">,</span>            <span class="c1"># the safe amplification of each class; or a number, f(X_cell) or None</span>
+    <span class="n">undersampler</span><span class="o">=</span><span class="s2">"cluster-centroids"</span><span class="p">,</span>    <span class="c1"># default; or "nearmiss", "nearmiss-2", "nearmiss-3", "random", an imblearn instance</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="n">X_bal</span><span class="p">,</span> <span class="n">y_bal</span> <span class="o">=</span> <span class="n">sbr</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span><span class="o">=</span><span class="n">sites</span><span class="p">)</span>
+<span class="n">sbr</span><span class="o">.</span><span class="n">summary</span><span class="p">()</span>                            <span class="c1"># real, removed, created and final samples per site and class</span>
+</pre></div>
+</div>
+<p>For every site, each class below the largest one gets a cap <code class="docutils literal notranslate"><span class="pre">r_sc</span></code> and the site target becomes
+<code class="docutils literal notranslate"><span class="pre">T_s</span> <span class="pre">=</span> <span class="pre">min(n_max,</span> <span class="pre">min_c</span> <span class="pre">floor(n_sc</span> <span class="pre">*</span> <span class="pre">(1</span> <span class="pre">+</span> <span class="pre">r_sc)))</span></code>. The classes above <code class="docutils literal notranslate"><span class="pre">T_s</span></code> are under-sampled (stratified by the
+covariates), and ISI brings the classes below <code class="docutils literal notranslate"><span class="pre">T_s</span></code> up to it. With <code class="docutils literal notranslate"><span class="pre">max_amplification=&quot;auto&quot;</span></code> the cap is the safe
+amplification <code class="docutils literal notranslate"><span class="pre">r*</span></code>, measured on <strong>all</strong> real samples of the site before anything is removed. <code class="docutils literal notranslate"><span class="pre">max_amplification=0</span></code>
+gives pure within-site under-sampling and <code class="docutils literal notranslate"><span class="pre">max_amplification=None</span></code> gives ISI alone.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Site</p></th>
+<th class="head"><p>Class counts</p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">max_amplification</span></code></p></th>
+<th class="head"><p>Result</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>A</p></td>
+<td><p>300 / 100</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">None</span></code></p></td>
+<td><p>300 / 300 (200 synthetic; same as ISI)</p></td>
+</tr>
+<tr class="row-odd"><td><p>A</p></td>
+<td><p>300 / 100</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">1.0</span></code></p></td>
+<td><p>200 / 200 (100 synthetic, 100 real removed)</p></td>
+</tr>
+<tr class="row-even"><td><p>A</p></td>
+<td><p>300 / 100</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">0</span></code></p></td>
+<td><p>100 / 100 (pure under-sampling)</p></td>
+</tr>
+<tr class="row-odd"><td><p>B</p></td>
+<td><p>1000 / 2</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;auto&quot;</span></code></p></td>
+<td><p>2 / 2, with a warning that 998 real samples were removed</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The default under-sampler, <code class="docutils literal notranslate"><span class="pre">&quot;cluster-centroids&quot;</span></code>, runs k-means on the class and keeps the real sample closest to each
+centroid (<code class="docutils literal notranslate"><span class="pre">ClusterCentroids(voting=&quot;hard&quot;)</span></code>), so the kept samples cover the whole class. Any imblearn under-sampler that
+selects real samples and accepts a target count per class can be used. Cleaning methods (Tomek links, ENN, …) cannot
+reach a count, and prototype generators (<code class="docutils literal notranslate"><span class="pre">ClusterCentroids(voting=&quot;soft&quot;)</span></code>) create new samples; both are rejected.
+<code class="docutils literal notranslate"><span class="pre">SiteBalancedResampler</span></code> warns when more than half of the real samples of a site are removed: the imbalance is then beyond
+what within-site balancing can repair without losing most of the data.</p>
+<p>The cap trades the two failure modes of within-site balancing against each other: up-weighting (interpolation,
+duplication, re-weighting) keeps all data but, with many features, leaves part of the site-target association when
+classes are strongly imbalanced; under-sampling removes the association but discards data. Which one costs less depends
+on the data, so check both with the probe below.</p>
+</section>
+<section id="when-isi-is-not-enough">
+<h3>When ISI is not enough<a class="headerlink" href="#when-isi-is-not-enough" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p><strong>Strong imbalance with many features.</strong> With more features than samples (voxel-wise images), models that are only
+moderately regularised can fit the few real samples of a heavily over-sampled class one by one, and the synthetic
+samples add little to that fit. ISI then removes the site-target association only partly, exactly like re-weighting or
+random over-sampling with the same amplification; under-sampling does not have this problem. If ISI warns that
+classes exceed their safe amplification, use <code class="docutils literal notranslate"><span class="pre">SiteBalancedResampler(IntraSiteInterpolation(),</span> <span class="pre">max_amplification=&quot;auto&quot;)</span></code>.</p></li>
+<li><p><strong>Local and kernel models.</strong> Synthetic samples are denser and less dispersed than real ones. In our simulations a
+k-nearest-neighbour classifier recognised the synthetic class of each site by its density and learned the inverse
+shortcut, and an RBF support vector regression became worse than without correction. For such models prefer sample
+weights where the model accepts them, under-sampling (<code class="docutils literal notranslate"><span class="pre">SiteBalancedResampler(max_amplification=0)</span></code>) or random
+over-sampling (<code class="docutils literal notranslate"><span class="pre">interpolator=&quot;random&quot;</span></code>), and check the result with the probe below.</p></li>
+<li><p><strong>Missing target ranges</strong> (see Regression).</p></li>
+</ul>
+<p>Check what is left of the shortcut by repeating the cross-validation after permuting the target <em>within</em> each site: the
+biology is destroyed, the site-target association is kept, and any performance above chance comes from the site.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">y_perm</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">sites</span><span class="p">):</span>
+    <span class="n">idx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flatnonzero</span><span class="p">(</span><span class="n">sites</span> <span class="o">==</span> <span class="n">s</span><span class="p">)</span>
+    <span class="n">y_perm</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">rng</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">idx</span><span class="p">)]</span>
+<span class="n">probe</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y_perm</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">"sites"</span><span class="p">:</span> <span class="n">sites</span><span class="p">},</span> <span class="n">scoring</span><span class="o">=</span><span class="s2">"roc_auc"</span><span class="p">)</span>  <span class="c1"># ~0.5 if no shortcut is left</span>
+</pre></div>
+</div>
+</section>
+<section id="choosing-the-interpolator">
+<h3>Choosing the interpolator<a class="headerlink" href="#choosing-the-interpolator" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">&quot;smote&quot;</span></code> (default) works with any class of at least two samples. <code class="docutils literal notranslate"><span class="pre">&quot;borderline-smote&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;svm-smote&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;adasyn&quot;</span></code> and
+<code class="docutils literal notranslate"><span class="pre">&quot;kmeans-smote&quot;</span></code> concentrate samples near the class boundary or in dense clusters and can fail on very small classes or
+strata; the error then suggests SMOTE. Neighbour parameters are reduced automatically for small classes.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="two-further-uses">
+<h2>Two further uses<a class="headerlink" href="#two-further-uses" title="Link to this heading">#</a></h2>
+<section id="a-sanity-check-how-much-of-my-score-comes-from-the-site">
+<h3>A sanity check: how much of my score comes from the site?<a class="headerlink" href="#a-sanity-check-how-much-of-my-score-comes-from-the-site" title="Link to this heading">#</a></h3>
+<p>In real data you do not know how much of a cross-validated score comes from the effect of site. Run the same pipeline
+twice, without and with ISI inside the training folds, and compare the scores. The test folds keep the site-target
+association of the data, so a model that relied on the site loses that advantage once its training folds no longer
+reward it:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">StratifiedKFold</span><span class="p">,</span> <span class="n">cross_val_score</span>
+
+<span class="n">cv</span> <span class="o">=</span> <span class="n">StratifiedKFold</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">base</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s2">"scale"</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span> <span class="p">(</span><span class="s2">"clf"</span><span class="p">,</span> <span class="n">LogisticRegression</span><span class="p">())])</span>
+<span class="n">score</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">base</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s2">"roc_auc"</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="k">with</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">config_context</span><span class="p">(</span><span class="n">enable_metadata_routing</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="n">isi</span> <span class="o">=</span> <span class="n">IntraSiteInterpolation</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">set_fit_resample_request</span><span class="p">(</span><span class="n">sites</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">balanced</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s2">"isi"</span><span class="p">,</span> <span class="n">isi</span><span class="p">),</span> <span class="p">(</span><span class="s2">"scale"</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span> <span class="p">(</span><span class="s2">"clf"</span><span class="p">,</span> <span class="n">LogisticRegression</span><span class="p">())])</span>
+    <span class="n">score_isi</span> <span class="o">=</span> <span class="n">cross_val_score</span><span class="p">(</span><span class="n">balanced</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s2">"roc_auc"</span><span class="p">,</span> <span class="n">params</span><span class="o">=</span><span class="p">{</span><span class="s2">"sites"</span><span class="p">:</span> <span class="n">sites</span><span class="p">})</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+<span class="n">drop</span> <span class="o">=</span> <span class="n">score</span> <span class="o">-</span> <span class="n">score_isi</span>   <span class="c1"># large: the score was driven by the site</span>
+</pre></div>
+</div>
+<p>Because ISI keeps every participant, it costs almost nothing when the site cannot help, so a drop can be attributed to
+the site. Under-sampling also changes the sample size, so its drop mixes the loss of the shortcut with the loss of data
+and should not be used for this check. The drop is a <strong>lower bound</strong>: whatever shortcut survives ISI (strong imbalance
+with many features, target ranges that some sites do not cover) also survives in its score. A small drop is therefore
+consistent with, but does not prove, a model that does not use the site; report it together with the within-site
+permutation probe (above).</p>
+</section>
+<section id="harmonisation-without-the-target-isi-before-combat">
+<h3>Harmonisation without the target: ISI before ComBat<a class="headerlink" href="#harmonisation-without-the-target-isi-before-combat" title="Link to this heading">#</a></h3>
+<p>ComBat-type methods estimate a location and a scale per site and feature from the data of each site. When the target
+is associated with the site, these estimates contain the biology of the target: without the target as a covariate,
+ComBat removes biological signal together with the effect of site; with the target as a covariate, it needs the target
+of every participant it harmonises, including test participants, which is leakage. After ISI every site has the same
+target distribution, so the site estimates no longer contain the target. Fit the harmoniser on the balanced training data
+and apply it to real participants without their targets:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.combat</span><span class="w"> </span><span class="kn">import</span> <span class="n">NeuroComBat</span>
+
+<span class="n">isi</span> <span class="o">=</span> <span class="n">IntraSiteInterpolation</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X_bal</span><span class="p">,</span> <span class="n">y_bal</span> <span class="o">=</span> <span class="n">isi</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">sites</span><span class="o">=</span><span class="n">sites_train</span><span class="p">)</span>
+<span class="n">combat</span> <span class="o">=</span> <span class="n">NeuroComBat</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_bal</span><span class="p">,</span> <span class="n">isi</span><span class="o">.</span><span class="n">sites_resampled_</span><span class="p">)</span>       <span class="c1"># no covariates needed</span>
+
+<span class="n">X_bal_h</span> <span class="o">=</span> <span class="n">combat</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_bal</span><span class="p">,</span> <span class="n">isi</span><span class="o">.</span><span class="n">sites_resampled_</span><span class="p">)</span>        <span class="c1"># training data for the model</span>
+<span class="n">X_test_h</span> <span class="o">=</span> <span class="n">combat</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">sites_test</span><span class="p">)</span>                <span class="c1"># new participants of the training sites, no labels</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_bal_h</span><span class="p">,</span> <span class="n">y_bal</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>New participants of the training sites are harmonised with the training estimates. A new, unseen site needs its own
+estimates, which come from its own data and therefore contain its own target distribution: without labels this is
+unbiased only if that distribution matches the balanced training distribution.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="covariates">
+<h2>Covariates<a class="headerlink" href="#covariates" title="Link to this heading">#</a></h2>
+<p>Covariates restrict <strong>who is interpolated with whom</strong>: synthetic samples are only interpolated between samples of the same
+class, site and covariate stratum (unique combination of categorical values and continuous-covariate bins, computed within
+each site). They are spread over the strata in proportion to the real samples of the class (and <code class="docutils literal notranslate"><span class="pre">SiteBalancedResampler</span></code>
+stratifies its under-sampling the same way), so the distribution of the covariates within each class and site is
+preserved (for example, if 80% of the patients of a site are women, 80% of its synthetic patients are interpolated
+between women).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">isi</span> <span class="o">=</span> <span class="n">IntraSiteInterpolation</span><span class="p">(</span><span class="n">n_bins_cont_cov</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">X_bal</span><span class="p">,</span> <span class="n">y_bal</span> <span class="o">=</span> <span class="n">isi</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span><span class="o">=</span><span class="n">sites</span><span class="p">,</span> <span class="n">categorical_covariate</span><span class="o">=</span><span class="n">sex</span><span class="p">,</span> <span class="n">continuous_covariate</span><span class="o">=</span><span class="n">age</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Strata with fewer than two samples of a class are skipped for interpolation. Covariates of the real output samples can be
+recovered with <code class="docutils literal notranslate"><span class="pre">sample_indices_</span></code>.</p>
+</section>
+<hr class="docutils" />
+<section id="regression">
+<h2>Regression<a class="headerlink" href="#regression" title="Link to this heading">#</a></h2>
+<p>For continuous targets (e.g. brain age), the target is binned (<code class="docutils literal notranslate"><span class="pre">n_bins</span></code>, <code class="docutils literal notranslate"><span class="pre">binning_strategy</span></code>) and each bin is treated as a
+class. The target of a synthetic sample is interpolated between its two parent samples (<code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">y_a</span> <span class="pre">+</span> <span class="pre">lam</span> <span class="pre">*</span> <span class="pre">(y_b</span> <span class="pre">-</span> <span class="pre">y_a)</span></code>),
+which recovers SMOTE’s interpolation exactly. Bins that are missing from a site, or have a single sample there, cannot be
+created by interpolation; ISI warns and leaves them as they are. The site then still predicts the target: if one site
+recruited only young adults and another only older adults, no within-site method can make age independent of site.
+Use few bins, and if possible restrict the training data to the target range that all sites share.</p>
+</section>
+<hr class="docutils" />
+<section id="balance-strategies">
+<h2>Balance strategies<a class="headerlink" href="#balance-strategies" title="Link to this heading">#</a></h2>
+<section id="per-site-default">
+<h3><code class="docutils literal notranslate"><span class="pre">per_site</span></code> (default)<a class="headerlink" href="#per-site-default" title="Link to this heading">#</a></h3>
+<p>Every site is balanced to its own largest class.</p>
+<ul class="simple">
+<li><p>Site A: 100 class-0, 20 class-1 → 100 / 100</p></li>
+<li><p>Site B: 30 class-0, 70 class-1 → 70 / 70</p></li>
+</ul>
+</section>
+<section id="global-max">
+<h3><code class="docutils literal notranslate"><span class="pre">global_max</span></code><a class="headerlink" href="#global-max" title="Link to this heading">#</a></h3>
+<p>Every site is balanced towards the largest class of any site, so sites also get similar sizes. Small sites need much more
+interpolation, which the variance diagnostic will often flag.</p>
+<ul class="simple">
+<li><p>Site A: 100 class-0, 20 class-1; Site B: 30 class-0, 70 class-1 → both sites 100 / 100</p></li>
+</ul>
+</section>
+<section id="site-n">
+<h3><code class="docutils literal notranslate"><span class="pre">{site:</span> <span class="pre">n}</span></code><a class="headerlink" href="#site-n" title="Link to this heading">#</a></h3>
+<p>Every site is balanced to the given number of samples per class, which must be at least its largest class (ISI only
+adds samples). <code class="docutils literal notranslate"><span class="pre">SiteBalancedResampler</span></code> uses this to pass the capped targets.</p>
+</section>
+</section>
+<hr class="docutils" />
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Attribute</p></th>
+<th class="head"><p>Content</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">sites_resampled_</span></code></p></td>
+<td><p>Site of each output sample</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">sample_indices_</span></code>, <code class="docutils literal notranslate"><span class="pre">is_synthetic_</span></code></p></td>
+<td><p>Origin of each output sample</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">class_counts_</span></code></p></td>
+<td><p>Real samples per site and class before resampling</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">target_counts_</span></code></p></td>
+<td><p>Samples per class in each site after resampling</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">samples_created_</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">{site:</span> <span class="pre">{class:</span> <span class="pre">n}}</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">amplification_</span></code></p></td>
+<td><p>Synthetic samples per real sample</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">variance_ratio_</span></code>, <code class="docutils literal notranslate"><span class="pre">safe_amplification_</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rho</span></code> and <code class="docutils literal notranslate"><span class="pre">r*</span></code> of each class that needed over-sampling</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">effective_dim_</span></code></p></td>
+<td><p>Participation ratio of the features (within site-class cells)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">summary()</span></code></p></td>
+<td><p>All of the above as a table</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">SiteBalancedResampler</span></code> has the same attributes for the whole procedure (<code class="docutils literal notranslate"><span class="pre">variance_ratio_</span></code> and <code class="docutils literal notranslate"><span class="pre">safe_amplification_</span></code>
+only with <code class="docutils literal notranslate"><span class="pre">max_amplification=&quot;auto&quot;</span></code>), plus <code class="docutils literal notranslate"><span class="pre">samples_removed_</span></code>, <code class="docutils literal notranslate"><span class="pre">amplification_cap_</span></code> (<code class="docutils literal notranslate"><span class="pre">inf</span></code> where not limited) and
+<code class="docutils literal notranslate"><span class="pre">oversampler_</span></code> (the fitted ISI, which saw the kept samples only).</p>
+</section>
+<hr class="docutils" />
+<section id="reference-implementation">
+<h2>Reference implementation<a class="headerlink" href="#reference-implementation" title="Link to this heading">#</a></h2>
+<p>Source code: <a class="github reference external" href="https://github.com/N-Nieto/IntraSiteInterpolator.git">N-Nieto/IntraSiteInterpolator.git</a></p>
+</section>
+<section id="citation">
+<h2>Citation<a class="headerlink" href="#citation" title="Link to this heading">#</a></h2>
+<p>Paper in preparation.</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="inter_site_matched_interpolation.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Inter-Site Matched Interpolation (ISMI)</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../iqm_based/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">🔬 IQM-based Harmonization</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#key-features">Key features</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#algorithm">Algorithm</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-much-interpolation-is-safe-the-variance-rule">How much interpolation is safe? The variance rule</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-usage">Basic usage</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#use-it-on-training-data-only">Use it on training data only</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tune-hyper-parameters-with-isi-inside-the-inner-cross-validation">Tune hyper-parameters with ISI inside the inner cross-validation</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combining-interpolation-with-under-sampling-sitebalancedresampler">Combining interpolation with under-sampling: <code class="docutils literal notranslate"><span class="pre">SiteBalancedResampler</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#when-isi-is-not-enough">When ISI is not enough</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#choosing-the-interpolator">Choosing the interpolator</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#two-further-uses">Two further uses</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-sanity-check-how-much-of-my-score-comes-from-the-site">A sanity check: how much of my score comes from the site?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#harmonisation-without-the-target-isi-before-combat">Harmonisation without the target: ISI before ComBat</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covariates">Covariates</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression">Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#balance-strategies">Balance strategies</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#per-site-default"><code class="docutils literal notranslate"><span class="pre">per_site</span></code> (default)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#global-max"><code class="docutils literal notranslate"><span class="pre">global_max</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#site-n"><code class="docutils literal notranslate"><span class="pre">{site:</span> <span class="pre">n}</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attributes">Attributes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#reference-implementation">Reference implementation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#citation">Citation</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By uniharmony Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026, uniharmony Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

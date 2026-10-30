@@ -1,0 +1,836 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>🤺 ComBat-based Harmonization &#8212; uniharmony 0.0.5.dev212 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../../_static/documentation_options.js?v=ee7f1294"></script>
+    <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'methods/combat_based/index';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ComBat and neuroComBat" href="combat.html" />
+    <link rel="prev" title="🧮 Methods" href="../index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../../_static/searchtools.js"></script>
+    <script src="../../_static/language_data.js"></script>
+    <script src="../../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">uniharmony 0.0.5.dev212 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../../getting_started.html">▶️ Getting Started</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../utilities/index.html">🛠️ Utilities</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/simulate_multisite_data.html">Multisite Data Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/load_mareos_datasets.html">MAREoS Benchmark Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/datalad_integration.html">Datalad Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/report_metric_by_site.html">Site-Stratified Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utilities/site_centroid_distance.html">Site Centroid Distance</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">🧮 Methods</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">🤺 ComBat-based Harmonization</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="combat.html">ComBat and neuroComBat</a></li>
+
+
+
+<li class="toctree-l3"><a class="reference internal" href="combat_gam.html">ComBat-GAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="covbat.html">CovBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="neuroharmony.html">Neuroharmony</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="longcombat.html">Longitudinal ComBat (LongComBat)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="deepcombat.html">DeepComBat</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="prettyharmony.html">PrettYharmonize</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../interpolation_based/index.html">📈 Interpolation-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../interpolation_based/inter_site_matched_interpolation.html">Inter-Site Matched Interpolation (ISMI)</a></li>
+
+
+<li class="toctree-l3"><a class="reference internal" href="../interpolation_based/intra_site_interpolation.html">Intra-Site Interpolation (ISI)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../iqm_based/index.html">🔬 IQM-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../iqm_based/bartharm.html">BARTharm</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../ot_based/index.html">🚄 Optimal Transport for Domain Adaptation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../ot_based/otda.html">Optimal Transport Domain Adaptation (OTDA)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../dl_based/index.html">🧠 Deep learning based</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../dl_based/deepharmony.html">DeepHarmony</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../examples/index.html">🎛️ Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/basic/index.html">Basic examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/05-plot_multisite_data_characterization.html">Characterize a multisite problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/07-run_site_prediction.html">Evaluate site predictability</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/04-plot_eos_with_dimensionality_reduction.html">Explore EoS with dimensionality reduction techniques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/02-run_metrics_by_site.html">Compute metrics by site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/06-mareos_with_tsne.html">Characterise a multisite problem with MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/08-plot_site_centroid_distance.html">Measure the Effect of Site with centroid distances</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/09-plot_site_centroid_map.html">Map the distances between site centroids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/03-plot_biases_in_metrics_by_site.html">Discover biases in metrics by site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/01-basic-examples/01-plot_eos_in_ml.html">Impact of Effects of Site in ML</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/multisite_data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/04-download_on_harmony.html">Download ON-Harmony dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/05-plot_simulate_multisite_data_with_covariates.html">Multisite data generation with covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/06-plot_simulate_multisite_data_with_costume_covariates.html">Multisite data generation with covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/02-load_mareos.html">Load MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/03-plot_generate_imbalance_multisite_data.html">Generate imbalance multisite data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/02-multisite-data/01-plot_generate_multisite_data.html">Multisite data generation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/combat/index.html">ComBat Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/05-plot_combatgam_imbalance_across_sites.html">Analyzing ComBatGAM behavior with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/01-plot_neurocombat_binary_classification.html">Binary classification with NeuroComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/10-plot_prettyharmonize_regression.html">PrettYharmonize for regression</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/07-plot_neurocombat_effect_on_features.html">NeuroComBat effect in features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/08-plot_combatgam_effect_on_features.html">ComBatGAM effect on features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/04-plot_combatgam_age_preservation.html">Analyzing ComBatGAM behavior with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/02-plot_neurocombat_imbalance_across_sites.html">Analyzing NeuroComBat behavior with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/03-neurocombat_with_mareos.html">Using NeuroComBat with MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/06-combatgam_with_mareos.html">Using ComBatGAM with MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/03-combat-based/09-plot_prettyharmonize_imbalance_across_sites.html">PrettYharmonize: leakage-free ComBat with class imbalance across sites</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/interpolation/index.html">Interpolation Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/01-plot_isi_binary_classification.html">Binary classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/05-run_ismi_covariate_example.html">Using Inter-Site Matched Interpolation (ISMI) with matching covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/02-plot_isi_multiclass_classification.html">Multiclass classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/04-plot_ismi_binary_classification.html">Multisite Harmonization using Inter-Site Matched Interpolation (ISMI)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/04-interpolation-based/03-plot_isi_advance_usage.html">IntraSiteInterpolation advance usage</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/ot/index.html">Optimal Transport based Domain Adaptation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/05-ot-based/01-plot_binary_classification.html">Binary classification using OTDA</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/iqm/index.html">IQM-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/06-iqm-based/01-plot_bartharm_binary_classification.html">Binary classification with BARTharm</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../examples/conformance/index.html">Implementations conformance</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../auto_examples/07-implementations_conformance/01-plot_neurocombat_conformance.html">NeuroComBat: conformance with R sva and neuroCombat</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../api/index.html">🗺️ API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/utils/index.html">uniharmony</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/utils/verbosity.html">verbosity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/utils/verbosity_context.html">verbosity_context</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/datasets/index.html">uniharmony.datasets</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/datasets/make_multisite_classification.html">make_multisite_classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/datasets/load_mareos.html">load_MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/datasets/load_on_harmony.html">load_ONharmony</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/datasets/download_bids_dataset.html">download_bids_dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/datasets/clean_tmp.html">clean_tmp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/datasets/list_available_files.html">list_available_files</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/metrics/index.html">uniharmony.metrics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/metrics/report_metrics_by_site.html">report_metrics_by_site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/metrics/site_centroid_distance.html">site_centroid_distance</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/combat_based/index.html">uniharmony.combat</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/combat_based/combat.html">NeuroComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/combat_based/combat_gam.html">ComBatGAM</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/prettyharmonize/index.html">uniharmony.prettyharmonize</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/prettyharmonize/prettyharmonize_classifier.html">PrettYharmonizeClassifier</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/prettyharmonize/prettyharmonize_regressor.html">PrettYharmonizeRegressor</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/interpolation_based/index.html">uniharmony.interpolation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/interpolation_based/inter_site_matched_interpolation.html">InterSiteMatchedInterpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/interpolation_based/intra_site_interpolation.html">IntraSiteInterpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../api/interpolation_based/site_balanced_resampler.html">SiteBalancedResampler</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/iqm_based/index.html">uniharmony.iqm</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/iqm_based/bartharm.html">BARTharm</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/ot_based/index.html">uniharmony.ot</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/ot_based/otda.html">OptimalTransportDomainAdaptation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../api/dl_based/index.html">uniharmony.dl</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../api/dl_based/deepharmony.html">DeepHarmony</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../../changelog.html">📂 CHANGELOG</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/N-Nieto/uniharmony" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../../_sources/methods/combat_based/index.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>🤺 ComBat-based Harmonization</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combat-neurocombat"><span class="xref myst">ComBat - neuroComBat</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combat-gam-preservation-of-non-linear-biological-covariate-effects"><span class="xref myst">ComBat-GAM</span>: Preservation of non-Linear biological covariate effects.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covbat-harmonization-of-covariate-matrix"><span class="xref myst">CovBat</span>: Harmonization of covariate matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neuroharmony-harmonization-based-on-iqms"><span class="xref myst">Neuroharmony</span>: Harmonization based on IQMs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#longitudinal-combat-longcombat-adapted-combat-for-repeated-scaners"><span class="xref myst">Longitudinal ComBat (LongComBat)</span>: Adapted ComBat for repeated scaners.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepcombat-hybrid-approach-of-deep-learning-and-combat"><span class="xref myst">DeepComBat</span>: Hybrid approach of deep learning and ComBat.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prettyharmony-a-framework-to-integrate-combat-based-harmonization-methods-into-machine-learning-pipelines"><span class="xref myst">PrettYharmony</span>: A framework to integrate ComBat-based harmonization methods into Machine learning pipelines.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods">Methods</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="combat-based-harmonization">
+<h1>🤺 ComBat-based Harmonization<a class="headerlink" href="#combat-based-harmonization" title="Link to this heading">#</a></h1>
+<section id="combat-neurocombat">
+<span id="neurocombat-short"></span><h2><a class="reference internal" href="combat.html#neurocombat-long"><span class="std std-ref">ComBat - neuroComBat</span></a><a class="headerlink" href="#combat-neurocombat" title="Link to this heading">#</a></h2>
+<p>ComBat is one of the most widely used statistical harmonization methods <a class="footnote-reference brackets" href="#combat" id="id1" role="doc-noteref"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></a>. It was originally proposed for genomics to correct <strong>batch effects</strong> in microarray gene-expression data. In these datasets, samples are processed in batches (e.g., laboratory runs), and systematic technical differences between batches introduce unwanted variability that can obscure biological signals.</p>
+<p>The method was later adapted to <strong>multi-site neuroimaging datasets</strong>, as neuroComBat, where similar sources of variability arise from differences in scanner hardware, acquisition protocols, and preprocessing pipelines <a class="footnote-reference brackets" href="#neurocombat" id="id2" role="doc-noteref"><span class="fn-bracket">[</span>2<span class="fn-bracket">]</span></a>.</p>
+<p>For each feature and each site, ComBat estimates:</p>
+<ul class="simple">
+<li><p>a <strong>site-specific location parameter</strong> (mean shift), and</p></li>
+<li><p>a <strong>site-specific scale parameter</strong> (variance scaling).</p></li>
+</ul>
+<p>Additionally, ComBat allows biological relevant variance to be linearly preserved when passed as covariate.</p>
+<p>Because of its robustness and simplicity, ComBat has become a standard harmonization approach in neuroimaging and has inspired a large family of extensions and variants.</p>
+<p><strong>Source code</strong></p>
+<ul class="simple">
+<li><p><a class="github reference external" href="https://github.com/Jfortin1/neuroCombat/blob/master/neuroCombat/">Jfortin1/neuroCombat</a></p></li>
+<li><p><a class="github reference external" href="https://github.com/Warvito/neurocombat_sklearn/blob/master/examples/">Warvito/neurocombat_sklearn</a></p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="combat-gam-preservation-of-non-linear-biological-covariate-effects">
+<span id="combatgam-short"></span><h2><a class="reference internal" href="combat_gam.html#combatgam-long"><span class="std std-ref">ComBat-GAM</span></a>: Preservation of non-Linear biological covariate effects.<a class="headerlink" href="#combat-gam-preservation-of-non-linear-biological-covariate-effects" title="Link to this heading">#</a></h2>
+<p>While neuroComBat can preserve biological covariates influence features <strong>linearly</strong>, non-linear biological relationships (for example age-related brain trajectories) may not be preserved accurately.</p>
+<p>ComBat-GAM extends the original ComBat by allowing <strong>non-linear covariate effects</strong> using generalized additive models (GAMs) <a class="footnote-reference brackets" href="#combatgam" id="id3" role="doc-noteref"><span class="fn-bracket">[</span>3<span class="fn-bracket">]</span></a>.</p>
+<p>This is particularly important for neuroimaging variables such as <strong>age</strong>, which often show strong non-linear effects on brain features.</p>
+<p>Key contributions:</p>
+<ul class="simple">
+<li><p>modeling of <strong>non-linear biological covariates</strong></p></li>
+<li><p>improved preservation of biological signals</p></li>
+<li><p>compatibility with ML pipelines</p></li>
+</ul>
+<p><strong>Source code</strong></p>
+<ul class="simple">
+<li><p><a class="github reference external" href="https://github.com/rpomponio/neuroHarmonize">rpomponio/neuroHarmonize</a></p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="covbat-harmonization-of-covariate-matrix">
+<span id="covbat-short"></span><h2><a class="reference internal" href="covbat.html#covbat-long"><span class="std std-ref">CovBat</span></a>: Harmonization of covariate matrix<a class="headerlink" href="#covbat-harmonization-of-covariate-matrix" title="Link to this heading">#</a></h2>
+<p>ComBat assumes that site effects can be fully modeled using <strong>feature-wise mean shifts and variance scaling</strong>. However, more complex scanner differences, such as differences in <strong>feature covariance structure</strong>, are not addressed. While standard ComBat aligns means and variances, differences in <strong>feature correlations</strong> may still remain and affect multivariate analyses.</p>
+<p><strong>CovBat</strong> extends ComBat by harmonizing the <strong>covariance structure</strong> of features across sites. CovBat corrects these differences and has shown improved performance in <strong>machine learning applications using neuroimaging features</strong> <a class="footnote-reference brackets" href="#covbat" id="id4" role="doc-noteref"><span class="fn-bracket">[</span>4<span class="fn-bracket">]</span></a>.</p>
+<p><strong>Source code</strong></p>
+<ul class="simple">
+<li><p><a class="github reference external" href="https://github.com/andy1764/CovBat_Harmonization">andy1764/CovBat_Harmonization</a></p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="neuroharmony-harmonization-based-on-iqms">
+<span id="neuroharmony-short"></span><h2><a class="reference internal" href="neuroharmony.html#neuroharmony-long"><span class="std std-ref">Neuroharmony</span></a>: Harmonization based on IQMs<a class="headerlink" href="#neuroharmony-harmonization-based-on-iqms" title="Link to this heading">#</a></h2>
+<p>ComBat can not be applied to unknown sites, as the location/scale parameters are learnt by site.</p>
+<p>Neuroharmony relies on <strong>scanner-independent image metrics</strong>, instead of site tags.</p>
+<p><strong>Neuroharmony</strong> is a harmonization approach based on <strong>image quality metrics (IQMs)</strong> rather than explicit site labels <a class="footnote-reference brackets" href="#neuroharmony" id="id5" role="doc-noteref"><span class="fn-bracket">[</span>5<span class="fn-bracket">]</span></a>.</p>
+<p>Because it relies on scanner-related image characteristics instead of site identifiers, it can generalize to <strong>previously unseen scanners or sites</strong>.</p>
+<p><strong>Source code</strong></p>
+<ul class="simple">
+<li><p><a class="github reference external" href="https://github.com/garciadias/Neuroharmony">garciadias/Neuroharmony</a></p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="longitudinal-combat-longcombat-adapted-combat-for-repeated-scaners">
+<span id="longcombat-short"></span><h2><a class="reference internal" href="longcombat.html#longcombat-long"><span class="std std-ref">Longitudinal ComBat (LongComBat)</span></a>: Adapted ComBat for repeated scaners.<a class="headerlink" href="#longitudinal-combat-longcombat-adapted-combat-for-repeated-scaners" title="Link to this heading">#</a></h2>
+<p><strong>Longitudinal ComBat</strong> adapts the ComBat framework for <strong>longitudinal studies</strong>, where subjects are scanned repeatedly over time.</p>
+<p>Standard ComBat assumes independent observations, which is violated in repeated-measure designs.</p>
+<p>Longitudinal ComBat introduces <strong>subject-specific random effects</strong> to model within-subject correlations <a class="footnote-reference brackets" href="#longcombat" id="id6" role="doc-noteref"><span class="fn-bracket">[</span>6<span class="fn-bracket">]</span></a>.</p>
+<p><strong>Source code</strong></p>
+<ul class="simple">
+<li><p><a class="github reference external" href="https://github.com/jcbeer/longCombat">jcbeer/longCombat</a></p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="deepcombat-hybrid-approach-of-deep-learning-and-combat">
+<h2><a class="reference internal" href="deepcombat.html#deepcombat-long"><span class="std std-ref">DeepComBat</span></a>: Hybrid approach of deep learning and ComBat.<a class="headerlink" href="#deepcombat-hybrid-approach-of-deep-learning-and-combat" title="Link to this heading">#</a></h2>
+<p><strong>DeepComBat</strong> integrates ComBat with <strong>deep learning-based feature modeling</strong>.</p>
+<p>The method uses neural networks to capture complex non-linear structure in the data while preserving the statistical harmonization principles of ComBat.</p>
+<p>This hybrid approach allows the modeling of <strong>complex scanner effects and feature interactions</strong> that cannot be captured by linear models <a class="footnote-reference brackets" href="#deepcombat" id="id7" role="doc-noteref"><span class="fn-bracket">[</span>7<span class="fn-bracket">]</span></a>.</p>
+<p><strong>Source code</strong></p>
+<ul class="simple">
+<li><p><a class="github reference external" href="https://github.com/hufengling/DeepComBat">hufengling/DeepComBat</a></p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="prettyharmony-a-framework-to-integrate-combat-based-harmonization-methods-into-machine-learning-pipelines">
+<span id="prettyharmonize-short"></span><h2><a class="reference internal" href="prettyharmony.html#prettyharmonize-long"><span class="std std-ref">PrettYharmony</span></a>: A framework to integrate ComBat-based harmonization methods into Machine learning pipelines.<a class="headerlink" href="#prettyharmony-a-framework-to-integrate-combat-based-harmonization-methods-into-machine-learning-pipelines" title="Link to this heading">#</a></h2>
+<p>A common challenge in multi-site datasets occurs when <strong>class distributions differ across sites</strong>. For example:</p>
+<ul class="simple">
+<li><p>Site A contains mostly control subjects</p></li>
+<li><p>Site B contains mostly patients</p></li>
+</ul>
+<p>In such cases, <strong>biological signal and site effects become confounded</strong>.</p>
+<p>If harmonization removes site effects without accounting for the biological variable, the biological signal may also be partially removed.</p>
+<p>To address this, ComBat allows users to include biological variables as <strong>covariates to preserve</strong> during harmonization.</p>
+<p>However, this introduces an issue in <strong>machine-learning pipelines</strong>.</p>
+<p>If the covariate being preserved is also the <strong>target variable of the ML model</strong>, then the target must be known during harmonization. In real-world prediction scenarios this information is unavailable, creating a new form of <strong>data leakage</strong> <a class="footnote-reference brackets" href="#prettyharmony" id="id8" role="doc-noteref"><span class="fn-bracket">[</span>8<span class="fn-bracket">]</span></a>.</p>
+<p>Even if harmonization parameters are estimated using only the training set, the transformation of test data still requires the target variable.</p>
+<p>A suitable alternative in these scenarios is <strong>PrettYharmonize</strong>, which allows ComBat-based harmonization to be integrated into ML pipelines <strong>without requiring the target variable during inference</strong> <a class="footnote-reference brackets" href="#prettyharmony" id="id9" role="doc-noteref"><span class="fn-bracket">[</span>8<span class="fn-bracket">]</span></a>. It is available as <a class="reference internal" href="../../api/prettyharmonize/prettyharmonize_classifier.html#uniharmony.prettyharmonize.PrettYharmonizeClassifier" title="uniharmony.prettyharmonize.PrettYharmonizeClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrettYharmonizeClassifier</span></code></a> and <a class="reference internal" href="../../api/prettyharmonize/prettyharmonize_regressor.html#uniharmony.prettyharmonize.PrettYharmonizeRegressor" title="uniharmony.prettyharmonize.PrettYharmonizeRegressor"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrettYharmonizeRegressor</span></code></a>.</p>
+<p><strong>Source Code</strong></p>
+<ul class="simple">
+<li><p><a class="github reference external" href="https://github.com/juaml/PrettYharmonize">juaml/PrettYharmonize</a></p></li>
+<li><p><a class="github reference external" href="https://github.com/juaml/harmonize_project">juaml/harmonize_project</a></p></li>
+</ul>
+</section>
+<hr class="docutils" />
+<section id="methods">
+<h2>Methods<a class="headerlink" href="#methods" title="Link to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="combat.html">ComBat and neuroComBat</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="combat.html#combat-statistical-model">ComBat statistical model</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="combat.html#main-assumptions-and-limitations-of-combat">Main assumptions and limitations of ComBat</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="combat.html#whole-dataset-estimation">Whole-dataset estimation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combat.html#linear-biological-covariate-effects">Linear biological covariate effects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combat.html#additive-and-multiplicative-site-effects">Additive and multiplicative site effects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combat.html#balanced-site-representation">Balanced site representation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="combat.html#closed-set-site-assumption">Closed-set site assumption</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="combat.html#cross-site-class-imbalance">Cross-site class imbalance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combat.html#further-reading">Further reading</a></li>
+<li class="toctree-l1"><a class="reference internal" href="combat_gam.html">ComBat-GAM</a></li>
+<li class="toctree-l1"><a class="reference internal" href="covbat.html">CovBat</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="covbat.html#method">Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="covbat.html#references">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="neuroharmony.html">Neuroharmony</a></li>
+<li class="toctree-l1"><a class="reference internal" href="neuroharmony.html#implementation-status">Implementation status</a></li>
+<li class="toctree-l1"><a class="reference internal" href="longcombat.html">Longitudinal ComBat (LongComBat)</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="longcombat.html#method">Method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="longcombat.html#key-points">Key points</a></li>
+<li class="toctree-l2"><a class="reference internal" href="longcombat.html#reference">Reference</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="deepcombat.html">DeepComBat</a></li>
+<li class="toctree-l1"><a class="reference internal" href="deepcombat.html#implementation-status">Implementation status</a></li>
+<li class="toctree-l1"><a class="reference internal" href="prettyharmony.html">PrettYharmonize</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="prettyharmony.html#cross-site-class-imbalance">Cross-site class imbalance</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prettyharmony.html#the-method">The method</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prettyharmony.html#what-does-pretending-change">What does pretending change?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prettyharmony.html#results-reported-in-the-paper">Results reported in the paper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prettyharmony.html#usage">Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prettyharmony.html#practical-notes-and-limitations">Practical notes and limitations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="prettyharmony.html#references">References</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+</section>
+<hr class="footnotes docutils" />
+<aside class="footnote-list brackets">
+<aside class="footnote brackets" id="combat" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id1">1</a><span class="fn-bracket">]</span></span>
+<p>Johnson, W. E., Li, C., &amp; Rabinovic, A. (2007). Adjusting batch effects in microarray expression data using empirical Bayes methods. <em>Biostatistics</em>, 8(1), 118-127. <a class="reference external" href="https://doi.org/10.1093/biostatistics/kxj037">https://doi.org/10.1093/biostatistics/kxj037</a></p>
+</aside>
+<aside class="footnote brackets" id="neurocombat" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id2">2</a><span class="fn-bracket">]</span></span>
+<p>Fortin, J. P., Cullen, N., Sheline, Y. I., et al. (2018). Harmonization of cortical thickness measurements across scanners and sites. <em>NeuroImage</em>, 167, 104-120. <a class="reference external" href="https://doi.org/10.1016/j.neuroimage.2017.11.024">https://doi.org/10.1016/j.neuroimage.2017.11.024</a></p>
+</aside>
+<aside class="footnote brackets" id="combatgam" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id3">3</a><span class="fn-bracket">]</span></span>
+<p>Pomponio, R., Erus, G., Habes, M., et al. (2020). Harmonization of large MRI datasets for the analysis of brain imaging patterns throughout the lifespan. <em>NeuroImage</em>, 208, 116450. <a class="reference external" href="https://doi.org/10.1016/j.neuroimage.2019.116450">https://doi.org/10.1016/j.neuroimage.2019.116450</a></p>
+</aside>
+<aside class="footnote brackets" id="covbat" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id4">4</a><span class="fn-bracket">]</span></span>
+<p>Chen, A. A., Beer, J. C., Tustison, N. J., Cook, P. A., Shinohara, R. T., &amp; Shou, H. (2022). Mitigating site effects in covariance for machine learning in neuroimaging data. <em>Human Brain Mapping</em>, 43(4), 1179-1195. <a class="reference external" href="https://doi.org/10.1002/hbm.25688">https://doi.org/10.1002/hbm.25688</a></p>
+</aside>
+<aside class="footnote brackets" id="neuroharmony" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id5">5</a><span class="fn-bracket">]</span></span>
+<p>Garcia-Dias, R., Scarpazza, C., Baecker, L., et al. (2020). Neuroharmony: A new tool for harmonizing volumetric MRI data from unseen scanners. <em>NeuroImage</em>, 220, 117127. <a class="reference external" href="https://doi.org/10.1016/j.neuroimage.2020.117127">https://doi.org/10.1016/j.neuroimage.2020.117127</a></p>
+</aside>
+<aside class="footnote brackets" id="longcombat" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id6">6</a><span class="fn-bracket">]</span></span>
+<p>Beer, J. C., Tustison, N. J., Cook, P. A., et al. (2020). Longitudinal ComBat: A method for harmonizing longitudinal multi-scanner imaging data. <em>NeuroImage</em>, 220, 117129. <a class="reference external" href="https://doi.org/10.1016/j.neuroimage.2020.117129">https://doi.org/10.1016/j.neuroimage.2020.117129</a></p>
+</aside>
+<aside class="footnote brackets" id="deepcombat" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id7">7</a><span class="fn-bracket">]</span></span>
+<p>Hu, F., Lucas, A., Chen, A. A., Coleman, K., Horng, H., Ng, R. W., … &amp; Alzheimer’s Disease Neuroimaging Initiative. (2024). Deepcombat: A statistically motivated, hyperparameter‐robust, deep learning approach to harmonization of neuroimaging data. Human brain mapping, 45(11), e26708. <a class="reference external" href="https://doi.org/10.1016/j.neuroimage.2020.117689">https://doi.org/10.1016/j.neuroimage.2020.117689</a></p>
+</aside>
+<aside class="footnote brackets" id="prettyharmony" role="doc-footnote">
+<span class="label"><span class="fn-bracket">[</span>8<span class="fn-bracket">]</span></span>
+<span class="backrefs">(<a role="doc-backlink" href="#id8">1</a>,<a role="doc-backlink" href="#id9">2</a>)</span>
+<p>Nieto, N., Eickhoff, S. B., Jung, C., Reuter, M., Diers, K., Kelm, M., … &amp; Patil, K. R. (2026). Impact of leakage on data harmonization in machine learning pipelines in class imbalance across sites. Neurocomputing, 133146. <a class="reference external" href="https://doi.org/10.1016/j.neucom.2026.133146">https://doi.org/10.1016/j.neucom.2026.133146</a></p>
+</aside>
+</aside>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">🧮 Methods</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="combat.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">ComBat and neuroComBat</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combat-neurocombat"><span class="xref myst">ComBat - neuroComBat</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#combat-gam-preservation-of-non-linear-biological-covariate-effects"><span class="xref myst">ComBat-GAM</span>: Preservation of non-Linear biological covariate effects.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covbat-harmonization-of-covariate-matrix"><span class="xref myst">CovBat</span>: Harmonization of covariate matrix</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#neuroharmony-harmonization-based-on-iqms"><span class="xref myst">Neuroharmony</span>: Harmonization based on IQMs</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#longitudinal-combat-longcombat-adapted-combat-for-repeated-scaners"><span class="xref myst">Longitudinal ComBat (LongComBat)</span>: Adapted ComBat for repeated scaners.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deepcombat-hybrid-approach-of-deep-learning-and-combat"><span class="xref myst">DeepComBat</span>: Hybrid approach of deep learning and ComBat.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prettyharmony-a-framework-to-integrate-combat-based-harmonization-methods-into-machine-learning-pipelines"><span class="xref myst">PrettYharmony</span>: A framework to integrate ComBat-based harmonization methods into Machine learning pipelines.</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#methods">Methods</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By uniharmony Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026, uniharmony Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
