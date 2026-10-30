@@ -152,12 +152,20 @@ class StandardizationMixin:
         # site / covariate effects
         X_predicted = (design @ self._beta_hat).T
         residuals = X - X_predicted
-        if n_samples < 30:
-            # Use sample variance for small datasets
-            self._var_pooled = np.sum(residuals**2, axis=1, keepdims=True) / (n_samples - 1)
-        else:
-            # Population variance for larger datasets (matches original behavior)
-            self._var_pooled = np.mean(residuals**2, axis=1, keepdims=True)
+        # Pooled residual variance with denominator n - S (S = number of sites).
+        #
+        # ComBat later rescales every site to unit variance with per-site variances
+        # computed with ddof=1 (delta_hat), so the harmonized data keep n - S residual
+        # degrees of freedom and their pooled residual variance is var_pooled * (n - S) / (n - p).
+        # Dividing the residual sum of squares by n - S makes that expected value equal
+        # to the true pooled variance. R sva::ComBat and neuroCombat divide by n, which
+        # shrinks the harmonized variance by a factor (n - S) / n (0.90 with 30 subjects
+        # in 3 sites, 0.95 with 20 sites of 20 subjects). The same denominator is used for
+        # every sample size (a former switch to n - 1 below 30 samples was removed).
+        # See the "Implementations conformance" gallery example for the derivation.
+        n_sites = len(n_samples_per_site)
+        dof = max(n_samples - n_sites, 1)
+        self._var_pooled = np.sum(residuals**2, axis=1, keepdims=True) / dof
 
         # Handle near-zero variance features
         # Features with ~0 variance cause division by zero in standardization
