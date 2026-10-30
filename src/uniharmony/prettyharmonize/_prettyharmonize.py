@@ -54,14 +54,6 @@ def _as_columns(values: npt.ArrayLike) -> npt.NDArray:
     return values.reshape(-1, 1) if values.ndim == 1 else values
 
 
-def _outside_knots_error(error: NotImplementedError) -> ValueError:
-    """Explain the statsmodels error raised when a spline covariate is out of range."""
-    return ValueError(
-        "A smooth covariate is outside the range seen when fitting the harmonization model, and its splines "
-        f"cannot extrapolate ({error}). Restrict the data to predict to the training range."
-    )
-
-
 class TargetHarmonizer:
     """Harmonize with a ComBat-based model that preserves the target.
 
@@ -156,11 +148,14 @@ class TargetHarmonizer:
         array, shape (n_samples, n_features)
             The harmonized data.
 
+        Notes
+        -----
+        With :class:`~uniharmony.combat.ComBatGAM`, smooth covariates (and a
+        smooth target) outside the range seen during fit are clipped to it, so
+        their effect is extrapolated as a constant, and a warning is logged.
+
         """
-        try:
-            return self.harm_model.transform(X, sites=sites, **self._arguments(y, covariates))
-        except NotImplementedError as error:  # statsmodels splines outside their knots
-            raise _outside_knots_error(error) from error
+        return self.harm_model.transform(X, sites=sites, **self._arguments(y, covariates))
 
     def iter_pretend(
         self, X: npt.NDArray, sites: npt.NDArray, targets: Iterable[Any], covariates: dict[str, Any]
