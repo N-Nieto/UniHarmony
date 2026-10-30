@@ -421,6 +421,98 @@ def test_consistency_across_runs(simple_data):
     assert_allclose(trans1, trans2)
 
 
+# =============================================================================
+# Transform and inverse transform of new data (audit #4 and #5)
+# =============================================================================
+
+
+@pytest.fixture
+def three_site_ot_data():
+    """Three sites (``a`` is the reference) with shifted distributions, and a fitted model."""
+    rng = np.random.default_rng(0)
+    sites = np.repeat(["a", "b", "c"], 100)
+    X = rng.normal(size=(300, 3)) + np.select([sites == "b", sites == "c"], [2.0, -1.0], 0.0)[:, None]
+    otda = OptimalTransportDomainAdaptation(ot_method="emd").fit(X, sites, ref_site="a")
+    return X, sites, otda, rng
+
+
+def test_transform_new_data_any_subset_of_sites(three_site_ot_data):
+    """New data from a single non-reference site (no reference samples) can be transformed.
+
+    Out-of-sample transport is row-wise, so a sample gets the same result in any batch.
+    """
+    _, _, otda, rng = three_site_ot_data
+    X_new = rng.normal(size=(20, 3))
+    sites_new = np.repeat(["a", "b", "c", "b"], 5)
+    X_mixed = otda.transform(X_new, sites_new)
+    only_b = sites_new == "b"
+    assert_allclose(otda.transform(X_new[only_b], sites_new[only_b]), X_mixed[only_b])
+    # Reference samples are returned unchanged; the others are transported
+    assert_allclose(X_mixed[sites_new == "a"], X_new[sites_new == "a"])
+    assert not np.allclose(X_mixed[~(sites_new == "a")], X_new[~(sites_new == "a")])
+
+
+def test_transform_only_reference_samples_unchanged(three_site_ot_data):
+    """A batch with only reference samples is returned unchanged."""
+    _, _, otda, rng = three_site_ot_data
+    X_new = rng.normal(size=(5, 3))
+    assert_allclose(otda.transform(X_new, np.repeat("a", 5)), X_new)
+    assert_allclose(otda.inverse_transform(X_new, np.repeat("a", 5)), X_new)
+
+
+def test_transform_duplicate_rows_across_sites(three_site_ot_data):
+    """Identical rows from different sites are handled by site, not by value."""
+    _, _, otda, rng = three_site_ot_data
+    row = rng.normal(size=(1, 3))
+    X_new = np.vstack([row, row])
+    X_transformed = otda.transform(X_new, np.array(["a", "b"]))
+    assert_allclose(X_transformed[0], row[0])
+    assert_allclose(X_transformed[1], otda.transform(row, np.array(["b"]))[0])
+
+
+def test_transform_dataframe_input(three_site_ot_data):
+    """DataFrames give the same result as arrays."""
+    pd = pytest.importorskip("pandas")
+    _, _, otda, rng = three_site_ot_data
+    X_new = rng.normal(size=(10, 3))
+    sites_new = np.repeat(["a", "b"], 5)
+    assert_allclose(otda.transform(pd.DataFrame(X_new), sites_new), otda.transform(X_new, sites_new))
+    assert_allclose(otda.inverse_transform(pd.DataFrame(X_new), sites_new), otda.inverse_transform(X_new, sites_new))
+
+
+def test_transform_unseen_site_raises(three_site_ot_data):
+    """Sites not seen during fit raise a clear error."""
+    _, _, otda, rng = three_site_ot_data
+    with pytest.raises(ValueError, match="not seen during fit"):
+        otda.transform(rng.normal(size=(3, 3)), np.array(["b", "z", "z"]))
+    with pytest.raises(ValueError, match="not seen during fit"):
+        otda.inverse_transform(rng.normal(size=(3, 3)), np.array(["b", "z", "z"]))
+
+
+def test_inverse_transform_undoes_transform():
+    """With EMD between two equally sized sites the transport is a permutation, so the inverse is exact."""
+    rng = np.random.default_rng(1)
+    sites = np.repeat(["a", "b"], 100)
+    X = rng.normal(size=(200, 3)) + (sites == "b")[:, None] * 2.0
+    otda = OptimalTransportDomainAdaptation(ot_method="emd").fit(X, sites, ref_site="a")
+    X_transformed = otda.transform(X, sites)
+    assert_allclose(X_transformed[sites == "a"], X[sites == "a"])
+    assert_allclose(otda.inverse_transform(X_transformed, sites), X, atol=1e-10)
+
+
+def test_inverse_transform_maps_non_reference_rows(three_site_ot_data):
+    """inverse_transform maps the non-reference rows (moved by transform) and keeps the reference rows."""
+    X, sites, otda, _ = three_site_ot_data
+    X_transformed = otda.transform(X, sites)
+    X_inverse = otda.inverse_transform(X_transformed, sites)
+    assert X_inverse.shape == X.shape
+    assert_allclose(X_inverse[sites == "a"], X[sites == "a"])
+    # Mapped back towards the pooled non-reference distribution, away from the reference one
+    non_ref = sites != "a"
+    assert np.linalg.norm(X_inverse[non_ref].mean(0) - X[non_ref].mean(0)) < 0.1
+    assert np.linalg.norm(X_transformed[non_ref].mean(0) - X[non_ref].mean(0)) > 0.4
+
+
 def test_sklearn_tags():
     """Test initialization with pre-configured OT instance."""
     otda = OptimalTransportDomainAdaptation()
