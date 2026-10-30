@@ -10,7 +10,7 @@ from uniharmony.datasets import download_bids_dataset
 
 __all__ = ["download_ONharmony", "list_available_possibilities_onharmony"]
 
-logger = structlog.get_logger()
+logger = structlog.get_logger(src="download_ONharmony")
 
 
 ONHARMONY_SUBJECTS_LIST = Literal[

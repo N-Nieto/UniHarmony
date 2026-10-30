@@ -16,7 +16,7 @@ __all__ = [
     "list_available_files",
 ]
 
-logger = structlog.get_logger()
+logger = structlog.get_logger(src="datalad")
 
 
 def download_bids_dataset(

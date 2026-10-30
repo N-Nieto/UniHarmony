@@ -25,7 +25,7 @@ from uniharmony.interpolation._utils import (
 
 __all__ = ["InterSiteMatchedInterpolation"]
 
-logger = structlog.get_logger()
+logger = structlog.get_logger(src="InterSiteMatchedInterpolation")
 
 
 class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):

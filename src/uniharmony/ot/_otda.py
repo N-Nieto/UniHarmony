@@ -16,7 +16,7 @@ from uniharmony.ot._utils import create_ot_object, data_consistency_check
 
 __all__ = ["OptimalTransportDomainAdaptation"]
 
-logger = structlog.get_logger()
+logger = structlog.get_logger(src="OptimalTransportDomainAdaptation")
 
 OTMethodType = Literal["emd", "sinkhorn", "s", "sinkhorn_gl", "s_gl", "emd_laplace", "emd_l"]
 # Type aliases for clarity

@@ -23,7 +23,7 @@ from uniharmony._utils import validate_sites
 
 __all__ = ["plot_2d_components_by_value", "plot_2d_projection", "plot_decision_boundary_2d", "plot_features_by_site"]
 
-logger = structlog.get_logger()
+logger = structlog.get_logger(src="plot")
 
 
 def plot_decision_boundary_2d(

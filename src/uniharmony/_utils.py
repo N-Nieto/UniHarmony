@@ -14,7 +14,7 @@ __all__ = [
 ]
 
 
-logger = structlog.get_logger()
+logger = structlog.get_logger(src="utils")
 
 
 def solve_ordinary_least_squares(

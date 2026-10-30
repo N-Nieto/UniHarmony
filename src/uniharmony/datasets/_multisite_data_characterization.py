@@ -17,7 +17,7 @@ __all__ = [
     "print_statistics_summary",
 ]
 
-logger = structlog.get_logger()
+logger = structlog.get_logger(src="multisite_data_characterization")
 
 
 def get_multisite_data_statistics(

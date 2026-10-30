@@ -18,7 +18,7 @@ __all__ = [
     "site_centroid_distance",
 ]
 
-logger = structlog.get_logger()
+logger = structlog.get_logger(src="site_centroid_distance")
 
 _METRICS = ("euclidean", "standardized", "mahalanobis")
 
