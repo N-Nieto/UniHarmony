@@ -199,7 +199,7 @@ class ComBatGAM(BaseComBat):
             df_gam[v] = design[:, b]
         # Set data from continuous covariates
         if self._continuous_covariates_used:
-            cont_covs = _as_columns(continuous_covariates)
+            cont_covs = _as_columns(continuous_covariates, "continuous_covariates")
             for c in range(cont_covs.shape[1]):
                 v = f"c{c!s}"
                 formula += f"{v} + "
@@ -313,7 +313,7 @@ class ComBatGAM(BaseComBat):
             df_gam[v] = design[:, b]
         # Set data from continuous covariates
         if self._continuous_covariates_used:
-            cont_covs = _as_columns(continuous_covariates)
+            cont_covs = _as_columns(continuous_covariates, "continuous_covariates")
             for c in range(cont_covs.shape[1]):
                 v = f"c{c!s}"
                 df_gam[v] = cont_covs[:, c].astype(float)
@@ -334,6 +334,38 @@ class ComBatGAM(BaseComBat):
         )
 
         return bayes_data.T
+
+    def _clip_to_spline_range(self, x_spline: npt.NDArray) -> npt.NDArray:
+        """Clip smooth covariates to the range covered by the fitted B-splines.
+
+        B-splines cannot be evaluated outside their outermost knots (the
+        training range, or ``smooth_covariates_bounds`` if given). Values
+        outside that range are clipped to its boundary, so the smooth effect
+        is extrapolated as a constant, and a warning is logged.
+
+        Parameters
+        ----------
+        x_spline : array, shape (n_samples, n_smooth_covariates)
+            Smooth covariates to transform.
+
+        Returns
+        -------
+        array, shape (n_samples, n_smooth_covariates)
+            The clipped smooth covariates.
+
+        """
+        x_spline = x_spline.astype(float, copy=True)
+        for i, smoother in enumerate(self._bsplines.smoothers):
+            lower, upper = smoother.knots.min(), smoother.knots.max()
+            outside = (x_spline[:, i] < lower) | (x_spline[:, i] > upper)
+            if np.any(outside):
+                logger.warning(
+                    f"{int(outside.sum())} sample(s) have smooth covariate {i} outside the fitted range "
+                    f"[{lower:.4g}, {upper:.4g}]. They are clipped to the boundary (constant extrapolation). "
+                    "Use smooth_covariates_bounds at fit time to cover the expected range."
+                )
+                x_spline[:, i] = np.clip(x_spline[:, i], lower, upper)
+        return x_spline
 
     def fit_transform(
         self,
