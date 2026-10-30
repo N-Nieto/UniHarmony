@@ -91,6 +91,9 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
     ref_site_ : str or list of str
         The reference site(s) used for alignment.
 
+    sites_ : ndarray, shape (n_sites,)
+        Sites seen during fit.
+
     coupling_ : array, shape (n_source_samples, n_target_samples)
         The optimal coupling matrix (forwarded from ot_obj_).
 
@@ -189,6 +192,7 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
         # Store reference site info
         logger.info(f"Using reference site(s): {ref_site}")
         self.ref_site_ = ref_site
+        self.sites_ = np.unique(sites)
 
         # Initialize OT object (string or instance)
         self.ot_obj_ = self._resolve_ot_method()
@@ -238,8 +242,10 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
             Input data to transform.
 
         sites : array-like, shape (n_samples,), optional (default None)
-            Site labels for X. If provided, only non-reference sites are
-            transformed. Reference site samples are returned as-is.
+            Site labels for X, all seen during fit (any subset of them; the
+            reference site does not need to be present). If provided, only
+            samples of non-reference sites are transformed; reference site
+            samples are returned as-is. If None, all samples are transformed.
 
         y : array-like, shape (n_samples,) or (n_samples, n_classes), optional (default None)
             Labels for supervised transport. Must align with X if provided.
@@ -253,38 +259,29 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
         X_transformed : ndarray, shape (n_samples, n_features)
             Transformed data aligned to reference distribution.
 
+        Raises
+        ------
+        ValueError
+            If a site was not seen during fit.
+
         """
         check_is_fitted(self)
-        check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
-        if sites is not None:
-            logger.debug("Masking validation data using site labels for transformation")
-            sites = check_array(sites, copy=self.copy, dtype=None, ensure_2d=False, estimator=self)
-            check_consistent_length(X, sites)
-            validate_sites(sites)
-            X_ref, X_harm, y_ref, y_harm = self._split_ref_harm_data(X, sites, self.ref_site_, y)
-
-            if not np.any(X_harm):
-                # All samples are from reference site, nothing to transform
-                raise RuntimeError(
-                    "All samples that you aim to transform are from the reference site. No transformation applied."
-                )
-
-            X_transformed_partial = self.ot_obj_.transform(Xs=X_harm, ys=y_harm, Xt=X_ref, yt=y_ref, batch_size=batch_size)
-
-            # Reconstruct full array using X_harm to find matching indices
-            X_transformed = X.copy()
-            # Create a set of X_harm rows (as tuples) for fast membership testing
-            harm_rows = set(map(tuple, X_harm))
-            harm_mask = np.array([tuple(row) in harm_rows for row in X])
-            X_transformed[harm_mask] = X_transformed_partial
-            return X_transformed
-        else:
+        X, y, harm_mask = self._check_transform_input(X, sites, y)
+        if harm_mask is None:
             # Transform all samples assuming they are from source domain
             logger.info(
                 "Transforming all samples without site-based masking, some of which may be from reference site."
                 "Ensure this is intended."
             )
             return self.ot_obj_.transform(Xs=X, ys=y, batch_size=batch_size)
+
+        X_transformed = X.copy()
+        if np.any(harm_mask):
+            y_harm = y[harm_mask] if y is not None else None
+            X_transformed[harm_mask] = self.ot_obj_.transform(Xs=X[harm_mask], ys=y_harm, batch_size=batch_size)
+        else:
+            logger.info("All samples are from the reference site(s): they are returned unchanged.")
+        return X_transformed
 
     def fit_transform(
         self,
@@ -328,15 +325,21 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
         y: npt.ArrayLike | None = None,
         batch_size: int = 128,
     ) -> npt.NDArray:
-        """Transform data from reference back to original source domain.
+        """Map harmonized data back from the reference domain to the source domain.
+
+        This is the inverse of :meth:`transform`: samples of non-reference
+        sites, which :meth:`transform` moved onto the reference distribution,
+        are mapped back to the distribution of the non-reference sites.
+        Samples of the reference site(s) are returned unchanged.
 
         Parameters
         ----------
         X : array-like, shape (n_samples, n_features)
-            Reference domain data to map back.
+            Harmonized data (output of :meth:`transform`).
         sites : array-like, shape (n_samples,), optional (default None)
-            Site labels for X. If provided, only reference site samples are
-            inverse transformed. Non-reference samples are returned as-is.
+            Site labels for X, all seen during fit. If provided, only samples
+            of non-reference sites are mapped back; reference samples are
+            returned as-is. If None, all samples are mapped back.
 
         y : array-like, shape (n_samples,) or (n_samples, n_classes), optional (default None)
             Labels for supervised transport. Must align with X if provided.
@@ -350,40 +353,87 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
         X_inv_transformed : ndarray
             Data mapped back to source distribution.
 
+        Notes
+        -----
+        The non-reference sites are pooled into one source domain when fitting,
+        so samples are mapped back to that pooled distribution, not to their own
+        site. Samples that are not the transported training samples are mapped
+        out-of-sample (displacement of their nearest transported training
+        sample), so ``inverse_transform(transform(X))`` recovers ``X`` only
+        approximately in general.
+
         """
         check_is_fitted(self)
-        check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
-        if sites is not None:
-            logger.debug("Masking validation data using site labels for transformation")
-            sites = check_array(sites, copy=self.copy, dtype=None, ensure_2d=False, estimator=self)
-            check_consistent_length(X, sites)
-            validate_sites(sites)
-            X_ref, X_harm, y_ref, y_harm = self._split_ref_harm_data(X, sites, self.ref_site_, y)
-
-            if not np.any(X_harm):
-                # All samples are from reference site, nothing to transform
-                raise RuntimeError(
-                    "All samples that you aim to transform are from the reference site. No transformation applied."
-                )
-
-            X_transformed_partial = self.ot_obj_.inverse_transform(
-                Xt=X_harm, yt=y_harm, Xs=X_ref, ys=y_ref, batch_size=batch_size
-            )
-
-            # Reconstruct full array using X_harm to find matching indices
-            X_transformed = X.copy()
-            # Create a set of X_harm rows (as tuples) for fast membership testing
-            harm_rows = set(map(tuple, X_harm))
-            harm_mask = np.array([tuple(row) in harm_rows for row in X])
-            X_transformed[harm_mask] = X_transformed_partial
-            return X_transformed
-        else:
-            # Transform all samples assuming they are from source domain
-            logger.info(
-                "Transforming all samples without site-based masking, some of which may be from reference site."
-                "Ensure this is intended."
-            )
+        X, y, harm_mask = self._check_transform_input(X, sites, y)
+        if harm_mask is None:
+            logger.info("Mapping all samples back to the source domain without site-based masking. Ensure this is intended.")
             return self.ot_obj_.inverse_transform(Xt=X, yt=y, batch_size=batch_size)
+
+        X_inverse = X.copy()
+        if np.any(harm_mask):
+            y_harm = y[harm_mask] if y is not None else None
+            X_inverse[harm_mask] = self.ot_obj_.inverse_transform(Xt=X[harm_mask], yt=y_harm, batch_size=batch_size)
+        else:
+            logger.info("All samples are from the reference site(s): they are returned unchanged.")
+        return X_inverse
+
+    def _check_transform_input(
+        self,
+        X: npt.ArrayLike,
+        sites: npt.ArrayLike | None,
+        y: npt.ArrayLike | None,
+    ) -> tuple[npt.NDArray, npt.NDArray | None, npt.NDArray | None]:
+        """Validate the input of (inverse) transform and find the samples to map.
+
+        Unlike :meth:`fit`, any subset of the fitted sites is accepted: the
+        transport plan is fixed, so neither the reference site nor a second
+        site needs to be present.
+
+        Parameters
+        ----------
+        X : array-like, shape (n_samples, n_features)
+            Data.
+        sites : array-like, shape (n_samples,) or None
+            Site labels, or None to map all samples.
+        y : array-like, shape (n_samples,) or None
+            Labels.
+
+        Returns
+        -------
+        X : ndarray, shape (n_samples, n_features)
+            The validated data.
+        y : ndarray, shape (n_samples,) or None
+            The validated labels.
+        harm_mask : ndarray of bool, shape (n_samples,) or None
+            Samples of non-reference sites, or None if ``sites`` is None.
+
+        Raises
+        ------
+        ValueError
+            If a site was not seen during fit.
+
+        """
+        X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
+        if y is not None:
+            y = check_array(y, copy=self.copy, ensure_2d=False, estimator=self)
+            check_consistent_length(X, y)
+        if sites is None:
+            return X, y, None
+        sites = check_array(sites, copy=self.copy, dtype=None, ensure_2d=False, estimator=self)
+        check_consistent_length(X, sites)
+        sites_str = sites.astype(str)
+        unseen = sorted(set(sites_str) - set(self.sites_.astype(str)))
+        if unseen:
+            raise ValueError(f"Sites {unseen} were not seen during fit.")
+        ref_mask = np.isin(sites_str, self._reference_sites_as_str(self.ref_site_))
+        return X, y, ~ref_mask
+
+    @staticmethod
+    def _reference_sites_as_str(ref_site: str | int | list[str] | list[int]) -> list[str]:
+        """Return the reference site(s) as a list of strings."""
+        if isinstance(ref_site, (str, int, np.integer)):
+            return [str(ref_site)]
+        return [str(s) for s in ref_site]
 
     def _resolve_ot_method(self, **kwargs: Any) -> BaseTransport:
         """Resolve ot_method parameter to a BaseTransport instance.
