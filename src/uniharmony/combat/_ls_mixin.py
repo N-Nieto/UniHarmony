@@ -391,13 +391,20 @@ class LocationAndScaleMixin:
 
         """
         logger.debug("Finding parametric adjustments")
+        if self.mean_only:
+            logger.info(
+                "mean_only=True shrinks the site means with the site sample size, which corrects an error in "
+                "R sva::ComBat and neuroCombat (they use n=1). Results differ from those implementations by design."
+            )
 
         gamma_star, delta_star = [], []
         for i, site_idxs in enumerate(idx_per_site):
             if self.mean_only:
-                # Fix incorrect parameter passing from original code!
-                # Original passes n=1, delta_star=1 which is wrong
-                # Should use actual sample count and delta_hat[i]
+                # Deliberate correction of R sva::ComBat and neuroCombat (see the NeuroComBat notes).
+                # With delta fixed to 1, the site mean gamma_hat has sampling variance 1 / n_i, so the
+                # posterior mean under the N(gamma_bar, tau_2) prior uses n_i. The reference
+                # implementations pass n = 1, the posterior for a single subject, which leaves most of
+                # the feature-specific site effect in the data.
                 n_samples = len(site_idxs)
 
                 # Shrink gamma_hat toward gamma_bar using prior precision
