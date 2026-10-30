@@ -35,7 +35,7 @@ ReturnType = (
     | tuple[np.ndarray, np.ndarray, np.ndarray, dict[str, np.ndarray], np.ndarray]  # covariates not None / return_base_data True
 )
 
-logger = structlog.get_logger()
+logger = structlog.get_logger(src="make_multisite_classification")
 
 
 @overload

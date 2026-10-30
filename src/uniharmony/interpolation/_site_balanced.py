@@ -19,7 +19,7 @@ from uniharmony.interpolation._utils import allocate_proportionally, create_unde
 
 __all__ = ["SiteBalancedResampler"]
 
-logger = structlog.get_logger()
+logger = structlog.get_logger(src="SiteBalancedResampler")
 
 
 class SiteBalancedResampler(SamplerMixin, BaseEstimator):

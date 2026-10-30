@@ -39,7 +39,7 @@ __all__ = [
     "variance_ratio",
 ]
 
-logger = structlog.get_logger()
+logger = structlog.get_logger(src="interpolation.utils")
 
 
 INTERPOLATORS: dict[str, type] = {
