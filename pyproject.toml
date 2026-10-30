@@ -69,6 +69,8 @@ dev = [
 ]
 docs = [
     "myst-parser[linkify]>=4.0.1",
+    # Reference implementation compared in the "Implementations conformance" gallery
+    "neuroCombat==0.2.12",
     "numpydoc>=1.10.0",
     "seaborn>=0.13.2",
     "setuptools-scm>=10.0.5",
