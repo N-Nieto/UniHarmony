@@ -1,7 +1,6 @@
 """Provide configuration for Sphinx."""
 
 import datetime
-import os
 from functools import partial
 from pathlib import Path
 
@@ -86,20 +85,11 @@ myst_enable_extensions = [
 
 # sphinx_gallery configuration
 
-# Developer profiling of the examples. ``SPHINX_GALLERY_PROFILE=1`` runs the
-# examples one at a time and records the runtime and peak memory of each one
-# (needs ``memory_profiler``). sphinx-gallery cannot measure memory in parallel
-# builds, so the default build stays parallel and records runtimes only.
-# The results are in docs/sg_execution_times.rst, built as the standalone page
-# /sg_execution_times.html (not linked from the user-facing navigation).
-PROFILE_EXAMPLES = os.environ.get("SPHINX_GALLERY_PROFILE", "0") == "1"
-
 sphinx_gallery_conf = {
     "filename_pattern": "/*-(plot|run)_",
     "examples_dirs": "../examples",
     "gallery_dirs": "auto_examples",
-    "parallel": 1 if PROFILE_EXAMPLES else 10,
-    "show_memory": PROFILE_EXAMPLES,
+    "parallel": 10,
     "doc_module": "uniharmony",
     "backreferences_dir": "gen_modules/backreferences",
 }
