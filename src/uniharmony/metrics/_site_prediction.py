@@ -16,7 +16,7 @@ __all__ = [
     "evaluate_site_prediction",
 ]
 
-logger = structlog.get_logger()
+logger = structlog.get_logger(src="evaluate_site_prediction")
 
 
 def evaluate_site_prediction(

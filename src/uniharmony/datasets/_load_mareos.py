@@ -16,7 +16,7 @@ from pooch import HTTPDownloader, Unzip
 
 __all__ = ["load_MAREoS"]
 
-logger = structlog.get_logger()
+logger = structlog.get_logger(src="load_MAREoS")
 
 # Constants
 MAREOS_ZIP_URL = "https://www.imardgroup.com/mareos-benchmark/public_datasets.zip"
@@ -142,7 +142,7 @@ def _load_mareos_single_dataset(
     effect_type: str,
     effect_example: str,
     as_numpy: bool = True,
-) -> tuple[pd.DataFrame | np.ndarray, ...]:
+) -> tuple[pd.DataFrame | pd.Series | np.ndarray, ...]:
     """Load a single MAREoS dataset.
 
     This function is expected to be called only within "load_MAREoS"
@@ -166,8 +166,8 @@ def _load_mareos_single_dataset(
     -------
     X : pd.DataFrame or np.ndarray
         Feature matrix of shape (1000, 15)
-    y : pd.DataFrame or np.ndarray
-        Target labels of shape (1000, 1)
+    y : pd.Series or np.ndarray
+        Target labels of shape (1000,)
     sites : pd.Series or np.ndarray
         Site labels of shape (1000,)
     covariates : pd.DataFrame or np.ndarray
@@ -226,7 +226,7 @@ def _load_mareos_single_dataset(
         X = X_df
         y = y_df.iloc[:, 0]  # Get first column as Series
 
-    return X, y, sites, covariates, folds  # type: ignore
+    return X, y, sites, covariates, folds
 
 
 def _ensure_mareos_data(
@@ -279,7 +279,8 @@ def _ensure_mareos_data(
     # Pooch's Unzip processor returns a list of extracted file paths
     extracted_files = mareos_pooch.fetch(
         "public_datasets.zip",
-        downloader=HTTPDownloader(progressbar=True),  # type: ignore
+        # pooch's own ``Downloader`` protocol does not match the signature of its ``HTTPDownloader``
+        downloader=HTTPDownloader(progressbar=True),  # pyright: ignore[reportArgumentType]
         processor=Unzip(extract_dir=target_dir),
     )
     # Verify extraction

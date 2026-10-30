@@ -35,6 +35,12 @@ def test_module_loggers_are_lazy(name, logger):
     assert isinstance(logger, BoundLoggerLazyProxy), f"{name}.logger was bound at import time"
 
 
+@pytest.mark.parametrize("name,logger", list(_module_loggers()))
+def test_module_loggers_have_src(name, logger):
+    """Every module logger labels its lines with ``src``, e.g. ``structlog.get_logger(src="NeuroComBat")``."""
+    assert logger._initial_values.get("src"), f"{name}.logger has no src label"
+
+
 def test_verbosity_after_import_silences_harmonizers(capsys):
     """Setting the level after importing a harmonizer still applies to its logs."""
     rng = np.random.default_rng(0)

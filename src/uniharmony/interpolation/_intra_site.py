@@ -26,7 +26,7 @@ from uniharmony.interpolation._utils import (
 
 __all__ = ["IntraSiteInterpolation"]
 
-logger = structlog.get_logger()
+logger = structlog.get_logger(src="IntraSiteInterpolation")
 
 # Number of synthetic samples drawn to estimate how well an interpolator preserves the variance of a cell.
 _PILOT_MIN, _PILOT_MAX = 200, 2000

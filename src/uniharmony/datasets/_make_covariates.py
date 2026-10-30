@@ -7,7 +7,7 @@ import numpy as np
 import structlog
 
 
-logger = structlog.get_logger()
+logger = structlog.get_logger(src="make_covariates")
 
 
 __all__ = ["Covariate", "CovariateSiteDistribution", "_make_covariate", "_resolve_covariates"]
