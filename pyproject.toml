@@ -68,6 +68,7 @@ dev = [
     "towncrier>=25.8.0",
 ]
 docs = [
+    "memory-profiler>=0.61.0",  # example memory in sphinx-gallery (SPHINX_GALLERY_PROFILE=1)
     "myst-parser[linkify]>=4.0.1",
     # Reference implementation compared in the "Implementations conformance" gallery
     "neuroCombat==0.2.12",
