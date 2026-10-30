@@ -26,7 +26,7 @@ logger = structlog.get_logger(src="ComBatGAM")  # lazy: honours later `uniharmon
 
 
 class ComBatGAM(BaseComBat):
-    """Harmonize multi-site scanner effects controlling for non-linear age effects.
+    r"""Harmonize multi-site scanner effects controlling for non-linear age effects.
 
     This is an improvement on NeuroComBat allowing for non-linear effects to be controlled by Generalized Additive Models (GAMs).
 
@@ -37,7 +37,10 @@ class ComBatGAM(BaseComBat):
     parametric_adjustments : bool, optional (default True)
         Whether to perform parametric adjustments.
     mean_only : bool, optional (default False)
-        Whether to only adjust mean (no scaling).
+        Whether to only adjust the mean (no scaling). The empirical Bayes
+        estimate of each site effect uses the site sample size; this
+        deliberately corrects R ``sva::ComBat`` and ``neuroCombat``, which use
+        a sample size of 1 (see Notes).
     random_state : int, RandomState instance or None, optional (default None)
         Controls the shuffling of the k-fold cross-validation used to select
         the GAM penalty weights. Pass an int for reproducible results across
@@ -47,6 +50,32 @@ class ComBatGAM(BaseComBat):
     ----------
     sites_ : array, shape (n_samples,)
         Fitted site names.
+
+    Notes
+    -----
+    The ComBat steps follow Johnson et al. (2007) and differ from
+    R ``sva::ComBat`` (3.50.0) and ``neuroCombat`` (0.2.12) in two documented
+    places. Both were found with simulations from the ComBat model and are
+    tested in ``tests/combat/test_reference_conformance.py``:
+
+    * **Pooled variance.** The residual sum of squares is divided by
+      :math:`n - S` (:math:`S` sites) instead of :math:`n`. ComBat rescales each
+      site with a variance computed with ``ddof=1``, so the harmonized data keep
+      :math:`n - S` residual degrees of freedom. Dividing by :math:`n` shrinks
+      the harmonized variance by :math:`(n - S)/n` (0.90 with 30 subjects in
+      3 sites); dividing by :math:`n - S` makes it unbiased. Outside
+      ``mean_only``, the output is the reference output with the deviations
+      from the standardized mean multiplied by :math:`\sqrt{n/(n - S)}`.
+    * **mean_only.** With the scale fixed to 1, the site mean
+      :math:`\hat\gamma_{ig}` has sampling variance :math:`1/n_i`, so the
+      posterior mean is
+      :math:`\gamma^*_{ig} = (\tau_i^2 n_i \hat\gamma_{ig} + \bar\gamma_i) / (\tau_i^2 n_i + 1)`.
+      The references use :math:`n_i = 1`, which leaves most of the
+      feature-specific site effect in the data (a site classifier then
+      recovers the site well above chance).
+
+    See the "Implementations conformance" gallery for the derivations,
+    the simulations, and a runtime and memory comparison.
 
     References
     ----------

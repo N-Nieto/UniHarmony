@@ -82,6 +82,13 @@ class CovBat(BaseComBat):
     n_pc_ : int
         Number of PCs selected for harmonization.
 
+    Notes
+    -----
+    Both ComBat steps divide the pooled residual sum of squares by
+    :math:`n - S` (:math:`S` sites) instead of :math:`n` as R ``sva::ComBat``
+    and ``neuroCombat`` do, so that the harmonized variance is unbiased. See
+    :class:`~uniharmony.combat.NeuroComBat` for details.
+
     References
     ----------
     .. [1] Chen, A. A., Beer, J. C., Tustison, N. J., Cook, P. A.,
