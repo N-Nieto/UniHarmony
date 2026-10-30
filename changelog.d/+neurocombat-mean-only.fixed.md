@@ -1,0 +1,1 @@
+`mean_only=True` in `NeuroComBat` and `ComBatGAM` is documented and flagged (an info log at fit) as a deliberate correction of R `sva::ComBat` and `neuroCombat`: the empirical Bayes posterior of the site effect uses the site sample size, while the references use `n = 1`, which leaves most of the feature-specific site effect in the data.
