@@ -11,18 +11,18 @@ from typing import Any, Literal
 
 import numpy as np
 import numpy.typing as npt
-import structlog
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils import check_random_state
 from sklearn.utils.validation import check_is_fitted
 
+from uniharmony._verbose import get_logger
 from uniharmony.dl._deep_harmony_unet import SIZE_MULTIPLE, DeepHarmonyUNet
 from uniharmony.dl._torch import torch
 
 
 __all__ = ["DeepHarmony"]
 
-logger = structlog.get_logger(src="DeepHarmony")
+logger = get_logger(src="DeepHarmony")
 
 #: Spatial axis of a (n_contrasts, X, Y, Z) volume that is sliced for each orientation.
 #: Assumes volumes in a canonical orientation (e.g., RAS: X = left-right,

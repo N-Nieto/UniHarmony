@@ -6,8 +6,9 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import datalad.api as dl
-import structlog
 from datalad.support.exceptions import IncompleteResultsError
+
+from uniharmony._verbose import get_logger
 
 
 __all__ = [
@@ -16,7 +17,7 @@ __all__ = [
     "list_available_files",
 ]
 
-logger = structlog.get_logger(src="datalad")
+logger = get_logger(src="datalad")
 
 
 def download_bids_dataset(

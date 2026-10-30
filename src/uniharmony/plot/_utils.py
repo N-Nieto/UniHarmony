@@ -6,7 +6,6 @@ import numpy.typing as npt
 import pandas as pd
 import seaborn as sns
 import sklearn.linear_model
-import structlog
 from matplotlib.axes import Axes
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.decomposition import PCA, KernelPCA
@@ -19,11 +18,12 @@ from sklearn.utils.validation import (
 )
 
 from uniharmony._utils import validate_sites
+from uniharmony._verbose import get_logger
 
 
 __all__ = ["plot_2d_components_by_value", "plot_2d_projection", "plot_decision_boundary_2d", "plot_features_by_site"]
 
-logger = structlog.get_logger(src="plot")
+logger = get_logger(src="plot")
 
 
 def plot_decision_boundary_2d(

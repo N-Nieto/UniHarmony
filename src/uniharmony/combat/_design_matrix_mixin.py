@@ -2,13 +2,14 @@
 
 import numpy as np
 import numpy.typing as npt
-import structlog
 from sklearn.preprocessing import OneHotEncoder
+
+from uniharmony._verbose import get_logger
 
 
 __all__ = ["DesignMatrixMixin"]
 
-logger = structlog.get_logger(src="DesignMatrixMixin")  # lazy: honours later `uniharmony.verbosity` calls
+logger = get_logger(src="DesignMatrixMixin")
 
 
 def _as_columns(covariates: npt.ArrayLike, name: str = "covariates") -> npt.NDArray:

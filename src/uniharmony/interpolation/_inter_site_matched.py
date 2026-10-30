@@ -5,7 +5,6 @@ import warnings
 from typing import Any, Literal
 
 import numpy as np
-import structlog
 from imblearn.base import SamplerMixin
 from numpy.typing import ArrayLike, NDArray
 from sklearn.base import BaseEstimator
@@ -17,6 +16,7 @@ from sklearn.utils.validation import (
 )
 
 from uniharmony._utils import validate_sites
+from uniharmony._verbose import get_logger
 from uniharmony.interpolation._utils import (
     validate_class_representation,
     validate_covariates,
@@ -25,7 +25,7 @@ from uniharmony.interpolation._utils import (
 
 __all__ = ["InterSiteMatchedInterpolation"]
 
-logger = structlog.get_logger(src="InterSiteMatchedInterpolation")
+logger = get_logger(src="InterSiteMatchedInterpolation")
 
 
 class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):

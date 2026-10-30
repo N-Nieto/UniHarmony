@@ -4,10 +4,11 @@ from dataclasses import dataclass, field
 from typing import Literal, cast, get_args
 
 import numpy as np
-import structlog
+
+from uniharmony._verbose import get_logger
 
 
-logger = structlog.get_logger(src="make_covariates")
+logger = get_logger(src="make_covariates")
 
 
 __all__ = ["Covariate", "CovariateSiteDistribution", "_make_covariate", "_resolve_covariates"]

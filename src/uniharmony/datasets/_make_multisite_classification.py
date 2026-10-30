@@ -4,7 +4,6 @@ from typing import Literal, cast, get_args, overload
 
 import numpy as np
 import numpy.typing as npt
-import structlog
 from sklearn.datasets import make_blobs, make_circles, make_classification, make_gaussian_quantiles, make_moons
 from sklearn.utils import check_random_state
 from sklearn.utils.validation import (
@@ -12,6 +11,8 @@ from sklearn.utils.validation import (
     check_consistent_length,
     check_X_y,
 )
+
+from uniharmony._verbose import get_logger
 
 from ._make_covariates import Covariate, _make_covariate, _resolve_covariates
 
@@ -35,7 +36,7 @@ ReturnType = (
     | tuple[np.ndarray, np.ndarray, np.ndarray, dict[str, np.ndarray], np.ndarray]  # covariates not None / return_base_data True
 )
 
-logger = structlog.get_logger(src="make_multisite_classification")
+logger = get_logger(src="make_multisite_classification")
 
 
 @overload

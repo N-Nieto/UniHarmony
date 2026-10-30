@@ -3,7 +3,6 @@
 from typing import Any
 
 import numpy as np
-import structlog
 from scipy.stats import median_abs_deviation
 from sklearn.utils.validation import (
     check_array,
@@ -11,13 +10,15 @@ from sklearn.utils.validation import (
     check_X_y,
 )
 
+from uniharmony._verbose import get_logger
+
 
 __all__ = [
     "get_multisite_data_statistics",
     "print_statistics_summary",
 ]
 
-logger = structlog.get_logger(src="multisite_data_characterization")
+logger = get_logger(src="multisite_data_characterization")
 
 
 def get_multisite_data_statistics(

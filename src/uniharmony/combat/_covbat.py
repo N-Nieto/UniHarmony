@@ -12,10 +12,11 @@ membership from the covariance structure of the data.
 
 import numpy as np
 import numpy.typing as npt
-import structlog
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from sklearn.utils.validation import check_is_fitted
+
+from uniharmony._verbose import get_logger
 
 from ._base import BaseComBat
 from ._neuro_combat import NeuroComBat
@@ -23,7 +24,7 @@ from ._neuro_combat import NeuroComBat
 
 __all__ = ["CovBat"]
 
-logger = structlog.get_logger(src="CovBat")  # lazy: honours later `uniharmony.verbosity` calls
+logger = get_logger(src="CovBat")
 
 
 class CovBat(BaseComBat):

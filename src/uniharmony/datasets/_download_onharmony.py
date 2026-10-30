@@ -3,14 +3,13 @@
 from pathlib import Path
 from typing import Literal
 
-import structlog
-
+from uniharmony._verbose import get_logger
 from uniharmony.datasets import download_bids_dataset
 
 
 __all__ = ["download_ONharmony", "list_available_possibilities_onharmony"]
 
-logger = structlog.get_logger(src="download_ONharmony")
+logger = get_logger(src="download_ONharmony")
 
 
 ONHARMONY_SUBJECTS_LIST = Literal[

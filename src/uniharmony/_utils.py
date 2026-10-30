@@ -2,7 +2,8 @@
 
 import numpy as np
 import numpy.typing as npt
-import structlog
+
+from uniharmony._verbose import get_logger
 
 
 __all__ = [
@@ -14,7 +15,7 @@ __all__ = [
 ]
 
 
-logger = structlog.get_logger(src="utils")
+logger = get_logger(src="utils")
 
 
 def solve_ordinary_least_squares(

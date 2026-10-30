@@ -10,17 +10,17 @@
 
 import numpy as np
 import numpy.typing as npt
-import structlog
 from sklearn.utils.validation import check_is_fitted
 
 from uniharmony._utils import validate_sites
+from uniharmony._verbose import get_logger
 
 from ._base import BaseComBat
 
 
 __all__ = ["NeuroComBat"]
 
-logger = structlog.get_logger(src="NeuroComBat")  # lazy: honours later `uniharmony.verbosity` calls
+logger = get_logger(src="NeuroComBat")
 
 
 class NeuroComBat(BaseComBat):

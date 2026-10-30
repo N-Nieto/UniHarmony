@@ -15,10 +15,10 @@ from ._covbat import CovBat
 from ._neuro_combat import NeuroComBat
 
 
-__all__ = ["COMBAT_MODELS", "ComBatModel", "CovariateArguments", "get_covariate_arguments"]
+__all__ = ["COMBAT_MODELS", "ComBatModels", "CovariateArguments", "get_covariate_arguments"]
 
-#: Type of a ComBat-based harmonization model.
-ComBatModel: TypeAlias = NeuroComBat | CovBat | ComBatGAM
+#: Any of the registered ComBat-based harmonization models (union of their types).
+ComBatModels: TypeAlias = NeuroComBat | CovBat | ComBatGAM
 
 
 @dataclass(frozen=True)

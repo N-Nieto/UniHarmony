@@ -7,7 +7,6 @@
 import numpy as np
 import numpy.typing as npt
 import pandas as pd
-import structlog
 from sklearn.utils import check_random_state
 from sklearn.utils.validation import (
     check_is_fitted,
@@ -15,6 +14,7 @@ from sklearn.utils.validation import (
 from statsmodels.gam.api import BSplines
 
 from uniharmony._utils import validate_sites
+from uniharmony._verbose import get_logger
 
 from ._base import BaseComBat
 from ._design_matrix_mixin import _as_columns
@@ -22,7 +22,7 @@ from ._design_matrix_mixin import _as_columns
 
 __all__ = ["ComBatGAM"]
 
-logger = structlog.get_logger(src="ComBatGAM")  # lazy: honours later `uniharmony.verbosity` calls
+logger = get_logger(src="ComBatGAM")
 
 
 class ComBatGAM(BaseComBat):

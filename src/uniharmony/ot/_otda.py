@@ -4,19 +4,19 @@ from typing import Any, Literal
 
 import numpy as np
 import numpy.typing as npt
-import structlog
 from ot.da import BaseTransport
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils import Tags
 from sklearn.utils.validation import FLOAT_DTYPES, check_array, check_consistent_length, check_is_fitted
 
 from uniharmony._utils import validate_sites
+from uniharmony._verbose import get_logger
 from uniharmony.ot._utils import create_ot_object, data_consistency_check
 
 
 __all__ = ["OptimalTransportDomainAdaptation"]
 
-logger = structlog.get_logger(src="OptimalTransportDomainAdaptation")
+logger = get_logger(src="OptimalTransportDomainAdaptation")
 
 OTMethodType = Literal["emd", "sinkhorn", "s", "sinkhorn_gl", "s_gl", "emd_laplace", "emd_l"]
 # Type aliases for clarity

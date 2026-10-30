@@ -3,7 +3,6 @@
 import numpy as np
 import numpy.typing as npt
 import pandas as pd
-import structlog
 from sklearn.utils import check_random_state
 from statsmodels.gam.api import GLMGam
 
@@ -13,11 +12,12 @@ from uniharmony._utils import (
     minimum_samples_warning,
     solve_ordinary_least_squares,
 )
+from uniharmony._verbose import get_logger
 
 
 __all__ = ["StandardizationMixin"]
 
-logger = structlog.get_logger(src="StandardizationMixin")  # lazy: honours later `uniharmony.verbosity` calls
+logger = get_logger(src="StandardizationMixin")
 
 
 class _ShuffledKFold:

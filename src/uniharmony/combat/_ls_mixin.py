@@ -4,14 +4,14 @@ import math
 
 import numpy as np
 import numpy.typing as npt
-import structlog
 
 from uniharmony._utils import handle_near_zero_values, solve_ordinary_least_squares
+from uniharmony._verbose import get_logger
 
 
 __all__ = ["LocationAndScaleMixin"]
 
-logger = structlog.get_logger(src="LocationAndScaleMixin")  # lazy: honours later `uniharmony.verbosity` calls
+logger = get_logger(src="LocationAndScaleMixin")
 
 
 class LocationAndScaleMixin:
@@ -913,7 +913,8 @@ class LocationAndScaleMixin:
             pooled_std = pooled_std[:, np.newaxis]
         for j, site_idxs in enumerate(idx_per_site):
             if len(site_idxs) == 0:
-                logger.warning(f"Site {j} has no samples")
+                # A batch may contain only some of the fitted sites (e.g. one new subject)
+                logger.debug(f"Site {j} has no samples in this batch")
                 continue
 
             # Get adjusted parameters for this site
