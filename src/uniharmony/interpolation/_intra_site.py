@@ -1,25 +1,26 @@
 """Intra-site interpolation-based harmonization."""
 
-from collections import Counter
-from typing import Literal
+import warnings
+from typing import Any, Literal
 
 import numpy as np
 import numpy.typing as npt
+import pandas as pd
 import structlog
 from imblearn.base import SamplerMixin
+from imblearn.over_sampling import RandomOverSampler
 from sklearn.base import BaseEstimator, clone
 from sklearn.utils import Tags, check_random_state
-from sklearn.utils.validation import (
-    check_array,
-    check_consistent_length,
-    check_X_y,
-)
+from sklearn.utils.validation import check_array, check_consistent_length, check_is_fitted, check_X_y
 
 from uniharmony._utils import validate_sites
 from uniharmony.interpolation._utils import (
+    allocate_proportionally,
     create_interpolator,
-    validate_class_representation,
+    effective_dimension,
+    validate_all_classes_per_site,
     validate_covariates,
+    variance_ratio,
 )
 
 
@@ -27,93 +28,240 @@ __all__ = ["IntraSiteInterpolation"]
 
 logger = structlog.get_logger()
 
+# Number of synthetic samples drawn to estimate how well an interpolator preserves the variance of a cell.
+_PILOT_MIN, _PILOT_MAX = 200, 2000
+# Neighbour parameters of imblearn samplers that must not exceed the number of anchors (or of samples).
+_ANCHOR_NEIGHBOR_PARAMS = ("k_neighbors", "n_neighbors")
+_ALL_NEIGHBOR_PARAMS = ("m_neighbors",)
+_SEED_MAX = np.iinfo(np.int32).max
+
 
 class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
-    """Intra-Site Interpolation (ISI) Harmonization.
+    """Intra-Site Interpolation (ISI).
 
-    This sampler performs **site-wise class balancing** to reduce spurious
-    correlations between site membership and class labels.
+    ISI removes the association between site and target in a training set by
+    **balancing the classes within every site through interpolation**.
+    Minority classes are over-sampled by interpolating between real samples
+    of the same class (and, optionally, the same covariate stratum) *of the
+    same site*, so the synthetic samples carry the biological variability of
+    that class and the effect of site of that site. ISI never removes a real
+    sample.
 
-    For each site independently:
-    - The target class count is determined by ``balance_strategy``.
-    - All minority classes are oversampled to match the target count.
-    - Any imblearn-compatible oversampling strategy may be used.
-    - Alternatively, all classes in the smaller sites are oversampled to matched the biggest site.
+    For each site ``s`` and class ``c`` with ``n_sc`` real samples, every
+    class of the site is brought to the target ``T_s`` (the largest class of
+    the site, of any site, or a given number, see ``balance_strategy``) by
+    adding ``T_s - n_sc`` samples created with ``interpolator``. After
+    resampling every class has ``T_s`` samples in site ``s``, so
+    ``P(y | site)`` is uniform and the site no longer predicts the target.
 
-    When covariates are provided, balancing is performed within each
-    covariate stratum (unique combination of covariate values) within
-    each site, preserving the joint distribution of covariates and
-    target labels.
-
-    For regression tasks, the continuous target is binned into discrete
-    intervals and each bin is treated as a class for balancing purposes.
+    **How much interpolation is advisable.** Interpolated samples are less
+    spread than real ones, so the more synthetic samples a class receives, the
+    more its variance shrinks. For every class that needs over-sampling ISI
+    measures this with a pilot batch of synthetic samples (``rho``, see
+    ``variance_tolerance``) and derives the largest amplification that keeps
+    the variance of the class within ``variance_tolerance`` of the real one
+    (``safe_amplification_``). If balancing needs more than that, ISI warns.
+    To limit interpolation to the safe amount and close the remaining
+    imbalance by under-sampling the larger classes, wrap ISI in
+    :class:`~uniharmony.interpolation.SiteBalancedResampler`.
 
     Parameters
     ----------
-    interpolator : str or SamplerMixin instance, optional (default "smote")
-        The interpolator to use. Can be a str specifying a built-in method or
-        an instance of SamplerMixin.
-        Supported str methods are:
-
-          - "smote": Synthetic Minority Over-sampling Technique
-          - "borderline-smote": Borderline-SMOTE
-          - "svm-smote": SVM-SMOTE
-          - "adasyn": Adaptive Synthetic Sampling
-          - "kmeans-smote": KMeans-SMOTE
-          - "random": Random Over-Sampling
+    interpolator : str or imblearn over-sampler, optional (default "smote")
+        Over-sampler used to create synthetic samples. Strings:
+        ``"smote"``, ``"borderline-smote"``, ``"svm-smote"``, ``"adasyn"``,
+        ``"kmeans-smote"`` or ``"random"`` (random over-sampling, i.e.
+        duplication, kept as a baseline). Any imblearn-compatible over-sampler
+        instance that returns the original samples first can be passed.
+        Neighbour parameters (``k_neighbors``, ``n_neighbors``,
+        ``m_neighbors``) are reduced automatically for small cells.
 
     interpolator_kwargs : dict or None, optional (default None)
-        Additional keyword arguments passed to ``interpolator``.
+        Keyword arguments for ``interpolator`` when it is given as a string.
 
-    random_state : int or RandomState instance or None, optional (default None)
-        The seed of the pseudo random number generator or RandomState for
-        reproducibility.
+    balance_strategy : {"per_site", "global_max"} or dict, optional (default "per_site")
+        - ``"per_site"``: every site is balanced to its own largest class.
+        - ``"global_max"``: every site is balanced towards the largest class
+          of any site, so sites also get the same size. Small sites then need
+          much more interpolation.
+        - dict ``{site: n}``: every class of each site is brought to ``n``
+          samples (``n`` must not be smaller than the largest class of the
+          site, since ISI only adds samples).
 
-    balance_strategy : {"per_site", "global_max"}, optional (default "per_site")
-        Strategy to determine the target count for oversampling:
+    variance_tolerance : float, optional (default 0.2)
+        Largest relative loss of the within-class variance considered safe
+        (``eps``). The rule works as follows. The interpolator generates
+        samples that are less spread than the real ones: for SMOTE each new
+        sample lies on the segment between a real sample and one of its
+        nearest neighbours of the same class, so it is pulled towards the
+        inside of the class. The ratio between the variance of the synthetic
+        samples and that of the real samples, ``rho`` (averaged over the
+        features), is measured on a pilot batch; it is close to 1 when many
+        samples densely cover the class (close neighbours) and falls to about
+        2/3 when the samples are sparse (two independent points mixed with a
+        uniform weight keep ``E[(1 - l)^2 + l^2] = 2/3`` of the variance), and
+        to 1/6 with only two samples (one segment). A class made of ``n`` real
+        and ``r * n`` synthetic samples keeps a fraction
+        ``(1 + r * rho) / (1 + r)`` of its real variance, i.e. it loses
+        ``r * (1 - rho) / (1 + r)``. Keeping this loss below ``eps`` gives the
+        safe amplification::
 
-        - "per_site": Each site is balanced independently to its own majority
-          class count.
-        - "global_max": All sites are balanced to the global maximum class
-          count across all sites. Both minority and majority classes are samples
-          to match the N for the majority class across sites.
+            r* = eps / ((1 - rho) - eps)   if 1 - rho > eps, else no limit
 
-    n_bins : int or None, optional (default 10)
-        Number of bins for regression target binning.
+        (``|1 - rho|`` is used, so samplers that inflate the variance are
+        limited too.) For example, with ``rho = 0.6`` and ``eps = 0.2``,
+        ``r* = 1``: at most one synthetic sample per real one. Duplication
+        (``"random"``) keeps ``rho`` close to one and is not limited by this
+        rule, although it adds no new variability.
+
+    n_bins : int or array-like, optional (default 10)
+        For regression: number of bins of the target, or the bin edges
+        (non-decreasing; values outside are assigned to the first / last bin).
 
     binning_strategy : {"uniform", "quantile"}, optional (default "quantile")
-        Strategy for creating bins when the task is regression:
-
-        - "uniform": Bins of equal width covering the target range.
-        - "quantile": Bins with approximately equal number of samples.
+        How the regression target is binned when ``n_bins`` is an integer:
+        equal-width (``"uniform"``) or equal-frequency (``"quantile"``) bins.
 
     task : {"auto", "classification", "regression"}, optional (default "auto")
-        Task type. If ``"auto"``, inferred from ``y`` dtype (integer types
-        imply classification, floating types imply regression).
-        A regression problem is treated as a multi-class classification problem.
+        Task type. ``"auto"`` infers it from the dtype of ``y`` (boolean,
+        integer, string and object mean classification; floating point means
+        regression). For regression, each target bin is treated as a class.
+
+    n_bins_cont_cov : int or None, optional (default None)
+        Number of bins used to stratify continuous covariates (required when
+        ``continuous_covariate`` is given).
+
+    binning_strategy_cont_cov : {"uniform", "quantile"}, optional (default "quantile")
+        How continuous covariates are binned within each site.
+
+    random_state : int, RandomState instance or None, optional (default None)
+        Seed of the pseudo random number generator.
 
     Attributes
     ----------
     sites_resampled_ : ndarray of shape (n_samples_new,)
-        Site identifiers for the resampled dataset.
+        Site of each resampled sample.
 
-    samples_created_ : dict
-        A nested dictionary mapping ``{site: {class_label: n_created}}``,
-        where ``n_created`` is the number of synthetic samples generated
-        for that class in that site. For regression, ``class_label`` is
-        the bin index.
+    sample_indices_ : ndarray of shape (n_samples_new,)
+        Index in the input of each resampled sample, ``-1`` for samples
+        created by ISI. Use it to carry along covariates of the real samples.
+
+    is_synthetic_ : ndarray of shape (n_samples_new,)
+        Whether each resampled sample was created by ISI.
+
+    class_counts_ : dict
+        ``{site: {class: n_real}}``, real samples per site and class.
+
+    target_counts_ : dict
+        ``{site: T_s}``, the number of samples per class in each site after
+        resampling.
 
     target_count_ : int or None
-        The target sample count per class used for balancing. Set to the
-        global maximum when ``balance_strategy="global_max"``, otherwise
-        ``None`` (targets are per-site).
+        Largest class count of any site for ``balance_strategy="global_max"``,
+        ``None`` otherwise.
+
+    samples_created_ : dict
+        ``{site: {class: n_created}}``. For regression, classes are bins.
+
+    amplification_ : dict
+        ``{site: {class: n_created / n_real}}``.
+
+    variance_ratio_ : dict
+        ``{site: {class: rho}}`` measured on the pilot batch (``nan`` for
+        classes that did not need over-sampling).
+
+    safe_amplification_ : dict
+        ``{site: {class: r*}}`` from the variance rule (``inf`` when not
+        limited; ``nan`` for classes that did not need over-sampling).
+
+    effective_dim_ : float
+        Effective number of dimensions of the data (participation ratio of
+        the correlation matrix of the features, centered within each
+        site-class cell; estimated from at most 2000 samples). Few samples
+        per effective dimension mean that interpolation fills the space
+        poorly (low ``rho``).
+
+    n_features_in_ : int
+        Number of features.
 
     bins_ : ndarray or None
-        Bin edges used for regression target binning. ``None`` for
-        classification tasks.
+        Bin edges of the regression target, ``None`` for classification.
 
     task_ : str
-        Inferred or specified task type ("classification" or "regression").
+        ``"classification"`` or ``"regression"``.
+
+    interpolator_ : imblearn over-sampler
+        Template of the over-sampler used.
+
+    See Also
+    --------
+    SiteBalancedResampler : Combine ISI (or within-site random over-sampling) with under-sampling.
+    InterSiteMatchedInterpolation : Interpolation between matched samples of different sites.
+
+    Notes
+    -----
+    Use ISI on training data only (e.g. inside an ``imblearn.pipeline.Pipeline``
+    evaluated with cross-validation). As ``sites`` is not part of ``X``, enable
+    scikit-learn metadata routing to pass it::
+
+        import sklearn
+        from imblearn.pipeline import Pipeline
+
+        sklearn.set_config(enable_metadata_routing=True)
+        isi = IntraSiteInterpolation().set_fit_resample_request(sites=True)
+        pipe = Pipeline([("isi", isi), ("clf", LogisticRegression())])
+        cross_validate(pipe, X, y, params={"sites": sites})
+
+    **Tune hyper-parameters with ISI inside the inner cross-validation.**
+    Synthetic samples are interpolated between their parents, so a model
+    validated on samples whose parents it was trained on looks better than it
+    is. Estimators that tune themselves on the data they receive (``RidgeCV``
+    and ``RidgeClassifierCV`` with generalised cross-validation,
+    ``LogisticRegressionCV``, early stopping on a validation split, ...)
+    therefore pick too little regularisation when fitted on ISI output. Put
+    ISI in the pipeline that is tuned instead, so it is re-applied to every
+    inner training split::
+
+        pipe = Pipeline([("isi", isi), ("scale", StandardScaler()), ("ridge", Ridge())])
+        search = GridSearchCV(pipe, {"ridge__alpha": np.logspace(-1, 5, 13)})
+        search.fit(X, y, sites=sites)  # with metadata routing enabled
+
+    **Strong imbalance with many features.** A model with more features
+    than samples and moderate regularisation can fit the few real samples of
+    a heavily over-sampled class one by one. Synthetic samples lie between
+    these real samples and add little to that fit, so ISI then removes the
+    site-target association only partly, like re-weighting or random
+    over-sampling with the same amplification. The remaining shortcut grows
+    with the amplification and shrinks with the regularisation;
+    under-sampling does not have this problem. When ISI warns that classes
+    exceed their safe amplification, consider
+    ``SiteBalancedResampler(IntraSiteInterpolation(), max_amplification="auto")``
+    (interpolate up to the safe amount, then under-sample the larger
+    classes), and check the remaining shortcut, for instance by repeating
+    the cross-validation after permuting the target within each site.
+
+    **Local and kernel models.** Interpolated classes are denser and less
+    dispersed than real ones. Nearest-neighbour models can recognise the
+    synthetic class of a site by its density, and kernel models with a
+    bandwidth estimated on the resampled data are affected too. For them,
+    prefer sample weights, under-sampling or ``interpolator="random"``
+    (duplication), and check the remaining shortcut.
+
+    Every class that needs over-sampling must have at least two samples in
+    its site (one for ``"random"``): a single sample cannot be interpolated.
+    For regression, target bins with fewer samples in a site are left as
+    they are, with a warning.
+
+    Covariates (``categorical_covariate``, ``continuous_covariate``) restrict
+    who is interpolated with whom: synthetic samples are interpolated between
+    samples of the same class, site and covariate stratum, and they are spread
+    over the strata in proportion to the real samples of that class, so
+    ``P(covariates | class, site)`` is preserved.
+
+    Original samples are returned unchanged, with their original targets.
+    For regression, the target of a synthetic sample is interpolated between
+    its two parent samples, ``y = y_a + lam * (y_b - y_a)``, which recovers
+    SMOTE's interpolation exactly.
 
     """
 
@@ -123,20 +271,29 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         | Literal["smote", "borderline-smote", "svm-smote", "adasyn", "kmeans-smote", "random"]
         | SamplerMixin = "smote",
         interpolator_kwargs: dict | None = None,
-        random_state: int | np.random.RandomState | None = None,
-        balance_strategy: str | Literal["per_site", "global_max"] = "per_site",
-        n_bins: int | None = 10,
+        balance_strategy: str | Literal["per_site", "global_max"] | dict = "per_site",
+        variance_tolerance: float = 0.2,
+        n_bins: int | npt.ArrayLike = 10,
         binning_strategy: str | Literal["uniform", "quantile"] = "quantile",
         task: str | Literal["auto", "classification", "regression"] = "auto",
+        n_bins_cont_cov: int | None = None,
+        binning_strategy_cont_cov: str | Literal["uniform", "quantile"] = "quantile",
+        random_state: int | np.random.RandomState | None = None,
     ) -> None:
         self.interpolator = interpolator
         self.interpolator_kwargs = interpolator_kwargs
-        self.random_state = random_state
         self.balance_strategy = balance_strategy
+        self.variance_tolerance = variance_tolerance
         self.n_bins = n_bins
         self.binning_strategy = binning_strategy
         self.task = task
+        self.n_bins_cont_cov = n_bins_cont_cov
+        self.binning_strategy_cont_cov = binning_strategy_cont_cov
+        self.random_state = random_state
 
+    # ------------------------------------------------------------------ #
+    # Public API
+    # ------------------------------------------------------------------ #
     def fit_resample(
         self,
         X: npt.ArrayLike,
@@ -146,150 +303,216 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         categorical_covariate: npt.ArrayLike | None = None,
         continuous_covariate: npt.ArrayLike | None = None,
         n_bins_cont_cov: int | None = None,
-        binning_strategy_cont_cov: str | Literal["uniform", "quantile"] = "quantile",
+        binning_strategy_cont_cov: str | None = None,
     ) -> tuple[npt.NDArray, npt.NDArray]:
-        """Fit and resample the dataset using site-wise interpolation.
+        """Balance the classes within every site by interpolation.
 
         Parameters
         ----------
         X : array-like of shape (n_samples, n_features)
-            Feature matrix containing the input samples.
+            Features.
 
         y : array-like of shape (n_samples,)
-            Target values. Integer labels for classification, continuous
-            values for regression.
+            Target: class labels for classification, continuous values for
+            regression.
 
         sites : array-like of shape (n_samples,)
-            Site or domain identifiers indicating the origin of each sample.
-            Resampling is performed independently within each site.
+            Site of each sample.
 
-        categorical_covariate : array-like of shape (n_samples, n_categorical), default=None
-            Categorical covariates used for stratified balancing. When
-            provided, classes are balanced within each unique covariate
-            combination within each site.
+        categorical_covariate : array-like of shape (n_samples,) or (n_samples, n_categorical), default=None
+            Categorical covariates. Synthetic samples are only interpolated
+            between samples with the same values.
 
-        continuous_covariate : array-like of shape (n_samples, n_continuous), default=None
-            Continuous covariates used for stratified balancing. Samples
-            are grouped by approximate matching within ``covariate_tolerance``.
-
-        covariate_tolerance : array-like of shape (n_continuous,), default=None
-            Maximum allowed absolute difference for continuous covariate
-            grouping. Must have one value per continuous covariate column.
-            If ``None``, exact matching is required.
+        continuous_covariate : array-like of shape (n_samples,) or (n_samples, n_continuous), default=None
+            Continuous covariates, binned within each site into
+            ``n_bins_cont_cov`` bins that act as strata.
 
         n_bins_cont_cov : int or None, default=None
-            Number of bins to use for continuous covariates when creating
-            groups. If None, no binning is applied and exact matching is
-            used for grouping.
+            Deprecated, set it in the constructor instead.
 
-        binning_strategy_cont_cov : {"uniform", "quantile"}, default="quantile"
-            Strategy for binning continuous covariates when creating groups:
-            - "uniform": Bins of equal width covering the covariate range.
-            - "quantile": Bins with approximately equal number of samples.
+        binning_strategy_cont_cov : {"uniform", "quantile"} or None, default=None
+            Deprecated, set it in the constructor instead.
 
         Returns
         -------
         X_resampled : numpy.ndarray of shape (n_samples_new, n_features)
-            The feature matrix after site-wise oversampling.
+            Resampled features, grouped by site.
 
         y_resampled : numpy.ndarray of shape (n_samples_new,)
-            The corresponding targets after resampling.
+            Resampled targets. Original samples keep their target and dtype.
 
         Raises
         ------
         ValueError
-            If ``X``, ``y``, and ``sites`` have incompatible shapes, if fewer
-            than two unique sites are present, if any site is missing any
-            class, or if ``balance_strategy`` is invalid.
-
+            If inputs are inconsistent, fewer than two sites are given, a
+            class (or target bin) is missing from a site, a class that needs
+            over-sampling has too few samples, or a parameter is invalid.
 
         Notes
         -----
-        Sites can be retrieved from IntraSiteInterpolation.sites_resampled_
+        The site of each resampled sample is stored in ``sites_resampled_``
+        and its origin in ``sample_indices_`` / ``is_synthetic_``.
 
         """
-        logger.info("[ISI] Starting fit_resample")
-
-        X, y, sites, y_binnarized, cat_cov, cont_cov = self._validate_input(
-            X,
-            y,
-            sites,
-            categorical_covariate,
-            continuous_covariate,
+        n_bins_cc, strategy_cc = self._resolve_deprecated_covariate_params(n_bins_cont_cov, binning_strategy_cont_cov)
+        X, y, sites, y_cls, cat_cov, cont_cov = self._validate_input(
+            X, y, sites, categorical_covariate, continuous_covariate, n_bins_cc, strategy_cc
         )
-
-        interpolator_template = self._resolve_interpolator()
-        self.random_state = check_random_state(self.random_state)
-
-        # For continuos covariates
-        if continuous_covariate is not None:
-            if n_bins_cont_cov is None:
-                raise ValueError("n_bins_cont_cov must be provided when continuous_covariate are also provided.")
-            if binning_strategy_cont_cov not in ["uniform", "quantile"]:
-                raise ValueError("binning_strategy_cont_cov must be 'uniform' or 'quantile'")
-        self.n_bins_cont_cov = n_bins_cont_cov
-        self.binning_strategy_cont_cov = binning_strategy_cont_cov
+        self._validate_params_values()
+        rng = check_random_state(self.random_state)
+        self.interpolator_ = self._resolve_interpolator()
+        self.n_features_in_ = X.shape[1]
 
         unique_sites = np.unique(sites)
-        # Use y_binnarized, as this already contains the information of the classes if task="regression"
-        unique_classes = np.unique(y_binnarized)
+        counts = self._class_counts(sites, y_cls)
+        targets = self._site_targets(counts)
+        self.target_count_ = max(max(cs.values()) for cs in counts.values()) if self.balance_strategy == "global_max" else None
+        self._check_cell_sizes(counts, targets)
+        self.class_counts_ = counts
 
-        # Global target
-        if self.balance_strategy == "global_max":
-            self.target_count_ = max(
-                np.sum((sites == site) & (y_binnarized == cls)) for site in unique_sites for cls in unique_classes
-            )
-            logger.debug(f"[ISI] N target for global_max strategy = {self.target_count_}")
+        groups = self._group_labels(sites, cat_cov, cont_cov, n_bins_cc, strategy_cc)
+        self.effective_dim_ = effective_dimension(X, groups=self._cell_labels(sites, y_cls))
 
-        # Initialize variables
-        X_out, y_out, sites_out = [], [], []
-        self.samples_created_ = {}
+        X_out, y_out, site_out, idx_out = [], [], [], []
+        self.target_counts_, self.samples_created_ = {}, {}
+        self.amplification_, self.variance_ratio_, self.safe_amplification_ = {}, {}, {}
 
-        # Main loop, iterate over sites.
         for site in unique_sites:
-            logger.info(f"[ISI] Processing site {site}")
-
-            mask = sites == site
-            # Get site data
-            Xs, ys, yw = X[mask], y[mask], y_binnarized[mask]
-            # Get site's covariates
-            cat_s = cat_cov[mask] if cat_cov is not None else None
-            cont_s = cont_cov[mask] if cont_cov is not None else None
-
-            # Check how many samples we need for each class. If `balance_strategy` = global_max, then use the global N.
-            target_N = max(Counter(yw).values()) if self.balance_strategy == "per_site" else self.target_count_
-            logger.debug(f"[ISI] For site {site}, N target for per_site strategy = {target_N}")
-
-            Xr, yr = self._resample_site(
-                Xs,
-                ys,
-                yw,
-                target_N,
-                interpolator_template,
-                cat_s,
-                cont_s,
+            in_site = np.flatnonzero(sites == site)
+            X_site, y_site = self._resample_site(
+                site, X[in_site], y[in_site], y_cls[in_site], groups[in_site], counts[site], targets[site], rng
             )
+            X_out.append(X_site)
+            y_out.append(y_site)
+            site_out.append(np.full(len(X_site), site, dtype=sites.dtype))
+            idx_out.append(np.concatenate([in_site, np.full(len(X_site) - len(in_site), -1)]))
 
-            # Check how many samples were created in the site for each class.
-            self.samples_created_[site] = {
-                c: max(
-                    0,
-                    np.sum((self._bin_target(yr)[0] if self.task_ == "regression" else yr) == c) - np.sum(yw == c),
+        self.sites_resampled_ = np.concatenate(site_out)
+        self.sample_indices_ = np.concatenate(idx_out)
+        self.is_synthetic_ = self.sample_indices_ < 0
+        if not getattr(self, "_skip_unsafe_warning", False):
+            self._warn_unsafe_amplification()
+        X_res, y_res = np.vstack(X_out), np.concatenate(y_out)
+        if self.task_ == "classification":
+            y_res = y_res.astype(y.dtype, copy=False)
+        logger.debug(f"[ISI] {len(X)} samples -> {len(X_res)} ({int(self.is_synthetic_.sum())} synthetic)")
+        return X_res, y_res
+
+    def estimate_safe_amplification(
+        self,
+        X: npt.ArrayLike,
+        y: npt.ArrayLike,
+        sites: npt.ArrayLike,
+        *,
+        categorical_covariate: npt.ArrayLike | None = None,
+        continuous_covariate: npt.ArrayLike | None = None,
+    ) -> pd.DataFrame:
+        """Measure, without resampling, how much interpolation each class of each site can take.
+
+        For every site-class cell with enough samples to be interpolated, a
+        pilot batch of synthetic samples is drawn and the variance ratio
+        ``rho`` and the safe amplification ``r*`` (see ``variance_tolerance``)
+        are computed, exactly as in :meth:`fit_resample`.
+
+        Parameters
+        ----------
+        X : array-like of shape (n_samples, n_features)
+            Features.
+
+        y : array-like of shape (n_samples,)
+            Target.
+
+        sites : array-like of shape (n_samples,)
+            Site of each sample.
+
+        categorical_covariate, continuous_covariate : array-like or None, default=None
+            Covariates, as in :meth:`fit_resample`.
+
+        Returns
+        -------
+        pandas.DataFrame
+            One row per site and class with ``n_real``, ``variance_ratio``
+            and ``safe_amplification`` (``inf`` when not limited).
+
+        """
+        X, y, sites, y_cls, cat_cov, cont_cov = self._validate_input(
+            X, y, sites, categorical_covariate, continuous_covariate, self.n_bins_cont_cov, self.binning_strategy_cont_cov
+        )
+        self._validate_params_values()
+        rng = check_random_state(self.random_state)
+        self.interpolator_ = self._resolve_interpolator()
+        groups = self._group_labels(sites, cat_cov, cont_cov, self.n_bins_cont_cov, self.binning_strategy_cont_cov)
+        rows = []
+        for site, cs in self._class_counts(sites, y_cls).items():
+            in_site = sites == site
+            for c, n in cs.items():
+                rho, r_safe = (
+                    self._safe_amplification(X[in_site], y_cls[in_site], groups[in_site], c, n_needed=1, rng=rng)
+                    if n >= self._min_anchors()
+                    else (np.nan, np.nan)
                 )
-                for c in unique_classes
-            }
+                rows.append({"site": site, "class": c, "n_real": n, "variance_ratio": rho, "safe_amplification": r_safe})
+        return pd.DataFrame(rows)
 
-            X_out.append(Xr)
-            y_out.append(yr)
-            sites_out.append(np.full(len(Xr), site))
+    def summary(self) -> pd.DataFrame:
+        """Return a per site-class report of the resampling.
 
-        self.sites_resampled_ = np.concatenate(sites_out)
+        Returns
+        -------
+        pandas.DataFrame
+            One row per site and class with the number of real, created and
+            final samples, the amplification, the variance ratio of the
+            interpolator (``rho``), the safe amplification derived from it and
+            the number of real samples per effective dimension.
 
-        return np.vstack(X_out), np.concatenate(y_out)
+        """
+        check_is_fitted(self, "target_counts_")
+        rows = []
+        for site in self.target_counts_:
+            for c, n_created in self.samples_created_[site].items():
+                n_real = self.class_counts_[site][c]
+                rows.append(
+                    {
+                        "site": site,
+                        "class": c,
+                        "n_real": n_real,
+                        "n_created": n_created,
+                        "n_final": n_real + n_created,
+                        "amplification": self.amplification_[site][c],
+                        "variance_ratio": self.variance_ratio_[site][c],
+                        "safe_amplification": self.safe_amplification_[site][c],
+                        "samples_per_effective_dim": n_real / self.effective_dim_,
+                    }
+                )
+        return pd.DataFrame(rows)
 
     # ------------------------------------------------------------------ #
     # Validation
     # ------------------------------------------------------------------ #
+    def _resolve_deprecated_covariate_params(
+        self, n_bins_cont_cov: int | None, binning_strategy_cont_cov: str | None
+    ) -> tuple[int | None, str]:
+        """Merge the deprecated ``fit_resample`` covariate options with the constructor ones."""
+        n_bins, strategy = self.n_bins_cont_cov, self.binning_strategy_cont_cov
+        if n_bins_cont_cov is not None or binning_strategy_cont_cov is not None:
+            warnings.warn(
+                "Passing `n_bins_cont_cov` / `binning_strategy_cont_cov` to `fit_resample` is deprecated and will be "
+                "removed in uniharmony 0.1; set them in the IntraSiteInterpolation constructor.",
+                FutureWarning,
+                stacklevel=3,
+            )
+            n_bins = n_bins_cont_cov if n_bins_cont_cov is not None else n_bins
+            strategy = binning_strategy_cont_cov if binning_strategy_cont_cov is not None else strategy
+        return n_bins, strategy
+
+    def _validate_params_values(self) -> None:
+        """Validate the constructor parameters."""
+        strategy = self.balance_strategy
+        if not isinstance(strategy, dict) and strategy not in {"per_site", "global_max"}:
+            raise ValueError(f"balance_strategy must be 'per_site', 'global_max' or a dict {{site: n}}, got {strategy!r}")
+        if not 0 < self.variance_tolerance < 1:
+            raise ValueError(f"variance_tolerance must be in (0, 1), got {self.variance_tolerance}")
+
     def _validate_input(
         self,
         X: npt.ArrayLike,
@@ -297,430 +520,482 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         sites: npt.ArrayLike,
         categorical_covariate: npt.ArrayLike | None,
         continuous_covariate: npt.ArrayLike | None,
-    ) -> tuple[
-        npt.NDArray,
-        npt.NDArray,
-        npt.NDArray,
-        npt.NDArray,
-        npt.NDArray | None,
-        npt.NDArray | None,
-    ]:
-        """Validate and preprocess all inputs for the resampling pipeline.
-
-        Performs comprehensive input validation, task inference, and covariate
-        preprocessing. Ensures all inputs are consistent and properly formatted
-        before resampling begins.
-
-        Parameters
-        ----------
-        X : npt.ArrayLike
-            Feature matrix (shape: n_samples x n_features).
-        y : npt.ArrayLike
-            Target labels or values (shape: n_samples,).
-        sites : npt.ArrayLike
-            Site identifiers for multi-site data (shape: n_samples,).
-        categorical_covariate : npt.ArrayLike or None
-            Categorical covariates matrix (shape: n_samples x n_cat_features).
-        continuous_covariate : npt.ArrayLike or None
-            Continuous covariates matrix (shape: n_samples x n_cont_features).
+        n_bins_cont_cov: int | None,
+        binning_strategy_cont_cov: str,
+    ) -> tuple[npt.NDArray, npt.NDArray, npt.NDArray, npt.NDArray, npt.NDArray | None, npt.NDArray | None]:
+        """Validate the data and derive the classes used for balancing.
 
         Returns
         -------
         tuple
-            - X: Validated feature matrix (ndarray)
-            - y: Validated target array (ndarray)
-            - sites: Validated site identifiers (ndarray)
-            - y_binnarized: Target array (binned for regression, original for classification)
-            - cat_cov: Validated categorical covariates (ndarray or None)
-            - cont_cov: Validated continuous covariates (ndarray or None)
+            ``X``, ``y``, ``sites``, the classes (bins for regression) and the
+            categorical and continuous covariates as 2D arrays (or ``None``).
 
         Raises
         ------
         ValueError
-            If regression task is detected but n_bins is not provided.
-            If site identifiers are invalid (via validate_sites).
-            If class representation is insufficient (via validate_class_representation).
-            If balance_strategy is not valid.
-
-        Notes
-        -----
-        Validation steps performed:
-            1. Check X and y for consistency and missing values
-            2. Validate site identifiers
-            3. Ensure all arrays have consistent lengths
-            4. Process and validate covariates
-            5. Infer task type (classification vs regression)
-            6. Bin targets for regression tasks
-            7. Validate class distribution across sites
+            If the inputs are inconsistent or a class is missing from a site.
 
         """
-        # Step 1: Validate feature matrix and target array
-        # check_X_y ensures no NaN/inf values, consistent shapes, and proper dtypes
-        X, y = check_X_y(X, y, estimator=self)
-
-        # Step 2: Validate site identifiers
-        # Convert to array, handle 1D data properly, ensure no unexpected dimensions
+        X, y = check_X_y(X, y, estimator=self, dtype="numeric")
         sites = check_array(sites, dtype=None, ensure_2d=False, estimator=self)
-
-        # Step 3: Ensure all primary inputs have the same number of samples
-        # Critical for downstream operations that assume alignment
         check_consistent_length(X, y, sites)
-
-        # Step 4: Validate site identifiers format (e.g., no empty strings, valid types)
         validate_sites(sites)
 
-        # Step 5: Process and validate covariates
-        # This handles:
-        #   - Converting to numpy arrays
-        #   - Checking consistency with X shape
-        #   - Validating tolerance values match continuous covariates
-        #   - Handling None/empty inputs appropriately
+        def _as_2d(cov: npt.ArrayLike | None) -> npt.ArrayLike | None:
+            if cov is None:
+                return None
+            cov = np.asarray(cov)
+            return cov.reshape(-1, 1) if cov.ndim == 1 else cov
+
         cat_cov, cont_cov, _ = validate_covariates(
-            X.shape[0],  # n_samples: ensure covariates match sample count
-            categorical_covariate,
-            continuous_covariate,
-            None,
-            allow_nan=True,  # Allow missing values in covariates (common in real-world data)
+            X.shape[0], _as_2d(categorical_covariate), _as_2d(continuous_covariate), None, allow_nan=False
         )
+        if cont_cov is not None:
+            if n_bins_cont_cov is None or n_bins_cont_cov < 2:
+                raise ValueError("n_bins_cont_cov (>= 2) must be set when continuous_covariate is given.")
+            if binning_strategy_cont_cov not in {"uniform", "quantile"}:
+                raise ValueError(f"binning_strategy_cont_cov must be 'uniform' or 'quantile', got {binning_strategy_cont_cov!r}")
 
-        # Step 6: Infer task type (classification vs regression) from target data
-        # Sets self.task_ for use throughout the resampling process
         self.task_ = self._infer_task(y)
-
-        # Step 7: Handle regression-specific preprocessing
         if self.task_ == "regression":
-            # Convert continuous targets to bin indices
-            # Stores bin edges in self.bins_ for later use (e.g., inverse transform)
-            y_binnarized, self.bins_ = self._bin_target(y)
+            y = y.astype(float)
+            y_cls, self.bins_ = self._bin_target(y)
         else:
-            # Classification: use original labels as-is
-            y_binnarized = y
-            self.bins_ = None  # No bins needed for classification
+            y_cls, self.bins_ = y, None
+        # A missing class keeps the site predictive of the target: an error for classification. For regression, sparse
+        # tail bins are common, so each site is balanced over the bins it has, with a warning.
+        is_clf = self.task_ == "classification"
+        validate_all_classes_per_site(y_cls, sites, kind="class" if is_clf else "target bin", raise_error=is_clf)
+        return X, y, sites, y_cls, cat_cov, cont_cov
 
-        # Step 8: Validate class representation across sites
-        # Ensures each site has sufficient samples of each class for resampling
-        # Prevents errors during interpolation (e.g., SMOTE requires at least 2 samples)
-        validate_class_representation(y_binnarized, sites)
+    @staticmethod
+    def _class_counts(sites: np.ndarray, y_cls: np.ndarray) -> dict:
+        """Return ``{site: {class: n}}`` for the classes (regression bins) present in each site."""
+        counts = {}
+        for site in np.unique(sites):
+            labels, n = np.unique(y_cls[sites == site], return_counts=True)
+            counts[site] = {c: int(k) for c, k in zip(labels, n, strict=True)}
+        return counts
 
-        # Step 9: Validate balance_strategy
-        if self.balance_strategy not in {"per_site", "global_max"}:
-            raise ValueError("balance_strategy must be 'per_site' or 'global_max'")
-
-        # Step 10: Return all validated and preprocessed data
-        return X, y, sites, y_binnarized, cat_cov, cont_cov
-
-    def _resolve_interpolator(self) -> SamplerMixin:
-        """Create or validate an interpolator instance for resampling.
-
-        Converts string identifiers to actual interpolator objects or validates
-        that a provided interpolator is compatible with the resampling pipeline.
-
-        Returns
-        -------
-        SamplerMixin
-            Validated interpolator instance ready for resampling.
+    def _site_targets(self, counts: dict) -> dict:
+        """Return the number of samples per class of each site after balancing, from ``balance_strategy``.
 
         Raises
         ------
         ValueError
-            If interpolator is neither a string (valid name) nor a SamplerMixin instance.
-
-        Notes
-        -----
-        Supported interpolator names (case-insensitive):
-            - "smote": SMOTE (Synthetic Minority Over-sampling Technique)
-            - "borderline-smote": BorderlineSMOTE (focuses on boundary samples)
-            - "svm-smote": SVMSMOTE (uses SVM to identify support vectors)
-            - "adasyn": ADASYN (adaptive synthetic sampling)
-            - "kmeans-smote": KMeansSMOTE (clusters before oversampling)
-            - "random": RandomOverSampler (simple random oversampling)
-
-        Examples
-        --------
-        >>> # Using string identifier
-        >>> resampler._resolve_interpolator()
-        SMOTE(random_state=42)
-
-        >>> # Using pre-instantiated interpolator
-        >>> resampler.interpolator = SMOTE(random_state=42)
-        >>> resampler._resolve_interpolator()
-        SMOTE(random_state=42)
+            If a target given as a dict is missing for a site or smaller than the largest class of the site.
 
         """
-        # Step 1: Initialize random number generator for reproducibility
-        # This ensures consistent synthetic sample generation across runs
-        # Handles both integer seeds and RandomState objects
-        random_state = check_random_state(self.random_state)
+        if self.balance_strategy == "global_max":
+            top = max(max(cs.values()) for cs in counts.values())
+            return dict.fromkeys(counts, top)
+        if self.balance_strategy == "per_site":
+            return {site: max(cs.values()) for site, cs in counts.items()}
+        targets = {}
+        for site, cs in counts.items():
+            if site not in self.balance_strategy:
+                raise ValueError(f"balance_strategy gives no target for site {site!r}.")
+            target = int(self.balance_strategy[site])
+            if target < max(cs.values()):
+                raise ValueError(
+                    f"Site {site!r}: the target ({target}) is smaller than its largest class ({max(cs.values())}). ISI "
+                    "only adds samples; use SiteBalancedResampler to also remove samples."
+                )
+            targets[site] = target
+        return targets
 
-        # Step 2: Handle string-based interpolator specification
-        if isinstance(self.interpolator, str):
-            # Create interpolator from registered name
-            # Example: "smote" -> SMOTE(random_state=42)
-            self.interpolator = create_interpolator(
-                name=self.interpolator,  # Interpolator name (e.g., "smote", "adasyn")
-                random_state=random_state,  # Ensures reproducible synthetic samples
-                **(self.interpolator_kwargs or {}),  # Additional parameters (e.g., k_neighbors=5)
+    def _check_cell_sizes(self, counts: dict, targets: dict) -> None:
+        """Every class that needs over-sampling needs at least two samples in its site (one to be duplicated).
+
+        Raises
+        ------
+        ValueError
+            For classification, if a class that needs over-sampling has too few samples in a site.
+
+        """
+        min_n = self._min_anchors()
+        small = [(site, c, n) for site, cs in counts.items() for c, n in cs.items() if n < min_n and n < targets[site]]
+        if not small:
+            return
+        detail = "; ".join(f"site {site}: class {c} has {n} sample" for site, c, n in small)
+        if self.task_ == "classification":
+            raise ValueError(
+                f"Every class needs at least {min_n} samples in every site to be interpolated (a single sample cannot be "
+                f"interpolated). Too few samples: {detail}. Remove or merge these sites."
             )
-            return self.interpolator
+        warnings.warn(
+            f"Target bins with fewer than {min_n} samples in a site cannot be interpolated and are left as they are, so "
+            f"the site still carries information about the target: {detail}. Use fewer bins (n_bins), or restrict the "
+            "training data to the target range that all sites share.",
+            UserWarning,
+            stacklevel=3,
+        )
 
-        # Step 3: Handle pre-instantiated interpolator objects
+    def _resolve_interpolator(self) -> SamplerMixin:
+        """Return the over-sampler template (never mutates ``interpolator``)."""
+        if isinstance(self.interpolator, str):
+            return create_interpolator(self.interpolator, random_state=None, **(self.interpolator_kwargs or {}))
         if isinstance(self.interpolator, SamplerMixin):
-            # Verify the interpolator implements the required interface
-            # SamplerMixin ensures fit_resample method exists and follows conventions
-            # This allows users to pass custom interpolators that follow the API
-            return self.interpolator
-
-        # Step 4: Invalid interpolator configuration
-        # Neither a recognized string name nor a compatible instance
+            if getattr(self.interpolator, "_sampling_type", "over-sampling") != "over-sampling":
+                raise ValueError(f"interpolator must be an over-sampler, got {self.interpolator!r}")
+            return clone(self.interpolator)
         raise ValueError(
-            f"Invalid interpolator: {self.interpolator}. Must be a string (e.g., 'smote', 'adasyn') or a SamplerMixin instance."
+            f"Invalid interpolator: {self.interpolator!r}. Must be a string (e.g. 'smote') or an imblearn over-sampler."
         )
 
     # ------------------------------------------------------------------ #
-    # Core function
+    # Per-site resampling
     # ------------------------------------------------------------------ #
-
     def _resample_site(
         self,
-        X: np.ndarray,
-        y: np.ndarray,
-        y_binnarized: np.ndarray,
-        target_N: int,
-        interpolator_template: SamplerMixin,
-        cat: np.ndarray | None,
-        cont: np.ndarray | None,
+        site: Any,
+        Xs: np.ndarray,
+        ys: np.ndarray,
+        ys_cls: np.ndarray,
+        groups: np.ndarray,
+        counts: dict,
+        target: int,
+        rng: np.random.RandomState,
     ) -> tuple[np.ndarray, np.ndarray]:
-        """Resample a single site to achieve balanced class distribution.
-
-        This method handles resampling within a single site by grouping similar
-        samples (based on categorical and continuous covariates) and applying
-        interpolation to oversample minority classes within each group.
-
-        Parameters
-        ----------
-        X : np.ndarray
-            Feature matrix for the site (shape: n_samples x n_features).
-        y : np.ndarray
-            Target labels for the site (shape: n_samples,).
-        y_binnarized : np.ndarray
-            Working target labels (potentially binned for regression tasks,
-            shape: n_samples,).
-        target_N : int
-            Target number of samples per class after resampling. For regression
-            tasks, this is the target number per class in the binned target space.
-        interpolator_template : SamplerMixin
-            Clonable interpolator instance (e.g., SMOTE, ADASYN) that implements
-            the fit_resample method.
-        cat : np.ndarray or None
-            Categorical covariate indices. If None, categorical grouping is disabled.
-        cont : np.ndarray or None
-            Continuous covariate indices. If None, continuous grouping is disabled.
-        cov_tol : np.ndarray or None
-            Tolerance values for continuous covariates when creating groups.
-            Must have same length as `cont` if provided.
+        """Bring every class of one site to ``target`` samples by interpolation and record its statistics.
 
         Returns
         -------
         tuple[np.ndarray, np.ndarray]
-            - X_resampled: Resampled feature matrix (shape: N x n_features)
-            - y_resampled: Corresponding target labels (shape: N,)
-
-        Notes
-        -----
-        The resampling strategy depends on `self.balance_strategy`:
-            - "per_site": Each site is balanced independently to its majority class
-            - Otherwise: All sites are balanced to the global `target_N`
-
-        Groups are created using `_create_group_labels` to ensure samples with
-        similar covariate patterns are resampled together, preserving local
-        structure.
+            Resampled features and targets of the site (real samples first,
+            in their original order, then the new samples).
 
         """
-        # Get the classes again.
-        classes = np.unique(y_binnarized)
+        # Classes (regression bins) too small to interpolate are left as they are (see fit_resample).
+        frozen = [c for c, n in counts.items() if n < self._min_anchors()]
+        classes = [c for c in counts if c not in frozen]
 
-        # Step 1: Determine grouping strategy - no grouping if no covariates provided
-        if cat is None and cont is None:
-            # Single group containing all samples
-            group_labels = np.zeros(len(X), dtype=int)
-        else:
-            # Create groups based on similarity in categorical/continuous covariates
-            n_bins_cont_cov = self.n_bins_cont_cov
-            binning_strategy_cont_cov = self.binning_strategy_cont_cov
-            group_labels = self._create_group_labels(cat, cont, n_bins_cont_cov, binning_strategy_cont_cov)
+        rhos, safe, X_new, y_new = {}, {}, [], []
+        for c in classes:
+            n_needed = target - counts[c]
+            # safe amplification (variance rule) from all real samples of the site
+            rhos[c], safe[c] = self._safe_amplification(Xs, ys_cls, groups, c, n_needed=n_needed, rng=rng)
+            if n_needed > 0:
+                X_c, y_c = self._oversample(Xs, ys, ys_cls, groups, c, n_needed, rng)
+                X_new.append(X_c)
+                y_new.append(y_c)
+        logger.debug(f"[ISI] Site {site}: counts={counts}, rho={rhos}, safe={safe}, target={target}")
 
-        # Initialize containers for resampled data from all groups
-        X_parts, y_parts = [], []
+        self.target_counts_[site] = target
+        self.samples_created_[site] = {c: (target - counts[c] if c in classes else 0) for c in counts}
+        self.amplification_[site] = {c: self.samples_created_[site][c] / counts[c] for c in counts}
+        self.variance_ratio_[site] = {c: rhos.get(c, np.nan) for c in counts}
+        self.safe_amplification_[site] = {c: safe.get(c, np.nan) for c in counts}
+        return np.vstack([Xs, *X_new]), np.concatenate([ys, *y_new])
 
-        # Step 2: Process each group independently
-        for group in np.unique(group_labels):
-            # Extract samples belonging to current group
-            mask = group_labels == group
-            Xg, yg, y_bin_g = X[mask], y[mask], y_binnarized[mask]
+    # ------------------------------------------------------------------ #
+    # Amplification: variance rule
+    # ------------------------------------------------------------------ #
+    def _n_neighbors(self) -> int:
+        """Return the number of neighbours the interpolator uses (``k_neighbors`` / ``n_neighbors``; 5 if unknown)."""
+        params = self.interpolator_.get_params()
+        for name in _ANCHOR_NEIGHBOR_PARAMS:
+            if isinstance(params.get(name), int | np.integer):
+                return int(params[name])
+        return 5
 
-            # Skip empty groups (shouldn't happen, but defensive programming)
-            if len(Xg) == 0:
-                logger.warning(f"[ISI] Group {group} has no data, skipping interpolation.")
-                continue
+    def _min_anchors(self) -> int:
+        """Smallest number of real samples the interpolator needs in a cell (two to interpolate, one to duplicate)."""
+        return 1 if isinstance(self.interpolator_, RandomOverSampler) else 2
 
-            # Step 3: Determine target samples per class for this group
-            counts = Counter(y_bin_g)
+    def _safe_amplification(
+        self,
+        Xs: np.ndarray,
+        ys_cls: np.ndarray,
+        groups: np.ndarray,
+        c: Any,
+        n_needed: int,
+        rng: np.random.RandomState,
+    ) -> tuple[float, float]:
+        """Measure ``rho`` for class ``c`` of a site and derive the safe amplification ``r*``.
 
-            # Decide group-level target based on balance strategy
-            if self.balance_strategy == "per_site":
-                # Balance to the majority class count within this site
-                group_target = max(counts.values())
-            else:
-                # Balance to global target (e.g., for cross-site comparison)
-                group_target = target_N
+        A pilot batch of synthetic samples is drawn with the interpolator from
+        all real samples of the site (nothing is removed). ``rho`` is the
+        ratio between the variance of these samples and that of the real
+        samples of the class; a class of ``n`` real and ``r * n`` synthetic
+        samples loses ``r * |1 - rho| / (1 + r)`` of its variance, which stays
+        below ``eps = variance_tolerance`` for ``r <= eps / (|1 - rho| - eps)``.
 
-            # Step 4: Identify classes that need oversampling
-            sampling_strategy = {cls: group_target for cls in classes if counts.get(cls, 0) < group_target}
+        Returns
+        -------
+        tuple[float, float]
+            ``(rho, r*)``; both ``nan`` if the class needs no over-sampling,
+            ``r* = inf`` if the variance loss stays below ``eps`` for any ``r``.
 
-            # Step 5: Handle case where no oversampling is needed
-            if not sampling_strategy:
-                # Just take the first `group_target` samples from each class
-                # (keeps class distribution but ensures all classes have equal size)
-                for cls in classes:
-                    mask_cls = y_bin_g == cls
-                    if np.any(mask_cls):
-                        X_parts.append(Xg[mask_cls][:group_target])
-                        y_parts.append(yg[mask_cls][:group_target])
-                    else:
-                        logger.warning(f"[ISI] samples for class {cls}")
-                continue  # Move to next group
+        """
+        if n_needed <= 0:
+            return np.nan, np.nan
+        in_cell = ys_cls == c
+        n_pilot = int(np.clip(2 * in_cell.sum(), _PILOT_MIN, _PILOT_MAX))
+        X_pilot, _ = self._oversample(Xs, None, ys_cls, groups, c, n_pilot, rng)
+        rho = variance_ratio(X_pilot, Xs[in_cell])
+        if not np.isfinite(rho):
+            return rho, np.inf
+        loss_per_sample, eps = abs(1.0 - rho), self.variance_tolerance
+        return rho, (np.inf if loss_per_sample <= eps else eps / (loss_per_sample - eps))
 
-            # Step 6: Apply interpolation for groups needing oversampling
-            # Clone the template to avoid modifying the original
-            interp = clone(interpolator_template)
-            interp.set_params(sampling_strategy=sampling_strategy)
+    def _warn_unsafe_amplification(self, advice: str | None = None, stacklevel: int = 3) -> None:
+        """Warn, in one message, about the classes interpolated beyond their safe amplification.
 
-            # Generate synthetic samples for minority classes
-            X_tmp, y_tmp_binnarized = interp.fit_resample(Xg, y_bin_g)
-
-            y_tmp = self._reconstruct_continuous_y(
-                y_bin_new=y_tmp_binnarized,
-                y_orig=yg,  # original continuous values in this group
-                y_bin_orig=y_bin_g,  # original bins in this group
+        ``advice`` replaces the closing recommendation (used by ``SiteBalancedResampler``).
+        """
+        if advice is None:
+            advice = (
+                "Consider SiteBalancedResampler(IntraSiteInterpolation(), max_amplification='auto'), which limits "
+                "interpolation to the safe amount and under-samples the larger classes, or excluding these sites."
             )
-            # Step 7: Post-process each class to ensure exact group_target size
-            for cls in classes:
-                # Get samples of current class
-                mask_cls = y_tmp_binnarized == cls
-                X_cls, y_cls = X_tmp[mask_cls], y_tmp[mask_cls]
+        rows = []
+        for site, amps in self.amplification_.items():
+            for c, r in amps.items():
+                r_safe, rho = self.safe_amplification_[site][c], self.variance_ratio_[site][c]
+                if np.isfinite(r_safe) and r > r_safe + 1e-12:
+                    n_real = self.class_counts_[site][c]
+                    kept = (1 + r * rho) / (1 + r)
+                    rows.append(
+                        f"  site {site}, class {c}: {n_real} real -> {n_real + self.samples_created_[site][c]} samples "
+                        f"({r:.3g} synthetic per real sample, {r / (1 + r):.1%} of the class); safe up to {r_safe:.2g} per "
+                        f"real sample (about {int(np.floor(n_real * r_safe))} synthetic samples); the class keeps about "
+                        f"{kept:.0%} of its variance (rho={rho:.2f})."
+                    )
+        if rows:
+            warnings.warn(
+                f"IntraSiteInterpolation: {len(rows)} class(es) are too small, compared with the largest class of their "
+                f"site, to be balanced by interpolation while keeping their variance (variance_tolerance="
+                f"{self.variance_tolerance}). Most of their samples are synthetic and the class shrinks towards its "
+                "centre:\n" + "\n".join(rows) + "\nWith many features, models can also fit the few real samples of "
+                "these classes one by one, so part of the site-target association remains (see the Notes of "
+                f"IntraSiteInterpolation). {advice}",
+                UserWarning,
+                stacklevel=stacklevel,
+            )
 
-                # If we still have fewer samples than target, bootstrap with replacement
-                if len(X_cls) < group_target:
-                    n_needed = group_target - len(X_cls)
-                    idx = np.random.choice(len(X_cls), n_needed, replace=True)
-                    X_cls = np.vstack([X_cls, X_cls[idx]])
-                    y_cls = np.concatenate([y_cls, y_cls[idx]])
+    # ------------------------------------------------------------------ #
+    # Over-sampling
+    # ------------------------------------------------------------------ #
+    def _oversample(
+        self,
+        Xs: np.ndarray,
+        ys: np.ndarray | None,
+        ys_cls: np.ndarray,
+        groups: np.ndarray,
+        c: Any,
+        n_new: int,
+        rng: np.random.RandomState,
+    ) -> tuple[np.ndarray, np.ndarray]:
+        """Create ``n_new`` synthetic samples of class ``c`` in one site.
 
-                # Take exactly group_target samples (first N)
-                X_parts.append(X_cls[:group_target])
-                y_parts.append(y_cls[:group_target])
+        The synthetic samples are spread over the covariate strata in
+        proportion to the real samples of the class, and interpolated within
+        each stratum. The other classes of the site are passed to the
+        interpolator as context (used by borderline / SVM / ADASYN variants).
 
-        # Step 8: Combine results from all groups and return
-        return np.vstack(X_parts), np.concatenate(y_parts)
+        Returns
+        -------
+        tuple[np.ndarray, np.ndarray]
+            Synthetic samples and their targets (``ys=None`` skips targets).
+
+        """
+        in_cell = ys_cls == c
+        context = ~in_cell
+        g_cell = groups[in_cell]
+        strata, n_per_stratum = np.unique(g_cell, return_counts=True)
+        usable = n_per_stratum >= self._min_anchors()
+        if not np.any(usable):
+            logger.warning(f"[ISI] Class {c!r}: no covariate stratum has enough samples to interpolate; ignoring strata.")
+            strata, n_per_stratum, usable = np.array([0]), np.array([int(in_cell.sum())]), np.array([True])
+            g_cell = np.zeros(int(in_cell.sum()), dtype=int)
+        alloc = allocate_proportionally(n_new, np.where(usable, n_per_stratum, 0))
+
+        X_parts, y_parts = [], []
+        X_cell = Xs[in_cell]
+        y_cell = ys[in_cell] if ys is not None else None
+        for stratum, n_g in zip(strata, alloc, strict=True):
+            if n_g == 0:
+                continue
+            anchors = g_cell == stratum
+            X_syn = self._interpolate(X_cell[anchors], Xs[context], ys_cls[context], c, int(n_g), rng)
+            X_parts.append(X_syn)
+            if y_cell is not None:
+                if self.task_ == "regression":
+                    y_parts.append(self._parent_targets(X_syn, X_cell[anchors], y_cell[anchors], k=self._n_neighbors()))
+                else:
+                    y_parts.append(np.full(len(X_syn), c, dtype=ys.dtype))
+        X_out = np.vstack(X_parts)
+        y_out = np.concatenate(y_parts) if y_parts else np.empty(0)
+        return X_out, y_out
+
+    def _interpolate(
+        self,
+        X_anchor: np.ndarray,
+        X_context: np.ndarray,
+        y_context: np.ndarray,
+        c: Any,
+        n_new: int,
+        rng: np.random.RandomState,
+    ) -> np.ndarray:
+        """Run the interpolator to get exactly ``n_new`` samples of class ``c`` from ``X_anchor``.
+
+        Some interpolators (SVM-SMOTE, ADASYN, KMeans-SMOTE) only approximately
+        produce the requested number; a few more are requested and a random
+        subset is kept.
+
+        Raises
+        ------
+        RuntimeError
+            If the interpolator cannot produce enough samples.
+
+        """
+        n_anchor = len(X_anchor)
+        X_in = np.vstack([X_anchor, X_context])
+        y_in = np.concatenate([np.full(n_anchor, c, dtype=y_context.dtype), y_context])
+        out, missing = [], n_new
+        for attempt in range(6):
+            sampler = self._configure(self.interpolator_, rng, n_anchor=n_anchor, n_total=len(X_in))
+            if isinstance(sampler, RandomOverSampler):
+                n_request = missing
+            else:  # request a margin, doubled at every retry, and keep a random subset
+                n_request = (missing + max(10, int(np.ceil(0.2 * missing)))) * 2**attempt
+            sampler.set_params(sampling_strategy={c: n_anchor + n_request})
+            try:
+                X_res, y_res = sampler.fit_resample(X_in, y_in)
+            except (ValueError, RuntimeError) as err:
+                if "No samples will be generated" in str(err):  # ADASYN rounds small requests to zero: ask for more
+                    continue
+                raise type(err)(
+                    f"[ISI] {type(sampler).__name__} failed for class {c!r} ({n_anchor} anchors): {err} "
+                    "Use interpolator='smote', which works with any class of at least two samples."
+                ) from err
+            X_syn = self._split_synthetic(X_in, y_in, X_res, y_res)
+            if len(X_syn) > missing:
+                X_syn = X_syn[np.sort(rng.choice(len(X_syn), missing, replace=False))]
+            out.append(X_syn)
+            missing -= len(X_syn)
+            if missing == 0:
+                return np.vstack(out)
+        raise RuntimeError(
+            f"[ISI] {type(self.interpolator_).__name__} produced {n_new - missing} of the {n_new} samples requested for "
+            f"class {c!r}. Use interpolator='smote', which always produces the requested number of samples."
+        )
+
+    @staticmethod
+    def _split_synthetic(X: np.ndarray, y: np.ndarray, X_resampled: np.ndarray, y_resampled: np.ndarray) -> np.ndarray:
+        """Return the synthetic samples appended by an over-sampler.
+
+        Raises
+        ------
+        ValueError
+            If the over-sampler does not return the original samples first,
+            unchanged, as imblearn over-samplers do.
+
+        """
+        n_samples = len(X)
+        if (
+            len(X_resampled) < n_samples
+            or not np.array_equal(X_resampled[:n_samples], X)
+            or not np.array_equal(y_resampled[:n_samples], y)
+        ):
+            raise ValueError(
+                "The interpolator must return the original samples first, unchanged, followed by the "
+                "synthetic samples (as imblearn over-samplers do)."
+            )
+        return X_resampled[n_samples:]
 
     # ------------------------------------------------------------------ #
     # Utilities
     # ------------------------------------------------------------------ #
+    @staticmethod
+    def _configure(template: SamplerMixin, rng: np.random.RandomState, n_anchor: int, n_total: int) -> SamplerMixin:
+        """Clone a sampler with its own seed and neighbour counts that fit the data."""
+        sampler = clone(template)
+        params = sampler.get_params()
+        new = {}
+        if "random_state" in params:
+            new["random_state"] = int(rng.randint(_SEED_MAX))
+        for name in _ANCHOR_NEIGHBOR_PARAMS:
+            if isinstance(params.get(name), int | np.integer) and params[name] > n_anchor - 1:
+                new[name] = max(1, n_anchor - 1)
+        for name in _ALL_NEIGHBOR_PARAMS:
+            if isinstance(params.get(name), int | np.integer) and params[name] > n_total - 1:
+                new[name] = max(1, n_total - 1)
+        return sampler.set_params(**new) if new else sampler
+
+    @staticmethod
+    def _cell_labels(sites: np.ndarray, y_cls: np.ndarray) -> np.ndarray:
+        """Integer label of each site-class cell."""
+        site_idx = np.unique(sites, return_inverse=True)[1].ravel()
+        cls_idx = np.unique(y_cls, return_inverse=True)[1].ravel()
+        return site_idx * (cls_idx.max() + 1) + cls_idx
+
+    def _group_labels(
+        self,
+        sites: np.ndarray,
+        cat: np.ndarray | None,
+        cont: np.ndarray | None,
+        n_bins_cont_cov: int | None,
+        binning_strategy_cont_cov: str,
+    ) -> np.ndarray:
+        """Covariate stratum of each sample (continuous covariates are binned within each site)."""
+        groups = np.zeros(len(sites), dtype=np.int64)
+        if cat is None and cont is None:
+            return groups
+        for site in np.unique(sites):
+            mask = sites == site
+            groups[mask] = self._create_group_labels(
+                cat[mask] if cat is not None else None,
+                cont[mask] if cont is not None else None,
+                n_bins_cont_cov,
+                binning_strategy_cont_cov,
+            )
+        return groups
+
     def _infer_task(self, y: np.ndarray) -> str:
-        """Infer the machine learning task type from target data.
+        """Return the task: the ``task`` parameter, or inferred from the dtype of ``y``.
 
-        Determines whether the problem is classification or regression based on
-        either an explicitly set task or automatic inference from target dtype.
-
-        Parameters
-        ----------
-        y : np.ndarray
-            Target/label array (shape: n_samples,).
-
-        Returns
-        -------
-        str
-            Task type: either "classification" or "regression".
-
-        Notes
-        -----
-        Task inference logic:
-            - If self.task != "auto", return self.task (user explicitly specified)
-            - Otherwise, infer from y.dtype.kind:
-                * 'b' (boolean), 'i' (signed integer), 'u' (unsigned integer)
-                -> "classification"
-                * Any other dtype kind (float, complex, etc.) -> "regression"
-
-        Examples
-        --------
-        >>> import numpy as np
-        >>> obj.task = "auto"
-        >>> obj._infer_task(np.array([0, 1, 0, 1]))  # integer labels
-        'classification'
-        >>> obj._infer_task(np.array([0.5, 1.2, 3.7]))  # float labels
-        'regression'
-
+        Boolean, integer, string and object targets mean classification;
+        anything else (floating point) means regression.
         """
-        # Priority 1: User explicitly specified task (override automatic inference)
+        if self.task not in {"auto", "classification", "regression"}:
+            raise ValueError(f"task must be 'auto', 'classification' or 'regression', got {self.task!r}")
         if self.task != "auto":
             return self.task
-
-        # Priority 2: Automatic inference based on target data type
-        # Classification: discrete labels (bool, int, uint)
-        # Regression: continuous values (float, complex, etc.)
-        return "classification" if y.dtype.kind in "biu" else "regression"
+        return "classification" if y.dtype.kind in "biuUSO" else "regression"
 
     def _bin_target(self, y: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
-        """Bin continuous target values into discrete categories for regression tasks.
-
-        Transforms regression targets into bins to enable class-based sampling
-        strategies (e.g., SMOTE) for regression problems.
-
-        Parameters
-        ----------
-        y : np.ndarray
-            Continuous target values (shape: n_samples,).
+        """Bin a continuous target into ``n_bins`` classes (or the bins given by edges).
 
         Returns
         -------
         tuple[np.ndarray, np.ndarray]
-            - yb: Binned target indices (0 to n_bins-1, shape: n_samples,)
-            - bins: Bin edges used for discretization (shape: n_bins+1,)
+            Bin index of each sample (``0`` to ``n_bins - 1``) and bin edges.
 
-        Notes
-        -----
-        Two binning strategies (controlled by self.binning_strategy):
-            - "uniform": Equal-width bins between min(y) and max(y)
-            - otherwise: Equal-frequency bins using quantiles
-
-        The function uses np.digitize with bins[1:-1] to exclude out-of-range edges:
-            - Values exactly at min(y) go to bin 0
-            - Values exactly at max(y) go to bin n_bins-1
+        Raises
+        ------
+        ValueError
+            If ``n_bins`` or ``binning_strategy`` is invalid.
 
         """
-        # Step 1: Define bin edges based on selected strategy
+        if not isinstance(self.n_bins, int | np.integer):  # bin edges
+            bins = np.asarray(self.n_bins, dtype=float)
+            # non-decreasing: quantile edges of a discrete target repeat values (empty bins), as with an integer n_bins
+            if bins.ndim != 1 or len(bins) < 3 or np.any(np.diff(bins) < 0) or bins[-1] <= bins[0]:
+                raise ValueError(f"n_bins must be an integer >= 2 or non-decreasing bin edges (at least 3), got {self.n_bins!r}")
+            return np.clip(np.digitize(y, bins[1:-1]), 0, len(bins) - 2), bins
+        if self.n_bins < 2:
+            raise ValueError(f"n_bins must be an integer >= 2 for regression, got {self.n_bins!r}")
         if self.binning_strategy == "uniform":
-            # Strategy A: Equal-width bins spanning the full data range
-            # Example: y=[0, 10], n_bins=5 -> edges=[0, 2, 4, 6, 8, 10]
             bins = np.linspace(y.min(), y.max(), self.n_bins + 1)
         elif self.binning_strategy == "quantile":
-            # Strategy B: Equal-frequency bins using quantiles
-            # Ensures roughly equal number of samples per bin
-            # Example: 4 bins -> edges at 0%, 25%, 50%, 75%, 100% quantiles
             bins = np.quantile(y, np.linspace(0, 1, self.n_bins + 1))
         else:
-            raise ValueError(f"binning_strategy must be 'uniform' or 'quantile', got {self.binning_strategy}")
-
-        # Step 2: Assign each target value to a bin index
-        # bins[1:-1] excludes first and last edges to handle boundary values correctly
-        # Values < bins[1] go to bin 0, values >= bins[-2] go to bin n_bins-1
-        yb = np.digitize(y, bins[1:-1])
-
-        # Step 3: Ensure all indices are valid (clip to [0, n_bins-1] range)
-        # This handles edge cases where digitize might produce -1 or n_bins
-        yb_clipped = np.clip(yb, 0, len(bins) - 2)
-
-        return yb_clipped, bins
+            raise ValueError(f"binning_strategy must be 'uniform' or 'quantile', got {self.binning_strategy!r}")
+        y_bins = np.clip(np.digitize(y, bins[1:-1]), 0, len(bins) - 2)
+        return y_bins, bins
 
     def _create_group_labels(
         self,
@@ -729,277 +1004,185 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         n_bins_cont_cov: int | None,
         binning_strategy_cont_cov: str = "quantile",
     ) -> np.ndarray:
-        """Create group labels by combining categorical and continuous covariates.
-
-        Groups samples into homogeneous subgroups based on covariate similarity.
-        Continuous covariates are discretized using a binning strategy, similar
-        to target binning in regression tasks.
-
-        Parameters
-        ----------
-        cat : np.ndarray or None
-            Categorical covariates of shape (n_samples, n_cat_features).
-            Each column represents a categorical variable.
-
-        cont : np.ndarray or None
-            Continuous covariates of shape (n_samples, n_cont_features).
-            Each column represents a continuous variable.
-
-        n_bins_cont_cov : int or None
-            Number of bins used to discretize continuous covariates.
-            Required if `cont` is not None.
-
-        binning_strategy_cont_cov : {"quantile", "uniform"}, default="quantile"
-            Strategy used to bin continuous covariates:
-            - "quantile": equal number of samples per bin
-            - "uniform": equal width bins
+        """Combine categorical values and binned continuous covariates into one stratum label.
 
         Returns
         -------
         np.ndarray
-            Integer group labels of shape (n_samples,). Samples with the same label
-            belong to the same covariate-defined group.
+            Integer stratum of each sample.
 
         Raises
         ------
         ValueError
-            If `cont` is provided but `n_bins_cont_cov` is None or < 2.
-            If `binning_strategy_cont_cov` is invalid.
-
-        Notes
-        -----
-        Group construction:
-            1. Categorical covariates → exact grouping via unique combinations
-            2. Continuous covariates → discretized via binning
-            3. Combined via mixed-radix encoding
-
-        Examples
-        --------
-        >>> # Categorical: [[0],[0],[1]] → [0,0,1]
-        >>> # Continuous: [1.2, 1.3, 5.7] with n_bins=2 → [0,0,1]
+            If neither covariate is given.
 
         """
-        # ------------------------------------------------------------------
-        # Determine number of samples
-        # ------------------------------------------------------------------
         if cat is None and cont is None:
             raise ValueError("At least one of 'cat' or 'cont' must be provided.")
-
         n_samples = len(cat) if cat is not None else len(cont)
-
-        # FIX: always compute both parts independently
-        cat_labels = None
-        cont_labels = None
-
-        if cat is not None:
-            _, cat_labels = np.unique(cat, axis=0, return_inverse=True)
-
-        if cont is not None:
-            cont_labels = self._resolve_continuous_covariate(cont, n_samples, n_bins_cont_cov, binning_strategy_cont_cov)
-
-        # FIX: correct combination logic
+        cat_labels = np.unique(cat, axis=0, return_inverse=True)[1].ravel() if cat is not None else None
+        cont_labels = (
+            self._resolve_continuous_covariate(cont, n_samples, n_bins_cont_cov, binning_strategy_cont_cov)
+            if cont is not None
+            else None
+        )
         if cat_labels is not None and cont_labels is not None:
             return cat_labels * (cont_labels.max() + 1) + cont_labels
-        elif cat_labels is not None:
-            return cat_labels
-        else:
-            return cont_labels
+        return cat_labels if cat_labels is not None else cont_labels
 
-    def _fit_resample(self, X, y, **params) -> None:
-        """Unused method required by sklearn."""
-        pass
+    @staticmethod
+    def _resolve_continuous_covariate(
+        cont: np.ndarray, n_samples: int, n_bins_cont_cov: int | None, binning_strategy_cont_cov: str
+    ) -> np.ndarray:
+        """Bin each continuous covariate and combine the bins into one integer label (mixed radix).
+
+        Returns
+        -------
+        np.ndarray
+            Integer label of each sample.
+
+        Raises
+        ------
+        ValueError
+            If ``n_bins_cont_cov`` or ``binning_strategy_cont_cov`` is invalid.
+
+        """
+        if n_bins_cont_cov is None or n_bins_cont_cov < 2:
+            raise ValueError(f"n_bins_cont_cov must be >= 2 when continuous covariates are provided. Got: {n_bins_cont_cov}")
+        if binning_strategy_cont_cov not in {"quantile", "uniform"}:
+            raise ValueError(f"binning_strategy_cont_cov must be 'quantile' or 'uniform'. Got: {binning_strategy_cont_cov}")
+        labels = np.zeros(n_samples, dtype=np.int64)
+        for col in cont.T:
+            if np.all(col == col[0]):
+                bins = np.zeros(n_samples, dtype=np.int64)
+            else:
+                if binning_strategy_cont_cov == "quantile":
+                    edges = np.unique(np.percentile(col, np.linspace(0, 100, n_bins_cont_cov + 1)))
+                else:
+                    edges = np.linspace(col.min(), col.max(), n_bins_cont_cov + 1)
+                bins = np.zeros(n_samples, dtype=np.int64) if len(edges) <= 2 else np.digitize(col, edges[1:-1])
+            labels = labels * (bins.max() + 1) + bins
+        return labels
+
+    @staticmethod
+    def _parent_targets(X_new: np.ndarray, X_anchor: np.ndarray, y_anchor: np.ndarray, k: int = 10) -> np.ndarray:
+        """Interpolate the continuous targets of synthetic samples from their parents.
+
+        For each synthetic sample ``x``, the parents are the two anchors
+        ``x_a``, ``x_b`` whose segment passes closest to ``x``; with ``lam``
+        the position of the projection of ``x`` on the segment, the target is
+        ``y_a + lam * (y_b - y_a)``. All segments are searched for cells of up
+        to 300 anchors; for larger cells, the candidates join the ``max(5k, 50)``
+        nearest anchors of ``x`` to their own ``2k`` nearest anchors (SMOTE joins
+        a sample to one of its ``k`` nearest neighbours). Distances
+        are computed from inner products, so the cost does not grow with the
+        number of features once the Gram matrices are formed.
+
+        Returns
+        -------
+        np.ndarray
+            Targets of the synthetic samples.
+
+        """
+        n = len(X_anchor)
+        y_anchor = y_anchor.astype(float)
+        if n == 1 or len(X_new) == 0:
+            return np.full(len(X_new), y_anchor[0] if n else np.nan)
+        G = X_anchor @ X_anchor.T
+        sq = np.diag(G).copy()
+        H = X_new @ X_anchor.T
+        xx = np.einsum("ij,ij->i", X_new, X_new)
+        y_new = np.empty(len(X_new))
+        if n <= 300:
+            a_all, b_all = np.triu_indices(n)  # includes a == b (duplicates)
+            chunk = max(1, int(4e6 // len(a_all)))
+            for start in range(0, len(X_new), chunk):
+                rows = np.arange(start, min(start + chunk, len(X_new)))
+                a = np.broadcast_to(a_all, (len(rows), len(a_all)))
+                b = np.broadcast_to(b_all, (len(rows), len(b_all)))
+                y_new[rows] = IntraSiteInterpolation._best_segment(rows, a, b, G, sq, H, xx, y_anchor)
+            return y_new
+        n_cand = min(n, max(5 * k, 50))
+        d2 = xx[:, np.newaxis] - 2.0 * H + sq[np.newaxis, :]
+        cand = np.argpartition(d2, n_cand - 1, axis=1)[:, :n_cand]
+        D = sq[:, np.newaxis] + sq[np.newaxis, :] - 2.0 * G
+        n_nbrs = min(n, 2 * k + 1)
+        nbrs = np.argpartition(D, n_nbrs - 1, axis=1)[:, :n_nbrs]
+        residual = np.empty(len(X_new))
+        chunk = max(1, int(4e6 // (n_cand * n_nbrs)))
+        for start in range(0, len(X_new), chunk):
+            rows = np.arange(start, min(start + chunk, len(X_new)))
+            a = np.repeat(cand[rows], n_nbrs, axis=1)
+            b = nbrs[cand[rows]].reshape(len(rows), -1)
+            y_new[rows], residual[rows] = IntraSiteInterpolation._best_segment(rows, a, b, G, sq, H, xx, y_anchor, True)
+        # exact search over all segments for the few samples whose parents were not among the candidates
+        missed = np.flatnonzero(residual > 1e-9 * max(1.0, float(np.mean(sq))))
+        if len(missed) and n <= 3000:
+            a_all, b_all = np.triu_indices(n)
+            for i in missed:
+                rows = np.array([i])
+                y_new[i] = IntraSiteInterpolation._best_segment(
+                    rows, a_all[np.newaxis], b_all[np.newaxis], G, sq, H, xx, y_anchor
+                )[0]
+        return y_new
+
+    @staticmethod
+    def _best_segment(
+        rows: np.ndarray,
+        a: np.ndarray,
+        b: np.ndarray,
+        G: np.ndarray,
+        sq: np.ndarray,
+        H: np.ndarray,
+        xx: np.ndarray,
+        y_anchor: np.ndarray,
+        return_residual: bool = False,
+    ) -> np.ndarray | tuple[np.ndarray, np.ndarray]:
+        """Target interpolated on the closest of the candidate segments ``[a, b]`` of each synthetic sample.
+
+        Returns
+        -------
+        np.ndarray or tuple[np.ndarray, np.ndarray]
+            Interpolated target of each synthetic sample in ``rows`` (and the
+            squared distance to its segment if ``return_residual``).
+
+        """
+        Hr = H[rows]
+        ha = np.take_along_axis(Hr, a, axis=1)
+        hb = np.take_along_axis(Hr, b, axis=1)
+        gab = G[a, b]
+        ud = hb - ha - gab + sq[a]  # (x - x_a) . (x_b - x_a)
+        dd = sq[a] + sq[b] - 2.0 * gab  # |x_b - x_a|^2
+        uu = xx[rows, np.newaxis] - 2.0 * ha + sq[a]  # |x - x_a|^2
+        with np.errstate(divide="ignore", invalid="ignore"):
+            lam = np.where(dd > 0, np.clip(ud / dd, 0.0, 1.0), 0.0)
+        res = uu - 2.0 * lam * ud + lam**2 * dd
+        best = np.argmin(res, axis=1)
+        idx = np.arange(len(rows))
+        a_best, b_best, lam_best = a[idx, best], b[idx, best], lam[idx, best]
+        y_best = y_anchor[a_best] + lam_best * (y_anchor[b_best] - y_anchor[a_best])
+        return (y_best, res[idx, best]) if return_residual else y_best
+
+    def _fit_resample(self, X: npt.ArrayLike, y: npt.ArrayLike, **params: Any) -> tuple[npt.NDArray, npt.NDArray]:
+        """Resample; ``sites`` must be passed as a keyword argument.
+
+        Returns
+        -------
+        tuple
+            Output of :meth:`fit_resample`.
+
+        Raises
+        ------
+        TypeError
+            If ``sites`` is not given.
+
+        """
+        if "sites" not in params:
+            raise TypeError("IntraSiteInterpolation needs `sites`: call fit_resample(X, y, sites=sites).")
+        return self.fit_resample(X, y, **params)
 
     def __sklearn_tags__(self) -> Tags:
         """Return sklearn compatibility tags."""
         tags = super().__sklearn_tags__()
         tags.estimator_type = "sampler"
         return tags
-
-    def _reconstruct_continuous_y(
-        self,
-        y_bin_new: np.ndarray,
-        y_orig: np.ndarray,
-        y_bin_orig: np.ndarray,
-    ) -> np.ndarray:
-        """Reconstruct continuous targets from bin assignments.
-
-        For each generated sample (defined by its bin), a continuous value
-        is synthesized by interpolating between two original samples from
-        the same bin.
-
-        Parameters
-        ----------
-        y_bin_new : np.ndarray
-            Binned targets after resampling (shape: n_samples,).
-        y_orig : np.ndarray
-            Original continuous targets (shape: n_samples,).
-        y_bin_orig : np.ndarray
-            Original bin assignments (shape: n_samples,).
-
-        Returns
-        -------
-        np.ndarray
-            Reconstructed continuous targets (float, shape: n_samples,).
-
-        Notes
-        -----
-        - Ensures synthetic values remain within the distribution of each bin
-        - Equivalent to 1D SMOTE in target space
-
-        """
-        rng = check_random_state(self.random_state)
-
-        y_new = np.empty(len(y_bin_new), dtype=float)
-
-        # Precompute indices per bin for efficiency
-        bin_to_indices = {cls: np.where(y_bin_orig == cls)[0] for cls in np.unique(y_bin_orig)}
-
-        for i, cls in enumerate(y_bin_new):
-            idx = bin_to_indices.get(cls)
-
-            if idx is None or len(idx) == 0:
-                raise RuntimeError(f"Empty bin {cls} during reconstruction.")
-
-            # If only one sample → just copy it
-            if len(idx) == 1:
-                y_new[i] = y_orig[idx[0]]
-                continue
-
-            # SMOTE-like interpolation in target space
-            i1, i2 = rng.choice(idx, size=2, replace=True)
-            alpha = rng.rand()
-
-            y_new[i] = alpha * y_orig[i1] + (1 - alpha) * y_orig[i2]
-
-        return y_new
-
-    def _resolve_continuous_covariate(
-        self, cont: np.ndarray | None, n_samples: int, n_bins_cont_cov: int | None, binning_strategy_cont_cov: str
-    ) -> np.ndarray | None:
-        """Discretize continuous covariates into categorical group labels.
-
-        Transforms continuous covariates into integer labels by binning each
-        feature and combining them using mixed-radix encoding. This enables
-        grouping samples with similar covariate patterns.
-
-        Parameters
-        ----------
-        cont : np.ndarray or None
-            Continuous covariates matrix (shape: n_samples x n_cont_features).
-            If None, returns None immediately.
-        n_samples : int
-            Number of samples (used for creating label arrays).
-        n_bins_cont_cov : int or None
-            Number of bins for discretizing each continuous feature.
-            Must be >= 2 when cont is provided.
-        binning_strategy_cont_cov : str
-            Binning strategy: either "quantile" (equal-frequency) or "uniform" (equal-width).
-
-        Returns
-        -------
-        np.ndarray or None
-            Integer group labels (shape: n_samples,) combining information from
-            all continuous covariates, or None if cont is None.
-
-        Raises
-        ------
-        ValueError
-            If n_bins_cont_cov is None or < 2 when continuous covariates are provided.
-            If binning_strategy_cont_cov is not 'quantile' or 'uniform'.
-
-        Notes
-        -----
-        Binning process per feature:
-            1. Detect constant columns (all values identical)
-            2. Apply uniform or quantile binning based on strategy
-            3. Handle edge cases: duplicate edges, full collapse to 1 bin
-            4. Convert to bin indices using digitize
-
-        Mixed-radix combination:
-            Combines multiple features into a single integer label using
-            positional encoding. Example with 2 features:
-                Feature1 bins: [0, 1, 0], Feature2 bins: [0, 0, 1]
-                Combined: [0*2+0, 1*2+0, 0*2+1] = [0, 2, 1]
-            This ensures each unique combination gets a unique integer.
-
-        Examples
-        --------
-        >>> # Single continuous feature with uniform binning
-        >>> cont = np.array([[1.2], [1.5], [2.7], [2.8]])
-        >>> labels = _resolve_continuous_covariate(cont, 4, 3, "uniform")
-        >>> # Output: [0, 0, 2, 2] (assuming bins: [1.2-1.7, 1.7-2.2, 2.2-2.8])
-
-        """
-        # Step 1: Handle missing covariates
-        if cont is None:
-            return None
-
-        # Step 2: Validate binning parameters
-        # Require at least 2 bins to create meaningful groups
-        if n_bins_cont_cov is None or n_bins_cont_cov < 2:
-            raise ValueError(f"n_bins_cont_cov must be >= 2 when continuous covariates are provided. Got: {n_bins_cont_cov}")
-
-        # Step 3: Validate binning strategy
-        if binning_strategy_cont_cov not in {"quantile", "uniform"}:
-            raise ValueError(f"binning_strategy_cont_cov must be 'quantile' or 'uniform'. Got: {binning_strategy_cont_cov}")
-
-        # Step 4: Initialize container for combined labels
-        # This will accumulate the mixed-radix encoding across features
-        cont_labels = np.zeros(n_samples, dtype=int)
-
-        # Step 5: Process each continuous feature independently
-        for i in range(cont.shape[1]):
-            col = cont[:, i]  # Extract i-th continuous covariate column
-
-            # Step 5a: Handle constant columns (no variation to bin)
-            # Constant columns would create empty bins, so assign all to single bin
-            if np.all(col == col[0]):
-                # All samples get bin 0 for this feature
-                bins = np.zeros(n_samples, dtype=int)
-            else:
-                # Step 5b: Create bin edges based on selected strategy
-                if binning_strategy_cont_cov == "quantile":
-                    # Equal-frequency binning: same number of samples per bin
-                    # Example: n_bins=4 -> edges at 0%, 25%, 50%, 75%, 100%
-                    edges = np.percentile(
-                        col,
-                        np.linspace(0, 100, n_bins_cont_cov + 1),
-                    )
-                else:  # binning_strategy_cont_cov == "uniform"
-                    # Equal-width binning: constant interval size
-                    # Example: col range [0, 10], n_bins=5 -> edges [0, 2, 4, 6, 8, 10]
-                    edges = np.linspace(col.min(), col.max(), n_bins_cont_cov + 1)
-
-                # Step 5c: Remove duplicate edges
-                # Can happen with quantile binning when many samples share same value
-                # Example: col=[0,0,0,1] with 3 bins -> percentiles may produce [0,0,1]
-                edges = np.unique(edges)
-
-                # Step 5d: Handle complete bin collapse (all edges duplicate)
-                # If after deduplication we have <= 2 edges, only 1 bin is possible
-                # Example: all values identical already handled above, or binary with quantiles
-                if len(edges) <= 2:
-                    # Fallback to single bin for this feature
-                    # All samples get bin 0
-                    bins = np.zeros(n_samples, dtype=int)
-                else:
-                    # Step 5e: Assign each sample to a bin
-                    # edges[1:-1] excludes first and last edges
-                    # right=False means bins are [low, high) intervals
-                    # digitize returns 0 for values < edges[1], n_bins-1 for >= edges[-2]
-                    bins = np.digitize(col, edges[1:-1], right=False)
-
-            # Step 6: Combine with previous features using mixed-radix encoding
-            # This creates a unique label for each combination of bins across features
-            # Formula: new_label = old_label * n_bins_current + current_bin
-            # Example with feature1 bins [0,1,0] and feature2 bins [0,0,1]:
-            #   Sample1: 0*2 + 0 = 0
-            #   Sample2: 1*2 + 0 = 2
-            #   Sample3: 0*2 + 1 = 1
-            # Result: unique integer for each unique combination
-            cont_labels = cont_labels * (bins.max() + 1) + bins
-
-        # Step 7: Return the combined group labels
-        # Note: Currently returns after first feature (potential bug)
-        # Should be outside the loop to process all features
-        return cont_labels

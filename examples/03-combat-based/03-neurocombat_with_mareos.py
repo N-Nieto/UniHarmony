@@ -1,6 +1,12 @@
 """
 Using NeuroComBat with MAREoS dataset
 =====================================
+
+.. note::
+
+   This example downloads the MAREoS datasets (about 3 MB) and runs a
+   cross-validation on 8 datasets, so it is not executed when building the
+   documentation. Run it locally to see the results.
 """
 
 # %%
@@ -84,35 +90,13 @@ for effect in effects:
             example = effect + "_" + e_types + e_example
 
             data = datasets[example]
+            X, y, sites, folds = data["X"], data["y"], data["sites"], data["folds"]
 
-            sites = data["sites"]
-            X = data["X"]
-            folds = data["folds"]
-            folds = pd.Series(folds)
-            sites = data["sites"]
-
-            target = data["y"]
-
-            covars = target.ravel().reshape(-1, 1)
-
-            for fold in folds.unique():
-                # Train Data
-                X = data["X"].copy()
-                y = data["y"].copy()
-                sites = data["sites"].copy()
-
-                # Train Target
-                X_train = X[data["folds"] != fold]
-                site_train = sites[data["folds"] != fold]
-
-                y_train = y[data["folds"] != fold]
-
-                # Test data
-                X_test = X[data["folds"] == fold]
-                site_test = sites[data["folds"] == fold]
-
-                # Test target
-                y_test = y[data["folds"] == fold]
+            # Leave-one-fold-out cross-validation with the predefined folds
+            for fold in pd.unique(folds):
+                train, test = folds != fold, folds == fold
+                X_train, y_train, site_train = X[train], y[train], sites[train]
+                X_test, y_test, site_test = X[test], y[test], sites[test]
 
                 # Unharmonized baseline model
                 clf.fit(X_train, y_train)
@@ -150,7 +134,7 @@ unharmonized_results = pd.DataFrame(data=unharmonized_results, columns=["bACC", 
 unharmonized_results["Method"] = "Unharmonized Baseline"
 
 neurocombat_results = pd.DataFrame(data=neurocombat_results, columns=["bACC", "Fold", "Effect", "Type", "Example", "Name"])
-neurocombat_results["Method"] = "neuroComBat"
+neurocombat_results["Method"] = "NeuroComBat"
 
 results = pd.concat([unharmonized_results, neurocombat_results])
 
@@ -184,8 +168,8 @@ handles, labels = ax.get_legend_handles_labels()
 ax.legend(handles[: len(harm_methods)], labels[: len(harm_methods)])
 ax.axhline(0.5, lw=2, color="k", ls="--", alpha=0.7, label="Chance level")
 plt.grid(axis="y")
-plt.grid(axis="y")
 plt.xticks(rotation=45)
+plt.tight_layout()
 
 plt.show()
 

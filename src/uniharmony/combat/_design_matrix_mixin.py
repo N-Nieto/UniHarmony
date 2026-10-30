@@ -8,8 +8,13 @@ from sklearn.preprocessing import OneHotEncoder
 
 __all__ = ["DesignMatrixMixin"]
 
-logger = structlog.get_logger()
-logger = logger.bind(src="DesignMatrixMixin")
+logger = structlog.get_logger(src="DesignMatrixMixin")  # lazy: honours later `uniharmony.verbosity` calls
+
+
+def _as_columns(covariates: npt.ArrayLike) -> npt.NDArray:
+    """Return covariates as a 2-D array with one column per covariate (a 1-D array is one covariate)."""
+    covariates = np.asarray(covariates)
+    return covariates.reshape(-1, 1) if covariates.ndim == 1 else covariates
 
 
 class DesignMatrixMixin:
@@ -79,7 +84,7 @@ class DesignMatrixMixin:
 
         # Fit categorical encoders if provided
         if categorical_covariates is not None:
-            cat_covs = categorical_covariates.reshape(-1, 1)
+            cat_covs = _as_columns(categorical_covariates)
             n_cat_covs = cat_covs.shape[1]
             self._categorical_encoders = []
 
@@ -164,7 +169,7 @@ class DesignMatrixMixin:
 
         # Transform categorical covariates
         if categorical_covariates is not None:
-            cat_covs = categorical_covariates.reshape(-1, 1)
+            cat_covs = _as_columns(categorical_covariates)
             for i, cat_encoder in enumerate(self._categorical_encoders):
                 cat_col = cat_covs[:, i].reshape(-1, 1)
                 cat_encoded = cat_encoder.transform(cat_col)
@@ -175,7 +180,7 @@ class DesignMatrixMixin:
 
         # Add continuous covariates
         if continuous_covariates is not None:
-            cont_covs = continuous_covariates.reshape(-1, 1)
+            cont_covs = _as_columns(continuous_covariates)
             design_parts.append(cont_covs)
             logger.debug(f"Added {cont_covs.shape[1]} continuous covariates")
 

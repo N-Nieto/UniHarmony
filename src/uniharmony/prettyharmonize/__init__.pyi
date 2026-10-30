@@ -1,5 +1,7 @@
 __all__ = [
-    "prettyharmonize",
+    "PrettYharmonizeClassifier",
+    "PrettYharmonizeRegressor",
 ]
 
-from ._prettyharmonize import prettyharmonize
+from ._classifier import PrettYharmonizeClassifier
+from ._regressor import PrettYharmonizeRegressor

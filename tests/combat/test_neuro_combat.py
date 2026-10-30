@@ -287,3 +287,30 @@ def test_neuro_combat_performance_mareos() -> None:
                     assert np.isclose(0.5, np.array(neuro_combat_bacc).mean(), atol=0.2)
                     # The baseline performance should still be high using EoS information, around 80% bacc.
                     assert np.isclose(np.array(baseline_bacc).mean(), 0.8, atol=0.2)
+
+
+def test_neuro_combat_several_covariates() -> None:
+    """Several continuous and categorical covariates (one column each) are kept, and their effects preserved."""
+    rng = np.random.default_rng(0)
+    n, p = 300, 20
+    sites = np.repeat([0, 1, 2], n // 3)
+    age = rng.uniform(20, 80, n)
+    sex = rng.integers(0, 2, n)
+    group = rng.integers(0, 3, n)
+    X = (
+        0.05 * np.outer(age, np.ones(p))
+        + 0.5 * np.outer(sex, np.ones(p))
+        + np.array([0.0, 2.0, -1.0])[sites][:, None]
+        + rng.standard_normal((n, p))
+    )
+    cont = np.column_stack([age, age**2 / 100])
+    cat = np.column_stack([sex, group])
+    combat = NeuroComBat().fit(X, sites, categorical_covariates=cat, continuous_covariates=cont)
+    Xh = combat.transform(X, sites, categorical_covariates=cat, continuous_covariates=cont)
+    assert Xh.shape == X.shape
+    # site means removed, age and sex effects preserved
+    assert np.ptp([Xh[sites == k].mean() for k in range(3)]) < 0.3
+    assert np.corrcoef(Xh.mean(1), age)[0, 1] > 0.8
+    # a single covariate passed as a 1-D array still works
+    Xh1 = NeuroComBat().fit(X, sites, continuous_covariates=age).transform(X, sites, continuous_covariates=age)
+    assert Xh1.shape == X.shape
