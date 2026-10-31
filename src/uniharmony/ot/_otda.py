@@ -7,7 +7,7 @@ import numpy.typing as npt
 from ot.da import BaseTransport
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils import Tags
-from sklearn.utils.validation import FLOAT_DTYPES, check_array, check_consistent_length, check_is_fitted
+from sklearn.utils.validation import FLOAT_DTYPES, check_array, check_consistent_length, check_is_fitted, validate_data
 
 from uniharmony._utils import validate_sites
 from uniharmony._verbose import get_logger
@@ -32,16 +32,13 @@ MetricType = Literal[
     "dice",
     "hamming",
     "jaccard",
-    "kulsinski",
     "mahalanobis",
     "matching",
     "minkowski",
     "rogerstanimoto",
     "russellrao",
     "seuclidean",
-    "sokalmichener",
     "sokalsneath",
-    "wminkowski",
     "yule",
 ]
 NormalizationType = Literal["median", "max", "log", "loglog"] | None
@@ -83,6 +80,9 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
         Semi-supervised mode control. Sets infinite cost (10 * max(cost))
         for transport between different classes.
 
+    copy : bool, optional (default True)
+        Whether to copy the input arrays during validation.
+
     Attributes
     ----------
     ot_obj_ : BaseTransport
@@ -93,6 +93,13 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
 
     sites_ : ndarray, shape (n_sites,)
         Sites seen during fit.
+
+    n_features_in_ : int
+        Number of features seen during fit.
+
+    feature_names_in_ : ndarray of str, shape (n_features_in_,)
+        Names of the features seen during fit. Only defined if ``X`` was a
+        DataFrame with string column names.
 
     coupling_ : array, shape (n_source_samples, n_target_samples)
         The optimal coupling matrix (forwarded from ot_obj_).
@@ -112,7 +119,7 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
     >>> ot_solver = SinkhornTransport(reg_e=0.5, norm="median")
     >>> otda = OptimalTransportDomainAdaptation(ot_method=ot_solver)
     >>> otda.fit(X_train, sites_train, ref_site="site_A")
-    >>> X_aligned = otda.transform(X_test, sites_test))
+    >>> X_aligned = otda.transform(X_test, sites_test)
 
 
     """
@@ -178,7 +185,7 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
             Fitted instance.
 
         """
-        X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
+        X = validate_data(self, X, reset=True, copy=self.copy, dtype=FLOAT_DTYPES)
 
         if y is not None:
             logger.debug("Validating labels for supervised transport")
@@ -410,10 +417,11 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
         Raises
         ------
         ValueError
-            If a site was not seen during fit.
+            If a site was not seen during fit, or X has a different number of
+            features than seen during fit.
 
         """
-        X = check_array(X, copy=self.copy, dtype=FLOAT_DTYPES, estimator=self)
+        X = validate_data(self, X, reset=False, copy=self.copy, dtype=FLOAT_DTYPES)
         if y is not None:
             y = check_array(y, copy=self.copy, ensure_2d=False, estimator=self)
             check_consistent_length(X, y)
@@ -576,9 +584,9 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
     def __sklearn_tags__(self) -> Tags:
         tags = super().__sklearn_tags__()
         tags.estimator_type = "transformer"
+        # ``sites`` takes the place of ``y``: required, one label per sample (1D), any values
         tags.target_tags.required = True
-        tags.target_tags.two_d_labels = True
-        tags.target_tags.positive_only = True
         tags.input_tags.two_d_array = True
-        tags.input_tags.allow_nan = True
+        # Missing and infinite values are rejected by the input validation
+        tags.input_tags.allow_nan = False
         return tags
