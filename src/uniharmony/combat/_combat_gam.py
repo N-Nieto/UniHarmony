@@ -59,9 +59,10 @@ class ComBatGAM(BaseComBat):
     Notes
     -----
     The ComBat steps follow Johnson et al. (2007) and differ from
-    R ``sva::ComBat`` (3.50.0) and ``neuroCombat`` (0.2.12) in two documented
-    places. Both were found with simulations from the ComBat model and are
-    tested in ``tests/combat/test_reference_conformance.py``:
+    R ``sva::ComBat`` (3.50.0) and ``neuroCombat`` (0.2.12) in three documented
+    places. They were found with simulations from the ComBat model and are
+    tested against frozen neuroCombat output (identical to R ``sva::ComBat``)
+    in ``tests/combat/test_reference_conformance.py``:
 
     * **Pooled variance.** The residual sum of squares is divided by
       :math:`n - S` (:math:`S` sites) instead of :math:`n`. ComBat rescales each
@@ -78,6 +79,15 @@ class ComBatGAM(BaseComBat):
       The references use :math:`n_i = 1`, which leaves most of the
       feature-specific site effect in the data (a site classifier then
       recovers the site well above chance).
+
+    * **Stopping rule of the parametric empirical Bayes solver.** The solver
+      stops when the largest relative change of :math:`\gamma^*` and
+      :math:`\delta^*` is below 1e-4, with the change divided by
+      :math:`|\text{previous estimate}|`. The references divide by the signed
+      estimate (``max(abs(g.new - g.old) / g.old, ...)``), so features with a
+      negative location effect never block the stop and the output is not
+      converged to the stated tolerance (differences up to about 1e-5 of the
+      data scale). Run to convergence, both give the same solution.
 
     See the "Implementations conformance" gallery for the derivations,
     the simulations, and a runtime and memory comparison.

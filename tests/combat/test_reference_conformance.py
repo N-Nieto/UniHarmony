@@ -1,7 +1,7 @@
 """Conformance of NeuroComBat with the reference implementations and with the ComBat model.
 
 UniHarmony differs from R ``sva::ComBat`` (3.50.0) and ``neuroCombat`` (0.2.12)
-in exactly two documented places:
+in three documented places:
 
 1. Pooled variance: UniHarmony divides the residual sum of squares by ``n - S``
    (``S`` sites) instead of ``n``. Outside ``mean_only`` ComBat is
@@ -9,12 +9,29 @@ in exactly two documented places:
    the standardized mean are those of the references times ``sqrt(n / (n - S))``.
 2. ``mean_only``: the posterior mean of the site effect uses the site sample
    size ``n_i`` instead of ``n = 1``.
+3. Stopping rule of the parametric empirical Bayes solver: the relative change
+   is divided by ``|previous estimate|``. The references divide by the signed
+   estimate, so features with a negative location effect never block the stop
+   and their output is not converged to the stated tolerance (1e-4).
 
-``neurocombat_0.2.12_reference.npz`` holds a small simulated data set (3 sites
-of 6, 8 and 10 subjects, 8 features, age and sex covariates) and the output of
-``neuroCombat.neuroCombat`` 0.2.12 for each mode, together with its
-standardized mean (``stand.mean + mod.mean``). The outputs match R
-``sva::ComBat`` 3.50.0 to 4e-8.
+Everything else must reproduce the reference. These tests guard it for any
+future change: :class:`_ReferenceChoices` puts the reference choices 1 and 2
+back, and its output must equal the frozen neuroCombat output in every mode and
+design, up to floating-point rounding. For the parametric mode the comparison
+uses both solvers run to convergence (``eb_parametric_converged``), so it does
+not depend on the stopping rule; the default output is checked separately.
+
+``neurocombat_0.2.12_reference.npz`` is built by
+``make_neurocombat_reference.py`` (see its docstring): six designs (one
+categorical and one continuous covariate, several covariates, no covariates,
+imbalanced sites, covariates on a 1e4 scale, a covariate confounded with site)
+and the neuroCombat 0.2.12 output of each in four modes (plus the converged
+parametric output). Its inputs are exact in
+float32, the precision neuroCombat converts them to, so the tolerance can be
+tight (``RTOL``, relative to the data standard deviation). The frozen
+outputs (default modes) also match R ``sva::ComBat`` 3.50.0 to 1e-13. The two
+implementations solve the same equations with different but equivalent
+linear algebra; their rounding differences are below 1e-10 of the data scale.
 """
 
 from pathlib import Path
@@ -27,36 +44,115 @@ from uniharmony.combat import NeuroComBat
 
 REFERENCE = Path(__file__).parent / "neurocombat_0.2.12_reference.npz"
 
+DESIGNS = [
+    "one_categorical_one_continuous",
+    "several_covariates",
+    "no_covariates",
+    "imbalanced_sites",
+    "large_scale_covariates",
+    "covariate_confounded_with_site",
+]
+
+#: UniHarmony options of each frozen neuroCombat output compared exactly
+MODES = {
+    "eb_parametric_converged": {},
+    "eb_non_parametric": {"parametric_adjustments": False},
+    "no_eb": {"empirical_bayes": False},
+    "mean_only": {"mean_only": True},
+}
+
+#: Tolerance of the iterative solver when it is run to convergence
+CONVERGED = 1e-13
+
+#: Largest allowed difference with the reference, relative to the standard deviation of the data
+RTOL = 1e-8
+
+
+class _Converged(NeuroComBat):
+    """NeuroComBat with the parametric empirical Bayes solver run to convergence."""
+
+    def _iteration_solver(self, *args, **kwargs):
+        return super()._iteration_solver(*args, **{**kwargs, "convergence": CONVERGED})
+
+
+class _ReferenceChoices(_Converged):
+    """Converged NeuroComBat with the R sva / neuroCombat choices 1 and 2 restored (pooled variance over n, mean_only n = 1)."""
+
+    def fit_standardize(self, X, design, n_samples, n_samples_per_site, *args, **kwargs):
+        super().fit_standardize(X, design, n_samples, n_samples_per_site, *args, **kwargs)
+        self._var_pooled = self._var_pooled * (n_samples - len(n_samples_per_site)) / n_samples
+        return self.transform_standardize(X=X, design=design, n_samples=n_samples)[0]
+
+    def _postmean(self, gamma_hat, gamma_bar, n, delta_star, tau_2):
+        return super()._postmean(gamma_hat, gamma_bar, 1 if self.mean_only else n, delta_star, tau_2)
+
 
 @pytest.fixture(scope="module")
-def reference() -> dict[str, np.ndarray]:
-    """Frozen neuroCombat 0.2.12 output."""
+def reference() -> dict[str, dict[str, np.ndarray]]:
+    """Frozen neuroCombat 0.2.12 output, by design."""
+    designs: dict[str, dict[str, np.ndarray]] = {}
     with np.load(REFERENCE) as data:
-        return dict(data)
+        for key in data.files:
+            design, name = key.split("__")
+            designs.setdefault(design, {})[name] = data[key]
+    assert sorted(designs) == sorted(DESIGNS)
+    return designs
 
 
-def _harmonize(reference: dict[str, np.ndarray], **params) -> np.ndarray:
-    return NeuroComBat(**params).fit_transform(
-        reference["X"],
-        reference["sites"],
-        categorical_covariates=reference["sex"][:, None],
-        continuous_covariates=reference["age"][:, None],
+def _harmonize(design: dict[str, np.ndarray], estimator: type = NeuroComBat, **params) -> np.ndarray:
+    return estimator(**params).fit_transform(
+        design["X"],
+        design["sites"],
+        categorical_covariates=design.get("categorical"),
+        continuous_covariates=design.get("continuous"),
     )
 
 
-@pytest.mark.parametrize(
-    ("mode", "params"),
-    [
-        ("eb_parametric", {}),
-        ("eb_non_parametric", {"parametric_adjustments": False}),
-        ("no_eb", {"empirical_bayes": False}),
-    ],
-)
-def test_matches_reference_up_to_variance_correction(reference, mode: str, params: dict) -> None:
-    """Outside mean_only, the only difference with neuroCombat is the factor sqrt(n / (n - S))."""
-    n, n_sites = len(reference["sites"]), len(np.unique(reference["sites"]))
-    expected = reference["mean"] + (reference[mode] - reference["mean"]) * np.sqrt(n / (n - n_sites))
-    np.testing.assert_allclose(_harmonize(reference, **params), expected, rtol=0, atol=1e-6)
+def _assert_close(actual: np.ndarray, expected: np.ndarray) -> None:
+    np.testing.assert_allclose(actual, expected, rtol=0, atol=RTOL * np.std(expected))
+
+
+@pytest.mark.parametrize("mode", list(MODES))
+@pytest.mark.parametrize("design_name", DESIGNS)
+def test_reproduces_reference_with_reference_choices(reference, design_name: str, mode: str) -> None:
+    """With the two documented choices restored, the output equals neuroCombat's in every mode and design."""
+    design = reference[design_name]
+    _assert_close(_harmonize(design, _ReferenceChoices, **MODES[mode]), design[mode])
+
+
+@pytest.mark.parametrize("mode", ["eb_parametric_converged", "eb_non_parametric", "no_eb"])
+@pytest.mark.parametrize("design_name", DESIGNS)
+def test_matches_reference_up_to_variance_correction(reference, design_name: str, mode: str) -> None:
+    """Outside mean_only, the only other difference with neuroCombat is the factor sqrt(n / (n - S))."""
+    design = reference[design_name]
+    n, n_sites = len(design["sites"]), len(np.unique(design["sites"]))
+    expected = design["mean"] + (design[mode] - design["mean"]) * np.sqrt(n / (n - n_sites))
+    _assert_close(_harmonize(design, _Converged, **MODES[mode]), expected)
+
+
+@pytest.mark.parametrize("design_name", DESIGNS)
+def test_default_parametric_stopping_rule(reference, design_name: str) -> None:
+    """With default settings, UniHarmony stops at least as close to the converged solution as neuroCombat.
+
+    The difference with neuroCombat's default output comes only from where each
+    solver stops, so it is bounded by the solver tolerance (1e-4).
+    """
+    design = reference[design_name]
+    converged = _harmonize(design, _ReferenceChoices)
+    default = _harmonize(design, type("_Default", (_ReferenceChoices,), {"_iteration_solver": NeuroComBat._iteration_solver}))
+    scale = np.std(design["eb_parametric_converged"])
+    error_uniharmony = np.abs(default - converged).max() / scale
+    error_reference = np.abs(design["eb_parametric"] - design["eb_parametric_converged"]).max() / scale
+    assert error_uniharmony <= error_reference + RTOL
+    assert error_reference < 1e-4
+
+
+@pytest.mark.parametrize("design_name", DESIGNS)
+def test_mean_only_differs_from_reference(reference, design_name: str) -> None:
+    """mean_only deliberately differs from neuroCombat (posterior with n_i): the correction is active."""
+    design = reference[design_name]
+    difference = np.abs(_harmonize(design, mean_only=True) - design["mean_only"]).max()
+    assert difference > 1e3 * RTOL * np.std(design["mean_only"])
 
 
 def _closed_form(X: np.ndarray, sites: np.ndarray, mean_only_n: str | None) -> np.ndarray:

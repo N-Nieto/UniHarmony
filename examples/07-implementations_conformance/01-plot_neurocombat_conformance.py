@@ -120,6 +120,7 @@ This example checks it against neuroCombat, step by step:
 
 import contextlib
 import io
+import sys
 import time
 import tracemalloc
 
@@ -272,14 +273,14 @@ print(pd.DataFrame(rows).to_string(index=False, float_format="%.2e"))
 
 # %%
 # The outputs differ in every mode, by about 3% of the data scale, and by much
-# more for ``mean_only``. The next steps show that **two lines of code**
-# explain all of it.
+# more for ``mean_only``. The next steps show that three small, documented
+# differences explain all of it.
 #
 # Step 2: an emulator of the reference
 # ------------------------------------
-# The class below is UniHarmony's ``NeuroComBat`` with the two reference
-# choices put back. If the two implementations agreed everywhere else, it
-# would reproduce neuroCombat to numerical precision.
+# The class below is UniHarmony's ``NeuroComBat`` with the reference choices
+# of differences 1 and 2 put back. If the two implementations agreed everywhere
+# else, it would reproduce neuroCombat to numerical precision.
 #
 # It overrides private methods, so it is a diagnostic tool, not public API.
 
@@ -306,13 +307,20 @@ for mode, (uh_options, nc_options) in MODES.items():
 print(pd.DataFrame(rows).to_string(index=False, float_format="%.2e"))
 
 # %%
-# With the two choices restored, the implementations agree to about
-# :math:`10^{-7}` or better in all four modes (the small residual in the
-# parametric modes comes from the stopping tolerance of the iterative solver
-# of step 5). Everything else, including the regression, standardization,
-# priors and the non-parametric solver, is the same.
+# With the two choices restored, the non-iterative modes agree to about
+# :math:`10^{-7}`. That is the precision of neuroCombat itself: it converts the
+# data and the continuous covariates to float32 (``neuroCombat.py:79`` and
+# ``:196``, ``np.array(dat, dtype='float32')``), while R and UniHarmony work in
+# float64. The test suite uses inputs that are exact in float32, and there the
+# agreement with neuroCombat and with R ``sva::ComBat`` is about
+# :math:`10^{-14}`.
 #
-# The two differences are explained below.
+# The parametric mode differs more (about :math:`10^{-5}`): this is
+# difference 3, the stopping rule of the iterative solver of step 5.
+# Everything else, including the regression, standardization, priors and the
+# non-parametric solver, is the same.
+#
+# The three differences are explained below.
 #
 # Difference 1: the pooled variance (step 2)
 # ------------------------------------------
@@ -376,11 +384,18 @@ for mode in ["EB parametric", "EB non-parametric", "no EB"]:
     )
 
 # %%
-# **Which is right?** We simulate three sites with 4 to 40 subjects each and
-# compare the pooled variance of the harmonized data with the true pooled
-# variance. The pooled variance is computed after removing each site's mean
-# and the covariate effects, with :math:`n - p` degrees of freedom (:math:`p`:
-# number of regression parameters), which is unbiased for any data.
+# **Which is right?** We simulate three sites with 4 to 100 subjects each, 100
+# data sets per size, and compute the pooled variance of the harmonized data.
+# It is measured after removing each site's mean and the covariate effects,
+# with :math:`n - p` degrees of freedom (:math:`p`: number of regression
+# parameters), which is unbiased for any data. We compare it in two ways:
+#
+# * **neuroCombat relative to UniHarmony**, on the same data. Both outputs
+#   come from the same estimates except :math:`\hat\sigma_g^2`, so their
+#   ratio is exactly :math:`(n - S)/n` in every data set: this isolates
+#   difference 1.
+# * **Each implementation relative to the truth** (the target data), with and
+#   without empirical Bayes, and a 95% confidence interval over the data sets.
 
 
 def pooled_residual_variance(data, Y):
@@ -392,38 +407,97 @@ def pooled_residual_variance(data, Y):
 
 rng = np.random.default_rng(1)
 rows = []
-for n_per_site in [4, 6, 10, 20, 40]:
-    for _ in range(40):
+for n_per_site in [4, 6, 10, 20, 40, 100]:
+    for _ in range(100):
         sim = simulate_combat(rng, [n_per_site] * 3, n_features=50)
-        true_variance = pooled_residual_variance(sim, sim["target"])
-        for name, X_h in [("neuroCombat / R sva (1/n)", run_neurocombat(sim)[0]), ("UniHarmony (1/(n-S))", run_uniharmony(sim))]:
-            ratio = np.mean(pooled_residual_variance(sim, X_h)) / np.mean(true_variance)
-            rows.append({"n": 3 * n_per_site, "implementation": name, "variance ratio": ratio})
-df_variance = pd.DataFrame(rows).groupby(["implementation", "n"])["variance ratio"].mean().unstack(0)
+        true_variance = np.mean(pooled_residual_variance(sim, sim["target"]))
+        for eb in (True, False):
+            try:
+                X_nc = run_neurocombat(sim, eb=eb)[0]
+            except np.linalg.LinAlgError:
+                continue  # neuroCombat inverts the design and fails if a covariate is constant (tiny sites)
+            variance_nc = np.mean(pooled_residual_variance(sim, X_nc))
+            variance_uh = np.mean(pooled_residual_variance(sim, run_uniharmony(sim, empirical_bayes=eb)))
+            rows.append(
+                {
+                    "n": 3 * n_per_site,
+                    "empirical Bayes": eb,
+                    "neuroCombat / UniHarmony": variance_nc / variance_uh,
+                    "neuroCombat / truth": variance_nc / true_variance,
+                    "UniHarmony / truth": variance_uh / true_variance,
+                }
+            )
+df_variance = pd.DataFrame(rows)
+summary = df_variance.groupby(["empirical Bayes", "n"]).agg(["mean", "sem"])
+print(summary.xs("mean", axis=1, level=1).round(4).to_string())
 
-fig, ax = plt.subplots(figsize=(7, 4.5))
-for name, color in [("neuroCombat / R sva (1/n)", REFERENCE_COLOR), ("UniHarmony (1/(n-S))", UNIHARMONY_COLOR)]:
-    ax.plot(df_variance.index, df_variance[name], marker="o", lw=2, color=color, label=name)
-n_grid = np.linspace(12, 120, 100)
-ax.plot(n_grid, (n_grid - 3) / n_grid, color=REFERENCE_COLOR, ls=":", lw=1.5, label="theory: (n - S) / n")
+# %%
+
+fig, axes = plt.subplots(1, 2, figsize=(12, 4.5))
+sizes = sorted(df_variance["n"].unique())
+n_grid = np.linspace(min(sizes), max(sizes), 200)
+
+ax = axes[0]
+ratio = summary.loc[True, "neuroCombat / UniHarmony"]
+ax.plot(n_grid, (n_grid - 3) / n_grid, color="black", lw=1, label="theory: (n - S) / n")
+ax.plot(sizes, ratio["mean"], "o", color=REFERENCE_COLOR, ms=7, label="neuroCombat / UniHarmony (simulated)")
+ax.set_ylabel("ratio of harmonized pooled variances")
+ax.set_title("Difference 1 isolated: same data, two denominators")
+
+ax = axes[1]
+for column, color in [("UniHarmony / truth", UNIHARMONY_COLOR), ("neuroCombat / truth", REFERENCE_COLOR)]:
+    for eb, linestyle in [(True, "-"), (False, "--")]:
+        stats = summary.loc[eb, column]
+        label = f"{column.split(' /')[0]}, {'with' if eb else 'without'} empirical Bayes"
+        ax.errorbar(
+            sizes,
+            stats["mean"],
+            yerr=1.96 * stats["sem"],
+            color=color,
+            ls=linestyle,
+            marker="o",
+            ms=5,
+            lw=2,
+            capsize=3,
+            label=label,
+        )
 ax.axhline(1, color="black", lw=1)
-ax.set_xscale("log")
-ax.set_xticks(df_variance.index, [str(x) for x in df_variance.index])
-ax.minorticks_off()
-ax.set_xlabel("total sample size n (3 sites)")
 ax.set_ylabel("harmonized / true pooled variance")
-ax.set_title("Difference 1: pooled-variance denominator")
-ax.legend(frameon=False)
+ax.set_title("Against the truth (95% CI)")
+for ax in axes:
+    ax.set_xscale("log")
+    ax.set_xticks(sizes, [str(x) for x in sizes])
+    ax.minorticks_off()
+    ax.set_xlabel("total sample size n (3 sites)")
+    ax.legend(frameon=False, fontsize=9, loc="lower right")
 plt.tight_layout()
 
 # %%
-# The reference shrinks the variance as predicted by :math:`(n - S)/n`;
-# UniHarmony recovers the true variance within about 1% at every sample size.
-# (The remaining 1% in both curves comes from the empirical Bayes shrinkage of
-# :math:`\hat\delta` in step 5 and from the covariate fit, which the
-# degrees-of-freedom argument neglects.) For machine learning pipelines that re-standardize features the
-# difference is a harmless global scale. For statistics on harmonized data,
-# such as effect sizes, the reference inflates Cohen's :math:`d` by
+# **Left:** on the same data, neuroCombat's harmonized variance is exactly
+# :math:`(n - S)/n` times UniHarmony's, as derived above: difference 1 is a
+# pure rescaling.
+#
+# **Right:** relative to the truth.
+#
+# * Without empirical Bayes (dashed), UniHarmony is unbiased up to a small
+#   deficit at the smallest sizes (about 2% at :math:`n = 12`), which comes
+#   from the covariate fit and vanishes as :math:`n` grows. neuroCombat is
+#   low by the additional factor :math:`(n - S)/n`.
+# * With empirical Bayes (solid), UniHarmony is about 1% below the truth from
+#   :math:`n = 18` on (and close to 1 at :math:`n = 12`, where this effect and
+#   the covariate deficit above partly cancel). This gap is a property of
+#   ComBat itself, shared by both implementations: each site is divided by a
+#   shrunken scale :math:`\hat\delta^{*2}_{ig}`, a weighted mean of its own
+#   variance :math:`\hat\delta^2_{ig}` and the prior mean, and the average of
+#   :math:`\hat\delta^2_{ig} / \hat\delta^{*2}_{ig}` is below 1 (Jensen's
+#   inequality: the ratio is a concave function of :math:`\hat\delta^2_{ig}`).
+#   The gap closes slowly because the prior keeps a fixed weight while the
+#   weight of the data grows as :math:`n_i / 2`. neuroCombat is low by the
+#   same amount times :math:`(n - S)/n`.
+#
+# For machine learning pipelines that re-standardize features, difference 1
+# is a harmless global scale. For statistics on harmonized data, such as
+# effect sizes, the reference inflates Cohen's :math:`d` by
 # :math:`\sqrt{n/(n - S)}`.
 #
 # .. note::
@@ -600,6 +674,65 @@ plt.tight_layout()
 #    vanish as :math:`\tau` grows. This property of the original method is not
 #    changed in UniHarmony.
 #
+# Difference 3: the stopping rule of the parametric solver (step 5)
+# -----------------------------------------------------------------
+# **The code.** The parametric posterior of step 5 has no closed form: it is
+# found by iterating the posterior mean and variance until their relative
+# change is below a tolerance (1e-4). neuroCombat (``neuroCombat.py:324``, in
+# ``it_sol``) and R sva compute that change as
+#
+# .. code-block:: python
+#
+#    change = max((abs(g_new - g_old) / g_old).max(), (abs(d_new - d_old) / d_old).max())
+#
+# dividing by the *signed* previous location estimate ``g_old``. UniHarmony
+# (``_ls_mixin.py``, ``_iteration_solver``) divides by its absolute value.
+#
+# **Why it matters.** For a feature whose location effect is negative, the
+# reference's "relative change" is negative, so that feature can never keep
+# the solver running: the solver stops as soon as the features with a positive
+# effect have converged. The output is then not converged to the stated
+# tolerance. Run until the change is below :math:`10^{-13}`, both converge to
+# the same fixed point; with the default tolerance, UniHarmony stops at least
+# as close to it.
+
+
+@contextlib.contextmanager
+def converged_neurocombat():
+    """Run neuroCombat's iterative solver to convergence inside the context."""
+    module = sys.modules[neuroCombat.__module__]
+    it_sol = module.it_sol
+    module.it_sol = lambda *args, **kwargs: it_sol(*args[:7], conv=1e-13)
+    try:
+        yield
+    finally:
+        module.it_sol = it_sol
+
+
+class ConvergedComBat(ReferenceComBat):
+    """The emulator with the iterative solver run to convergence."""
+
+    def _iteration_solver(self, *args, **kwargs):
+        return super()._iteration_solver(*args, **{**kwargs, "convergence": 1e-13})
+
+
+with converged_neurocombat():
+    X_converged = run_neurocombat(data)[0]
+X_nc_default = run_neurocombat(data)[0]
+print(f"default:    max |neuroCombat - converged| = {max_difference(X_nc_default, X_converged):.1e}")
+print(
+    f"default:    max |emulator    - converged| = {max_difference(run_uniharmony(data, estimator=ReferenceComBat), X_converged):.1e}"
+)
+print(
+    f"converged:  max |emulator - neuroCombat|  = {max_difference(run_uniharmony(data, estimator=ConvergedComBat), X_converged):.1e}"
+)
+
+# %%
+# Run to convergence, the two implementations agree to the float32 precision
+# of neuroCombat: difference 3 is only where the solver stops. The effect is
+# small (well below the noise of any real data), but it is the reason the
+# parametric mode needs this separate step to be compared exactly.
+#
 # Harmonizing new subjects
 # ------------------------
 # In machine learning, the harmonizer must be fitted on training data and
@@ -738,11 +871,12 @@ print(
 )
 
 # %%
-# Both implementations scale linearly with the data size. On large problems,
-# UniHarmony is about 1.5 times faster than neuroCombat and uses about 1.3
-# times more peak memory (extra copies of the data made by input validation
-# and by the separate ``fit`` and ``transform`` steps). On small problems the
-# fixed cost of input validation dominates and both take a few milliseconds.
+# Both implementations scale linearly with the data size. Their runtimes are
+# of the same order (the ratio printed above depends on the machine and on the
+# other jobs of the documentation build), and UniHarmony uses about 1.2 to 1.3
+# times more peak memory: extra copies of the data made by the input
+# validation and by the separate ``fit`` and ``transform`` steps. On small
+# problems both take a few milliseconds.
 #
 # Summary
 # -------
@@ -752,19 +886,23 @@ print(
 # =======================  ============================  ==========================  ====================================
 # Pooled variance          :math:`\mathrm{RSS}/n`        :math:`\mathrm{RSS}/(n-S)`  harmonized variance unbiased
 # ``mean_only`` posterior  :math:`n = 1`                 :math:`n = n_i`             no residual site effect or leakage
+# Solver stopping rule     relative to signed estimate   relative to absolute value  converged to the stated tolerance
 # New subjects             average covariate effect,     each subject's covariates   correct model, sklearn ``transform``
 #                          fails with NumPy 2
-# Everything else          identical                     identical                   agreement to :math:`10^{-7}`
+# Everything else          identical                     identical                   agreement to :math:`10^{-14}` (float32-exact data)
 # =======================  ============================  ==========================  ====================================
 #
 # .. admonition:: Take-home message
 #
 #    UniHarmony's ``NeuroComBat`` reproduces the reference implementations
-#    except in two places where they are statistically wrong: the pooled
-#    variance shrinks the harmonized variance by :math:`(n - S)/n`, and
-#    ``mean_only`` shrinks every site as if it had one subject, which leaves
-#    site information in the data. Both corrections follow from the ComBat
-#    model itself and are confirmed by simulations with a known ground truth.
+#    except in three places where they are wrong: the pooled variance shrinks
+#    the harmonized variance by :math:`(n - S)/n`, ``mean_only`` shrinks every
+#    site as if it had one subject, which leaves site information in the
+#    data, and the parametric solver can stop before it has converged. The
+#    corrections follow from the ComBat model itself and are confirmed by
+#    simulations with a known ground truth. A frozen reference in the test
+#    suite guarantees that every other part stays identical to R sva and
+#    neuroCombat.
 #    If you need to reproduce results computed with R sva or neuroCombat, use
 #    the emulator above; for new analyses, use UniHarmony's defaults.
 

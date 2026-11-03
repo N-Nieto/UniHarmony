@@ -679,7 +679,8 @@ class LocationAndScaleMixin:
             # Handle any numerical issues in delta_hat_new
             delta_hat_new = np.clip(delta_hat_new, 1e-8, None)
 
-            # Convergence check
+            # Convergence check: relative change with respect to |previous estimate|. R sva and neuroCombat divide
+            # by the signed estimate, so negative location effects never block their stop (documented difference).
             with np.errstate(divide="ignore", invalid="ignore"):
                 gamma_change = np.abs(gamma_hat_new - gamma_hat_old)
                 gamma_rel_change = np.where(np.abs(gamma_hat_old) > 1e-10, gamma_change / np.abs(gamma_hat_old), gamma_change)
