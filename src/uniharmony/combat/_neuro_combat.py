@@ -44,8 +44,13 @@ class NeuroComBat(BaseComBat):
 
     Attributes
     ----------
-    sites_ : array, shape (n_samples,)
+    sites_ : array, shape (n_sites,)
         Fitted site names.
+    n_features_in_ : int
+        Number of features seen during ``fit``.
+    feature_names_in_ : ndarray of str, shape (n_features_in_,)
+        Names of the features seen during ``fit``. Only defined if ``X`` was a
+        DataFrame with string column names.
 
     Notes
     -----
@@ -140,7 +145,7 @@ class NeuroComBat(BaseComBat):
         logger.debug("Fitting")
 
         # Validate input
-        X, sites = self._check_X_sites(X, sites, estimator=self)
+        X, sites = self._check_X_sites(X, sites)
         validate_sites(sites)
 
         # Check that categorical_covariates and continuous_covariates have correct shape and type if they are not None.
@@ -296,7 +301,10 @@ class NeuroComBat(BaseComBat):
 
         # Validate input
         check_is_fitted(self)
-        X, sites = self._check_X_sites(X, sites, estimator=self)
+        X, sites = self._check_X_sites(X, sites, reset=False)
+        self._check_covariates_as_in_fit(
+            categorical_covariates=categorical_covariates, continuous_covariates=continuous_covariates
+        )
 
         if self._categorical_covariates_used:
             categorical_covariates = self._check_categorical_covariates(X, categorical_covariates)
