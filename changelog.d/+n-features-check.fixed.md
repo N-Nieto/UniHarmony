@@ -1,0 +1,1 @@
+`NeuroComBat`, `CovBat`, `ComBatGAM` and `OptimalTransportDomainAdaptation` store `n_features_in_` (and `feature_names_in_` for DataFrames) at fit, and `transform` raises a clear error when the number or names of the features differ, instead of a NumPy broadcasting error.

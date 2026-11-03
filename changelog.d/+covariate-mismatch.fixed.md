@@ -1,0 +1,1 @@
+`transform` of the ComBat variants raises a clear `ValueError` when a covariate given to `fit` is missing, or a covariate not given to `fit` is passed (it previously failed with a `TypeError`, an `AttributeError`, or "Input contains NaN", or ignored the covariate). `ComBatGAM` reports missing `smooth_covariates` explicitly in `fit` and `transform`.
