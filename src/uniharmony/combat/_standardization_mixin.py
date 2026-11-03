@@ -141,8 +141,7 @@ class StandardizationMixin:
                 self._beta_hat[:, i] = res_bs_optim.params
         else:
             # Fit OLS model
-            gram_matrix = design.T @ design
-            self._beta_hat = solve_ordinary_least_squares(gram_matrix, X, design)
+            self._beta_hat = solve_ordinary_least_squares(X, design)
         # Compute weighted grand mean across sites to create reference mean
         minimum_samples_warning(n_samples_per_site)
         site_weights = np.array(n_samples_per_site) / float(n_samples)

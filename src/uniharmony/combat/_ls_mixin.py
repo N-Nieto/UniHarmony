@@ -64,9 +64,7 @@ class LocationAndScaleMixin:
         # check how much each site's mean differs from the grand mean
         # Since data is standardized, we expect gamma_hat to be close to 0
         # Non-zero values indicate site-specific location shifts (batch effects)
-        gram_site = site_design.T @ site_design
-
-        gamma_hat = solve_ordinary_least_squares(gram_site, data, site_design)
+        gamma_hat = solve_ordinary_least_squares(data, site_design)
 
         # Estimate scale parameters (delta_hat) per site to
         # check each site's variance for each feature
@@ -458,9 +456,9 @@ class LocationAndScaleMixin:
         Returns
         -------
         a_prior : ndarray, shape (n_features,)
-            Shape parameter: a = (2*s2 + m^2) / s2
+            Shape parameter: a = (2*s2 + m^2) / s2 (the same for every feature).
         b_prior : ndarray, shape (n_features,)
-            Scale parameter: b = (m*s2 + m^3) / s2
+            Scale parameter: b = (m*s2 + m^3) / s2 (the same for every feature).
 
         """
         delta_hat = np.asarray(delta_hat, dtype=np.float64)
@@ -488,9 +486,8 @@ class LocationAndScaleMixin:
         a_prior = (2.0 * s2 + m2) / s2
         b_prior = m * (s2 + m2) / s2
 
-        a_prior = np.clip(a_prior, 1e-6, 1e8, dtype=np.float32)
-        b_prior = np.clip(b_prior, 1e-8, 1e8, dtype=np.float32)
-        return a_prior, b_prior
+        # The prior is shared by all features of the site: same value for every feature, in float64
+        return np.full_like(delta_hat, np.clip(a_prior, 1e-6, 1e8)), np.full_like(delta_hat, np.clip(b_prior, 1e-8, 1e8))
 
     def _postmean(
         self,
