@@ -10,6 +10,7 @@ from sklearn.utils.validation import (
     FLOAT_DTYPES,
     check_array,
     check_consistent_length,
+    validate_data,
 )
 
 from ._design_matrix_mixin import DesignMatrixMixin
@@ -28,7 +29,7 @@ class BaseComBat(DesignMatrixMixin, StandardizationMixin, LocationAndScaleMixin,
         X: npt.ArrayLike,
         sites: npt.ArrayLike,
         copy: bool = False,
-        estimator: type["BaseComBat"] | None = None,
+        reset: bool = True,
     ) -> tuple[npt.NDArray, npt.NDArray]:
         """Check X and sites.
 
@@ -40,8 +41,10 @@ class BaseComBat(DesignMatrixMixin, StandardizationMixin, LocationAndScaleMixin,
             Sites.
         copy : bool, optional (default False)
             Whether to copy objects when doing `check_array`.
-        estimator : estimator instance, optional (default None)
-            If passed, include the name of the estimator in warning messages.
+        reset : bool, optional (default True)
+            True in ``fit``: store the number of features (``n_features_in_``)
+            and, for DataFrames, their names (``feature_names_in_``). False in
+            ``transform``: check X against them.
 
         Returns
         -------
@@ -50,11 +53,46 @@ class BaseComBat(DesignMatrixMixin, StandardizationMixin, LocationAndScaleMixin,
         ndarray, shape (n_samples,)
             The converted and validated sites.
 
+        Raises
+        ------
+        ValueError
+            If X has missing or infinite values, or (``reset=False``) a
+            different number of features than seen during ``fit``.
+
         """
-        X = check_array(X, copy=copy, dtype=FLOAT_DTYPES, estimator=estimator)
-        sites = check_array(sites, copy=copy, dtype=None, ensure_2d=False, estimator=estimator)
+        X = validate_data(self, X, reset=reset, copy=copy, dtype=FLOAT_DTYPES)
+        sites = check_array(sites, copy=copy, dtype=None, ensure_2d=False, estimator=self)
         check_consistent_length(X, sites)
         return X, sites
+
+    def _check_covariates_as_in_fit(self, **covariates: npt.ArrayLike | None) -> None:
+        """Check that ``transform`` receives the same kinds of covariates as ``fit``.
+
+        Parameters
+        ----------
+        **covariates : array-like or None
+            Covariate arguments of ``transform`` by name (e.g.,
+            ``continuous_covariates=...``). ``fit`` records whether each was
+            given in ``_<name>_used``.
+
+        Raises
+        ------
+        ValueError
+            If a covariate given to ``fit`` is missing, or a covariate not
+            given to ``fit`` is passed.
+
+        """
+        for name, value in covariates.items():
+            used_at_fit = getattr(self, f"_{name}_used", False)
+            if used_at_fit and value is None:
+                raise ValueError(
+                    f"{name} were given to fit, so they must also be given to transform "
+                    "(their effect is preserved for every sample)."
+                )
+            if not used_at_fit and value is not None:
+                raise ValueError(
+                    f"{name} were not given to fit, so transform cannot use them. Fit again with {name} to preserve their effect."
+                )
 
     def _check_categorical_covariates(
         self,
@@ -176,9 +214,9 @@ class BaseComBat(DesignMatrixMixin, StandardizationMixin, LocationAndScaleMixin,
     def __sklearn_tags__(self) -> Tags:
         tags = super().__sklearn_tags__()
         tags.estimator_type = "transformer"
+        # ``sites`` takes the place of ``y``: required, one label per sample (1D), any values
         tags.target_tags.required = True
-        tags.target_tags.two_d_labels = True
-        tags.target_tags.positive_only = True
         tags.input_tags.two_d_array = True
-        tags.input_tags.allow_nan = True
+        # Missing and infinite values are rejected by the input validation
+        tags.input_tags.allow_nan = False
         return tags

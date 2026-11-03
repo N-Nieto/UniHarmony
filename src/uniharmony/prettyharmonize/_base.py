@@ -11,7 +11,6 @@ from typing import Any, Protocol, cast, runtime_checkable
 
 import numpy as np
 import numpy.typing as npt
-import structlog
 from joblib import Parallel, delayed
 from sklearn.base import BaseEstimator, clone
 from sklearn.model_selection import StratifiedKFold
@@ -19,15 +18,16 @@ from sklearn.preprocessing import OneHotEncoder
 from sklearn.utils.validation import FLOAT_DTYPES, check_array, check_consistent_length, check_is_fitted
 
 from uniharmony._utils import minimum_samples_warning, validate_sites
+from uniharmony._verbose import get_logger
 from uniharmony.combat import NeuroComBat
-from uniharmony.combat._available_models import ComBatModel, CovariateArguments, get_covariate_arguments
+from uniharmony.combat._available_models import ComBatModels, CovariateArguments, get_covariate_arguments
 
 from ._prettyharmonize import TargetHarmonizer, _as_columns, target_argument
 
 
 __all__ = ["BasePrettYharmonize"]
 
-logger = structlog.get_logger(src="PrettYharmonize")
+logger = get_logger(src="PrettYharmonize")
 
 Split = tuple[npt.NDArray, npt.NDArray]
 
@@ -126,7 +126,7 @@ class BasePrettYharmonize(BaseEstimator):
 
     def __init__(
         self,
-        harm_model: ComBatModel | None = None,
+        harm_model: ComBatModels | None = None,
         base_model: BaseEstimator | None = None,
         stack_model: BaseEstimator | None = None,
         cv: int | Any = 5,
@@ -182,9 +182,9 @@ class BasePrettYharmonize(BaseEstimator):
     # ------------------------------------------------------------------ #
     # Validation
     # ------------------------------------------------------------------ #
-    def _resolve_models(self) -> tuple[ComBatModel, Any, Any]:
+    def _resolve_models(self) -> tuple[ComBatModels, Any, Any]:
         """Return unfitted copies of the harmonization, base and stack models."""
-        harm_model = NeuroComBat() if self.harm_model is None else cast("ComBatModel", clone(self.harm_model))
+        harm_model = NeuroComBat() if self.harm_model is None else cast("ComBatModels", clone(self.harm_model))
         get_covariate_arguments(harm_model)  # raises TypeError if not a ComBat-based model
         models = []
         for name, model, default in (
@@ -337,7 +337,7 @@ class BasePrettYharmonize(BaseEstimator):
                 f"The inner cross-validation must place every training sample in a validation fold; {np.sum(~covered)} never are."
             )
 
-    def _new_harmonizer(self, harm_model: ComBatModel) -> TargetHarmonizer:
+    def _new_harmonizer(self, harm_model: ComBatModels) -> TargetHarmonizer:
         categorical_argument = self._target_argument == self._covariate_arguments.categorical
         return TargetHarmonizer(harm_model, self._target_argument, self._n_classes, categorical_argument)
 

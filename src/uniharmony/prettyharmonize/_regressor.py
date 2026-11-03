@@ -10,14 +10,14 @@ from typing import Any
 
 import numpy as np
 import numpy.typing as npt
-import structlog
 from sklearn.base import BaseEstimator, RegressorMixin
 from sklearn.linear_model import RidgeCV
 from sklearn.metrics import r2_score
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 
-from uniharmony.combat._available_models import ComBatModel
+from uniharmony._verbose import get_logger
+from uniharmony.combat._available_models import ComBatModels
 
 from ._base import BasePrettYharmonize, _subset
 from ._prettyharmonize import TargetHarmonizer
@@ -25,7 +25,7 @@ from ._prettyharmonize import TargetHarmonizer
 
 __all__ = ["PrettYharmonizeRegressor"]
 
-logger = structlog.get_logger(src="PrettYharmonize")
+logger = get_logger(src="PrettYharmonize")
 
 _ALPHAS = tuple(np.logspace(-3, 3, 13))
 
@@ -104,7 +104,7 @@ harmonized_data_
 
     def __init__(
         self,
-        harm_model: ComBatModel | None = None,
+        harm_model: ComBatModels | None = None,
         base_model: BaseEstimator | None = None,
         stack_model: BaseEstimator | None = None,
         cv: int | Any = 5,

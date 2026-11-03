@@ -5,18 +5,19 @@ from typing import Any
 
 import numpy as np
 import numpy.typing as npt
-import structlog
 from sklearn.base import BaseEstimator, clone, is_classifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import BaseCrossValidator, cross_validate
 from sklearn.utils.validation import check_consistent_length, check_X_y
+
+from uniharmony._verbose import get_logger
 
 
 __all__ = [
     "evaluate_site_prediction",
 ]
 
-logger = structlog.get_logger(src="evaluate_site_prediction")
+logger = get_logger(src="evaluate_site_prediction")
 
 
 def evaluate_site_prediction(

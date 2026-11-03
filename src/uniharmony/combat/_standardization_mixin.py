@@ -3,7 +3,6 @@
 import numpy as np
 import numpy.typing as npt
 import pandas as pd
-import structlog
 from sklearn.utils import check_random_state
 from statsmodels.gam.api import GLMGam
 
@@ -13,11 +12,12 @@ from uniharmony._utils import (
     minimum_samples_warning,
     solve_ordinary_least_squares,
 )
+from uniharmony._verbose import get_logger
 
 
 __all__ = ["StandardizationMixin"]
 
-logger = structlog.get_logger(src="StandardizationMixin")  # lazy: honours later `uniharmony.verbosity` calls
+logger = get_logger(src="StandardizationMixin")
 
 
 class _ShuffledKFold:
@@ -141,8 +141,7 @@ class StandardizationMixin:
                 self._beta_hat[:, i] = res_bs_optim.params
         else:
             # Fit OLS model
-            gram_matrix = design.T @ design
-            self._beta_hat = solve_ordinary_least_squares(gram_matrix, X, design)
+            self._beta_hat = solve_ordinary_least_squares(X, design)
         # Compute weighted grand mean across sites to create reference mean
         minimum_samples_warning(n_samples_per_site)
         site_weights = np.array(n_samples_per_site) / float(n_samples)

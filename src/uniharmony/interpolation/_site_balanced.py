@@ -7,19 +7,19 @@ from typing import Any, Literal
 import numpy as np
 import numpy.typing as npt
 import pandas as pd
-import structlog
 from imblearn.base import SamplerMixin
 from sklearn.base import BaseEstimator, clone
 from sklearn.utils import Tags, check_random_state
 from sklearn.utils.validation import check_is_fitted
 
+from uniharmony._verbose import get_logger
 from uniharmony.interpolation._intra_site import IntraSiteInterpolation
 from uniharmony.interpolation._utils import allocate_proportionally, create_undersampler
 
 
 __all__ = ["SiteBalancedResampler"]
 
-logger = structlog.get_logger(src="SiteBalancedResampler")
+logger = get_logger(src="SiteBalancedResampler")
 
 
 class SiteBalancedResampler(SamplerMixin, BaseEstimator):

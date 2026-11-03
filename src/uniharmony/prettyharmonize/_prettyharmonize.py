@@ -12,7 +12,7 @@ import numpy.typing as npt
 from sklearn.base import clone
 
 from uniharmony._verbose import verbosity_context
-from uniharmony.combat._available_models import ComBatModel, CovariateArguments
+from uniharmony.combat._available_models import ComBatModels, CovariateArguments
 
 
 __all__ = ["TargetHarmonizer", "target_argument"]
@@ -76,8 +76,8 @@ class TargetHarmonizer:
 
     """
 
-    def __init__(self, harm_model: ComBatModel, argument: str, n_classes: int | None, categorical_argument: bool) -> None:
-        self.harm_model = cast("ComBatModel", clone(harm_model))
+    def __init__(self, harm_model: ComBatModels, argument: str, n_classes: int | None, categorical_argument: bool) -> None:
+        self.harm_model = cast("ComBatModels", clone(harm_model))
         self.argument = argument
         self.n_classes = n_classes
         self.categorical_argument = categorical_argument

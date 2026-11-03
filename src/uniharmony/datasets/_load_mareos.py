@@ -10,13 +10,14 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import pooch
-import structlog
 from pooch import HTTPDownloader, Unzip
+
+from uniharmony._verbose import get_logger
 
 
 __all__ = ["load_MAREoS"]
 
-logger = structlog.get_logger(src="load_MAREoS")
+logger = get_logger(src="load_MAREoS")
 
 # Constants
 MAREOS_ZIP_URL = "https://www.imardgroup.com/mareos-benchmark/public_datasets.zip"

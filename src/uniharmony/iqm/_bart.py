@@ -12,19 +12,20 @@ from numbers import Integral, Real
 
 import numpy as np
 import numpy.typing as npt
-import structlog
 from joblib import Parallel, delayed
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils import Tags, check_random_state
 from sklearn.utils._param_validation import Interval, StrOptions
 from sklearn.utils.validation import FLOAT_DTYPES, check_array, check_consistent_length, check_is_fitted
 
+from uniharmony._verbose import get_logger
+
 from ._softbart import ForestSnapshot, SoftBARTForest, quantile_normalize_bart
 
 
 __all__ = ["BARTharm"]
 
-logger = structlog.get_logger(src="BARTharm")
+logger = get_logger(src="BARTharm")
 
 # Shape and rate of the inverse-gamma priors on the error variance and on the
 # site variance scales (``alpha0`` and ``beta0`` in ``bartharm()``)

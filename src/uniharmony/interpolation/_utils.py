@@ -5,7 +5,6 @@ from typing import Any
 
 import numpy as np
 import numpy.typing as npt
-import structlog
 from imblearn.base import SamplerMixin
 from imblearn.over_sampling import (
     ADASYN,
@@ -25,6 +24,8 @@ from numpy.typing import ArrayLike, NDArray
 from sklearn.utils import check_random_state
 from sklearn.utils.validation import check_array
 
+from uniharmony._verbose import get_logger
+
 
 __all__ = [
     "INTERPOLATORS",
@@ -39,7 +40,7 @@ __all__ = [
     "variance_ratio",
 ]
 
-logger = structlog.get_logger(src="interpolation.utils")
+logger = get_logger(src="interpolation.utils")
 
 
 INTERPOLATORS: dict[str, type] = {

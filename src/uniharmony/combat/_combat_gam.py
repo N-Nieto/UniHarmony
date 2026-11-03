@@ -7,14 +7,14 @@
 import numpy as np
 import numpy.typing as npt
 import pandas as pd
-import structlog
-from sklearn.utils import check_random_state
+from sklearn.utils import Tags, check_random_state
 from sklearn.utils.validation import (
     check_is_fitted,
 )
 from statsmodels.gam.api import BSplines
 
 from uniharmony._utils import validate_sites
+from uniharmony._verbose import get_logger
 
 from ._base import BaseComBat
 from ._design_matrix_mixin import _as_columns
@@ -22,7 +22,7 @@ from ._design_matrix_mixin import _as_columns
 
 __all__ = ["ComBatGAM"]
 
-logger = structlog.get_logger(src="ComBatGAM")  # lazy: honours later `uniharmony.verbosity` calls
+logger = get_logger(src="ComBatGAM")
 
 
 class ComBatGAM(BaseComBat):
@@ -48,8 +48,13 @@ class ComBatGAM(BaseComBat):
 
     Attributes
     ----------
-    sites_ : array, shape (n_samples,)
+    sites_ : array, shape (n_sites,)
         Fitted site names.
+    n_features_in_ : int
+        Number of features seen during ``fit``.
+    feature_names_in_ : ndarray of str, shape (n_features_in_,)
+        Names of the features seen during ``fit``. Only defined if ``X`` was a
+        DataFrame with string column names.
 
     Notes
     -----
@@ -148,8 +153,10 @@ class ComBatGAM(BaseComBat):
         logger.debug("Fitting")
 
         # Validate input
-        X, sites = self._check_X_sites(X, sites, estimator=self)
+        X, sites = self._check_X_sites(X, sites)
         validate_sites(sites)
+        if smooth_covariates is None:
+            raise ValueError("smooth_covariates are required: ComBatGAM models their effect with splines.")
 
         # Check smooth_covariates and its bounds if passed
         smooth_covariates = self._check_continuous_covariates(X, smooth_covariates, estimator=self)
@@ -300,7 +307,10 @@ class ComBatGAM(BaseComBat):
 
         # Validate input
         check_is_fitted(self)
-        X, sites = self._check_X_sites(X, sites, estimator=self)
+        X, sites = self._check_X_sites(X, sites, reset=False)
+        if smooth_covariates is None:
+            raise ValueError("smooth_covariates are required: they were used to fit the splines.")
+        self._check_covariates_as_in_fit(continuous_covariates=continuous_covariates)
 
         smooth_covariates = self._check_continuous_covariates(X, smooth_covariates, estimator=self)
 
@@ -363,6 +373,12 @@ class ComBatGAM(BaseComBat):
         )
 
         return bayes_data.T
+
+    def __sklearn_tags__(self) -> Tags:
+        tags = super().__sklearn_tags__()
+        # The penalty weights are selected with shuffled k-fold CV, seeded by random_state
+        tags.non_deterministic = self.random_state is None
+        return tags
 
     def _clip_to_spline_range(self, x_spline: npt.NDArray) -> npt.NDArray:
         """Clip smooth covariates to the range covered by the fitted B-splines.

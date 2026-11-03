@@ -12,10 +12,11 @@ membership from the covariance structure of the data.
 
 import numpy as np
 import numpy.typing as npt
-import structlog
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from sklearn.utils.validation import check_is_fitted
+
+from uniharmony._verbose import get_logger
 
 from ._base import BaseComBat
 from ._neuro_combat import NeuroComBat
@@ -23,7 +24,7 @@ from ._neuro_combat import NeuroComBat
 
 __all__ = ["CovBat"]
 
-logger = structlog.get_logger(src="CovBat")  # lazy: honours later `uniharmony.verbosity` calls
+logger = get_logger(src="CovBat")
 
 
 class CovBat(BaseComBat):
@@ -81,6 +82,11 @@ class CovBat(BaseComBat):
         Site names seen during ``fit``.
     n_pc_ : int
         Number of PCs selected for harmonization.
+    n_features_in_ : int
+        Number of features seen during ``fit``.
+    feature_names_in_ : ndarray of str, shape (n_features_in_,)
+        Names of the features seen during ``fit``. Only defined if ``X`` was a
+        DataFrame with string column names.
 
     Notes
     -----
@@ -166,7 +172,7 @@ class CovBat(BaseComBat):
         """
         logger.debug("Fitting")
         # ---- validate inputs ----
-        X, sites = self._check_X_sites(X, sites, estimator=self)
+        X, sites = self._check_X_sites(X, sites)
 
         # First combat
         # This is an adaptation of original ComBat.
@@ -337,6 +343,7 @@ class CovBat(BaseComBat):
         logger.debug("Transforming")
 
         check_is_fitted(self)
+        X, sites = self._check_X_sites(X, sites, reset=False)
 
         # ---- 1. First ComBat (residualize) ----
         residualized = self._first_combat.transform(
@@ -424,7 +431,10 @@ class _ResidualNeuroComBat(NeuroComBat):
 
         # ---- input validation (mirrors NeuroComBat.transform) ----
         check_is_fitted(self)
-        X, sites = self._check_X_sites(X, sites, estimator=self)
+        X, sites = self._check_X_sites(X, sites, reset=False)
+        self._check_covariates_as_in_fit(
+            categorical_covariates=categorical_covariates, continuous_covariates=continuous_covariates
+        )
 
         if self._categorical_covariates_used:
             categorical_covariates = self._check_categorical_covariates(X, categorical_covariates, estimator=self)

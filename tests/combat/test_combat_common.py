@@ -149,8 +149,6 @@ _MISSING_SMOOTH = "missing smooth covariates"
 # Checks expected to fail for every ComBat variant
 _COMMON_EXPECTED_FAILED_CHECKS = {
     "check_transformers_unfitted": "checked inside",
-    "check_n_features_in_after_fitting": "not needed",
-    "check_n_features_in": "not needed",
     "check_requires_y_none": "target cannot be None",
     "check_fit2d_1sample": "custom message",
     "check_fit_score_takes_y": _SITES_INSTEAD_OF_Y,
@@ -166,15 +164,16 @@ _COMMON_EXPECTED_FAILED_CHECKS = {
     "check_dict_unchanged": _SITES_INSTEAD_OF_Y,
     "check_fit_idempotent": _SITES_INSTEAD_OF_Y,
     "check_fit2d_predict1d": _SITES_INSTEAD_OF_Y,
+    "check_n_features_in_after_fitting": _SITES_INSTEAD_OF_Y,
 }
 
 # Additional checks expected to fail per variant
 _EXTRA_EXPECTED_FAILED_CHECKS = {
     NeuroComBat: {
-        "check_estimators_nan_inf": "checked inside",
+        "check_estimators_nan_inf": _SITES_INSTEAD_OF_Y,
     },
     CovBat: {
-        "check_estimators_nan_inf": "checked inside",
+        "check_estimators_nan_inf": _SITES_INSTEAD_OF_Y,
         "check_fit2d_1feature": "Harmonization produced non-finite values",
     },
     ComBatGAM: dict.fromkeys(
@@ -186,10 +185,12 @@ _EXTRA_EXPECTED_FAILED_CHECKS = {
             "check_estimator_sparse_tag",
             "check_estimators_empty_data_messages",
             "check_estimators_fit_returns_self",
+            "check_estimators_nan_inf",
             "check_estimators_overwrite_params",
             "check_fit1d",
             "check_fit2d_1feature",
             "check_fit_check_is_fitted",
+            "check_n_features_in",
             "check_pipeline_consistency",
             "check_positive_only_tag_during_fit",
             "check_readonly_memmap_input",

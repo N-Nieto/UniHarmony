@@ -517,3 +517,48 @@ def test_sklearn_tags():
     """Test initialization with pre-configured OT instance."""
     otda = OptimalTransportDomainAdaptation()
     otda.__sklearn_tags__()
+
+
+# =============================================================================
+# Input validation and tags (audit #13, #14)
+# =============================================================================
+
+
+def test_transform_with_other_number_of_features_raises(simple_data):
+    """A different number of features at transform gives a clear error."""
+    X, _, sites = simple_data
+    otda = OptimalTransportDomainAdaptation().fit(X, sites, ref_site=sites[0])
+    assert otda.n_features_in_ == X.shape[1]
+    with pytest.raises(ValueError, match=f"X has {X.shape[1] - 1} features"):
+        otda.transform(X[:, :-1], sites)
+
+
+def test_tags_describe_sites_and_finite_input():
+    """Sites are required 1D labels of any value; missing values are rejected."""
+    tags = OptimalTransportDomainAdaptation().__sklearn_tags__()
+    assert tags.target_tags.required
+    assert not tags.target_tags.two_d_labels
+    assert not tags.target_tags.positive_only
+    assert tags.input_tags.allow_nan is False
+
+
+def test_every_listed_metric_is_supported():
+    """Every metric of ``MetricType`` is accepted by POT (removed SciPy metrics are not listed)."""
+    from typing import get_args
+
+    import ot
+
+    from uniharmony.ot._otda import MetricType
+
+    rng = np.random.default_rng(0)
+    a, b = rng.random((4, 3)), rng.random((5, 3))
+    for metric in get_args(MetricType):
+        assert ot.dist(a, b, metric=metric).shape == (4, 5), metric
+
+
+def test_ot_is_exported_at_top_level():
+    """``uniharmony.ot`` is reachable from the top-level package (audit #16)."""
+    import uniharmony
+
+    assert "ot" in uniharmony.__all__
+    assert uniharmony.ot.OptimalTransportDomainAdaptation is OptimalTransportDomainAdaptation

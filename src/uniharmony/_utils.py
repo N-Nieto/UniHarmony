@@ -2,7 +2,8 @@
 
 import numpy as np
 import numpy.typing as npt
-import structlog
+
+from uniharmony._verbose import get_logger
 
 
 __all__ = [
@@ -14,80 +15,53 @@ __all__ = [
 ]
 
 
-logger = structlog.get_logger(src="utils")
+logger = get_logger(src="utils")
 
 
-def solve_ordinary_least_squares(
-    gram_matrix: npt.NDArray,
-    X: npt.NDArray,
-    design: npt.NDArray,
-) -> npt.NDArray:
-    """Solve Ordinary Least Squares using normal equations with stability checks.
+def solve_ordinary_least_squares(X: npt.NDArray, design: npt.NDArray) -> npt.NDArray:
+    """Fit ordinary least squares for many targets at once.
 
-    Solves: beta = (X_design^T @ X_design)^(-1) @ X_design^T @ X_data
-
-    Uses Cholesky decomposition for well-conditioned matrices and falls back
-    to pseudo-inverse for ill-conditioned cases.
+    Solves ``beta = argmin ||X.T - design @ beta||^2`` with an SVD-based
+    least-squares solver, which is numerically stable for any design. For a
+    full-rank design this is the usual estimate
+    ``(design.T @ design)^-1 @ design.T @ X.T``; for a rank-deficient design
+    (e.g., a covariate collinear with the sites) it is the minimum-norm
+    solution, and a warning reports the condition number of the design.
 
     Parameters
     ----------
-    gram_matrix : array, shape (n_features, n_features)
-        The Gram matrix X_design^T @ X_design.
-    X : array, shape (n_samples, n_targets)
-        Target values (transposed to (n_targets, n_samples) internally).
-    design : array, shape (n_samples, n_features)
-        Design matrix X_design.
+    X : array, shape (n_targets, n_samples)
+        Target values, one row per target.
+    design : array, shape (n_samples, n_regressors)
+        Design matrix.
 
     Returns
     -------
-    solution : ndarray, shape (n_features, n_targets)
+    solution : ndarray, shape (n_regressors, n_targets)
         OLS coefficients.
-    condition_number : float
-        Condition number of the Gram matrix (useful for diagnostics).
 
     Raises
     ------
     ValueError
-        If gram_matrix is not square or shapes are incompatible.
-    np.linalg.LinAlgError
-        If both Cholesky and pseudo-inverse fail.
-
-    Notes
-    -----
-    The condition number is computed as the ratio of largest to smallest
-    singular value. Large condition numbers (>1e10) indicate potential
-    numerical instability.
+        If the shapes of ``X`` and ``design`` are incompatible.
 
     """
-    # Validate inputs
-    gram_matrix = np.asarray(gram_matrix)
-    design = np.asarray(design)
     X = np.asarray(X)
+    design = np.asarray(design)
+    if design.ndim != 2:
+        raise ValueError(f"design must be a 2D array, got shape {design.shape}")
+    if X.ndim != 2 or X.shape[1] != design.shape[0]:
+        raise ValueError(f"X must have shape (n_targets, {design.shape[0]}), got {X.shape}")
 
-    if gram_matrix.ndim != 2 or gram_matrix.shape[0] != gram_matrix.shape[1]:
-        raise ValueError(f"gram_matrix must be square 2D array, got shape {gram_matrix.shape}")
-
-    n_features = gram_matrix.shape[0]
-    if design.shape[1] != n_features:
-        raise ValueError(f"design has {design.shape[1]} features but gram_matrix has {n_features}")
-
-    try:
-        # Quick check: try Cholesky decomposition (only works for well-conditioned SPD matrices)
-        # This is faster than computing full condition number
-        np.linalg.cholesky(gram_matrix)
-        # If Cholesky succeeds, matrix is well-conditioned, use fast inv
-        solution = np.linalg.inv(gram_matrix) @ design.T @ X.T
-    except np.linalg.LinAlgError:
-        # Cholesky failed - matrix is singular or ill-conditioned
-        # Fall to pseudo-inverse for numerical stability and raise a warning
-        cond_num = np.linalg.cond(gram_matrix)
+    solution, _, rank, singular_values = np.linalg.lstsq(design, X.T, rcond=None)
+    if rank < design.shape[1]:
+        condition_number = singular_values[0] / singular_values[-1] if singular_values[-1] > 0 else np.inf
         logger.warning(
-            f"Design matrix is ill-conditioned (condition number: {cond_num:.2e}). "
-            "Using pseudo-inverse for numerical stability. "
+            f"Design matrix is rank deficient (rank {rank} < {design.shape[1]} columns, "
+            f"condition number: {condition_number:.2e}). Using the minimum-norm least-squares solution. "
             "Consider removing redundant covariates or checking for perfect "
             "correlation between covariates and sites."
         )
-        solution = np.linalg.pinv(design) @ X.T
     return solution
 
 
@@ -200,7 +174,6 @@ def minimum_samples_warning(n_samples_per_site: list[list[int]] | npt.NDArray, m
     n_samples_per_site = np.asarray(n_samples_per_site)
 
     min_samples = int(np.min(n_samples_per_site))
-    min_samples = np.min(n_samples_per_site)
     if min_samples < min_samples_limit:
         logger.warning(
             f"Site with only {min_samples} samples detected. "

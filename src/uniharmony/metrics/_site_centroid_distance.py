@@ -6,19 +6,19 @@ from typing import Any
 import numpy as np
 import numpy.typing as npt
 import pandas as pd
-import structlog
 from sklearn.covariance import ledoit_wolf_shrinkage, shrunk_covariance
 from sklearn.utils import check_random_state
 from sklearn.utils.validation import FLOAT_DTYPES, check_array, check_consistent_length
 
 from uniharmony._utils import validate_sites
+from uniharmony._verbose import get_logger
 
 
 __all__ = [
     "site_centroid_distance",
 ]
 
-logger = structlog.get_logger(src="site_centroid_distance")
+logger = get_logger(src="site_centroid_distance")
 
 _METRICS = ("euclidean", "standardized", "mahalanobis")
 

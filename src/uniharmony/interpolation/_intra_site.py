@@ -6,7 +6,6 @@ from typing import Any, Literal
 import numpy as np
 import numpy.typing as npt
 import pandas as pd
-import structlog
 from imblearn.base import SamplerMixin
 from imblearn.over_sampling import RandomOverSampler
 from sklearn.base import BaseEstimator, clone
@@ -14,6 +13,7 @@ from sklearn.utils import Tags, check_random_state
 from sklearn.utils.validation import check_array, check_consistent_length, check_is_fitted, check_X_y
 
 from uniharmony._utils import validate_sites
+from uniharmony._verbose import get_logger
 from uniharmony.interpolation._utils import (
     allocate_proportionally,
     create_interpolator,
@@ -26,7 +26,7 @@ from uniharmony.interpolation._utils import (
 
 __all__ = ["IntraSiteInterpolation"]
 
-logger = structlog.get_logger(src="IntraSiteInterpolation")
+logger = get_logger(src="IntraSiteInterpolation")
 
 # Number of synthetic samples drawn to estimate how well an interpolator preserves the variance of a cell.
 _PILOT_MIN, _PILOT_MAX = 200, 2000

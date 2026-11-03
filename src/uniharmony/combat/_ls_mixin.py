@@ -4,14 +4,14 @@ import math
 
 import numpy as np
 import numpy.typing as npt
-import structlog
 
 from uniharmony._utils import handle_near_zero_values, solve_ordinary_least_squares
+from uniharmony._verbose import get_logger
 
 
 __all__ = ["LocationAndScaleMixin"]
 
-logger = structlog.get_logger(src="LocationAndScaleMixin")  # lazy: honours later `uniharmony.verbosity` calls
+logger = get_logger(src="LocationAndScaleMixin")
 
 
 class LocationAndScaleMixin:
@@ -64,9 +64,7 @@ class LocationAndScaleMixin:
         # check how much each site's mean differs from the grand mean
         # Since data is standardized, we expect gamma_hat to be close to 0
         # Non-zero values indicate site-specific location shifts (batch effects)
-        gram_site = site_design.T @ site_design
-
-        gamma_hat = solve_ordinary_least_squares(gram_site, data, site_design)
+        gamma_hat = solve_ordinary_least_squares(data, site_design)
 
         # Estimate scale parameters (delta_hat) per site to
         # check each site's variance for each feature
@@ -458,9 +456,9 @@ class LocationAndScaleMixin:
         Returns
         -------
         a_prior : ndarray, shape (n_features,)
-            Shape parameter: a = (2*s2 + m^2) / s2
+            Shape parameter: a = (2*s2 + m^2) / s2 (the same for every feature).
         b_prior : ndarray, shape (n_features,)
-            Scale parameter: b = (m*s2 + m^3) / s2
+            Scale parameter: b = (m*s2 + m^3) / s2 (the same for every feature).
 
         """
         delta_hat = np.asarray(delta_hat, dtype=np.float64)
@@ -488,9 +486,8 @@ class LocationAndScaleMixin:
         a_prior = (2.0 * s2 + m2) / s2
         b_prior = m * (s2 + m2) / s2
 
-        a_prior = np.clip(a_prior, 1e-6, 1e8, dtype=np.float32)
-        b_prior = np.clip(b_prior, 1e-8, 1e8, dtype=np.float32)
-        return a_prior, b_prior
+        # The prior is shared by all features of the site: same value for every feature, in float64
+        return np.full_like(delta_hat, np.clip(a_prior, 1e-6, 1e8)), np.full_like(delta_hat, np.clip(b_prior, 1e-8, 1e8))
 
     def _postmean(
         self,
@@ -913,7 +910,8 @@ class LocationAndScaleMixin:
             pooled_std = pooled_std[:, np.newaxis]
         for j, site_idxs in enumerate(idx_per_site):
             if len(site_idxs) == 0:
-                logger.warning(f"Site {j} has no samples")
+                # A batch may contain only some of the fitted sites (e.g. one new subject)
+                logger.debug(f"Site {j} has no samples in this batch")
                 continue
 
             # Get adjusted parameters for this site
