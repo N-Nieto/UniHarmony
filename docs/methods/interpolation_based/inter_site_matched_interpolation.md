@@ -82,8 +82,8 @@ ismi = InterSiteMatchedInterpolation(
 
 X_res, y_res = ismi.fit_resample(
     X, y, sites=sites,
-    categorical_covariate=sex,
-    continuous_covariate=age
+    categorical_covariates=sex,
+    continuous_covariates=age
 )
 ```
 

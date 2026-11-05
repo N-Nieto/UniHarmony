@@ -8,4 +8,5 @@ interpolation/index
 ot/index
 iqm/index
 conformance/index
+pipelines/index
 ```

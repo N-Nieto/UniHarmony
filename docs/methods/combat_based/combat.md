@@ -69,7 +69,7 @@ Original ComBat and neuroComBat implementations require access to **the full dat
 
 **Implication**
 
-This introduces **data leakage** in machine learning pipelines because information from the test set influences the training transformation [^6].
+This introduces **data leakage** in machine learning pipelines because information from the test set influences the training transformation [^4].
 
 Newer implementations of neuroComBat (including the one in UniHarmony), allow the models to find its parameters in a training set and to be applied in a test set, allowing its integration into ML pipelines.
 
@@ -106,6 +106,42 @@ Sites have roughly similar numbers of samples.
 If one site dominates the dataset, it can strongly influence the pooled distribution used in harmonization, potentially leading to **overcorrection of smaller sites**.
 
 Empirical Bayes shrinkage partially mitigates this issue, but severe imbalance may still affect results.
+
+## Pooled or reference target (`ref_site`)
+
+By default every site is harmonized to the **pooled** distribution of all sites: the grand mean
+$\hat\alpha = \sum_i (n_i/n)\,\hat\beta_i$ and the pooled residual variance
+$\hat\sigma^2 = \mathrm{RSS}/(n - S)$. Every site, the largest one included, is changed.
+
+With `ref_site`, the target is computed on the **reference site(s)** $R$ only:
+
+$$
+\hat\alpha = \sum_{i \in R} \frac{n_i}{n_R}\,\hat\beta_i,
+\qquad
+\hat\sigma^2 = \frac{1}{n_R - |R|} \sum_{i \in R} \sum_j (y_{ij} - \hat y_{ij})^2 .
+$$
+
+The covariate effects and the empirical Bayes priors are still estimated from all sites.
+
+- **One reference site** (`ref_site="siteA"`, `ref.batch` of R `sva::ComBat`): its data are left unchanged (its site
+  effect is exactly $\hat\gamma = 0$, $\hat\delta = 1$ and is not shrunk) and every other site takes its mean and
+  variance. Useful when one site is the gold standard, or to apply a model trained on one site to new sites without
+  retraining it.
+- **Several reference sites** (`ref_site=["siteA", "siteB"]`): every site, the reference sites included, is harmonized
+  to the pooled distribution of the reference sites.
+
+```python
+from uniharmony.combat import NeuroComBat
+
+combat = NeuroComBat(ref_site="siteA")                   # or ref_site=["siteA", "siteB"]
+X_harmonized = combat.fit_transform(X, sites=sites)      # rows of siteA are unchanged
+```
+
+`ref_site` is available in {class}`~uniharmony.combat.NeuroComBat`, {class}`~uniharmony.combat.ComBatGAM` and
+{class}`~uniharmony.combat.CovBat` (both ComBat steps), and in PrettYharmonize through its `harm_model`. UniHarmony
+divides the reference residual sum of squares by $n_R - |R|$ (R `sva::ComBat` and `neuroCombat` by $n_R$, which shrinks
+the target variance by $(n_R - 1)/n_R$ with one reference site); with that choice restored the output equals
+`neuroCombat`'s `ref_batch` output (tested). See the gallery example "ComBat with a reference site".
 
 ## Closed-set site assumption
 
