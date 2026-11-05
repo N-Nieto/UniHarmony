@@ -8,10 +8,13 @@
 # https://github.com/Warvito/neurocombat_sklearn
 # licensed under MIT license.
 
+from typing import Self
+
 import numpy as np
 import numpy.typing as npt
 from sklearn.utils.validation import check_is_fitted
 
+from uniharmony._data import TransformOutput
 from uniharmony._verbose import get_logger
 
 from ._base import BaseComBat
@@ -206,7 +209,7 @@ class NeuroComBat(BaseComBat):
         sites: npt.ArrayLike | None = None,
         categorical_covariates: npt.ArrayLike | None = None,
         continuous_covariates: npt.ArrayLike | None = None,
-    ) -> "NeuroComBat":
+    ) -> Self:
         """Compute per-feature statistics to perform harmonization.
 
         Parameters
@@ -300,7 +303,7 @@ class NeuroComBat(BaseComBat):
         sites: npt.ArrayLike | None = None,
         categorical_covariates: npt.ArrayLike | None = None,
         continuous_covariates: npt.ArrayLike | None = None,
-    ) -> npt.NDArray:
+    ) -> TransformOutput:
         """Harmonize data.
 
         Parameters

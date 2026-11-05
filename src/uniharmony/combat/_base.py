@@ -7,7 +7,14 @@ import numpy.typing as npt
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils import Tags
 
-from uniharmony._data import HarmonizationData, HarmonizationInputMixin, MetadataSpec, check_sites_seen
+from uniharmony._data import (
+    HarmonizationData,
+    HarmonizationInputMixin,
+    HarmonizationOutputMixin,
+    MetadataSpec,
+    TransformOutput,
+    check_sites_seen,
+)
 from uniharmony._utils import validate_sites
 
 from ._design_matrix_mixin import DesignMatrixMixin
@@ -29,6 +36,7 @@ SMOOTH = MetadataSpec("smooth_covariates", "smooth_columns", numeric=True, descr
 
 class BaseComBat(
     HarmonizationInputMixin,
+    HarmonizationOutputMixin,
     DesignMatrixMixin,
     StandardizationMixin,
     LocationAndScaleMixin,
@@ -127,7 +135,7 @@ class BaseComBat(
             self._check_metadata_as_in_fit(data, [spec.keyword for spec in self._metadata_specs if spec.keyword != "sites"])
         return data
 
-    def fit_transform(self, X: npt.ArrayLike, y: npt.ArrayLike | None = None, **params: Any) -> npt.NDArray:
+    def fit_transform(self, X: npt.ArrayLike, y: npt.ArrayLike | None = None, **params: Any) -> TransformOutput:
         """Fit to data, then harmonize it.
 
         Equivalent to ``fit(X, y, **params).transform(X, **params)``: the

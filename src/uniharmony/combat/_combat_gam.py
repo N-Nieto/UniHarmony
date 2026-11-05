@@ -4,6 +4,8 @@
 # https://github.com/rpomponio/neuroHarmonize
 # licensed under MIT license
 
+from typing import Self
+
 import numpy as np
 import numpy.typing as npt
 import pandas as pd
@@ -13,6 +15,7 @@ from sklearn.utils.validation import (
 )
 from statsmodels.gam.api import BSplines
 
+from uniharmony._data import TransformOutput
 from uniharmony._verbose import get_logger
 
 from ._base import CONTINUOUS, SITES, SMOOTH, BaseComBat
@@ -204,7 +207,7 @@ class ComBatGAM(BaseComBat):
         sites: npt.ArrayLike | None = None,
         smooth_covariates: npt.ArrayLike | None = None,
         continuous_covariates: npt.ArrayLike | None = None,
-    ) -> "ComBatGAM":
+    ) -> Self:
         """Compute per-feature statistics to perform harmonization.
 
         Parameters
@@ -360,7 +363,7 @@ class ComBatGAM(BaseComBat):
         sites: npt.ArrayLike | None = None,
         smooth_covariates: npt.ArrayLike | None = None,
         continuous_covariates: npt.ArrayLike | None = None,
-    ) -> npt.NDArray:
+    ) -> TransformOutput:
         """Harmonize data.
 
         Parameters

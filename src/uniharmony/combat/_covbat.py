@@ -10,12 +10,15 @@ machine-learning classifiers should no longer be able to detect site
 membership from the covariance structure of the data.
 """
 
+from typing import Self
+
 import numpy as np
 import numpy.typing as npt
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from sklearn.utils.validation import check_is_fitted
 
+from uniharmony._data import TransformOutput
 from uniharmony._verbose import get_logger
 
 from ._base import BaseComBat
@@ -204,7 +207,7 @@ class CovBat(BaseComBat):
         sites: npt.ArrayLike | None = None,
         categorical_covariates: npt.ArrayLike | None = None,
         continuous_covariates: npt.ArrayLike | None = None,
-    ) -> "CovBat":
+    ) -> Self:
         """Compute per-feature statistics to perform harmonization.
 
         Parameters
@@ -324,7 +327,7 @@ class CovBat(BaseComBat):
         sites: npt.ArrayLike | None = None,
         categorical_covariates: npt.ArrayLike | None = None,
         continuous_covariates: npt.ArrayLike | None = None,
-    ) -> npt.NDArray:
+    ) -> TransformOutput:
         """Harmonize data.
 
         Parameters
