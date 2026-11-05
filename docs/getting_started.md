@@ -16,6 +16,17 @@ pip install uniharmony
 uv add uniharmony
 ```
 
+### Optional dependencies
+
+| Extra | Installs | Needed for |
+|---|---|---|
+| `uniharmony[datasets]` | DataLad | Downloading BIDS datasets such as ON-Harmony ({func}`~uniharmony.datasets.download_ONharmony`). DataLad also needs [git-annex](https://git-annex.branchable.com/install/), which is not a Python package. |
+| `uniharmony[dl]` | PyTorch | The deep-learning harmonizers in `uniharmony.dl`. |
+
+```console
+pip install "uniharmony[datasets,dl]"
+```
+
 ## 🪄 Usage
 
 Every harmonizer is a scikit-learn transformer. The sites (and covariates) can be columns of a DataFrame, named in the

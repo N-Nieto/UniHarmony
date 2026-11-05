@@ -13,11 +13,13 @@ from uniharmony.datasets._load_mareos import (
 )
 
 
+@pytest.mark.network
 def test_load_mareos_success() -> None:
     """Test basic functionality."""
     load_MAREoS()
 
 
+@pytest.mark.network
 def test_force_download(tmp_path: Path) -> None:
     """Force download functionality.
 
@@ -34,6 +36,7 @@ def test_force_download(tmp_path: Path) -> None:
     load_MAREoS(data_dir=data_dir, force_download=False)
 
 
+@pytest.mark.network
 def test_invalid_load_params(tmp_path: Path) -> None:
     """Force download functionality.
 
@@ -54,6 +57,7 @@ def test_invalid_load_params(tmp_path: Path) -> None:
     assert isinstance(load_MAREoS(data_dir=data_dir, effects="eos"), dict)
 
 
+@pytest.mark.network
 def test_ensure_mareos_data_custom_dir(tmp_path: Path) -> None:
     """Test using custom data directory.
 
@@ -72,6 +76,7 @@ def test_ensure_mareos_data_custom_dir(tmp_path: Path) -> None:
 # ============================================================================
 # Test _load_MAREoS_single_dataset
 # ============================================================================
+@pytest.mark.network
 def test_load_mareos_single_dataset_validation():
     """Test parameter validation for single dataset loading."""
     # Test invalid effect
@@ -103,6 +108,7 @@ def test_load_mareos_single_dataset_validation():
         )
 
 
+@pytest.mark.network
 def test_load_mareos_single_dataset_success() -> None:
     """Test successful loading of single dataset."""
     # Create mock data
@@ -127,6 +133,7 @@ def test_load_mareos_single_dataset_success() -> None:
     assert folds.shape == (1001,)
 
 
+@pytest.mark.network
 def test_load_mareos_single_dataset_dataframe_funtionality() -> None:
     """Test load data as dataframe."""
     # Create mock data
