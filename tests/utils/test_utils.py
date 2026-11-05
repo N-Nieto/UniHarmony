@@ -310,7 +310,7 @@ def test_validate_sites_valid(sites):
 @pytest.mark.parametrize(
     "sites, error_match",
     [
-        (np.array([0]), "At least 2 sites required"),
+        (np.array([0]), "At least 2 samples required"),
         (np.array([1, 1, 1]), "At least 2 sites required"),
         (np.array(["A", "A", "A"]), "At least 2 sites required"),
         (np.array([0.0, 0.0]), "At least 2 sites required"),
