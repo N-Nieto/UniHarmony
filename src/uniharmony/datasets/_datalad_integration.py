@@ -4,11 +4,13 @@ import shutil
 import tempfile
 from dataclasses import dataclass
 from pathlib import Path
-
-import datalad.api as dl
-from datalad.support.exceptions import IncompleteResultsError
+from typing import TYPE_CHECKING, Any
 
 from uniharmony._verbose import get_logger
+
+
+if TYPE_CHECKING:
+    import datalad.api as dl
 
 
 __all__ = [
@@ -18,6 +20,32 @@ __all__ = [
 ]
 
 logger = get_logger(src="datalad")
+
+
+def _import_datalad() -> tuple[Any, type[Exception]]:
+    """Import DataLad, an optional dependency (``uniharmony[datasets]``).
+
+    Returns
+    -------
+    tuple
+        The ``datalad.api`` module and DataLad's ``IncompleteResultsError``.
+
+    Raises
+    ------
+    ImportError
+        If DataLad is not installed.
+
+    """
+    try:
+        import datalad.api as datalad_api
+        from datalad.support.exceptions import IncompleteResultsError
+    except ImportError as e:
+        raise ImportError(
+            "Downloading BIDS datasets (e.g. ON-Harmony) needs DataLad: install it with "
+            "`pip install 'uniharmony[datasets]'`. DataLad also needs git-annex "
+            "(https://git-annex.branchable.com/install/)."
+        ) from e
+    return datalad_api, IncompleteResultsError
 
 
 def download_bids_dataset(
@@ -95,6 +123,8 @@ def download_bids_dataset(
     - Repeated calls are safe and will only download missing files.
 
     """
+    # Fail before creating any directory if the optional dependency is missing
+    _import_datalad()
     #  Validate arguments
     subjects, sessions, modalities, suffixes, extensions, root_files = _validate_arguments(
         subjects, sessions, modalities, suffixes, extensions, root_files
@@ -180,7 +210,7 @@ def _validate_arguments(
 def _initialize_dl_dataset(
     dataset_path: Path,
     source_url: str,
-) -> dl.Dataset:
+) -> "dl.Dataset":
     """Initialize the full DataLad dataset workflow.
 
     Clones the remote repository into the given path and installs
@@ -204,6 +234,7 @@ def _initialize_dl_dataset(
         If there is a problem cloning the datalad dataset.
 
     """
+    dl, IncompleteResultsError = _import_datalad()
     # Only clone if directory is empty or doesn't exist
     if not dataset_path.exists() or not any(dataset_path.iterdir()):
         logger.info("Cloning DataLad dataset...")
