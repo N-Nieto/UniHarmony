@@ -1,8 +1,17 @@
 """Test module for load_onharmony function."""
 
+import importlib.util
+
 import pytest
 
 from uniharmony.datasets import download_ONharmony
+
+
+# Clones ON-Harmony with DataLad (needs the network, DataLad and git-annex)
+pytestmark = [
+    pytest.mark.network,
+    pytest.mark.skipif(importlib.util.find_spec("datalad") is None, reason="DataLad not installed (uniharmony[datasets])"),
+]
 
 
 @pytest.mark.parametrize(

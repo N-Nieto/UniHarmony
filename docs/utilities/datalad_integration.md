@@ -2,6 +2,11 @@
 
 ``uniharmony`` provides a transparent way for downloading, managing, and interacting with BIDS-compatible neuroimaging datasets using DataLad. Designed primarily for the [ON-Harmony dataset (ds004712)](https://openneuro.org/datasets/ds004712) — a multi-site, multi-modal travelling-heads MRI harmonisation resource.
 
+```{note}
+DataLad is an optional dependency: install it with `pip install "uniharmony[datasets]"`, and install
+[git-annex](https://git-annex.branchable.com/install/) on your system.
+```
+
 ## Overview
 
 We can use it for:

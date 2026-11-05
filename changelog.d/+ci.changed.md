@@ -1,0 +1,1 @@
+CI: lint covers `src/` and `tests/` and checks the formatting (`ruff format --check`); the tests that download data are marked `network` (`pytest -m "not network"` runs offline); a release is published only after its tests pass; tox passes extra pytest arguments (`tox -- -m "not network"`).
