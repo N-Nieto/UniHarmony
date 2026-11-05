@@ -16,8 +16,9 @@ from joblib import Parallel, delayed
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils import Tags, check_random_state
 from sklearn.utils._param_validation import Interval, StrOptions
-from sklearn.utils.validation import FLOAT_DTYPES, check_array, check_consistent_length, check_is_fitted
+from sklearn.utils.validation import check_is_fitted
 
+from uniharmony._data import HarmonizationInputMixin, MetadataSpec, check_sites_seen
 from uniharmony._verbose import get_logger
 
 from ._softbart import ForestSnapshot, SoftBARTForest, quantile_normalize_bart
@@ -35,7 +36,7 @@ _PRIOR_RATE = 0.01
 _MIN_VARIANCE = 1e-12
 
 
-class BARTharm(TransformerMixin, BaseEstimator):
+class BARTharm(HarmonizationInputMixin, TransformerMixin, BaseEstimator):
     r"""Harmonize scanner effects using image quality metrics (IQMs).
 
     BARTharm [1]_ models every imaging-derived phenotype (feature) ``y`` as
@@ -62,6 +63,18 @@ class BARTharm(TransformerMixin, BaseEstimator):
 
     Parameters
     ----------
+    iqm_columns : str or int or list or None, optional (default None)
+        Columns of ``X`` holding the image quality metrics, which model the
+        scanner effects (name for a DataFrame, position for an array).
+        Alternative to the ``iqm_covariates`` keyword; one of them is required.
+        Read the metadata from columns to use the transformer in a
+        scikit-learn :class:`~sklearn.pipeline.Pipeline`.
+    biological_columns : str or int or list or None, optional (default None)
+        Columns of ``X`` holding the biological covariates (e.g., age, sex).
+        Alternative to the ``biological_covariates`` keyword.
+    site_column : str or int or None, optional (default None)
+        Column of ``X`` holding the site of every sample. Alternative to the
+        ``sites`` keyword. Only used with ``var_scaling=True``.
     n_iter : int, optional (default 5000)
         Number of Gibbs iterations.
     burn_in : int, optional (default 500)
@@ -79,7 +92,7 @@ class BARTharm(TransformerMixin, BaseEstimator):
         Base of the tree depth prior of the scanner and biological forests.
     var_scaling : bool, optional (default False)
         Whether to also harmonize site-specific error variances. Requires
-        ``sites`` in :meth:`fit` and :meth:`transform`.
+        the sites (``site_column`` or the ``sites`` keyword).
     posterior_summary : {"mean", "median"}, optional (default "mean")
         Summary of the posterior draws of the harmonized features.
     n_stored_draws : int, optional (default 200)
@@ -95,7 +108,11 @@ class BARTharm(TransformerMixin, BaseEstimator):
     Attributes
     ----------
     n_features_in_ : int
-        Number of features seen during :meth:`fit`.
+        Number of columns of ``X`` seen during :meth:`fit` (metadata columns
+        included).
+    feature_names_in_ : ndarray of str
+        Names of the columns seen during :meth:`fit`. Only defined if ``X``
+        was a DataFrame with string column names.
     n_iqm_covariates_ : int
         Number of IQMs seen during :meth:`fit`.
     n_biological_covariates_ : int
@@ -156,13 +173,20 @@ class BARTharm(TransformerMixin, BaseEstimator):
     Examples
     --------
     >>> from uniharmony.iqm import BARTharm
+    >>> # IQMs and covariates as columns of a DataFrame (works in a Pipeline)
+    >>> harmonizer = BARTharm(iqm_columns=["snr", "cnr"], biological_columns=["age", "sex"], random_state=0)
+    >>> X_harmonized = harmonizer.fit_transform(df)  # doctest: +SKIP
+    >>> # IQMs and covariates as keywords
     >>> harmonizer = BARTharm(random_state=0, n_jobs=-1)
-    >>> X_harmonized = harmonizer.fit_transform(X, iqms, biological_covariates=age_sex)  # doctest: +SKIP
-    >>> X_test_harmonized = harmonizer.transform(X_test, iqms_test)  # doctest: +SKIP
+    >>> X_harmonized = harmonizer.fit_transform(X, iqm_covariates=iqms, biological_covariates=age_sex)  # doctest: +SKIP
+    >>> X_test_harmonized = harmonizer.transform(X_test, iqm_covariates=iqms_test)  # doctest: +SKIP
 
     """
 
     _parameter_constraints: dict = {  # noqa: RUF012
+        "iqm_columns": "no_validation",
+        "biological_columns": "no_validation",
+        "site_column": "no_validation",
         "n_iter": [Interval(Integral, 1, None, closed="left")],
         "burn_in": [Interval(Integral, 0, None, closed="left")],
         "thinning_interval": [Interval(Integral, 1, None, closed="left")],
@@ -179,8 +203,17 @@ class BARTharm(TransformerMixin, BaseEstimator):
         "random_state": ["random_state"],
     }
 
+    _metadata_specs = (
+        MetadataSpec("iqm_covariates", "iqm_columns", numeric=True, description="the image quality metrics"),
+        MetadataSpec("biological_covariates", "biological_columns", numeric=True),
+        MetadataSpec("sites", "site_column", single=True, description="the site of every sample"),
+    )
+
     def __init__(
         self,
+        iqm_columns: str | int | list | None = None,
+        biological_columns: str | int | list | None = None,
+        site_column: str | int | None = None,
         n_iter: int = 5000,
         burn_in: int = 500,
         thinning_interval: int = 2,
@@ -196,6 +229,9 @@ class BARTharm(TransformerMixin, BaseEstimator):
         n_jobs: int | None = None,
         random_state: int | np.random.RandomState | None = None,
     ) -> None:
+        self.iqm_columns = iqm_columns
+        self.biological_columns = biological_columns
+        self.site_column = site_column
         self.n_iter = n_iter
         self.burn_in = burn_in
         self.thinning_interval = thinning_interval
@@ -211,10 +247,16 @@ class BARTharm(TransformerMixin, BaseEstimator):
         self.n_jobs = n_jobs
         self.random_state = random_state
 
+    # Data keywords are requested by default when metadata routing is enabled
+    __metadata_request__fit = {"iqm_covariates": True, "biological_covariates": True, "sites": True}  # noqa: RUF012
+    __metadata_request__transform = {"iqm_covariates": True, "biological_covariates": True, "sites": True}  # noqa: RUF012
+
     def fit(
         self,
         X: npt.ArrayLike,
-        iqm_covariates: npt.ArrayLike,
+        y: npt.ArrayLike | None = None,
+        *,
+        iqm_covariates: npt.ArrayLike | None = None,
         biological_covariates: npt.ArrayLike | None = None,
         sites: npt.ArrayLike | None = None,
     ) -> "BARTharm":
@@ -222,10 +264,14 @@ class BARTharm(TransformerMixin, BaseEstimator):
 
         Parameters
         ----------
-        X : array-like, shape (n_samples, n_features)
-            The imaging-derived features to harmonize.
-        iqm_covariates : array-like, shape (n_samples, n_iqm_covariates) or (n_samples,)
+        X : array-like or DataFrame, shape (n_samples, n_columns)
+            The imaging-derived features to harmonize, with the metadata
+            columns named in the constructor, if any.
+        y : None
+            Ignored. Present for scikit-learn API consistency.
+        iqm_covariates : array-like, shape (n_samples, n_iqm_covariates) or (n_samples,) or None, optional (default None)
             The image quality metrics, which model the scanner effects.
+            Required unless ``iqm_columns`` is set.
         biological_covariates : array-like, shape (n_samples, n_biological_covariates) or (n_samples,) or None, \
 optional (default None)
             The biological covariates (e.g., age, sex), which model the
@@ -235,7 +281,8 @@ optional (default None)
             related to (e.g., a diagnosis associated with head motion).
             Categorical covariates must be numerically coded.
         sites : array-like, shape (n_samples,) or None, optional (default None)
-            Site labels. Required if ``var_scaling=True``, ignored otherwise.
+            Site labels. Required if ``var_scaling=True`` (unless
+            ``site_column`` is set), ignored otherwise.
 
         Returns
         -------
@@ -249,7 +296,9 @@ optional (default None)
     def fit_transform(
         self,
         X: npt.ArrayLike,
-        iqm_covariates: npt.ArrayLike,
+        y: npt.ArrayLike | None = None,
+        *,
+        iqm_covariates: npt.ArrayLike | None = None,
         biological_covariates: npt.ArrayLike | None = None,
         sites: npt.ArrayLike | None = None,
     ) -> npt.NDArray:
@@ -260,15 +309,8 @@ optional (default None)
 
         Parameters
         ----------
-        X : array-like, shape (n_samples, n_features)
-            The imaging-derived features to harmonize.
-        iqm_covariates : array-like, shape (n_samples, n_iqm_covariates) or (n_samples,)
-            The image quality metrics.
-        biological_covariates : array-like, shape (n_samples, n_biological_covariates) or (n_samples,) or None, \
-optional (default None)
-            The biological covariates.
-        sites : array-like, shape (n_samples,) or None, optional (default None)
-            Site labels. Required if ``var_scaling=True``, ignored otherwise.
+        X, y, iqm_covariates, biological_covariates, sites
+            See :meth:`fit`.
 
         Returns
         -------
@@ -281,7 +323,8 @@ optional (default None)
     def transform(
         self,
         X: npt.ArrayLike,
-        iqm_covariates: npt.ArrayLike,
+        *,
+        iqm_covariates: npt.ArrayLike | None = None,
         biological_covariates: npt.ArrayLike | None = None,
         sites: npt.ArrayLike | None = None,
     ) -> npt.NDArray:
@@ -289,10 +332,11 @@ optional (default None)
 
         Parameters
         ----------
-        X : array-like, shape (n_samples, n_features)
-            The imaging-derived features to harmonize.
-        iqm_covariates : array-like, shape (n_samples, n_iqm_covariates) or (n_samples,)
-            The image quality metrics.
+        X : array-like or DataFrame, shape (n_samples, n_columns)
+            The imaging-derived features to harmonize, with the same columns as
+            in :meth:`fit`.
+        iqm_covariates : array-like, shape (n_samples, n_iqm_covariates) or (n_samples,) or None, optional (default None)
+            The image quality metrics. Required unless ``iqm_columns`` is set.
         biological_covariates : array-like, shape (n_samples, n_biological_covariates) or (n_samples,) or None, \
 optional (default None)
             The biological covariates. Only needed (and then required) if
@@ -303,30 +347,40 @@ optional (default None)
         Returns
         -------
         ndarray, shape (n_samples, n_features)
-            The harmonized features.
+            The harmonized features (without the metadata columns).
 
         """
         check_is_fitted(self)
-        X = check_array(X, dtype=FLOAT_DTYPES, estimator=self)
-        if X.shape[1] != self.n_features_in_:
-            raise ValueError(f"X has {X.shape[1]} features, but BARTharm was fitted with {self.n_features_in_} features.")
-        X_iqm = self._iqm_normalizer.transform(
-            _check_covariates(X, iqm_covariates, "iqm_covariates", self, self.n_iqm_covariates_)
+        data = self._validate_harmonization_input(
+            X,
+            reset=False,
+            required=("iqm_covariates", "sites") if self.var_scaling else ("iqm_covariates",),
+            iqm_covariates=iqm_covariates,
+            biological_covariates=biological_covariates,
+            sites=sites,
         )
+        X = data.X
+        iqm = data["iqm_covariates"]
+        if iqm.shape[1] != self.n_iqm_covariates_:
+            raise ValueError(f"iqm_covariates has {iqm.shape[1]} columns, but BARTharm was fitted with {self.n_iqm_covariates_}.")
+        X_iqm = self._iqm_normalizer.transform(iqm)
         X_bio = None
         site_codes = None
         if self.var_scaling:
             if self.n_biological_covariates_:
-                if biological_covariates is None:
+                bio = data["biological_covariates"]
+                if bio is None:
                     raise ValueError("biological_covariates were used in fit and are required with var_scaling=True.")
-                X_bio = self._bio_normalizer.transform(
-                    _check_covariates(X, biological_covariates, "biological_covariates", self, self.n_biological_covariates_)
-                )
-            site_codes = self._encode_sites(X, sites)
-
+                if bio.shape[1] != self.n_biological_covariates_:
+                    raise ValueError(
+                        f"biological_covariates has {bio.shape[1]} columns, but BARTharm was fitted with "
+                        f"{self.n_biological_covariates_}."
+                    )
+                X_bio = self._bio_normalizer.transform(bio)
+            site_codes = self._encode_sites(data.sites)
         X_std = (X - self.feature_means_) / np.where(self.feature_stds_ == 0.0, 1.0, self.feature_stds_)
         out = np.empty_like(X)
-        for j in range(self.n_features_in_):
+        for j in range(self._n_features):
             if self.feature_stds_[j] == 0.0:
                 out[:, j] = X[:, j]
                 continue
@@ -343,7 +397,7 @@ optional (default None)
     def _fit(
         self,
         X: npt.ArrayLike,
-        iqm_covariates: npt.ArrayLike,
+        iqm_covariates: npt.ArrayLike | None,
         biological_covariates: npt.ArrayLike | None,
         sites: npt.ArrayLike | None,
     ) -> npt.NDArray:
@@ -352,7 +406,7 @@ optional (default None)
         n_saved, n_burn_saved = self._check_sampler_settings()
         X, iqm, bio, site_codes = self._check_fit_inputs(X, iqm_covariates, biological_covariates, sites)
 
-        self.n_features_in_ = X.shape[1]
+        self._n_features = X.shape[1]
         self.n_iqm_covariates_ = iqm.shape[1]
         self.n_biological_covariates_ = 0 if bio is None else bio.shape[1]
         self._iqm_normalizer = _QuantileNormalizer().fit(iqm)
@@ -369,7 +423,7 @@ optional (default None)
 
         # Independent random streams per feature, so results do not depend on n_jobs
         entropy = check_random_state(self.random_state).randint(np.iinfo(np.int32).max)
-        seeds = np.random.SeedSequence(entropy).spawn(self.n_features_in_)
+        seeds = np.random.SeedSequence(entropy).spawn(self._n_features)
         config = _SamplerConfig(
             n_iter=self.n_iter,
             thinning_interval=self.thinning_interval,
@@ -385,9 +439,9 @@ optional (default None)
             n_stored_draws=self.n_stored_draws,
             n_sites=0 if site_codes is None else len(self.sites_),
         )
-        logger.debug(f"Fitting BARTharm to {self.n_features_in_} features")
+        logger.debug(f"Fitting BARTharm to {self._n_features} features")
         fitted = np.flatnonzero(~constant)
-        results: list[_FeatureResult | None] = [None] * self.n_features_in_
+        results: list[_FeatureResult | None] = [None] * self._n_features
         for j, result in zip(
             fitted,
             Parallel(n_jobs=self.n_jobs)(
@@ -414,17 +468,23 @@ optional (default None)
     def _check_fit_inputs(
         self,
         X: npt.ArrayLike,
-        iqm_covariates: npt.ArrayLike,
+        iqm_covariates: npt.ArrayLike | None,
         biological_covariates: npt.ArrayLike | None,
         sites: npt.ArrayLike | None,
     ) -> tuple[npt.NDArray, npt.NDArray, npt.NDArray | None, npt.NDArray | None]:
         """Validate the inputs of fit; fit the site labels with ``var_scaling``."""
-        X = check_array(X, dtype=FLOAT_DTYPES, ensure_min_samples=2, estimator=self)
-        iqm = _check_covariates(X, iqm_covariates, "iqm_covariates", self)
-        bio = None
-        if biological_covariates is not None:
-            bio = _check_covariates(X, biological_covariates, "biological_covariates", self)
-        else:
+        data = self._validate_harmonization_input(
+            X,
+            reset=True,
+            required=("iqm_covariates", "sites") if self.var_scaling else ("iqm_covariates",),
+            iqm_covariates=iqm_covariates,
+            biological_covariates=biological_covariates,
+            sites=sites,
+        )
+        X, iqm, bio = data.X, data["iqm_covariates"], data["biological_covariates"]
+        if X.shape[0] < 2:
+            raise ValueError(f"BARTharm needs at least 2 samples, got n_samples = {X.shape[0]}.")
+        if bio is None:
             logger.warning(
                 "No biological_covariates given: biological variation correlated with the IQMs "
                 "may be attributed to the scanner and removed."
@@ -433,14 +493,11 @@ optional (default None)
         if hasattr(self, "sites_"):
             del self.sites_
         if not self.var_scaling:
-            if sites is not None:
+            if data.sites is not None and not data.from_columns["sites"]:
                 logger.info("sites are only used with var_scaling=True and are ignored.")
             return X, iqm, bio, None
 
-        if sites is None:
-            raise ValueError("sites are required with var_scaling=True.")
-        sites = _check_sites(X, sites, self)
-        self.sites_, site_codes = np.unique(sites, return_inverse=True)
+        self.sites_, site_codes = np.unique(data.sites, return_inverse=True)
         if bio is not None:
             logger.warning(
                 "With var_scaling=True the biological covariates are preserved and required at transform time. "
@@ -451,15 +508,15 @@ optional (default None)
 
     def _collect_results(self, X: npt.NDArray, results: list["_FeatureResult | None"], n_kept: int) -> npt.NDArray:
         """Store the posterior summaries of every feature and return the harmonized data."""
-        self.rmse_ = np.zeros(self.n_features_in_)
-        self.sigma_draws_ = np.zeros((self.n_features_in_, n_kept))
+        self.rmse_ = np.zeros(self._n_features)
+        self.sigma_draws_ = np.zeros((self._n_features, n_kept))
         self._mu_snapshots: list[list[ForestSnapshot]] = []
         self._tau_snapshots: list[list[ForestSnapshot] | None] = []
         self._stored_site_scales: list[npt.NDArray | None] = []
         if hasattr(self, "site_scales_"):
             del self.site_scales_
         if self.var_scaling:
-            self.site_scales_ = np.ones((self.n_features_in_, len(self.sites_)))
+            self.site_scales_ = np.ones((self._n_features, len(self.sites_)))
 
         out = X.copy()
         for j, result in enumerate(results):
@@ -479,14 +536,11 @@ optional (default None)
                 self.site_scales_[j] = result.site_scales
         return out
 
-    def _encode_sites(self, X: npt.NDArray, sites: npt.ArrayLike | None) -> npt.NDArray:
+    def _encode_sites(self, sites: npt.NDArray | None) -> npt.NDArray:
         """Map site labels to the indices of the fitted sites."""
         if sites is None:
             raise ValueError("sites are required with var_scaling=True.")
-        sites = _check_sites(X, sites, self)
-        unseen = np.setdiff1d(np.unique(sites), self.sites_)
-        if unseen.size:
-            raise ValueError(f"sites {unseen.tolist()} were not seen in fit; their variance scales are unknown.")
+        check_sites_seen(sites, self.sites_, type(self).__name__)
         return np.searchsorted(self.sites_, sites)
 
     def _iter_stored_draws(self, feature: int, X_bio: npt.NDArray | None):
@@ -507,7 +561,7 @@ optional (default None)
     def __sklearn_tags__(self) -> Tags:
         tags = super().__sklearn_tags__()
         tags.estimator_type = "transformer"
-        tags.target_tags.required = True
+        tags.target_tags.required = False
         tags.input_tags.two_d_array = True
         tags.non_deterministic = self.random_state is None
         return tags
@@ -516,36 +570,6 @@ optional (default None)
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
-
-
-def _check_covariates(
-    X: npt.NDArray,
-    covariates: npt.ArrayLike,
-    name: str,
-    estimator: BaseEstimator,
-    n_columns: int | None = None,
-) -> npt.NDArray:
-    """Validate covariates and return them as a 2D float array."""
-    if covariates is None:
-        raise ValueError(f"{name} are required.")
-    covariates = check_array(covariates, dtype=FLOAT_DTYPES, ensure_2d=False, estimator=estimator)
-    if covariates.ndim == 1:
-        covariates = covariates[:, np.newaxis]
-    elif covariates.ndim != 2:
-        raise ValueError(f"{name} must be 1D or 2D, got shape {covariates.shape}.")
-    check_consistent_length(X, covariates)
-    if n_columns is not None and covariates.shape[1] != n_columns:
-        raise ValueError(f"{name} has {covariates.shape[1]} columns, but BARTharm was fitted with {n_columns}.")
-    return covariates
-
-
-def _check_sites(X: npt.NDArray, sites: npt.ArrayLike, estimator: BaseEstimator) -> npt.NDArray:
-    """Validate site labels."""
-    sites = check_array(sites, dtype=None, ensure_2d=False, estimator=estimator)
-    if sites.ndim != 1:
-        raise ValueError(f"sites must be 1D, got shape {sites.shape}.")
-    check_consistent_length(X, sites)
-    return sites
 
 
 class _QuantileNormalizer:
