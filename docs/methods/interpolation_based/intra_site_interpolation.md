@@ -125,20 +125,31 @@ isi.sample_indices_         # index of each real output sample in the input (-1 
 
 ### Use it on training data only
 
-ISI must only see training data. In cross-validation, put it in an `imblearn.pipeline.Pipeline` and route `sites` with
-scikit-learn metadata routing:
+ISI must only see training data. In cross-validation, put it in an `imblearn.pipeline.Pipeline` and keep the sites as a
+column of a DataFrame, named by `site_column`. The folds split the sites with the features, and ISI returns the
+resampled data with the site column (and the covariate columns), filled in for the synthetic samples, so a harmonizer
+can follow it:
 
 ```python
-import sklearn
 from imblearn.pipeline import Pipeline
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import cross_validate
+from sklearn.preprocessing import StandardScaler
+from uniharmony.combat import NeuroComBat
 
-sklearn.set_config(enable_metadata_routing=True)
-isi = IntraSiteInterpolation(random_state=0).set_fit_resample_request(sites=True)
-pipe = Pipeline([("isi", isi), ("clf", LogisticRegression())])
-scores = cross_validate(pipe, X, y, params={"sites": sites}, scoring="roc_auc")
+pipe = Pipeline([
+    ("isi", IntraSiteInterpolation(site_column="site", random_state=0)),
+    ("combat", NeuroComBat(site_column="site")),     # removes the site column from the output
+    ("scale", StandardScaler()),
+    ("clf", LogisticRegression()),
+])
+scores = cross_validate(pipe, df, y, scoring="roc_auc")  # df: features + "site" column
 ```
+
+Without a harmonizer after it, drop the site column before the model (e.g., with a `ColumnTransformer`). The `sites`
+keyword also works with scikit-learn metadata routing (`sklearn.set_config(enable_metadata_routing=True)`; the
+keywords are requested by default), but then no later step gets the sites of the synthetic samples. See
+[Using UniHarmony in pipelines](../../pipelines.md).
 
 Applying ISI before splitting leaks information from the test folds into the synthetic training samples.
 
@@ -157,11 +168,10 @@ from sklearn.linear_model import Ridge
 from sklearn.model_selection import GridSearchCV
 from sklearn.preprocessing import StandardScaler
 
-with sklearn.config_context(enable_metadata_routing=True):
-    isi = IntraSiteInterpolation(random_state=0).set_fit_resample_request(sites=True)
-    pipe = Pipeline([("isi", isi), ("scale", StandardScaler()), ("ridge", Ridge())])
-    search = GridSearchCV(pipe, {"ridge__alpha": np.logspace(-1, 5, 13)})
-    search.fit(X, y, sites=sites)
+isi = IntraSiteInterpolation(site_column="site", random_state=0)
+pipe = Pipeline([("isi", isi), ("combat", NeuroComBat(site_column="site")), ("scale", StandardScaler()), ("ridge", Ridge())])
+search = GridSearchCV(pipe, {"ridge__alpha": np.logspace(-1, 5, 13)})
+search.fit(df, y)
 ```
 
 ### Combining interpolation with under-sampling: `SiteBalancedResampler`
@@ -259,8 +269,7 @@ base = Pipeline([("scale", StandardScaler()), ("clf", LogisticRegression())])
 score = cross_val_score(base, X, y, cv=cv, scoring="roc_auc").mean()
 
 with sklearn.config_context(enable_metadata_routing=True):
-    isi = IntraSiteInterpolation(random_state=0).set_fit_resample_request(sites=True)
-    balanced = Pipeline([("isi", isi), ("scale", StandardScaler()), ("clf", LogisticRegression())])
+    balanced = Pipeline([("isi", IntraSiteInterpolation(random_state=0)), ("scale", StandardScaler()), ("clf", LogisticRegression())])
     score_isi = cross_val_score(balanced, X, y, cv=cv, scoring="roc_auc", params={"sites": sites}).mean()
 
 drop = score - score_isi   # large: the score was driven by the site
@@ -287,10 +296,10 @@ from uniharmony.combat import NeuroComBat
 
 isi = IntraSiteInterpolation(random_state=0)
 X_bal, y_bal = isi.fit_resample(X_train, y_train, sites=sites_train)
-combat = NeuroComBat().fit(X_bal, isi.sites_resampled_)       # no covariates needed
+combat = NeuroComBat().fit(X_bal, sites=isi.sites_resampled_)    # no covariates needed
 
-X_bal_h = combat.transform(X_bal, isi.sites_resampled_)        # training data for the model
-X_test_h = combat.transform(X_test, sites_test)                # new participants of the training sites, no labels
+X_bal_h = combat.transform(X_bal, sites=isi.sites_resampled_)     # training data for the model
+X_test_h = combat.transform(X_test, sites=sites_test)             # new participants of the training sites, no labels
 model.fit(X_bal_h, y_bal)
 ```
 
@@ -311,11 +320,18 @@ between women).
 
 ```python
 isi = IntraSiteInterpolation(n_bins_cont_cov=3, random_state=0)
-X_bal, y_bal = isi.fit_resample(X, y, sites=sites, categorical_covariate=sex, continuous_covariate=age)
+X_bal, y_bal = isi.fit_resample(X, y, sites=sites, categorical_covariates=sex, continuous_covariates=age)
+
+# The same with columns: the output keeps them, filled in for the synthetic samples
+isi = IntraSiteInterpolation(site_column="site", categorical_columns="sex", continuous_columns="age", n_bins_cont_cov=3)
+df_bal, y_bal = isi.fit_resample(df, y)
 ```
 
-Strata with fewer than two samples of a class are skipped for interpolation. Covariates of the real output samples can be
-recovered with `sample_indices_`.
+Strata with fewer than two samples of a class are skipped for interpolation. With the column path, the continuous
+covariates of a synthetic sample are interpolated between its two parents (found as the segment of anchors closest to
+the sample, which recovers SMOTE's interpolation) and the categorical ones are copied from the closer parent; columns
+that are not strata but must follow the samples (e.g., the covariates of a later harmonizer) go in
+`passthrough_columns`.
 
 ---
 

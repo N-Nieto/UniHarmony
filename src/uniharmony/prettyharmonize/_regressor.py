@@ -4,7 +4,6 @@
 # https://github.com/juaml/PrettYharmonize
 # licensed under AGPL-3.0.
 
-from collections.abc import Mapping
 from numbers import Integral
 from typing import Any
 
@@ -45,7 +44,7 @@ class PrettYharmonizeRegressor(RegressorMixin, BasePrettYharmonize):
         None means :class:`~uniharmony.combat.NeuroComBat`. The target is
         preserved as a continuous covariate (linear effect), or as smooth
         covariate (non-linear effect) with :class:`~uniharmony.combat.ComBatGAM`
-        unless ``additional_covariates`` already has a smooth covariate.
+        unless the smooth covariates are already given.
     base_model : estimator or None, optional (default None)
         Regressor fitted on the harmonized data. None means
         ``Pipeline([("scaler", StandardScaler()), ("ridge", RidgeCV(alphas=np.logspace(-3, 3, 13)))])``:
@@ -224,24 +223,27 @@ harmonized_data_
             active[idx] = current > self.regression_search_tol
         return np.where(dist_low < dist_high, pred_low, pred_high)
 
-    # ``sites`` comes before ``sample_weight`` (as in ``fit``), unlike the scikit-learn signature.
-    def score(  # pyright: ignore[reportIncompatibleMethodOverride]
+    def score(
         self,
         X: npt.ArrayLike,
         y: npt.ArrayLike,
-        sites: npt.ArrayLike | None = None,
         sample_weight: npt.ArrayLike | None = None,
-        additional_covariates: Mapping[str, npt.ArrayLike] | None = None,
+        *,
+        sites: npt.ArrayLike | None = None,
+        categorical_covariates: npt.ArrayLike | None = None,
+        continuous_covariates: npt.ArrayLike | None = None,
+        smooth_covariates: npt.ArrayLike | None = None,
     ) -> float:
         """Return the coefficient of determination R².
 
         This method is used by scikit-learn model selection tools when no
         ``scoring`` is given; with metadata routing it is also the only scorer
-        that receives ``sites``.
+        that receives the sites as keyword (read the sites from a column of
+        ``X`` to use any scorer).
 
         Parameters
         ----------
-        X, sites, additional_covariates
+        X, sites, categorical_covariates, continuous_covariates, smooth_covariates
             See :meth:`predict`.
         y : array-like, shape (n_samples,)
             True target.
@@ -254,5 +256,11 @@ harmonized_data_
             R².
 
         """
-        y_pred = self.predict(X, sites, additional_covariates)  # type: ignore[arg-type]
+        y_pred = self.predict(
+            X,
+            sites=sites,
+            categorical_covariates=categorical_covariates,
+            continuous_covariates=continuous_covariates,
+            smooth_covariates=smooth_covariates,
+        )
         return float(r2_score(y, y_pred, sample_weight=sample_weight))

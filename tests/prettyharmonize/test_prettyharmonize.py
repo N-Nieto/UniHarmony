@@ -30,7 +30,7 @@ def test_equals_harm_model_with_target_covariate(clf_data, harm_model) -> None:
     harmonizer.fit(X, y, sites, {"categorical_covariates": sex}, {})
     X_h = harmonizer.transform(X, y, sites, {"categorical_covariates": sex})
     reference = type(harm_model)(**harm_model.get_params())
-    expected = reference.fit_transform(X, sites, categorical_covariates=np.c_[y, sex].astype(object))
+    expected = reference.fit_transform(X, sites=sites, categorical_covariates=np.c_[y, sex].astype(object))
     assert_allclose(X_h, expected)
     assert not hasattr(harm_model, "sites_")  # the given instance is not fitted
 
@@ -43,7 +43,7 @@ def test_one_hot_target_in_numeric_covariates(clf_data) -> None:
     harmonizer.fit(X, y3, sites, {}, {})
     X_h = harmonizer.transform(X, y3, sites, {})
     one_hot = np.c_[y3 == 1, y3 == 2].astype(float)
-    assert_allclose(X_h, NeuroComBat().fit_transform(X, sites, continuous_covariates=one_hot))
+    assert_allclose(X_h, NeuroComBat().fit_transform(X, sites=sites, continuous_covariates=one_hot))
     categorical = TargetHarmonizer(NeuroComBat(), "categorical_covariates", n_classes=3, categorical_argument=True)
     categorical.fit(X, y3, sites, {}, {})
     assert_allclose(X_h, categorical.transform(X, y3, sites, {}))
@@ -56,7 +56,7 @@ def test_iter_pretend(clf_data) -> None:
     harmonizer.fit(X, y, sites, {}, {})
     targets = [0, 1, np.arange(len(y)) % 2]
     for target, X_t in zip(targets, harmonizer.iter_pretend(X, sites, targets, {}), strict=True):
-        expected = harmonizer.harm_model.transform(X, sites, categorical_covariates=np.broadcast_to(target, y.shape))
+        expected = harmonizer.harm_model.transform(X, sites=sites, categorical_covariates=np.broadcast_to(target, y.shape))
         assert_allclose(X_t, expected)
 
 
@@ -87,7 +87,7 @@ def test_no_leakage_warning(clf_data) -> None:
     """The ComBat target-leakage warning is silenced inside PrettYharmonize."""
     X, y, sites = clf_data
     with structlog.testing.capture_logs() as logs:
-        NeuroComBat().fit(X, sites, categorical_covariates=y)
+        NeuroComBat().fit(X, sites=sites, categorical_covariates=y)
     assert any("DO *NOT* preserve" in entry["event"] for entry in logs)
     with structlog.testing.capture_logs() as logs:
         TargetHarmonizer(NeuroComBat(), "categorical_covariates", 2, categorical_argument=True).fit(X, y, sites, {}, {})

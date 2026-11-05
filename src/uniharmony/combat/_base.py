@@ -1,17 +1,21 @@
 """Provide BaseComBat."""
 
-import inspect
-from typing import Any
+from typing import Any, ClassVar
 
+import numpy as np
 import numpy.typing as npt
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils import Tags
-from sklearn.utils.validation import (
-    FLOAT_DTYPES,
-    check_array,
-    check_consistent_length,
-    validate_data,
+
+from uniharmony._data import (
+    HarmonizationData,
+    HarmonizationInputMixin,
+    HarmonizationOutputMixin,
+    MetadataSpec,
+    TransformOutput,
+    check_sites_seen,
 )
+from uniharmony._utils import validate_sites
 
 from ._design_matrix_mixin import DesignMatrixMixin
 from ._ls_mixin import LocationAndScaleMixin
@@ -20,191 +24,139 @@ from ._standardization_mixin import StandardizationMixin
 
 __all__ = ["BaseComBat"]
 
+#: Sites: one label of any type per sample
+SITES = MetadataSpec("sites", "site_column", single=True, description="the site of every sample")
+#: Categorical covariates: any dtype, one-hot encoded
+CATEGORICAL = MetadataSpec("categorical_covariates", "categorical_columns")
+#: Continuous covariates: numeric, linear effect
+CONTINUOUS = MetadataSpec("continuous_covariates", "continuous_columns", numeric=True)
+#: Smooth covariates: numeric, non-linear (spline) effect
+SMOOTH = MetadataSpec("smooth_covariates", "smooth_columns", numeric=True, description="e.g., age")
 
-class BaseComBat(DesignMatrixMixin, StandardizationMixin, LocationAndScaleMixin, TransformerMixin, BaseEstimator):
-    """Base class for ComBat-based methods."""
 
-    def _check_X_sites(  # noqa: N802
-        self,
-        X: npt.ArrayLike,
-        sites: npt.ArrayLike,
-        copy: bool = False,
-        reset: bool = True,
-    ) -> tuple[npt.NDArray, npt.NDArray]:
-        """Check X and sites.
+class BaseComBat(
+    HarmonizationInputMixin,
+    HarmonizationOutputMixin,
+    DesignMatrixMixin,
+    StandardizationMixin,
+    LocationAndScaleMixin,
+    TransformerMixin,
+    BaseEstimator,
+):
+    """Base class for ComBat-based methods.
 
-        Parameters
-        ----------
-        X : array-like, shape (n_samples, n_features)
-            Input data.
-        sites : array-like, shape (n_samples,)
-            Sites.
-        copy : bool, optional (default False)
-            Whether to copy objects when doing `check_array`.
-        reset : bool, optional (default True)
-            True in ``fit``: store the number of features (``n_features_in_``)
-            and, for DataFrames, their names (``feature_names_in_``). False in
-            ``transform``: check X against them.
+    The sites and covariates are read from columns of ``X`` (named in the
+    constructor) or passed as keywords to ``fit`` and ``transform``; see
+    :mod:`uniharmony._data`.
+    """
 
-        Returns
-        -------
-        ndarray, shape (n_samples, n_features)
-            The converted and validated X.
-        ndarray, shape (n_samples,)
-            The converted and validated sites.
+    _metadata_specs: ClassVar[tuple[MetadataSpec, ...]] = (SITES, CATEGORICAL, CONTINUOUS)
 
-        Raises
-        ------
-        ValueError
-            If X has missing or infinite values, or (``reset=False``) a
-            different number of features than seen during ``fit``.
+    def _set_reference_sites(self) -> None:
+        """Resolve ``ref_site`` against the fitted sites (``sites_``).
 
-        """
-        X = validate_data(self, X, reset=reset, copy=copy, dtype=FLOAT_DTYPES)
-        sites = check_array(sites, copy=copy, dtype=None, ensure_2d=False, estimator=self)
-        check_consistent_length(X, sites)
-        return X, sites
-
-    def _check_covariates_as_in_fit(self, **covariates: npt.ArrayLike | None) -> None:
-        """Check that ``transform`` receives the same kinds of covariates as ``fit``.
-
-        Parameters
-        ----------
-        **covariates : array-like or None
-            Covariate arguments of ``transform`` by name (e.g.,
-            ``continuous_covariates=...``). ``fit`` records whether each was
-            given in ``_<name>_used``.
+        Sets ``ref_sites_`` (the reference sites, or all sites) and
+        ``_ref_site_idx`` (their positions in ``sites_``, or None for the
+        pooled target), which ``fit_standardize`` and ``fit_ls_model`` use.
 
         Raises
         ------
         ValueError
-            If a covariate given to ``fit`` is missing, or a covariate not
-            given to ``fit`` is passed.
+            If a reference site was not seen during ``fit`` or is listed twice.
 
         """
-        for name, value in covariates.items():
-            used_at_fit = getattr(self, f"_{name}_used", False)
-            if used_at_fit and value is None:
-                raise ValueError(
-                    f"{name} were given to fit, so they must also be given to transform "
-                    "(their effect is preserved for every sample)."
-                )
-            if not used_at_fit and value is not None:
-                raise ValueError(
-                    f"{name} were not given to fit, so transform cannot use them. Fit again with {name} to preserve their effect."
-                )
+        ref_site = getattr(self, "ref_site", None)
+        if ref_site is None:
+            self._ref_site_idx = None
+            self.ref_sites_ = self.sites_
+            return
+        requested = [ref_site] if isinstance(ref_site, (str, int, np.integer)) or np.ndim(ref_site) == 0 else list(ref_site)
+        if len(requested) == 0:
+            raise ValueError("ref_site must name at least one site, or be None for the pooled target.")
+        fitted = np.asarray(self.sites_)
+        fitted_str = fitted.astype(str)
+        positions = []
+        for site in requested:
+            match = np.flatnonzero(fitted == site) if np.isin(site, fitted) else np.flatnonzero(fitted_str == str(site))
+            if match.size == 0:
+                raise ValueError(f"ref_site {site!r} is not one of the sites seen during fit: {fitted.tolist()}.")
+            positions.append(int(match[0]))
+        if len(set(positions)) != len(positions):
+            raise ValueError(f"ref_site lists a site twice: {requested}.")
+        self._ref_site_idx = np.sort(np.asarray(positions))
+        self.ref_sites_ = fitted[self._ref_site_idx]
 
-    def _check_categorical_covariates(
-        self,
-        X: npt.ArrayLike,
-        categorical_covariates: npt.ArrayLike,
-        copy: bool = False,
-        estimator: type["BaseComBat"] | None = None,
-    ) -> npt.NDArray:
-        """Check categorical covariates.
+    def _keep_reference_samples(self, X_harmonized: npt.NDArray, X: npt.NDArray, sites: npt.NDArray) -> npt.NDArray:
+        """Return the input data for the samples of a single reference site, which ComBat leaves unchanged.
+
+        Their harmonized values equal the input up to rounding; the input is
+        returned exactly, as R ``sva::ComBat`` does with ``ref.batch``.
+        """
+        reference = getattr(self, "_ref_site_idx", None)
+        if reference is None or len(reference) != 1:
+            return X_harmonized
+        in_reference = sites == self.sites_[reference[0]]
+        if np.any(in_reference):
+            X_harmonized = np.array(X_harmonized, copy=True)
+            X_harmonized[in_reference] = X[in_reference]
+        return X_harmonized
+
+    def _validate_combat_input(
+        self, X: npt.ArrayLike, reset: bool, required: tuple[str, ...] = (), **values: Any
+    ) -> HarmonizationData:
+        """Validate the input of ``fit`` (``reset=True``) or ``transform``.
+
+        The sites are always required. In ``fit`` at least two sites are
+        needed; in ``transform`` every site must have been seen in ``fit`` and
+        the same covariates as in ``fit`` must be given.
 
         Parameters
         ----------
-        X : array-like, shape (n_samples, n_features)
-            Input data.
-        categorical_covariates : array-like, shape (n_samples, n_categorical_covariates)
-            Categorical covariates.
-        copy : bool, optional (default False)
-            Whether to copy objects when doing `check_array`.
-        estimator : estimator instance, optional (default None)
-            If passed, include the name of the estimator in warning messages.
+        X : array-like or DataFrame, shape (n_samples, n_columns)
+            The input.
+        reset : bool
+            True in ``fit``.
+        required : tuple of str, optional (default ())
+            Other required kinds of metadata.
+        **values : array-like or None
+            The keyword data.
 
         Returns
         -------
-        ndarray, shape (n_samples, n_categorical_covariates)
-            The converted and validated categorical covariates.
+        HarmonizationData
+            The validated input.
 
         """
-        categorical_covariates = check_array(categorical_covariates, copy=copy, dtype=None, ensure_2d=False, estimator=estimator)
-        check_consistent_length(X, categorical_covariates)
-        return categorical_covariates
+        data = self._validate_harmonization_input(X, reset=reset, required=("sites", *required), **values)
+        if reset:
+            validate_sites(data.sites)
+        else:
+            check_sites_seen(data.sites, self.sites_, type(self).__name__)
+            self._check_metadata_as_in_fit(data, [spec.keyword for spec in self._metadata_specs if spec.keyword != "sites"])
+        return data
 
-    def _check_continuous_covariates(
-        self,
-        X: npt.ArrayLike,
-        continuous_covariates: npt.ArrayLike,
-        copy: bool = False,
-        estimator: type["BaseComBat"] | None = None,
-    ) -> npt.NDArray:
-        """Check continuous covariates.
+    def fit_transform(self, X: npt.ArrayLike, y: npt.ArrayLike | None = None, **params: Any) -> TransformOutput:
+        """Fit to data, then harmonize it.
+
+        Equivalent to ``fit(X, y, **params).transform(X, **params)``: the
+        sites and covariates are used by both.
 
         Parameters
         ----------
-        X : array-like, shape (n_samples, n_features)
-            Input data.
-        continuous_covariates : array-like, shape (n_samples, n_continuous_covariates)
-            Continuous covariates.
-        copy : bool, optional (default False)
-            Whether to copy objects when doing `check_array`.
-        estimator : estimator instance, optional (default None)
-            If passed, include the name of the estimator in warning messages.
-
-        Returns
-        -------
-        ndarray, shape (n_samples, n_continuous_covariates)
-            The converted and validated continuous covariates.
-
-        """
-        continuous_covariates = check_array(
-            continuous_covariates, copy=copy, dtype=FLOAT_DTYPES, ensure_2d=False, estimator=estimator
-        )
-        check_consistent_length(X, continuous_covariates)
-        return continuous_covariates
-
-    # Overridden to allow sites. Subclasses override it again with their explicit, typed signature
-    # (mirroring ``fit``) and call ``_fit_then_transform``.
-    def fit_transform(
-        self,
-        X: npt.ArrayLike,
-        sites: npt.ArrayLike,
-        **fit_params: Any,
-    ) -> npt.NDArray:
-        """Fit to data, then transform it.
-
-        Parameters
-        ----------
-        X : array-like, shape (n_samples, n_features)
-            Input samples.
-        sites : array-like, shape (n_samples,)
-            Sites.
-        **fit_params : dict
-            Additional arguments of :meth:`fit`. Those that :meth:`transform`
-            also accepts (e.g., covariates) are passed to it too.
+        X : array-like or DataFrame, shape (n_samples, n_columns)
+            The training input samples.
+        y : None
+            Ignored.
+        **params : array-like
+            The data keywords of :meth:`fit` (sites, covariates).
 
         Returns
         -------
         array, shape (n_samples, n_features)
-            Transformed array.
+            The harmonized data.
 
         """
-        return self._fit_then_transform(X=X, sites=sites, **fit_params)
-
-    def _fit_then_transform(self, **arguments: Any) -> npt.NDArray:
-        """Call ``fit`` with all ``arguments`` and ``transform`` with those it accepts.
-
-        Data shared by ``fit`` and ``transform`` (``X``, ``sites``, covariates)
-        go to both; fit-only options (e.g., ``var_epsilon``, ``max_iter``,
-        ``df``) only to ``fit``.
-
-        Parameters
-        ----------
-        **arguments : dict
-            Keyword arguments of :meth:`fit`.
-
-        Returns
-        -------
-        array, shape (n_samples, n_features)
-            Transformed array.
-
-        """
-        transform_params = inspect.signature(self.transform).parameters
-        transform_arguments = {name: value for name, value in arguments.items() if name in transform_params}
-        return self.fit(**arguments).transform(**transform_arguments)
+        return self.fit(X, y, **params).transform(X, **params)
 
     # Overridden for check_is_fitted() usage
     def __sklearn_is_fitted__(self) -> bool:
@@ -214,9 +166,10 @@ class BaseComBat(DesignMatrixMixin, StandardizationMixin, LocationAndScaleMixin,
     def __sklearn_tags__(self) -> Tags:
         tags = super().__sklearn_tags__()
         tags.estimator_type = "transformer"
-        # ``sites`` takes the place of ``y``: required, one label per sample (1D), any values
-        tags.target_tags.required = True
+        tags.target_tags.required = False
         tags.input_tags.two_d_array = True
+        # Site and categorical columns can be strings
+        tags.input_tags.string = True
         # Missing and infinite values are rejected by the input validation
         tags.input_tags.allow_nan = False
         return tags

@@ -33,7 +33,8 @@ Feature = Signal + Site Effect + Noise
 2. Each site draws its samples from the pool **without replacement**, following its class proportions
    (`balance_per_site`). No sample appears twice, whatever the imbalance or the site sizes.
 3. Optional covariates (`covariates`, e.g. `"age"`, `"sex"`) are drawn per site, correlated with the base samples.
-4. The site effect (`site_effect_type`, `site_effect_strength`) is applied; a strength of 0 means no effect.
+4. The site effect (`site_effect_type`, `site_effect_strength`, and `site_scale_strength` for the scale part) is
+   applied; a strength of 0 means no effect.
 5. Gaussian noise (`noise_strength`) is added.
 
 With `return_base_data=True` the base samples are also returned, row-aligned with `X`, so that `X - X_base` is the
@@ -44,11 +45,17 @@ site effect plus noise of every sample.
 | `site_effect_type` | Effect for a site with strength `s` |
 |---|---|
 | `"location"` | adds a per-feature offset drawn from U(0, s) |
-| `"scale"` | multiplies the deviations from the global mean by a per-feature factor exp(U(-0.1 s, 0.1 s)) |
-| `"location+scale"` | scale, then location |
+| `"scale"` | multiplies the deviations from the global mean by a per-feature factor exp(U(-0.1 s<sub>scale</sub>, 0.1 s<sub>scale</sub>)) |
+| `"location+scale"` | scale (with s<sub>scale</sub>), then location (with s) |
 | `"variance"` | adds Gaussian noise with a per-feature SD drawn from U(0, s) |
 | `"nonlinear"` | adds `w * X**2`, with `w` drawn from U(0, 0.1 s) |
 | `"dropout"` | sets values to 0 with probability min(0.1 s, 1) |
+
+`s` is `site_effect_strength`. `s`<sub>scale</sub> is `site_scale_strength`, which sets the scale part independently
+of the location part; when it is not given (`None`), `s`<sub>scale</sub> = `s`. For example,
+`site_effect_type="location+scale", site_effect_strength=4, site_scale_strength=1` gives large shifts and factors in
+[0.90, 1.11]. `site_scale_strength` accepts one value or one value per site, and is ignored (with a warning) by the
+types without a scale part.
 
 With `site_effect_homogeneous=False`, each sample's effect varies around its site's effect, by as much as the site
 effects vary between sites.

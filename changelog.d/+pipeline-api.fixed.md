@@ -1,0 +1,1 @@
+ComBat `transform` no longer modifies the fitted pooled variance; `CovBat` now sets its documented `sites_` attribute; unseen-site errors explain the cross-validation cause (unshuffled folds on data sorted by site).

@@ -102,10 +102,14 @@ harmonizer = BARTharm(random_state=0, n_jobs=-1)
 # X: (n_samples, n_features) imaging-derived phenotypes
 # iqms: (n_samples, n_iqms) image quality metrics, e.g. SNR, CNR
 # bio: (n_samples, n_covariates) biological covariates, e.g. age, sex (numerically coded)
-X_harmonized = harmonizer.fit_transform(X, iqms, biological_covariates=bio)
+X_harmonized = harmonizer.fit_transform(X, iqm_covariates=iqms, biological_covariates=bio)
 
 # New subjects only need their features and IQMs
-X_test_harmonized = harmonizer.transform(X_test, iqms_test)
+X_test_harmonized = harmonizer.transform(X_test, iqm_covariates=iqms_test)
+
+# Or read the IQMs and covariates from columns of a DataFrame (works in a scikit-learn Pipeline)
+harmonizer = BARTharm(iqm_columns=["snr", "cnr"], biological_columns=["age", "sex"], random_state=0)
+X_harmonized = harmonizer.fit_transform(df)
 ```
 
 Heteroskedastic version (site-specific variance scaling), which needs site labels at fit and
@@ -113,8 +117,8 @@ transform time:
 
 ```python
 harmonizer = BARTharm(var_scaling=True, random_state=0)
-X_harmonized = harmonizer.fit_transform(X, iqms, biological_covariates=bio, sites=sites)
-X_test_harmonized = harmonizer.transform(X_test, iqms_test, biological_covariates=bio_test, sites=sites_test)
+X_harmonized = harmonizer.fit_transform(X, iqm_covariates=iqms, biological_covariates=bio, sites=sites)
+X_test_harmonized = harmonizer.transform(X_test, iqm_covariates=iqms_test, biological_covariates=bio_test, sites=sites_test)
 ```
 
 ### How it works

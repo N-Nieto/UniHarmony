@@ -12,8 +12,10 @@ from sklearn.base import BaseEstimator, clone
 from sklearn.utils import Tags, check_random_state
 from sklearn.utils.validation import check_is_fitted
 
+from uniharmony._data import TransformOutput
 from uniharmony._verbose import get_logger
 from uniharmony.interpolation._intra_site import IntraSiteInterpolation
+from uniharmony.interpolation._metadata import SamplerInputMixin, parent_weights
 from uniharmony.interpolation._utils import allocate_proportionally, create_undersampler
 
 
@@ -22,7 +24,7 @@ __all__ = ["SiteBalancedResampler"]
 logger = get_logger(src="SiteBalancedResampler")
 
 
-class SiteBalancedResampler(SamplerMixin, BaseEstimator):
+class SiteBalancedResampler(SamplerInputMixin, SamplerMixin, BaseEstimator):
     """Balance the classes within every site by over-sampling *and* under-sampling.
 
     ``SiteBalancedResampler`` combines a within-site over-sampler,
@@ -91,6 +93,13 @@ class SiteBalancedResampler(SamplerMixin, BaseEstimator):
         ``max_amplification="auto"`` (and for the default over-sampler). A
         given over-sampler uses its own ``random_state``.
 
+    site_column, categorical_columns, continuous_columns, passthrough_columns : column(s) or None, optional (default None)
+        Columns of ``X`` holding the sites, the categorical and continuous
+        covariates (strata of both steps) and other non-feature columns, as
+        in :class:`IntraSiteInterpolation`. With columns, the output keeps
+        them, filled in for the synthetic samples. The column parameters of
+        ``oversampler`` are ignored.
+
     Attributes
     ----------
     oversampler_ : IntraSiteInterpolation
@@ -145,7 +154,7 @@ class SiteBalancedResampler(SamplerMixin, BaseEstimator):
         for both steps), ``None`` for classification.
 
     n_features_in_ : int
-        Number of features.
+        Number of columns of ``X`` (metadata columns included).
 
     See Also
     --------
@@ -171,6 +180,9 @@ class SiteBalancedResampler(SamplerMixin, BaseEstimator):
     >>> from uniharmony.interpolation import IntraSiteInterpolation, SiteBalancedResampler
     >>> sbr = SiteBalancedResampler(IntraSiteInterpolation("smote"), max_amplification="auto")
     >>> X_bal, y_bal = sbr.fit_resample(X, y, sites=sites)  # doctest: +SKIP
+    >>> # Sites as a column of a DataFrame (e.g., before a harmonizer in an imblearn Pipeline)
+    >>> sbr = SiteBalancedResampler(site_column="site", max_amplification="auto")
+    >>> df_bal, y_bal = sbr.fit_resample(df, y)  # doctest: +SKIP
 
     """
 
@@ -183,7 +195,15 @@ class SiteBalancedResampler(SamplerMixin, BaseEstimator):
         undersampler_kwargs: dict | None = None,
         max_amplification: float | str | Literal["auto"] | Callable[[np.ndarray], float] | None = "auto",
         random_state: int | np.random.RandomState | None = None,
+        site_column: str | int | None = None,
+        categorical_columns: str | int | list | None = None,
+        continuous_columns: str | int | list | None = None,
+        passthrough_columns: str | int | list | None = None,
     ) -> None:
+        self.site_column = site_column
+        self.categorical_columns = categorical_columns
+        self.continuous_columns = continuous_columns
+        self.passthrough_columns = passthrough_columns
         self.oversampler = oversampler
         self.undersampler = undersampler
         self.undersampler_kwargs = undersampler_kwargs
@@ -193,36 +213,41 @@ class SiteBalancedResampler(SamplerMixin, BaseEstimator):
     # ------------------------------------------------------------------ #
     # Public API
     # ------------------------------------------------------------------ #
+    # Data keywords are requested by default when metadata routing is enabled
+    __metadata_request__fit_resample = {"sites": True, "categorical_covariates": True, "continuous_covariates": True}  # noqa: RUF012
+
     def fit_resample(
         self,
         X: npt.ArrayLike,
         y: npt.ArrayLike,
-        sites: npt.ArrayLike,
         *,
-        categorical_covariate: npt.ArrayLike | None = None,
-        continuous_covariate: npt.ArrayLike | None = None,
-    ) -> tuple[npt.NDArray, npt.NDArray]:
+        sites: npt.ArrayLike | None = None,
+        categorical_covariates: npt.ArrayLike | None = None,
+        continuous_covariates: npt.ArrayLike | None = None,
+    ) -> tuple[TransformOutput, npt.NDArray]:
         """Balance the classes within every site.
 
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_features)
-            Features.
+        X : array-like or DataFrame of shape (n_samples, n_columns)
+            Features, with the metadata columns named in the constructor, if any.
 
         y : array-like of shape (n_samples,)
             Target (classes, or continuous values binned by the over-sampler).
 
-        sites : array-like of shape (n_samples,)
-            Site of each sample.
+        sites : array-like of shape (n_samples,) or None, default=None
+            Site of each sample. Required unless ``site_column`` is set.
 
-        categorical_covariate, continuous_covariate : array-like or None, default=None
+        categorical_covariates, continuous_covariates : array-like or None, default=None
             Covariates (see ``IntraSiteInterpolation.fit_resample``). Both
             steps are stratified by them.
 
         Returns
         -------
-        X_resampled : numpy.ndarray of shape (n_samples_new, n_features)
-            Resampled features, grouped by site.
+        X_resampled : ndarray or DataFrame of shape (n_samples_new, n_columns)
+            Resampled data, grouped by site: the features only (keyword path),
+            or all the columns of ``X`` with the metadata of the synthetic
+            samples filled in (column path).
 
         y_resampled : numpy.ndarray of shape (n_samples_new,)
             Resampled targets.
@@ -234,16 +259,26 @@ class SiteBalancedResampler(SamplerMixin, BaseEstimator):
             balancing (see ``IntraSiteInterpolation``).
 
         """
+        data = self._sampler_input(X, sites, categorical_covariates, continuous_covariates)
+        X_in = X
         self._validate_params()
         os_ = IntraSiteInterpolation(random_state=self.random_state) if self.oversampler is None else clone(self.oversampler)
+        # The data are passed to the over-sampler as keywords
+        os_.set_params(site_column=None, categorical_columns=None, continuous_columns=None, passthrough_columns=None)
         rng = check_random_state(self.random_state)
         X, y, sites, y_cls, cat_cov, cont_cov = os_._validate_input(
-            X, y, sites, categorical_covariate, continuous_covariate, os_.n_bins_cont_cov, os_.binning_strategy_cont_cov
+            data.X,
+            y,
+            data.sites,
+            data["categorical_covariates"],
+            data["continuous_covariates"],
+            os_.n_bins_cont_cov,
+            os_.binning_strategy_cont_cov,
         )
         os_._validate_params_values()
         os_.interpolator_ = os_._resolve_interpolator()
         self.undersampler_ = self._resolve_undersampler()
-        self.task_, self.bins_, self.n_features_in_ = os_.task_, os_.bins_, X.shape[1]
+        self.task_, self.bins_ = os_.task_, os_.bins_
 
         counts = os_._class_counts(sites, y_cls)
         site_max = os_._site_targets(counts)
@@ -266,12 +301,14 @@ class SiteBalancedResampler(SamplerMixin, BaseEstimator):
         if self.task_ == "regression":
             os_.set_params(n_bins=self.bins_)
         os_._skip_unsafe_warning = True  # reported below, with advice that fits the wrapper
-        cov = {}
-        if categorical_covariate is not None:
-            cov["categorical_covariate"] = np.asarray(categorical_covariate)[kept]
-        if continuous_covariate is not None:
-            cov["continuous_covariate"] = np.asarray(continuous_covariate)[kept]
-        X_res, y_res = os_.fit_resample(X[kept], y[kept], sites=sites[kept], **cov)
+        os_._track_parents = self._needs_parents(data)
+        X_res, y_res = os_.fit_resample(
+            X[kept],
+            y[kept],
+            sites=sites[kept],
+            categorical_covariates=None if cat_cov is None else cat_cov[kept],
+            continuous_covariates=None if cont_cov is None else cont_cov[kept],
+        )
         self.oversampler_ = os_
         if not isinstance(self.max_amplification, str):  # "auto" stays within the safe amount by design
             os_._warn_unsafe_amplification(
@@ -293,7 +330,11 @@ class SiteBalancedResampler(SamplerMixin, BaseEstimator):
             y_res = y_res.astype(y.dtype, copy=False)
         n_removed = sum(sum(d.values()) for d in self.samples_removed_.values())
         logger.debug(f"[SBR] {len(X)} samples -> {len(X_res)} ({n_removed} removed, {int(self.is_synthetic_.sum())} synthetic)")
-        return X_res, y_res
+        weights = os_._parent_weights(len(kept))
+        if weights is not None:  # parents as rows of the input, not of the kept samples
+            weights = weights.tocoo()
+            weights = parent_weights(weights.row, kept[weights.col], weights.data, weights.shape[0], len(X))
+        return self._resampled_output(X_in, data, X_res, self.sites_resampled_, self.sample_indices_, weights), y_res
 
     def summary(self) -> pd.DataFrame:
         """Return a per site-class report of the resampling.
@@ -532,21 +573,14 @@ class SiteBalancedResampler(SamplerMixin, BaseEstimator):
         return chosen
 
     def _fit_resample(self, X: npt.ArrayLike, y: npt.ArrayLike, **params: Any) -> tuple[npt.NDArray, npt.NDArray]:
-        """Resample; ``sites`` must be passed as a keyword argument.
+        """Resample (see :meth:`fit_resample`).
 
         Returns
         -------
         tuple
             Output of :meth:`fit_resample`.
 
-        Raises
-        ------
-        TypeError
-            If ``sites`` is not given.
-
         """
-        if "sites" not in params:
-            raise TypeError("SiteBalancedResampler needs `sites`: call fit_resample(X, y, sites=sites).")
         return self.fit_resample(X, y, **params)
 
     def __sklearn_tags__(self) -> Tags:

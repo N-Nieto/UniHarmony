@@ -109,17 +109,18 @@ clf = PrettYharmonizeClassifier(
     base_model=SVC(probability=True),
     stack_model=LogisticRegression(),
 )
-X_train_harmonized = clf.fit_transform(X_train, y_train, sites_train)  # training labels are used, as usual
-y_pred = clf.predict(X_test, sites_test)         # no test labels needed
-proba = clf.predict_proba(X_test, sites_test)
-X_test_harmonized = clf.transform(X_test, sites_test)  # harmonized with the predicted labels
+X_train_harmonized = clf.fit_transform(X_train, y_train, sites=sites_train)  # training labels are used, as usual
+y_pred = clf.predict(X_test, sites=sites_test)         # no test labels needed
+proba = clf.predict_proba(X_test, sites=sites_test)
+X_test_harmonized = clf.transform(X_test, sites=sites_test)  # harmonized with the predicted labels
 ```
 
 - {class}`~uniharmony.prettyharmonize.PrettYharmonizeClassifier` and {class}`~uniharmony.prettyharmonize.PrettYharmonizeRegressor` default to `NeuroComBat()` and linear models for `base_model` and `stack_model`.
 - The target `y` is always preserved by `harm_model`. It goes to its categorical covariates for classification (one-hot encoded continuous covariates for {class}`~uniharmony.combat.ComBatGAM`, which has none) and to its continuous covariates for regression ({class}`~uniharmony.combat.ComBatGAM`: smooth covariates, unless already used).
-- Other covariates to preserve are passed as `additional_covariates`, a dict keyed by the covariate arguments of `harm_model`, e.g. `clf.fit(X, y, sites, {"categorical_covariates": sex, "continuous_covariates": age})`. They must be known for the data to predict too, and are passed again to `predict`, `predict_proba`, `transform` and `score`.
+- Other covariates to preserve are passed with the covariate keywords of `harm_model`, e.g. `clf.fit(X, y, sites=sites, categorical_covariates=sex, continuous_covariates=age)`. They must be known for the data to predict too, and are passed again to `predict`, `predict_proba`, `transform` and `score`.
 - `score` is the balanced accuracy (classification) or R² (regression). It is used by scikit-learn model selection tools when no `scoring` is given.
-- Inside `sklearn.model_selection.cross_validate`, route the sites with metadata routing (`set_fit_request(sites=True)`, `set_score_request(sites=True)`); only the estimator's own `score` receives them. scikit-learn only splits array-like metadata, so `additional_covariates` cannot be routed: use a manual cross-validation loop with covariates.
+- **In pipelines and cross-validation**, give the sites and covariates as columns of a DataFrame `X`, named in `harm_model`: `PrettYharmonizeClassifier(harm_model=NeuroComBat(site_column="site", continuous_columns="age"))`, then `clf.fit(df, y)` and `clf.predict(df_test)`. The folds split the columns with the features, so every scikit-learn tool and scorer works (see [Using UniHarmony in pipelines](../../pipelines.md)).
+- Metadata routing of the keywords also works (they are requested by default), but scikit-learn only routes metadata to the estimator's own `score`, not to other scorers (`scoring="roc_auc"` gives NaN) nor to `cross_val_predict`. Prefer the columns.
 
 ### Using other ComBat-based models
 
@@ -129,16 +130,21 @@ from uniharmony.prettyharmonize import PrettYharmonizeClassifier, PrettYharmoniz
 
 # CovBat: also harmonizes the covariance across sites
 clf = PrettYharmonizeClassifier(harm_model=CovBat(pct_var=0.95))
-clf.fit(X_train, y_train, sites_train)
+clf.fit(X_train, y_train, sites=sites_train)
 
 # ComBatGAM: age as non-linear (smooth) covariate, required by ComBatGAM
 clf = PrettYharmonizeClassifier(harm_model=ComBatGAM())
-clf.fit(X_train, y_train, sites_train, {"smooth_covariates": age_train})
-clf.predict(X_test, sites_test, {"smooth_covariates": age_test})
+clf.fit(X_train, y_train, sites=sites_train, smooth_covariates=age_train)
+clf.predict(X_test, sites=sites_test, smooth_covariates=age_test)
+
+# The same with the sites and age as columns of a DataFrame
+clf = PrettYharmonizeClassifier(harm_model=ComBatGAM(site_column="site", smooth_columns="age"))
+clf.fit(df_train, y_train)
+clf.predict(df_test)
 
 # ComBatGAM: predict age, preserved as a smooth (non-linear) effect
 reg = PrettYharmonizeRegressor(harm_model=ComBatGAM())
-reg.fit(X_train, age_train, sites_train)
+reg.fit(X_train, age_train, sites=sites_train)
 ```
 
 ## Practical notes and limitations
@@ -147,7 +153,7 @@ reg.fit(X_train, age_train, sites_train)
 - **Perfect confounding.** If the target (or a covariate) is constant within every site, its effect cannot be separated from the site effect, and an error is raised.
 - **Residual site information under strong confounding.** When site and target are strongly dependent and there is no real signal, all target-preserving schemes (WDH, TTL, PrettYharmonize) can stay somewhat above chance: the estimated target effect $\hat\beta$ is fitted on few minority-class samples per site and part of its noise survives harmonization. This is not test-label leakage, but interpret above-chance results in such settings with care.
 - **Cost.** One fit trains `cv + 1` harmonization and base models (`cv` with `fit_final_model=False`). Prediction harmonizes and scores the data once per pretended target (times `cv` with `fit_final_model=False`); slow harmonization models (e.g., ComBatGAM) make this proportionally slower.
-- **Spline ranges (ComBatGAM).** Splines cannot extrapolate. PrettYharmonize sets the spline range of the smooth covariate to the range of the whole training data, so every inner fold can harmonize its validation samples. Data to predict must stay within that range (an informative error is raised otherwise). ComBatGAM's other `fit` options (`df`, `degree`, ...) keep their defaults.
+- **Spline ranges (ComBatGAM).** Splines cannot extrapolate. PrettYharmonize sets the spline range of the smooth covariate to the range of the whole training data, so every inner fold can harmonize its validation samples. Data to predict must stay within that range (an informative error is raised otherwise). ComBatGAM's other options (`df`, `degree`, ...) are taken from `harm_model`.
 
 ## References
 

@@ -4,7 +4,6 @@
 # https://github.com/juaml/PrettYharmonize
 # licensed under AGPL-3.0.
 
-from collections.abc import Mapping
 from typing import Any
 
 import numpy as np
@@ -16,7 +15,7 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.utils.multiclass import type_of_target
 
-from ._base import BasePrettYharmonize, DecisionPredictor, ProbabilisticPredictor
+from ._base import _METADATA_REQUEST, BasePrettYharmonize, DecisionPredictor, ProbabilisticPredictor, _metadata
 
 
 __all__ = ["PrettYharmonizeClassifier"]
@@ -40,7 +39,7 @@ class PrettYharmonizeClassifier(ClassifierMixin, BasePrettYharmonize):
         :class:`~uniharmony.combat.NeuroComBat`. The class is preserved as a
         categorical covariate (one-hot encoded continuous covariates for
         :class:`~uniharmony.combat.ComBatGAM`, which then needs a smooth
-        covariate in ``additional_covariates``).
+        covariate).
     base_model : estimator or None, optional (default None)
         Classifier fitted on the harmonized data. It must implement
         ``predict_proba`` or ``decision_function``. None means
@@ -113,8 +112,8 @@ class PrettYharmonizeClassifier(ClassifierMixin, BasePrettYharmonize):
     ...     n_samples=400, balance_per_site=[[0.8, 0.2], [0.2, 0.8]], random_state=0
     ... )
     >>> clf = PrettYharmonizeClassifier(harm_model=NeuroComBat(), random_state=0)
-    >>> clf = clf.fit(X, y, sites)
-    >>> clf.predict(X[:5], sites[:5]).shape
+    >>> clf = clf.fit(X, y, sites=sites)
+    >>> clf.predict(X[:5], sites=sites[:5]).shape
     (5,)
 
     """
@@ -164,17 +163,22 @@ class PrettYharmonizeClassifier(ClassifierMixin, BasePrettYharmonize):
     def _decode(self, y_encoded: npt.NDArray) -> npt.NDArray:
         return self.classes_[np.asarray(y_encoded, dtype=int)]
 
+    __metadata_request__predict_proba = _METADATA_REQUEST
+
     def predict_proba(
         self,
         X: npt.ArrayLike,
-        sites: npt.ArrayLike,
-        additional_covariates: Mapping[str, npt.ArrayLike] | None = None,
+        *,
+        sites: npt.ArrayLike | None = None,
+        categorical_covariates: npt.ArrayLike | None = None,
+        continuous_covariates: npt.ArrayLike | None = None,
+        smooth_covariates: npt.ArrayLike | None = None,
     ) -> npt.NDArray:
         """Predict class probabilities without using the labels for harmonization.
 
         Parameters
         ----------
-        X, sites, additional_covariates
+        X, sites, categorical_covariates, continuous_covariates, smooth_covariates
             See :meth:`predict`.
 
         Returns
@@ -183,19 +187,21 @@ class PrettYharmonizeClassifier(ClassifierMixin, BasePrettYharmonize):
             Class probabilities of the stack model (columns ordered as ``classes_``).
 
         """
-        *_, scores = self._scores(X, sites, additional_covariates)
+        *_, scores = self._scores(X, _metadata(sites, categorical_covariates, continuous_covariates, smooth_covariates))
         if not isinstance(self.stack_model_, ProbabilisticPredictor):
             raise AttributeError(f"The stack model ({type(self.stack_model_).__name__}) does not implement predict_proba.")
         return self.stack_model_.predict_proba(scores)
 
-    # ``sites`` comes before ``sample_weight`` (as in ``fit``), unlike the scikit-learn signature.
-    def score(  # pyright: ignore[reportIncompatibleMethodOverride]
+    def score(
         self,
         X: npt.ArrayLike,
         y: npt.ArrayLike,
-        sites: npt.ArrayLike | None = None,
         sample_weight: npt.ArrayLike | None = None,
-        additional_covariates: Mapping[str, npt.ArrayLike] | None = None,
+        *,
+        sites: npt.ArrayLike | None = None,
+        categorical_covariates: npt.ArrayLike | None = None,
+        continuous_covariates: npt.ArrayLike | None = None,
+        smooth_covariates: npt.ArrayLike | None = None,
     ) -> float:
         """Return the balanced accuracy.
 
@@ -203,11 +209,12 @@ class PrettYharmonizeClassifier(ClassifierMixin, BasePrettYharmonize):
         predicting the majority class, unlike accuracy. This method is used by
         scikit-learn model selection tools (e.g., ``cross_validate`` or
         ``GridSearchCV``) when no ``scoring`` is given; with metadata routing
-        it is also the only scorer that receives ``sites``.
+        it is also the only scorer that receives the sites as keyword (read the
+        sites from a column of ``X`` to use any scorer).
 
         Parameters
         ----------
-        X, sites, additional_covariates
+        X, sites, categorical_covariates, continuous_covariates, smooth_covariates
             See :meth:`predict`.
         y : array-like, shape (n_samples,)
             True labels.
@@ -220,5 +227,11 @@ class PrettYharmonizeClassifier(ClassifierMixin, BasePrettYharmonize):
             Balanced accuracy.
 
         """
-        y_pred = self.predict(X, sites, additional_covariates)  # type: ignore[arg-type]
+        y_pred = self.predict(
+            X,
+            sites=sites,
+            categorical_covariates=categorical_covariates,
+            continuous_covariates=continuous_covariates,
+            smooth_covariates=smooth_covariates,
+        )
         return float(balanced_accuracy_score(y, y_pred, sample_weight=sample_weight))

@@ -50,7 +50,7 @@ def test_n_pc_override(three_site_data):
     """n_pc must override pct_var."""
     X, sites = three_site_data.X, three_site_data.sites
     covbat = CovBat(n_pc=5, pct_var=0.10)
-    covbat.fit(X, sites)
+    covbat.fit(X, sites=sites)
     assert covbat.n_pc_ == 5
 
 
@@ -58,7 +58,7 @@ def test_n_pc_capped_to_n_components(three_site_data):
     """If n_pc > available components, cap it."""
     X, sites = three_site_data.X, three_site_data.sites
     covbat = CovBat(n_pc=9999)
-    covbat.fit(X, sites)
+    covbat.fit(X, sites=sites)
     n_samples, n_features = X.shape
     assert covbat.n_pc_ <= min(n_samples, n_features)
 
@@ -67,7 +67,7 @@ def test_pct_var_none_uses_all_components(three_site_data):
     """When both pct_var and n_pc are None, use all PCs."""
     X, sites = three_site_data.X, three_site_data.sites
     covbat = CovBat(pct_var=None, n_pc=None)
-    covbat.fit(X, sites)
+    covbat.fit(X, sites=sites)
     n_samples, n_features = X.shape
     assert covbat.n_pc_ == min(n_samples, n_features)
 
@@ -76,7 +76,7 @@ def test_std_var_false_no_scaler(three_site_data):
     """With std_var=False the internal scaler must be None."""
     X, sites = three_site_data.X, three_site_data.sites
     covbat = CovBat(std_var=False)
-    covbat.fit(X, sites)
+    covbat.fit(X, sites=sites)
     assert covbat._scaler is None
 
 
@@ -85,7 +85,7 @@ def test_residualize_true_no_mean_restoration(three_site_data):
     X, sites = three_site_data.X, three_site_data.sites
     original_mean = X.mean(axis=0)
     covbat = CovBat(residualize=True)
-    X_harm = covbat.fit_transform(X, sites)
+    X_harm = covbat.fit_transform(X, sites=sites)
     assert np.not_equal(original_mean, X_harm.mean(axis=0)).all()
 
 
@@ -102,7 +102,7 @@ def test_covariance_site_effects_reduced_no_covariates(three_site_data):
     raw_div = _cov_div(raw_covs)
 
     covbat = CovBat(std_var=True, pct_var=0.95)
-    X_harm = covbat.fit_transform(X, sites)
+    X_harm = covbat.fit_transform(X, sites=sites)
     harm_covs = _site_covariances(X_harm, sites)
     harm_div = _cov_div(harm_covs)
 
@@ -125,7 +125,7 @@ def test_covariance_site_effects_reduced_with_covariates(three_site_data):
     raw_div = _cov_div(raw_covs)
 
     covbat = CovBat(std_var=True, pct_var=0.95)
-    X_harm = covbat.fit_transform(X, sites, continuous_covariates=age[:, None])
+    X_harm = covbat.fit_transform(X, sites=sites, continuous_covariates=age[:, None])
 
     # Remove age effects from harmonized data
     X_harm_res = _regress_out_covariate(X_harm, age)
@@ -149,7 +149,7 @@ def test_single_feature_works(rng):
     sites = np.repeat(["A", "B"], n // 2)
     covbat = CovBat()
     with pytest.raises(RuntimeError, match="Harmonization produced non-finite values"):
-        _ = covbat.fit_transform(X, sites)
+        _ = covbat.fit_transform(X, sites=sites)
 
 
 def test_many_sites_few_samples(rng):
@@ -158,5 +158,5 @@ def test_many_sites_few_samples(rng):
     X = rng.normal(size=(n, 10))
     sites = np.array([f"S{i % 5}" for i in range(n)])
     covbat = CovBat()
-    X_harm = covbat.fit_transform(X, sites)
+    X_harm = covbat.fit_transform(X, sites=sites)
     assert X_harm.shape == X.shape

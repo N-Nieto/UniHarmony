@@ -61,7 +61,8 @@ def test_module_loggers_follow_uniharmony_level(name, logger):
 def test_default_level_is_warning(capsys, data):
     """By default only warnings and errors are printed: a normal fit is silent."""
     _State.level = 30  # the import-time default, in case another test changed it
-    NeuroComBat().fit(*data).transform(*data)
+    X, sites = data
+    NeuroComBat().fit(X, sites=sites).transform(X, sites=sites)
     assert capsys.readouterr().out == ""
     get_logger(src="test").warning("shown")
     assert "[warning" in capsys.readouterr().out
@@ -70,20 +71,21 @@ def test_default_level_is_warning(capsys, data):
 def test_transform_of_a_subset_of_sites_is_silent(capsys, data):
     """Transforming samples of only some fitted sites is normal use, not a warning."""
     X, sites = data
-    harmonizer = NeuroComBat().fit(X, sites)
+    harmonizer = NeuroComBat().fit(X, sites=sites)
     capsys.readouterr()
-    harmonizer.transform(X[sites == 0], sites[sites == 0])
+    harmonizer.transform(X[sites == 0], sites=sites[sites == 0])
     assert capsys.readouterr().out == ""
 
 
 def test_verbosity_after_import_applies_to_harmonizers(capsys, data):
     """Setting the level after importing a harmonizer still applies to its logs."""
+    X, sites = data
     verbosity("debug")
-    NeuroComBat().fit(*data)
+    NeuroComBat().fit(X, sites=sites)
     assert "[debug" in capsys.readouterr().out
 
     verbosity("error")
-    NeuroComBat().fit(*data)
+    NeuroComBat().fit(X, sites=sites)
     assert capsys.readouterr().out == ""
 
 

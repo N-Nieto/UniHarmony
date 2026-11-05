@@ -37,9 +37,9 @@ X_train, X_test, y_train, y_test, sites_train, sites_test = train_test_split(X, 
 clf.fit(X=X_train, y=y_train)
 y_pred = clf.predict_proba(X_test)[:,1]
 combat = NeuroComBat()
-X_harmonized = combat.fit_transform(X_train, sites_train)
+X_harmonized = combat.fit_transform(X_train, sites=sites_train)
 clf.fit(X=X_harmonized, y=y_train)
-X_test_harmonized = combat.transform(X_test, sites_test)
+X_test_harmonized = combat.transform(X_test, sites=sites_test)
 y_pred_harm = clf.predict_proba(X_test_harmonized)[:,1]
 
 

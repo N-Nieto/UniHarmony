@@ -50,12 +50,12 @@ X_train, X_test, age_train, age_test, sites_train, sites_test = train_test_split
 # PrettYharmonize
 # ---------------
 reg = PrettYharmonizeRegressor(harm_model=NeuroComBat(), regression_points=10, random_state=0)
-reg.fit(X_train, age_train, sites_train)
+reg.fit(X_train, age_train, sites=sites_train)
 print("pretended ages:", reg.regression_points_.round(1))
-pred = reg.predict(X_test, sites_test)
+pred = reg.predict(X_test, sites=sites_test)
 
-search = PrettYharmonizeRegressor(regression_search=True, random_state=0).fit(X_train, age_train, sites_train)
-pred_search = search.predict(X_test, sites_test)
+search = PrettYharmonizeRegressor(regression_search=True, random_state=0).fit(X_train, age_train, sites=sites_train)
+pred_search = search.predict(X_test, sites=sites_test)
 
 
 # %%
@@ -66,8 +66,8 @@ def ridge():
     return make_pipeline(StandardScaler(), RidgeCV(alphas=np.logspace(-3, 3, 13)))
 
 
-combat = NeuroComBat().fit(X_train, sites_train)
-pred_no_target = ridge().fit(combat.transform(X_train, sites_train), age_train).predict(combat.transform(X_test, sites_test))
+combat = NeuroComBat().fit(X_train, sites=sites_train)
+pred_no_target = ridge().fit(combat.transform(X_train, sites=sites_train), age_train).predict(combat.transform(X_test, sites=sites_test))
 
 for name, p in [("ComBat without age", pred_no_target), ("PrettYharmonize", pred), ("PrettYharmonize (search)", pred_search)]:
     print(f"{name:26s} MAE = {mean_absolute_error(age_test, p):5.2f} years")

@@ -50,13 +50,24 @@ $$
 from uniharmony.ot import OptimalTransportDomainAdaptation
 
 otda = OptimalTransportDomainAdaptation(
+    ref_site="site_A",       # the site(s) the other sites are mapped onto
     ot_method="sinkhorn",
     metric="sqeuclidean",
-    reg=0.1
+    reg=0.1,
+    use_labels=True,         # supervised transport with y (default False: y is ignored)
 )
 
-# Fit with reference site
-otda.fit(X_train, sites_train, ref_site="site_A", y=labels_train)
+# Fit (y second, as in scikit-learn; the sites as keyword)
+otda.fit(X_train, labels_train, sites=sites_train)
 
 # Harmonize new data
-X_harmonized = otda.transform(X_test, sites_test)
+X_harmonized = otda.transform(X_test, sites=sites_test)
+
+# Or read the sites from a column of a DataFrame (works in a scikit-learn Pipeline)
+otda = OptimalTransportDomainAdaptation(ref_site="site_A", site_column="site")
+X_harmonized = otda.fit(df_train).transform(df_test)
+```
+
+## References
+
+[^1]: Courty, N., Flamary, R., Tuia, D., & Rakotomamonjy, A. (2017). Optimal transport for domain adaptation. *IEEE Transactions on Pattern Analysis and Machine Intelligence*, 39(9), 1853-1865. https://doi.org/10.1109/TPAMI.2016.2615921

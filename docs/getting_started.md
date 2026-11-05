@@ -29,6 +29,23 @@ pip install "uniharmony[datasets,dl]"
 
 ## 🪄 Usage
 
+Every harmonizer is a scikit-learn transformer. The sites (and covariates) can be columns of a DataFrame, named in the
+constructor, which makes the harmonizer an ordinary pipeline step:
+
+```python
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import StratifiedKFold, cross_validate
+from sklearn.pipeline import make_pipeline
+from sklearn.preprocessing import StandardScaler
+from uniharmony.combat import NeuroComBat
+
+pipe = make_pipeline(NeuroComBat(site_column="site", continuous_columns=["age"]), StandardScaler(), LogisticRegression())
+scores = cross_validate(pipe, df, y, cv=StratifiedKFold(5, shuffle=True), scoring="roc_auc")
+```
+
+or keywords: `NeuroComBat().fit(X, sites=sites).transform(X_new, sites=sites_new)`. See
+[Using UniHarmony in pipelines](pipelines.md).
+
 ### Data loading and simulation
 
 - [Simulate multisite classification problems](#simulate-multisite-data)

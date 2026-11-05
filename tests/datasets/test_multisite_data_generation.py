@@ -835,3 +835,124 @@ def test_heterogeneous_effect_keeps_sites_distinct():
     mean_difference = np.abs(offsets[sites == 0].mean(axis=0) - offsets[sites == 1].mean(axis=0))
     assert mean_difference.max() > 0.5
     assert offsets[sites == 0].std(axis=0).min() > 0.5  # per-sample jitter
+
+
+# ---------------------------------------------------------------------------
+# site_scale_strength: location and scale strengths set independently (#75)
+# ---------------------------------------------------------------------------
+
+
+def _affine_site_effect(X: np.ndarray, X_base: np.ndarray, center: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """Per-feature factor f and offset o of X = center + f (X_base - center) + o (exact without noise)."""
+    deviation = X_base - center
+    factor = ((X - X.mean(axis=0)) * (deviation - deviation.mean(axis=0))).sum(axis=0) / (
+        (deviation - deviation.mean(axis=0)) ** 2
+    ).sum(axis=0)
+    offset = X.mean(axis=0) - center - factor * deviation.mean(axis=0)
+    np.testing.assert_allclose(X, center + factor * deviation + offset, atol=1e-9)  # the EoS is affine per feature
+    return factor, offset
+
+
+@pytest.mark.parametrize("site_effect_type", ["scale", "location+scale"])
+@pytest.mark.parametrize("homogeneous", [True, False])
+def test_scale_strength_defaults_to_site_effect_strength(site_effect_type, homogeneous):
+    """site_scale_strength=None gives the same data as site_scale_strength=site_effect_strength (and as before #75)."""
+    params = {"n_sites": 3, "n_samples": 300, "site_effect_type": site_effect_type, "site_effect_homogeneous": homogeneous}
+    default = make_multisite_classification(site_effect_strength=[1.0, 2.0, 4.0], **params)
+    explicit = make_multisite_classification(site_effect_strength=[1.0, 2.0, 4.0], site_scale_strength=[1.0, 2.0, 4.0], **params)
+    for a, b in zip(default, explicit, strict=True):
+        np.testing.assert_array_equal(a, b)
+
+
+@pytest.mark.parametrize(("location", "scale"), [(5.0, 0.0), (0.0, 5.0), (6.0, 1.0), (1.0, 6.0)])
+def test_location_and_scale_strengths_are_independent(location, scale):
+    """With location+scale, the offsets follow site_effect_strength and the factors site_scale_strength."""
+    X, _, sites, X_base = make_multisite_classification(
+        n_sites=3,
+        n_samples=1500,
+        n_features=8,
+        site_effect_type="location+scale",
+        site_effect_strength=location,
+        site_scale_strength=scale,
+        noise_strength=0,
+        return_base_data=True,
+    )
+    center = X_base.mean(axis=0)
+    factors, offsets = [], []
+    for site in range(3):
+        factor, offset = _affine_site_effect(X[sites == site], X_base[sites == site], center)
+        factors.append(factor)
+        offsets.append(offset)
+    factors, offsets = np.array(factors), np.array(offsets)
+    tol = 1e-9
+    assert (factors >= np.exp(-0.1 * scale) - tol).all()
+    assert (factors <= np.exp(0.1 * scale) + tol).all()
+    assert (offsets >= -tol).all()
+    assert (offsets <= location + tol).all()
+    if scale == 0:
+        np.testing.assert_allclose(factors, 1.0, atol=1e-9)
+    else:
+        assert np.ptp(np.log(factors)) > 0.05 * scale  # the factors vary between sites and features
+    if location == 0:
+        np.testing.assert_allclose(offsets, 0.0, atol=1e-9)
+    else:
+        assert offsets.max() > 0.5 * location
+
+
+def test_scale_strength_per_site():
+    """A list gives one scale strength per site; a site with 0 keeps its spread."""
+    X, _, sites, X_base = make_multisite_classification(
+        n_sites=2,
+        n_samples=800,
+        site_effect_type="scale",
+        site_effect_strength=3.0,
+        site_scale_strength=[0.0, 8.0],
+        noise_strength=0,
+        return_base_data=True,
+    )
+    center = X_base.mean(axis=0)
+    factor_0, _ = _affine_site_effect(X[sites == 0], X_base[sites == 0], center)
+    factor_1, _ = _affine_site_effect(X[sites == 1], X_base[sites == 1], center)
+    np.testing.assert_allclose(factor_0, 1.0, atol=1e-9)
+    assert np.abs(np.log(factor_1)).max() > 0.2
+
+
+def test_heterogeneous_scale_strength_zero_is_pure_location():
+    """With site_scale_strength=0, the heterogeneous location+scale EoS only shifts the samples."""
+    X, _, _, X_base = make_multisite_classification(
+        n_samples=400,
+        site_effect_type="location+scale",
+        site_effect_homogeneous=False,
+        site_effect_strength=3.0,
+        site_scale_strength=0.0,
+        noise_strength=0,
+        return_base_data=True,
+    )
+    shift = X - X_base
+    assert shift.min() >= -1.5 - 1e-9  # site offset in [0, 3] plus jitter in [-1.5, 1.5]
+    assert shift.max() <= 4.5 + 1e-9
+
+
+@pytest.mark.parametrize("site_effect_type", ["location", "variance", "nonlinear", "dropout"])
+def test_scale_strength_ignored_with_a_warning(site_effect_type):
+    """site_scale_strength has no effect, and warns, with the site effect types without a scale part."""
+    params = {"n_samples": 200, "site_effect_type": site_effect_type, "site_effect_strength": 2.0}
+    with pytest.warns(UserWarning, match="site_scale_strength is ignored"):
+        with_scale = make_multisite_classification(site_scale_strength=7.0, **params)
+    for a, b in zip(with_scale, make_multisite_classification(**params), strict=True):
+        np.testing.assert_array_equal(a, b)
+
+
+@pytest.mark.parametrize(
+    ("site_scale_strength", "error", "match"),
+    [
+        (-1.0, ValueError, "site_scale_strength must be non-negative"),
+        ([1.0, -0.5], ValueError, r"site_scale_strength\[1\] must be non-negative"),
+        ([1.0, 2.0, 3.0], ValueError, "site_scale_strength must have length n_sites"),
+        ("strong", TypeError, "Invalid type for site_scale_strength"),
+    ],
+)
+def test_scale_strength_validation(site_scale_strength, error, match):
+    """Negative values, wrong lengths and wrong types are rejected like site_effect_strength."""
+    with pytest.raises(error, match=match):
+        make_multisite_classification(n_sites=2, site_effect_type="scale", site_scale_strength=site_scale_strength)

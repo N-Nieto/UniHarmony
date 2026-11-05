@@ -49,6 +49,7 @@ def make_multisite_classification(
     noise_strength: list[float] | float = 0.1,
     site_effect_type: str = "location",
     site_effect_strength: list[float] | float = 3.0,
+    site_scale_strength: list[float] | float | None = None,
     site_effect_homogeneous: bool = True,
     covariates: None = None,
     return_base_data: Literal[False] = False,
@@ -69,6 +70,7 @@ def make_multisite_classification(
     noise_strength: list[float] | float = 0.1,
     site_effect_type: str = "location",
     site_effect_strength: list[float] | float = 3.0,
+    site_scale_strength: list[float] | float | None = None,
     site_effect_homogeneous: bool = True,
     *,
     covariates: list,  # no default - must be provided
@@ -90,6 +92,7 @@ def make_multisite_classification(
     noise_strength: list[float] | float = 0.1,
     site_effect_type: str = "location",
     site_effect_strength: list[float] | float = 3.0,
+    site_scale_strength: list[float] | float | None = None,
     site_effect_homogeneous: bool = True,
     *,
     covariates: None = None,
@@ -111,6 +114,7 @@ def make_multisite_classification(
     noise_strength: list[float] | float = 0.1,
     site_effect_type: str = "location",
     site_effect_strength: list[float] | float = 3.0,
+    site_scale_strength: list[float] | float | None = None,
     site_effect_homogeneous: bool = True,
     *,
     covariates: list,  # no default
@@ -131,6 +135,7 @@ def make_multisite_classification(
     noise_strength: list[float] | float = 0.1,
     site_effect_type: str | SITE_EFFECT_TYPES = "location",
     site_effect_strength: list[float] | float = 3.0,
+    site_scale_strength: list[float] | float | None = None,
     site_effect_homogeneous: bool = True,
     covariates: list[Covariate | str] | PRESET_COVARS | None = None,
     return_base_data: bool = False,
@@ -193,12 +198,15 @@ def make_multisite_classification(
         Standard deviation of the Gaussian noise, for all sites or per site.
 
     site_effect_type : str, optional (default "location")
-        Type of EoS, with ``s = site_effect_strength`` of the site:
+        Type of EoS, with ``s = site_effect_strength`` and
+        ``s_scale = site_scale_strength`` of the site:
 
         - ``"location"``: adds a per-feature offset drawn from U(0, s).
         - ``"scale"``: multiplies the deviations from the global mean by a
-          per-feature factor exp(U(-0.1 s, 0.1 s)); the means do not move.
-        - ``"location+scale"``: ``"scale"`` followed by ``"location"``.
+          per-feature factor exp(U(-0.1 s_scale, 0.1 s_scale)); the means do
+          not move. For ``s_scale = 3`` the factors lie in [0.74, 1.35].
+        - ``"location+scale"``: ``"scale"`` (with ``s_scale``) followed by
+          ``"location"`` (with ``s``).
         - ``"variance"``: adds Gaussian noise with a per-feature standard
           deviation drawn from U(0, s).
         - ``"nonlinear"``: adds ``w * X**2`` with ``w`` drawn from U(0, 0.1 s).
@@ -207,7 +215,16 @@ def make_multisite_classification(
         A strength of 0 means no EoS for that site.
 
     site_effect_strength : float or list of float, optional (default 3.0)
-        Strength of the EoS, for all sites or per site (non-negative).
+        Strength of the EoS, for all sites or per site (non-negative). For
+        ``"location+scale"`` it is the strength of the location part only.
+
+    site_scale_strength : float, list of float or None, optional (default None)
+        Strength of the scale part of ``"scale"`` and ``"location+scale"``,
+        for all sites or per site (non-negative), in the same units as
+        ``site_effect_strength``. It sets the scale effect independently of
+        the location effect, e.g. a strong location shift with a mild change
+        of variance. ``None`` uses ``site_effect_strength`` for both parts.
+        Ignored, with a warning, by the other site effect types.
 
     site_effect_homogeneous : bool, optional (default True)
         If True, every sample of a site gets the same site effect. If False,
@@ -270,6 +287,7 @@ def make_multisite_classification(
     signal_strength, site_effect_strength, noise_strength = _validate_components(
         signal_strength, site_effect_strength, noise_strength, n_sites
     )
+    site_scale_strength = _validate_scale_strength(site_scale_strength, site_effect_strength, site_effect_type, n_sites)
     balance = _validate_balance_per_site(balance_per_site, n_sites, n_classes)
     resolved_specs = _resolve_covariates(covariates, n_sites)
 
@@ -295,7 +313,13 @@ def make_multisite_classification(
 
         # Steps 4-5: EoS and noise
         X_site = _apply_site_effect(
-            X_site, site_effect_type, site_effect_strength[site_idx], site_effect_homogeneous, random_state, center=center
+            X_site,
+            site_effect_type,
+            site_effect_strength[site_idx],
+            site_effect_homogeneous,
+            random_state,
+            center=center,
+            scale_strength=site_scale_strength[site_idx],
         )
         if noise_strength[site_idx] > 0:
             X_site = _apply_noise(X_site, noise_strength[site_idx], random_state)
@@ -402,6 +426,25 @@ def _validate_components(
     site_effect_strength = _make_component_list(site_effect_strength, n_sites, "site_effect_strength")
     noise_strength = _make_component_list(noise_strength, n_sites, "noise_strength")
     return signal_strength, site_effect_strength, noise_strength
+
+
+def _validate_scale_strength(
+    site_scale_strength: list[float] | float | None,
+    site_effect_strength: list[float],
+    site_effect_type: str,
+    n_sites: int,
+) -> list[float]:
+    """Strength of the scale part of the EoS per site (``site_effect_strength`` when None)."""
+    if site_scale_strength is None:
+        return list(site_effect_strength)
+    if "scale" not in site_effect_type.lower():
+        warnings.warn(
+            f"site_scale_strength is ignored with site_effect_type={site_effect_type!r}; "
+            "it only applies to 'scale' and 'location+scale'.",
+            UserWarning,
+            stacklevel=3,
+        )
+    return _make_component_list(site_scale_strength, n_sites, "site_scale_strength")
 
 
 def _make_component_list(component: float | list[float], n_sites: int, component_name: str) -> list[float]:
@@ -586,6 +629,7 @@ def _apply_site_effect(
     site_effect_homogeneous: bool,
     random_state: np.random.RandomState,
     center: npt.NDArray | None = None,
+    scale_strength: float | None = None,
 ) -> npt.NDArray:
     """Apply the Effect of Site of one site.
 
@@ -605,6 +649,9 @@ def _apply_site_effect(
     center : np.ndarray of shape (n_features,), optional (default None)
         Point around which ``"scale"`` multiplies the data (the global mean
         of all sites). If None, the mean of ``X`` is used.
+    scale_strength : float, optional (default None)
+        Strength of the scale part of ``"scale"`` and ``"location+scale"``.
+        If None, ``site_effect_strength`` is used.
 
     Returns
     -------
@@ -614,6 +661,7 @@ def _apply_site_effect(
     """
     n_samples, n_features = X.shape
     s = site_effect_strength
+    s_scale = s if scale_strength is None else scale_strength
 
     def draw(low: float, high: float) -> npt.NDArray:
         """Per-feature site parameter from U(low, high), plus per-sample jitter if heterogeneous."""
@@ -625,7 +673,7 @@ def _apply_site_effect(
 
     def scale(X: npt.NDArray) -> npt.NDArray:
         origin = X.mean(axis=0) if center is None else center
-        return origin + (X - origin) * np.exp(draw(-0.1 * s, 0.1 * s))
+        return origin + (X - origin) * np.exp(draw(-0.1 * s_scale, 0.1 * s_scale))
 
     effect_type = site_effect_type.lower()
     if effect_type == "location":

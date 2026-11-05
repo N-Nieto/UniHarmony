@@ -23,6 +23,7 @@ UniHarmony is released under the AGPL v3 license unless otherwise stated.
 ```{toctree}
 :maxdepth: 2
 getting_started
+pipelines
 utilities/index
 methods/index
 examples/index

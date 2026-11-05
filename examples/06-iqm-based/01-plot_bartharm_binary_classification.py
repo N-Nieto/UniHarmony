@@ -15,6 +15,8 @@ related to the class we want to predict.
 # Imports
 # -------
 
+from typing import Any
+
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -92,11 +94,11 @@ plt.grid(axis="y", color="black", alpha=0.5, linestyle="--")
 # The sampler settings are reduced to keep this example fast. The defaults
 # (5000 iterations, 200 + 50 trees) are recommended for real analyses.
 
-sampler_settings = {"n_iter": 600, "burn_in": 200, "n_trees_mu": 50, "n_trees_tau": 20, "n_jobs": 2, "random_state": 42}
+sampler_settings: dict[str, Any] = {"n_iter": 600, "burn_in": 200, "n_trees_mu": 50, "n_trees_tau": 20, "n_jobs": 2, "random_state": 42}
 
 bartharm = BARTharm(**sampler_settings)
-X_train_harmonized = bartharm.fit_transform(X_train, iqms_train, biological_covariates=bio_train)
-X_test_harmonized = bartharm.transform(X_test, iqms_test)
+X_train_harmonized = bartharm.fit_transform(X_train, iqm_covariates=iqms_train, biological_covariates=bio_train)
+X_test_harmonized = bartharm.transform(X_test, iqm_covariates=iqms_test)
 
 # %%
 # Plotting
@@ -218,8 +220,8 @@ plt.tight_layout()
 # effect, and harmonization removes it from the features.
 
 bartharm_confounded = BARTharm(**sampler_settings)
-X_train_confounded = bartharm_confounded.fit_transform(X_train, iqms_confounded_train, biological_covariates=bio_train)
-X_test_confounded = bartharm_confounded.transform(X_test, iqms_confounded_test)
+X_train_confounded = bartharm_confounded.fit_transform(X_train, iqm_covariates=iqms_confounded_train, biological_covariates=bio_train)
+X_test_confounded = bartharm_confounded.transform(X_test, iqm_covariates=iqms_confounded_test)
 
 # %%
 # Protecting the class with the biological covariates
@@ -237,9 +239,9 @@ bio_train_with_target = np.column_stack([bio_train, y_train])
 
 bartharm_protected = BARTharm(**sampler_settings)
 X_train_protected = bartharm_protected.fit_transform(
-    X_train, iqms_confounded_train, biological_covariates=bio_train_with_target
+    X_train, iqm_covariates=iqms_confounded_train, biological_covariates=bio_train_with_target
 )
-X_test_protected = bartharm_protected.transform(X_test, iqms_confounded_test)
+X_test_protected = bartharm_protected.transform(X_test, iqm_covariates=iqms_confounded_test)
 
 ###############################################################################
 # .. caution::

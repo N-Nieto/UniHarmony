@@ -6,6 +6,7 @@ from typing import Any
 
 import numpy as np
 import pytest
+import structlog
 from numpy.typing import NDArray
 
 from uniharmony.datasets import make_multisite_classification
@@ -180,7 +181,7 @@ def test_covariate_wrong_length(binary_2site: tuple) -> None:
     ismi = InterSiteMatchedInterpolation()
     wrong_cov = np.array([["M"]] * 90)
     with pytest.raises(ValueError, match="samples"):
-        ismi.fit_resample(X, y, sites=sites, categorical_covariate=wrong_cov)
+        ismi.fit_resample(X, y, sites=sites, categorical_covariates=wrong_cov)
 
 
 def test_tolerance_without_continuous(binary_2site: tuple) -> None:
@@ -196,7 +197,7 @@ def test_nan_in_categorical(binary_2site: tuple) -> None:
     X, y, sites = binary_2site
     cat = np.array([["M"], [np.nan]] * 50, dtype=object)
     ismi = InterSiteMatchedInterpolation()
-    ismi.fit_resample(X, y, sites=sites, categorical_covariate=cat, allow_nan=True)
+    ismi.set_params(allow_nan=True).fit_resample(X, y, sites=sites, categorical_covariates=cat)
 
 
 def test_nan_in_categorical_not_allowd(binary_2site: tuple) -> None:
@@ -206,7 +207,7 @@ def test_nan_in_categorical_not_allowd(binary_2site: tuple) -> None:
     cat = np.array([["M"], [np.nan]] * 50, dtype=object)
     ismi = InterSiteMatchedInterpolation()
     with pytest.raises(ValueError):
-        ismi.fit_resample(X, y, sites=sites, categorical_covariate=cat, allow_nan=False)
+        ismi.set_params(allow_nan=False).fit_resample(X, y, sites=sites, categorical_covariates=cat)
 
 
 def test_basic_pairwise(binary_2site: tuple) -> None:
@@ -244,7 +245,8 @@ def test_base_to_others_forces_average(multi_3site: tuple) -> None:
     ismi = InterSiteMatchedInterpolation(mode="base_to_others", k=2, random_state=42)
     _, _ = ismi.fit_resample(X, y, sites=sites)
 
-    assert ismi.k == "average"
+    assert ismi.k_ == "average"
+    assert ismi.k == 2  # the parameter is not modified
 
 
 def test_with_covariates(binary_2site: tuple, covariates_2site: tuple) -> None:
@@ -252,7 +254,7 @@ def test_with_covariates(binary_2site: tuple, covariates_2site: tuple) -> None:
     X, y, sites = binary_2site
     sex, age = covariates_2site
     ismi = InterSiteMatchedInterpolation(covariate_tolerance=np.array([10.0]), random_state=42)
-    X_res, _ = ismi.fit_resample(X, y, sites=sites, categorical_covariate=sex, continuous_covariate=age)
+    X_res, _ = ismi.fit_resample(X, y, sites=sites, categorical_covariates=sex, continuous_covariates=age)
     assert len(X_res) > len(X)
 
 
@@ -356,9 +358,10 @@ def test_base_to_others_override_warning(multi_3site: tuple) -> None:
     """Test warning when k is overridden in base_to_others mode."""
     X, y, sites = multi_3site
     ismi = InterSiteMatchedInterpolation(mode="base_to_others", k=2)
-    # Should warn about override
-    _, _ = ismi.fit_resample(X, y, sites=sites)
-    assert ismi.k == "average"
+    with structlog.testing.capture_logs() as logs:
+        _, _ = ismi.fit_resample(X, y, sites=sites)
+    assert any("requires k='average'" in entry["event"] for entry in logs)
+    assert ismi.k_ == "average"
 
 
 def test_single_feature() -> None:

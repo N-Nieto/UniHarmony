@@ -1,11 +1,13 @@
 """Tests test suite for OptimalTransportDomainAdaptation."""
 
 import numpy as np
+import pandas as pd
 import pytest
 from numpy.testing import assert_allclose
 from ot.da import SinkhornTransport
 from sklearn.datasets import make_classification
 from sklearn.exceptions import NotFittedError
+from sklearn.utils.estimator_checks import parametrize_with_checks
 from sklearn.utils.validation import check_is_fitted
 
 from uniharmony.datasets import make_multisite_classification
@@ -71,7 +73,7 @@ def test_init_with_wrong_ot_instance(simple_data):
     otda = OptimalTransportDomainAdaptation(ot_method=ot_solver)
     X, y, sites = simple_data
     with pytest.raises(TypeError):
-        otda.fit(X, sites, ref_site=1, y=y)
+        otda.set_params(ref_site=1, use_labels=True).fit(X, y, sites=sites)
     assert otda.ot_method is ot_solver
 
 
@@ -168,7 +170,7 @@ def test_basic_fit(simple_data):
     X, y, sites = simple_data
     otda = OptimalTransportDomainAdaptation()
 
-    result = otda.fit(X, sites, ref_site=1, y=y)
+    result = otda.set_params(ref_site=1, use_labels=True).fit(X, y, sites=sites)
     assert result is otda  # Returns self
     assert hasattr(otda, "ot_obj_")
     assert hasattr(otda, "coupling_")
@@ -180,15 +182,15 @@ def test_fit_with_integer_sites(simple_data):
     X, y, sites = simple_data
     otda = OptimalTransportDomainAdaptation()
 
-    otda.fit(X, sites, ref_site=0, y=y)
+    otda.set_params(ref_site=0, use_labels=True).fit(X, y, sites=sites)
     check_is_fitted(otda)
 
 
 def test_fit_with_list_ref_site(multi_site_data):
     """Test fit with multiple reference sites."""
     X, y, sites = multi_site_data
-    otda = OptimalTransportDomainAdaptation()
-    otda.fit(X, sites, ref_site=[0, 1], y=y)
+    otda = OptimalTransportDomainAdaptation(ref_site=[0, 1], use_labels=True)
+    otda.fit(X, y, sites=sites)
     check_is_fitted(otda)
 
 
@@ -197,7 +199,7 @@ def test_fit_without_labels(simple_data):
     X, _, sites = simple_data
     otda = OptimalTransportDomainAdaptation()
 
-    otda.fit(X, sites, ref_site=1, y=None)
+    otda.set_params(ref_site=1).fit(X, sites=sites)
     check_is_fitted(otda)
 
 
@@ -206,7 +208,7 @@ def test_fit_stores_attributes(simple_data):
     X, y, sites = simple_data
     otda = OptimalTransportDomainAdaptation(ot_method="emd")
 
-    otda.fit(X, sites, ref_site=1, y=y)
+    otda.set_params(ref_site=1, use_labels=True).fit(X, y, sites=sites)
 
     assert otda.ref_site_ == 1
     assert otda.ot_obj_ is not None
@@ -221,7 +223,7 @@ def test_fit_all_ot_methods(simple_data):
     methods = ["emd", "sinkhorn", "s", "sinkhorn_gl"]
     for method in methods:
         otda = OptimalTransportDomainAdaptation(ot_method=method, reg=0.1, eta=0.01)
-        otda.fit(X, sites, ref_site=1, y=y)
+        otda.set_params(ref_site=1, use_labels=True).fit(X, y, sites=sites)
 
 
 def test_fit_with_preconfigured_ot(simple_data):
@@ -230,7 +232,7 @@ def test_fit_with_preconfigured_ot(simple_data):
     ot_solver = SinkhornTransport(reg_e=0.5, max_iter=100)
     otda = OptimalTransportDomainAdaptation(ot_method=ot_solver)
 
-    otda.fit(X, sites, ref_site=1, y=y)
+    otda.set_params(ref_site=1, use_labels=True).fit(X, y, sites=sites)
     assert otda.ot_obj_ is ot_solver
     check_is_fitted(otda)
 
@@ -251,7 +253,7 @@ def test_basic_transform(simple_data):
     """Test basic transform."""
     X, y, sites = simple_data
     otda = OptimalTransportDomainAdaptation()
-    otda.fit(X, sites, ref_site=1, y=y)
+    otda.set_params(ref_site=1, use_labels=True).fit(X, y, sites=sites)
 
     # Transform harmonization data
     X_transformed = otda.transform(X, sites=sites)
@@ -263,12 +265,14 @@ def test_transform_batch_size(simple_data):
     """Test transform with different batch sizes."""
     X, y, sites = simple_data
     otda = OptimalTransportDomainAdaptation()
-    otda.fit(X, sites, ref_site=1, y=y)
+    otda.set_params(ref_site=1, use_labels=True).fit(X, y, sites=sites)
+    reference = otda.transform(X=X, sites=sites)
 
-    # Test different batch sizes
+    # Test different batch sizes (a constructor parameter): same result
     for batch_size in [16, 32, 64, 128]:
-        X_trans = otda.transform(X=X, sites=sites, batch_size=batch_size)
+        X_trans = otda.set_params(batch_size=batch_size).transform(X=X, sites=sites)
         assert X_trans.shape == X.shape
+        assert_allclose(X_trans, reference)
 
 
 # =============================================================================
@@ -281,7 +285,7 @@ def test_fit_transform(simple_data):
     X, y, sites = simple_data
     otda = OptimalTransportDomainAdaptation()
 
-    X_transformed = otda.fit_transform(X, sites, ref_site=1, y=y)
+    X_transformed = otda.set_params(ref_site=1, use_labels=True).fit_transform(X, y, sites=sites)
 
     check_is_fitted(otda)
     assert X_transformed.shape == X.shape
@@ -293,11 +297,11 @@ def test_fit_transform_equivalence(simple_data):
     np.random.seed(42)
     otda1 = OptimalTransportDomainAdaptation(ot_method="emd")
 
-    X_ft = otda1.fit_transform(X, sites, ref_site=1, y=y)
+    X_ft = otda1.set_params(ref_site=1, use_labels=True).fit_transform(X, y, sites=sites)
 
     np.random.seed(42)
     otda2 = OptimalTransportDomainAdaptation(ot_method="emd")
-    otda2.fit(X, sites, ref_site=1, y=y)
+    otda2.set_params(ref_site=1, use_labels=True).fit(X, y, sites=sites)
     X_f_t = otda2.transform(X, sites=sites)
     assert_allclose(X_ft, X_f_t)
 
@@ -321,7 +325,7 @@ def test_inverse_transform(simple_data):
     """Test basic inverse transform."""
     X, y, sites = simple_data
     otda = OptimalTransportDomainAdaptation()
-    otda.fit(X, sites, ref_site=1, y=y)
+    otda.set_params(ref_site=1, use_labels=True).fit(X, y, sites=sites)
 
     X_ref = X[sites == 1]
     X_inv = otda.inverse_transform(X_ref)
@@ -333,9 +337,9 @@ def test_inverse_transform_with_sites(simple_data):
     """Test basic inverse transform."""
     X, y, sites = simple_data
     otda = OptimalTransportDomainAdaptation()
-    otda.fit(X, sites, ref_site=1, y=y)
+    otda.set_params(ref_site=1, use_labels=True).fit(X, y, sites=sites)
 
-    X_inv = otda.inverse_transform(X, sites)
+    X_inv = otda.inverse_transform(X, sites=sites)
 
     assert X_inv.shape == X.shape
 
@@ -350,7 +354,7 @@ def test_coupling_property(simple_data):
     X, y, sites = simple_data
     otda = OptimalTransportDomainAdaptation()
 
-    otda.fit(X, sites, ref_site=1, y=y)
+    otda.set_params(ref_site=1, use_labels=True).fit(X, y, sites=sites)
     assert otda.coupling_ is not None
 
 
@@ -359,7 +363,7 @@ def test_cost_matrix_property(simple_data):
     X, y, sites = simple_data
     otda = OptimalTransportDomainAdaptation()
 
-    otda.fit(X, sites, ref_site=1, y=y)
+    otda.set_params(ref_site=1, use_labels=True).fit(X, y, sites=sites)
     # Cost might be None depending on OT method
     if hasattr(otda, "cost_"):
         assert otda.cost_ is not None
@@ -374,7 +378,7 @@ def test_full_workflow_emd():
     sites = np.array([1] * 100 + [2] * 100)
 
     otda = OptimalTransportDomainAdaptation(ot_method="emd")
-    otda.fit(X, sites, ref_site=1, y=y)
+    otda.set_params(ref_site=1, use_labels=True).fit(X, y, sites=sites)
     X_aligned = otda.transform(X[sites == 2])
 
     assert X_aligned.shape == (100, 10)
@@ -385,8 +389,8 @@ def test_full_workflow_sinkhorn(simple_data):
     X, y, sites = simple_data
 
     otda = OptimalTransportDomainAdaptation(ot_method="sinkhorn", reg=0.1, metric="sqeuclidean")
-    otda.fit(X, sites, ref_site=1, y=y)
-    X_aligned = otda.fit_transform(X, sites, ref_site=1, y=y)
+    otda.set_params(ref_site=1, use_labels=True).fit(X, y, sites=sites)
+    X_aligned = otda.set_params(ref_site=1, use_labels=True).fit_transform(X, y, sites=sites)
 
     assert X_aligned.shape == (1000, 10)
 
@@ -396,7 +400,7 @@ def test_multi_site_harmonization(simple_data):
     X, y, sites = simple_data
 
     otda = OptimalTransportDomainAdaptation(ot_method="sinkhorn", reg=0.1)
-    otda.fit(X, sites, ref_site=1, y=y)
+    otda.set_params(ref_site=1, use_labels=True).fit(X, y, sites=sites)
 
     # Transform each site separately
     X_transformed = otda.transform(X, sites=sites)
@@ -411,11 +415,11 @@ def test_consistency_across_runs(simple_data):
     """Test that same seed gives consistent results."""
     X, y, sites = simple_data
     otda1 = OptimalTransportDomainAdaptation(ot_method="emd")
-    otda1.fit(X, sites, ref_site=1, y=y)
+    otda1.set_params(ref_site=1, use_labels=True).fit(X, y, sites=sites)
     trans1 = otda1.transform(X, sites=sites)
 
     otda2 = OptimalTransportDomainAdaptation(ot_method="emd")
-    otda2.fit(X, sites, ref_site=1, y=y)
+    otda2.set_params(ref_site=1, use_labels=True).fit(X, y, sites=sites)
     trans2 = otda2.transform(X, sites=sites)
 
     assert_allclose(trans1, trans2)
@@ -432,7 +436,7 @@ def three_site_ot_data():
     rng = np.random.default_rng(0)
     sites = np.repeat(["a", "b", "c"], 100)
     X = rng.normal(size=(300, 3)) + np.select([sites == "b", sites == "c"], [2.0, -1.0], 0.0)[:, None]
-    otda = OptimalTransportDomainAdaptation(ot_method="emd").fit(X, sites, ref_site="a")
+    otda = OptimalTransportDomainAdaptation(ref_site="a", ot_method="emd").fit(X, sites=sites)
     return X, sites, otda, rng
 
 
@@ -444,9 +448,9 @@ def test_transform_new_data_any_subset_of_sites(three_site_ot_data):
     _, _, otda, rng = three_site_ot_data
     X_new = rng.normal(size=(20, 3))
     sites_new = np.repeat(["a", "b", "c", "b"], 5)
-    X_mixed = otda.transform(X_new, sites_new)
+    X_mixed = otda.transform(X_new, sites=sites_new)
     only_b = sites_new == "b"
-    assert_allclose(otda.transform(X_new[only_b], sites_new[only_b]), X_mixed[only_b])
+    assert_allclose(otda.transform(X_new[only_b], sites=sites_new[only_b]), X_mixed[only_b])
     # Reference samples are returned unchanged; the others are transported
     assert_allclose(X_mixed[sites_new == "a"], X_new[sites_new == "a"])
     assert not np.allclose(X_mixed[~(sites_new == "a")], X_new[~(sites_new == "a")])
@@ -456,8 +460,8 @@ def test_transform_only_reference_samples_unchanged(three_site_ot_data):
     """A batch with only reference samples is returned unchanged."""
     _, _, otda, rng = three_site_ot_data
     X_new = rng.normal(size=(5, 3))
-    assert_allclose(otda.transform(X_new, np.repeat("a", 5)), X_new)
-    assert_allclose(otda.inverse_transform(X_new, np.repeat("a", 5)), X_new)
+    assert_allclose(otda.transform(X_new, sites=np.repeat("a", 5)), X_new)
+    assert_allclose(otda.inverse_transform(X_new, sites=np.repeat("a", 5)), X_new)
 
 
 def test_transform_duplicate_rows_across_sites(three_site_ot_data):
@@ -465,9 +469,9 @@ def test_transform_duplicate_rows_across_sites(three_site_ot_data):
     _, _, otda, rng = three_site_ot_data
     row = rng.normal(size=(1, 3))
     X_new = np.vstack([row, row])
-    X_transformed = otda.transform(X_new, np.array(["a", "b"]))
+    X_transformed = otda.transform(X_new, sites=np.array(["a", "b"]))
     assert_allclose(X_transformed[0], row[0])
-    assert_allclose(X_transformed[1], otda.transform(row, np.array(["b"]))[0])
+    assert_allclose(X_transformed[1], otda.transform(row, sites=np.array(["b"]))[0])
 
 
 def test_transform_dataframe_input(three_site_ot_data):
@@ -476,17 +480,17 @@ def test_transform_dataframe_input(three_site_ot_data):
     _, _, otda, rng = three_site_ot_data
     X_new = rng.normal(size=(10, 3))
     sites_new = np.repeat(["a", "b"], 5)
-    assert_allclose(otda.transform(pd.DataFrame(X_new), sites_new), otda.transform(X_new, sites_new))
-    assert_allclose(otda.inverse_transform(pd.DataFrame(X_new), sites_new), otda.inverse_transform(X_new, sites_new))
+    assert_allclose(otda.transform(pd.DataFrame(X_new), sites=sites_new), otda.transform(X_new, sites=sites_new))
+    assert_allclose(otda.inverse_transform(pd.DataFrame(X_new), sites=sites_new), otda.inverse_transform(X_new, sites=sites_new))
 
 
 def test_transform_unseen_site_raises(three_site_ot_data):
     """Sites not seen during fit raise a clear error."""
     _, _, otda, rng = three_site_ot_data
     with pytest.raises(ValueError, match="not seen during fit"):
-        otda.transform(rng.normal(size=(3, 3)), np.array(["b", "z", "z"]))
+        otda.transform(rng.normal(size=(3, 3)), sites=np.array(["b", "z", "z"]))
     with pytest.raises(ValueError, match="not seen during fit"):
-        otda.inverse_transform(rng.normal(size=(3, 3)), np.array(["b", "z", "z"]))
+        otda.inverse_transform(rng.normal(size=(3, 3)), sites=np.array(["b", "z", "z"]))
 
 
 def test_inverse_transform_undoes_transform():
@@ -494,17 +498,17 @@ def test_inverse_transform_undoes_transform():
     rng = np.random.default_rng(1)
     sites = np.repeat(["a", "b"], 100)
     X = rng.normal(size=(200, 3)) + (sites == "b")[:, None] * 2.0
-    otda = OptimalTransportDomainAdaptation(ot_method="emd").fit(X, sites, ref_site="a")
-    X_transformed = otda.transform(X, sites)
+    otda = OptimalTransportDomainAdaptation(ref_site="a", ot_method="emd").fit(X, sites=sites)
+    X_transformed = otda.transform(X, sites=sites)
     assert_allclose(X_transformed[sites == "a"], X[sites == "a"])
-    assert_allclose(otda.inverse_transform(X_transformed, sites), X, atol=1e-10)
+    assert_allclose(otda.inverse_transform(X_transformed, sites=sites), X, atol=1e-10)
 
 
 def test_inverse_transform_maps_non_reference_rows(three_site_ot_data):
     """inverse_transform maps the non-reference rows (moved by transform) and keeps the reference rows."""
     X, sites, otda, _ = three_site_ot_data
-    X_transformed = otda.transform(X, sites)
-    X_inverse = otda.inverse_transform(X_transformed, sites)
+    X_transformed = otda.transform(X, sites=sites)
+    X_inverse = otda.inverse_transform(X_transformed, sites=sites)
     assert X_inverse.shape == X.shape
     assert_allclose(X_inverse[sites == "a"], X[sites == "a"])
     # Mapped back towards the pooled non-reference distribution, away from the reference one
@@ -527,16 +531,16 @@ def test_sklearn_tags():
 def test_transform_with_other_number_of_features_raises(simple_data):
     """A different number of features at transform gives a clear error."""
     X, _, sites = simple_data
-    otda = OptimalTransportDomainAdaptation().fit(X, sites, ref_site=sites[0])
+    otda = OptimalTransportDomainAdaptation().set_params(ref_site=sites[0]).fit(X, sites=sites)
     assert otda.n_features_in_ == X.shape[1]
     with pytest.raises(ValueError, match=f"X has {X.shape[1] - 1} features"):
-        otda.transform(X[:, :-1], sites)
+        otda.transform(X[:, :-1], sites=sites)
 
 
 def test_tags_describe_sites_and_finite_input():
-    """Sites are required 1D labels of any value; missing values are rejected."""
+    """The target is optional (only used with use_labels=True); missing values are rejected."""
     tags = OptimalTransportDomainAdaptation().__sklearn_tags__()
-    assert tags.target_tags.required
+    assert not tags.target_tags.required
     assert not tags.target_tags.two_d_labels
     assert not tags.target_tags.positive_only
     assert tags.input_tags.allow_nan is False
@@ -562,3 +566,76 @@ def test_ot_is_exported_at_top_level():
 
     assert "ot" in uniharmony.__all__
     assert uniharmony.ot.OptimalTransportDomainAdaptation is OptimalTransportDomainAdaptation
+
+
+# =============================================================================
+# Labels, sites as a column, scikit-learn API
+# =============================================================================
+
+
+def test_ref_site_is_required(simple_data):
+    """ref_site must be set in the constructor."""
+    X, _, sites = simple_data
+    with pytest.raises(ValueError, match="ref_site must be set"):
+        OptimalTransportDomainAdaptation().fit(X, sites=sites)
+
+
+def test_labels_are_used_only_with_use_labels(simple_data):
+    """The target is ignored unless use_labels=True, then it is required and changes the transport."""
+    X, y, sites = simple_data
+    unsupervised = OptimalTransportDomainAdaptation(ref_site=1).fit(X, sites=sites).transform(X, sites=sites)
+    ignored = OptimalTransportDomainAdaptation(ref_site=1).fit(X, y, sites=sites).transform(X, sites=sites)
+    assert_allclose(ignored, unsupervised)
+    supervised = OptimalTransportDomainAdaptation(ref_site=1, use_labels=True).fit(X, y, sites=sites).transform(X, sites=sites)
+    assert not np.allclose(supervised, unsupervised)
+    with pytest.raises(ValueError, match="use_labels=True needs y"):
+        OptimalTransportDomainAdaptation(ref_site=1, use_labels=True).fit(X, sites=sites)
+
+
+def test_site_column_equals_keyword(three_site_ot_data):
+    """Reading the sites from a column gives the keyword result, without the site column."""
+    X, sites, *_ = three_site_ot_data
+    df = pd.DataFrame(X, columns=[f"f{i}" for i in range(X.shape[1])])
+    df.insert(1, "site", sites)
+    by_keyword = OptimalTransportDomainAdaptation(ref_site="a").fit(X, sites=sites).transform(X, sites=sites)
+    otda = OptimalTransportDomainAdaptation(ref_site="a", site_column="site").set_output(transform="pandas")
+    by_column = otda.fit_transform(df)
+    assert list(by_column.columns) == [c for c in df.columns if c != "site"]
+    assert_allclose(by_column.to_numpy(), by_keyword)
+    # inverse_transform takes the harmonized features (no site column); the sites as keyword
+    assert_allclose(
+        otda.inverse_transform(by_column.to_numpy(), sites=sites),
+        OptimalTransportDomainAdaptation(ref_site="a").fit(X, sites=sites).inverse_transform(by_keyword, sites=sites),
+    )
+
+
+def test_sites_given_twice_raises(three_site_ot_data):
+    """The sites come from one place only."""
+    X, sites, *_ = three_site_ot_data
+    df = pd.DataFrame(X)
+    df["site"] = sites
+    with pytest.raises(ValueError, match="given twice"):
+        OptimalTransportDomainAdaptation(ref_site="a", site_column="site").fit(df, sites=sites)
+
+
+class _CheckedOTDA(OptimalTransportDomainAdaptation):
+    """Test adapter: derive two sites ("a", "b") from the rows of X for scikit-learn's generic checks."""
+
+    def _validate_harmonization_input(self, X, reset, required=(), copy=False, allow_nan_metadata=False, **values):
+        try:
+            rows = np.nan_to_num(np.asarray(X, dtype=float), nan=0.0, posinf=0.0, neginf=0.0)
+        except (TypeError, ValueError):
+            rows = None
+        if rows is not None and rows.ndim == 2 and values.get("sites") is None:
+            h = np.abs(np.sin(rows @ (np.arange(rows.shape[1]) + 1.0) * 12.9898) * 43758.5453) % 1.0
+            values["sites"] = np.where(h < 0.5, "a", "b")
+        return super()._validate_harmonization_input(X, reset, required, copy, allow_nan_metadata, **values)
+
+
+@parametrize_with_checks(
+    [_CheckedOTDA(ref_site="a")],
+    expected_failed_checks=lambda _: {"check_transformer_n_iter": "max_iter is passed to POT, which does not report n_iter_"},
+)
+def test_otda_compat_sklearn(estimator, check):
+    """Test sklearn compatibility (sites derived from the rows, see ``_CheckedOTDA``)."""
+    check(estimator)

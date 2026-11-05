@@ -77,8 +77,8 @@ ismi = InterSiteMatchedInterpolation(
 # Apply interpolation
 X_ismi, y_ismi = ismi.fit_resample(
     X, y, sites=sites,
-    categorical_covariate=categorical_covariate,
-    continuous_covariate=continuous_covariate
+    categorical_covariates=categorical_covariate,
+    continuous_covariates=continuous_covariate
 )
 # To maintain compatibility with sklearn and imlearn,
 # sites from the interpolated samples are stored as attributes
