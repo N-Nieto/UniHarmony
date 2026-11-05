@@ -364,7 +364,7 @@ def test_covariates_preserve_distribution(max_amplification):
         max_amplification=max_amplification,
         random_state=0,
     )
-    Xr, yr = sbr.fit_resample(X, y, sites=sites, categorical_covariate=sex)
+    Xr, yr = sbr.fit_resample(X, y, sites=sites, categorical_covariates=sex)
     # random over-sampling duplicates real rows, so the covariate of every output row is known
     lut = {tuple(r): s for r, s in zip(X, sex, strict=True)}
     sex_r = np.array([lut[tuple(r)] for r in Xr])
@@ -382,7 +382,7 @@ def test_continuous_covariate(covariate_data):
     sbr = SiteBalancedResampler(IntraSiteInterpolation("smote", n_bins_cont_cov=3, random_state=0), random_state=0)
     with warnings.catch_warnings():
         warnings.simplefilter("ignore", UserWarning)
-        Xr, yr = sbr.fit_resample(X, y, sites=sites, categorical_covariate=sex, continuous_covariate=age)
+        Xr, yr = sbr.fit_resample(X, y, sites=sites, categorical_covariates=sex, continuous_covariates=age)
     _assert_balanced(yr, sbr.sites_resampled_)
     _assert_provenance(sbr, X, y, sites, Xr, yr)
 
@@ -456,7 +456,7 @@ def test_compatibility(opposite_sites_data):
     """_fit_resample requires sites and otherwise delegates to fit_resample."""
     X, y, sites = opposite_sites_data
     sbr = SiteBalancedResampler(random_state=0)
-    with pytest.raises(TypeError, match="sites"):
+    with pytest.raises(ValueError, match="site_column"):
         sbr._fit_resample(X, y)
     Xr, _ = sbr._fit_resample(X, y, sites=sites)
     assert len(Xr) == len(sbr.sites_resampled_)

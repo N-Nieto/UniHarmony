@@ -328,7 +328,7 @@ def test_safe_amplification_follows_variance_rule(opposite_sites_data):
 def test_estimate_safe_amplification(opposite_sites_data):
     """The estimate without resampling uses the same rule as fit_resample."""
     X, y, sites = opposite_sites_data
-    df = IntraSiteInterpolation("smote", random_state=0).estimate_safe_amplification(X, y, sites)
+    df = IntraSiteInterpolation("smote", random_state=0).estimate_safe_amplification(X, y, sites=sites)
     assert len(df) == 4
     assert set(df.columns) >= {"site", "class", "n_real", "variance_ratio", "safe_amplification"}
     fitted = IntraSiteInterpolation("smote", random_state=0)
@@ -534,7 +534,7 @@ def test_covariates(strategy, covariate_data):
         binning_strategy_cont_cov="quantile",
     )
 
-    Xr, yr = isi.fit_resample(X, y, sites=sites, categorical_covariate=sex, continuous_covariate=age)
+    Xr, yr = isi.fit_resample(X, y, sites=sites, categorical_covariates=sex, continuous_covariates=age)
 
     assert len(Xr) == len(yr)
     _assert_balanced(yr, isi.sites_resampled_)
@@ -545,7 +545,7 @@ def test_binning_strategy_cont_cov(strategy, covariate_data):
     """Each strategies for binning_strategy_cont_cov."""
     X, y, sites, sex, age = covariate_data
     isi = IntraSiteInterpolation("random", n_bins_cont_cov=2, binning_strategy_cont_cov=strategy)
-    _, yr = isi.fit_resample(X, y, sites=sites, categorical_covariate=sex, continuous_covariate=age)
+    _, yr = isi.fit_resample(X, y, sites=sites, categorical_covariates=sex, continuous_covariates=age)
     _assert_balanced(yr, isi.sites_resampled_)
 
 
@@ -554,23 +554,24 @@ def test_binning_strategy_invalid_cont_cov(covariate_data):
     X, y, sites, sex, age = covariate_data
     isi = IntraSiteInterpolation("random", n_bins_cont_cov=2, binning_strategy_cont_cov="invalid")
     with pytest.raises(ValueError):
-        _, _ = isi.fit_resample(X, y, sites=sites, categorical_covariate=sex, continuous_covariate=age)
+        _, _ = isi.fit_resample(X, y, sites=sites, categorical_covariates=sex, continuous_covariates=age)
 
 
-def test_deprecated_covariate_options_in_fit_resample(covariate_data):
-    """Passing the covariate binning options to fit_resample still works, with a FutureWarning."""
+def test_covariate_binning_options_are_constructor_parameters(covariate_data):
+    """The covariate binning options are set in the constructor; fit_resample only takes data."""
     X, y, sites, _, age = covariate_data
-    isi = IntraSiteInterpolation("random")
-    with pytest.warns(FutureWarning, match="deprecated"):
-        _, yr = isi.fit_resample(X, y, sites=sites, continuous_covariate=age, n_bins_cont_cov=3)
+    isi = IntraSiteInterpolation("random", n_bins_cont_cov=3)
+    _, yr = isi.fit_resample(X, y, sites=sites, continuous_covariates=age)
     _assert_balanced(yr, isi.sites_resampled_)
+    with pytest.raises(TypeError, match="n_bins_cont_cov"):
+        isi.fit_resample(X, y, sites=sites, continuous_covariates=age, n_bins_cont_cov=3)
 
 
 def test_covariates_categorical(covariate_data):
     """Categorical covariates alone, also as a 1D array."""
     X, y, sites, sex, _ = covariate_data
     isi = IntraSiteInterpolation(interpolator="random")
-    Xr, yr = isi.fit_resample(X, y, sites=sites, categorical_covariate=sex.ravel())
+    Xr, yr = isi.fit_resample(X, y, sites=sites, categorical_covariates=sex.ravel())
     assert len(Xr) == len(yr)
 
 
@@ -579,7 +580,7 @@ def test_covariates_requires_bins(covariate_data):
     X, y, sites, _, age = covariate_data
     isi = IntraSiteInterpolation(interpolator="random")
     with pytest.raises(ValueError, match="n_bins_cont_cov"):
-        isi.fit_resample(X, y, sites=sites, continuous_covariate=age)
+        isi.fit_resample(X, y, sites=sites, continuous_covariates=age)
 
 
 def test_global_max_covariates_no_explosion(covariate_data):
@@ -588,7 +589,7 @@ def test_global_max_covariates_no_explosion(covariate_data):
     kwargs = {"balance_strategy": "global_max", "random_state": 0}
     _, y_plain = IntraSiteInterpolation("smote", **kwargs).fit_resample(X, y, sites=sites)
     isi = IntraSiteInterpolation("smote", n_bins_cont_cov=3, **kwargs)
-    _, y_cov = isi.fit_resample(X, y, sites=sites, categorical_covariate=sex, continuous_covariate=age)
+    _, y_cov = isi.fit_resample(X, y, sites=sites, categorical_covariates=sex, continuous_covariates=age)
     assert len(y_cov) == len(y_plain) == isi.target_count_ * 2 * 2
     assert len(y_cov) == sum(isi.target_counts_.values()) * 2
 
@@ -602,7 +603,7 @@ def test_covariates_preserve_distribution():
     )
     sex = (rng.random(n) < np.where(y == 1, 0.8, 0.3)).astype(int)
     isi = IntraSiteInterpolation("random", random_state=0)
-    Xr, yr = isi.fit_resample(X, y, sites=sites, categorical_covariate=sex)
+    Xr, yr = isi.fit_resample(X, y, sites=sites, categorical_covariates=sex)
     # random over-sampling duplicates real rows, so the covariate of every output row is known
     lut = {tuple(r): s for r, s in zip(X, sex, strict=True)}
     sex_r = np.array([lut[tuple(r)] for r in Xr])
@@ -622,7 +623,7 @@ def test_covariates_interpolate_within_strata():
     sites = np.repeat([0, 1], 200)
     sex = rng.integers(0, 2, 400)
     isi = IntraSiteInterpolation("smote", random_state=0)
-    Xr, yr = isi.fit_resample(X, y, sites=sites, categorical_covariate=sex)
+    Xr, yr = isi.fit_resample(X, y, sites=sites, categorical_covariates=sex)
     sr = isi.sites_resampled_
     for x, label, site in zip(Xr[isi.is_synthetic_][:40], yr[isi.is_synthetic_][:40], sr[isi.is_synthetic_][:40], strict=True):
         distances = [
@@ -641,7 +642,7 @@ def test_small_strata_do_not_crash(interpolator):
     )
     groups = np.random.default_rng(1).integers(0, 4, len(y))
     isi = IntraSiteInterpolation(interpolator, random_state=0)
-    Xr, yr = isi.fit_resample(X, y, sites=sites, categorical_covariate=groups)
+    Xr, yr = isi.fit_resample(X, y, sites=sites, categorical_covariates=groups)
     _assert_balanced(yr, isi.sites_resampled_)
     _assert_provenance(isi, X, y, sites, Xr, yr)
 
@@ -677,7 +678,7 @@ def test_regression_keeps_original_targets_with_covariates(linear_regression_dat
     X, y, sites, _ = linear_regression_data
     sex = (np.arange(len(y)) % 2)[:, np.newaxis]
     isi = IntraSiteInterpolation("smote", task="regression", n_bins=3, random_state=0)
-    Xr, yr = isi.fit_resample(X, y, sites=sites, categorical_covariate=sex)
+    Xr, yr = isi.fit_resample(X, y, sites=sites, categorical_covariates=sex)
     _assert_originals_unchanged(X, y, Xr, yr)
 
 
@@ -814,7 +815,7 @@ def test_compatibility(binary_data):
     """_fit_resample requires sites and otherwise delegates to fit_resample."""
     X, y, sites = binary_data
     isi = IntraSiteInterpolation("random", random_state=0)
-    with pytest.raises(TypeError, match="sites"):
+    with pytest.raises(ValueError, match="site_column"):
         isi._fit_resample(X, y)
     Xr, _ = isi._fit_resample(X, y, sites=sites)
     assert len(Xr) == len(isi.sites_resampled_)
