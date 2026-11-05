@@ -33,3 +33,18 @@ uv add uniharmony
 #### Interpolation models
 
 - [IntraSiteInterpolation (ISI)](#intrasite-long)
+
+## 📣 Logging
+
+UniHarmony only prints warnings and errors by default. Use `uniharmony.verbosity` to see more (or less), for the whole session or inside a block:
+
+```python
+import uniharmony
+
+uniharmony.verbosity("info")  # main steps of each method; "debug" also shows intermediate values
+
+with uniharmony.verbosity_context("error"):  # only errors inside this block
+    ...
+```
+
+The level only applies to UniHarmony's messages. UniHarmony logs with [structlog](https://www.structlog.org) but never changes its global configuration, so an application that configures structlog (output format, its own level) keeps its settings.

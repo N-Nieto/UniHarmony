@@ -23,7 +23,7 @@ from uniharmony.datasets import load_MAREoS
 
 
 sns.set_theme(style="whitegrid")
-verbosity("debug")
+verbosity("error")
 warnings.filterwarnings(action="ignore", category=ConvergenceWarning)
 
 

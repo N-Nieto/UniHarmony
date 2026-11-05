@@ -7,6 +7,7 @@ __all__ = [
     "iqm",
     "metrics",
     "normative",
+    "ot",
     "plot",
     "prettyharmonize",
     "verbosity",
@@ -21,6 +22,7 @@ from . import (
     iqm,
     metrics,
     normative,
+    ot,
     plot,
     prettyharmonize,
 )

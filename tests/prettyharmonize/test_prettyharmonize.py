@@ -70,14 +70,17 @@ def test_pretending_acts_through_the_scale_correction(clf_data) -> None:
         assert np.allclose(X0, X1, atol=1e-10) is not differ
 
 
-def test_smooth_target_outside_bounds(reg_data) -> None:
-    """A smooth target outside the spline range raises a clear error."""
+def test_smooth_target_outside_bounds_is_clipped(reg_data) -> None:
+    """A smooth target outside the spline range is clipped to it (constant extrapolation), with a warning."""
     X, y, sites = reg_data
-    harmonizer = TargetHarmonizer(ComBatGAM(), "smooth_covariates", n_classes=None, categorical_argument=False)
+    harmonizer = TargetHarmonizer(ComBatGAM(random_state=0), "smooth_covariates", n_classes=None, categorical_argument=False)
     harmonizer.fit(X, y, sites, {}, {"smooth_covariates_bounds": (y.min(), y.max())})
-    assert harmonizer.transform(X, np.full_like(y, y.max()), sites, {}).shape == X.shape
-    with pytest.raises(ValueError, match="cannot extrapolate"):
-        harmonizer.transform(X, np.full_like(y, y.max() + 10), sites, {})
+    at_boundary = harmonizer.transform(X, np.full_like(y, y.max()), sites, {})
+    assert at_boundary.shape == X.shape
+    with structlog.testing.capture_logs() as logs:
+        outside = harmonizer.transform(X, np.full_like(y, y.max() + 10), sites, {})
+    assert_allclose(outside, at_boundary)
+    assert any("outside the fitted range" in entry["event"] for entry in logs)
 
 
 def test_no_leakage_warning(clf_data) -> None:

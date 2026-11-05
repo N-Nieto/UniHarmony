@@ -15,107 +15,63 @@ from uniharmony._utils import (
 # ─── solve_ordinary_least_squares ────────────────────────────────────────────
 
 
-@pytest.mark.parametrize(
-    "gram_matrix, X, design, expected_shape",
-    [
-        # Well-conditioned case (Cholesky path)
-        # n_samples=2, n_targets=2 (must be equal for code to work)
-        (
-            np.array([[2.0, 0.5], [0.5, 2.0]]),
-            np.array([[1.0, 2.0], [3.0, 4.0]]),
-            np.array([[1.0, 0.0], [0.0, 1.0]]),
-            (2, 2),
-        ),
-        # Single target, single sample (n_samples == n_targets == 1)
-        (
-            np.array([[3.0]]),
-            np.array([[1.0]]),
-            np.array([[1.0]]),
-            (1, 1),
-        ),
-        # Larger well-conditioned (n_samples=3, n_targets=3)
-        (
-            np.eye(3) * 2,
-            np.ones((3, 3)),
-            np.ones((3, 3)),
-            (3, 3),
-        ),
-    ],
-)
-def test_solve_ols_well_conditioned(gram_matrix, X, design, expected_shape):
-    """Test OLS with well-conditioned matrices (Cholesky pathº)."""
-    result = solve_ordinary_least_squares(gram_matrix, X, design)
-    assert result.shape == expected_shape
+@pytest.mark.parametrize(("n_targets", "n_samples", "n_regressors"), [(1, 1, 1), (2, 5, 2), (7, 50, 4)])
+def test_solve_ols_shape(n_targets, n_samples, n_regressors):
+    """X is (n_targets, n_samples); the solution is (n_regressors, n_targets)."""
+    rng = np.random.default_rng(0)
+    result = solve_ordinary_least_squares(rng.normal(size=(n_targets, n_samples)), rng.normal(size=(n_samples, n_regressors)))
+    assert result.shape == (n_regressors, n_targets)
     assert np.isfinite(result).all()
 
 
+def test_solve_ols_matches_normal_equations():
+    """Full-rank design: the solution equals (D'D)^-1 D'X, without a warning."""
+    rng = np.random.default_rng(0)
+    design = rng.normal(size=(50, 4))
+    X = rng.normal(size=(7, 50))
+    expected = np.linalg.solve(design.T @ design, design.T @ X.T)
+    np.testing.assert_allclose(solve_ordinary_least_squares(X, design), expected, atol=1e-12)
+
+
 @pytest.mark.parametrize(
-    "gram_matrix, X, design",
+    "design",
     [
-        # Ill-conditioned / singular (pseudo-inverse path)
-        # Exact singular 2x2 matrix
-        (
-            np.array([[1.0, 1.0], [1.0, 1.0]]),  # rank 1
-            np.array([[1.0, 2.0], [3.0, 4.0]]),
-            np.array([[1.0, 1.0], [1.0, 1.0]]),
-        ),
-        # Exact singular 3x3 matrix (Cholesky will definitely fail)
-        (
-            np.array([[1.0, 1.0, 1.0], [1.0, 1.0, 1.0], [1.0, 1.0, 1.0]]),
-            np.array([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0], [7.0, 8.0, 9.0]]),
-            np.array([[1.0, 1.0, 1.0], [1.0, 1.0, 1.0], [1.0, 1.0, 1.0]]),
-        ),
+        np.ones((4, 2)),  # two identical columns
+        np.column_stack([np.arange(6.0), np.ones(6), np.arange(6.0) + 1]),  # third = first + second
     ],
 )
-def test_solve_ols_ill_conditioned(monkeypatch, gram_matrix, X, design):
-    """Test OLS falls back to pseudo-inverse for ill-conditioned matrices."""
+def test_solve_ols_rank_deficient(monkeypatch, design):
+    """Rank-deficient design: minimum-norm solution (as the pseudo-inverse), with a warning."""
     warning_calls = []
-
-    def mock_warning(msg, *args, **kwargs):
-        warning_calls.append(msg)
-
-    monkeypatch.setattr("uniharmony._utils.logger.warning", mock_warning)
-
-    result = solve_ordinary_least_squares(gram_matrix, X, design)
-
+    monkeypatch.setattr("uniharmony._utils.logger.warning", lambda msg, *a, **k: warning_calls.append(msg))
+    X = np.random.default_rng(1).normal(size=(3, design.shape[0]))
+    result = solve_ordinary_least_squares(X, design)
+    np.testing.assert_allclose(result, np.linalg.pinv(design) @ X.T, atol=1e-10)
     assert len(warning_calls) == 1
-    assert "ill-conditioned" in warning_calls[0]
-    assert np.isfinite(result).all()
+    assert "rank deficient" in warning_calls[0]
+
+
+def test_solve_ols_nearly_collinear_design():
+    """A nearly collinear design (Cholesky of D'D still succeeds) is solved stably."""
+    rng = np.random.default_rng(2)
+    base = rng.normal(size=(30, 2))
+    design = np.column_stack([base, base[:, 0] + base[:, 1]])
+    X = rng.normal(size=(3, 30))
+    np.testing.assert_allclose(solve_ordinary_least_squares(X, design), np.linalg.pinv(design) @ X.T, atol=1e-10)
 
 
 @pytest.mark.parametrize(
-    "gram_matrix, X, design, expected_error, error_match",
+    ("X", "design", "error_match"),
     [
-        # Non-square gram matrix
-        (
-            np.array([[1.0, 2.0, 3.0], [4.0, 5.0, 6.0]]),
-            np.array([[1.0]]),
-            np.array([[1.0, 2.0]]),
-            ValueError,
-            "gram_matrix must be square",
-        ),
-        # 1D gram matrix
-        (
-            np.array([1.0, 2.0, 3.0]),
-            np.array([[1.0]]),
-            np.array([[1.0, 2.0, 3.0]]),
-            ValueError,
-            "gram_matrix must be square",
-        ),
-        # Shape mismatch: design features != gram features
-        (
-            np.eye(3),
-            np.array([[1.0]]),
-            np.array([[1.0, 2.0]]),  # 2 features, but gram is 3x3
-            ValueError,
-            "design has 2 features but gram_matrix has 3",
-        ),
+        (np.ones((2, 3)), np.ones(3), "design must be a 2D array"),
+        (np.ones((2, 4)), np.ones((3, 2)), r"X must have shape \(n_targets, 3\)"),
+        (np.ones(3), np.ones((3, 2)), r"X must have shape \(n_targets, 3\)"),
     ],
 )
-def test_solve_ols_validation_errors(gram_matrix, X, design, expected_error, error_match):
-    """Test input validation errors."""
-    with pytest.raises(expected_error, match=error_match):
-        solve_ordinary_least_squares(gram_matrix, X, design)
+def test_solve_ols_validation_errors(X, design, error_match):
+    """Incompatible shapes raise a clear error."""
+    with pytest.raises(ValueError, match=error_match):
+        solve_ordinary_least_squares(X, design)
 
 
 # ─── handle_near_zero_values ─────────────────────────────────────────────────

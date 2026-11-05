@@ -258,8 +258,10 @@ def test_other_combat_models(clf_data, rng) -> None:
     assert gam.predict(X, sites, {"smooth_covariates": age}).shape == y.shape
     with pytest.raises(ValueError, match="additional covariates"):
         gam.predict(X, sites)
-    with pytest.raises(ValueError, match="cannot extrapolate"):
-        gam.predict(X[:3], sites[:3], {"smooth_covariates": np.full(3, 200.0)})
+    # A smooth covariate outside the training range is clipped to it by ComBatGAM, with a warning
+    with structlog.testing.capture_logs() as logs:
+        assert gam.predict(X[:3], sites[:3], {"smooth_covariates": np.full(3, 200.0)}).shape == (3,)
+    assert any("outside the fitted range" in entry["event"] for entry in logs)
 
 
 def test_harm_model_errors(clf_data) -> None:

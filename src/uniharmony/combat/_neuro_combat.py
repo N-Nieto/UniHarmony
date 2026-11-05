@@ -10,21 +10,21 @@
 
 import numpy as np
 import numpy.typing as npt
-import structlog
 from sklearn.utils.validation import check_is_fitted
 
 from uniharmony._utils import validate_sites
+from uniharmony._verbose import get_logger
 
 from ._base import BaseComBat
 
 
 __all__ = ["NeuroComBat"]
 
-logger = structlog.get_logger(src="NeuroComBat")  # lazy: honours later `uniharmony.verbosity` calls
+logger = get_logger(src="NeuroComBat")
 
 
 class NeuroComBat(BaseComBat):
-    """Harmonize scanner effects in multi-site imaging data.
+    r"""Harmonize scanner effects in multi-site imaging data.
 
     This transformer performs harmonization using a parametric empirical Bayes
     framework proposed in ComBat [1]_ and adapted to neuroimaging data
@@ -37,12 +37,56 @@ class NeuroComBat(BaseComBat):
     parametric_adjustments : bool, optional (default True)
         Whether to perform parametric adjustments.
     mean_only : bool, optional (default False)
-        Whether to only adjust mean (no scaling).
+        Whether to only adjust the mean (no scaling). The empirical Bayes
+        estimate of each site effect uses the site sample size; this
+        deliberately corrects R ``sva::ComBat`` and ``neuroCombat``, which use
+        a sample size of 1 (see Notes).
 
     Attributes
     ----------
-    sites_ : array, shape (n_samples,)
+    sites_ : array, shape (n_sites,)
         Fitted site names.
+    n_features_in_ : int
+        Number of features seen during ``fit``.
+    feature_names_in_ : ndarray of str, shape (n_features_in_,)
+        Names of the features seen during ``fit``. Only defined if ``X`` was a
+        DataFrame with string column names.
+
+    Notes
+    -----
+    This implementation follows the ComBat model of [1]_ and differs from
+    R ``sva::ComBat`` (3.50.0) and ``neuroCombat`` (0.2.12) in three documented
+    places. They were found with simulations from the ComBat model and are
+    tested against frozen neuroCombat output (identical to R ``sva::ComBat``)
+    in ``tests/combat/test_reference_conformance.py``:
+
+    * **Pooled variance.** The residual sum of squares is divided by
+      :math:`n - S` (:math:`S` sites) instead of :math:`n`. ComBat rescales each
+      site with a variance computed with ``ddof=1``, so the harmonized data keep
+      :math:`n - S` residual degrees of freedom. Dividing by :math:`n` shrinks
+      the harmonized variance by :math:`(n - S)/n` (0.90 with 30 subjects in
+      3 sites); dividing by :math:`n - S` makes it unbiased. Outside
+      ``mean_only``, the output is the reference output with the deviations
+      from the standardized mean multiplied by :math:`\sqrt{n/(n - S)}`.
+    * **mean_only.** With the scale fixed to 1, the site mean
+      :math:`\hat\gamma_{ig}` has sampling variance :math:`1/n_i`, so the
+      posterior mean is
+      :math:`\gamma^*_{ig} = (\tau_i^2 n_i \hat\gamma_{ig} + \bar\gamma_i) / (\tau_i^2 n_i + 1)`.
+      The references use :math:`n_i = 1`, which leaves most of the
+      feature-specific site effect in the data (a site classifier then
+      recovers the site well above chance).
+
+    * **Stopping rule of the parametric empirical Bayes solver.** The solver
+      stops when the largest relative change of :math:`\gamma^*` and
+      :math:`\delta^*` is below 1e-4, with the change divided by
+      :math:`|\text{previous estimate}|`. The references divide by the signed
+      estimate (``max(abs(g.new - g.old) / g.old, ...)``), so features with a
+      negative location effect never block the stop and the output is not
+      converged to the stated tolerance (differences up to about 1e-5 of the
+      data scale). Run to convergence, both give the same solution.
+
+    See the "Implementations conformance" gallery for the derivations,
+    the simulations, and a runtime and memory comparison.
 
     References
     ----------
@@ -111,7 +155,7 @@ class NeuroComBat(BaseComBat):
         logger.debug("Fitting")
 
         # Validate input
-        X, sites = self._check_X_sites(X, sites, estimator=self)
+        X, sites = self._check_X_sites(X, sites)
         validate_sites(sites)
 
         # Check that categorical_covariates and continuous_covariates have correct shape and type if they are not None.
@@ -267,7 +311,10 @@ class NeuroComBat(BaseComBat):
 
         # Validate input
         check_is_fitted(self)
-        X, sites = self._check_X_sites(X, sites, estimator=self)
+        X, sites = self._check_X_sites(X, sites, reset=False)
+        self._check_covariates_as_in_fit(
+            categorical_covariates=categorical_covariates, continuous_covariates=continuous_covariates
+        )
 
         if self._categorical_covariates_used:
             categorical_covariates = self._check_categorical_covariates(X, categorical_covariates)

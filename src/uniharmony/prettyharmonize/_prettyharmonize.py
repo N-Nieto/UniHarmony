@@ -12,7 +12,7 @@ import numpy.typing as npt
 from sklearn.base import clone
 
 from uniharmony._verbose import verbosity_context
-from uniharmony.combat._available_models import ComBatModel, CovariateArguments
+from uniharmony.combat._available_models import ComBatModels, CovariateArguments
 
 
 __all__ = ["TargetHarmonizer", "target_argument"]
@@ -54,14 +54,6 @@ def _as_columns(values: npt.ArrayLike) -> npt.NDArray:
     return values.reshape(-1, 1) if values.ndim == 1 else values
 
 
-def _outside_knots_error(error: NotImplementedError) -> ValueError:
-    """Explain the statsmodels error raised when a spline covariate is out of range."""
-    return ValueError(
-        "A smooth covariate is outside the range seen when fitting the harmonization model, and its splines "
-        f"cannot extrapolate ({error}). Restrict the data to predict to the training range."
-    )
-
-
 class TargetHarmonizer:
     """Harmonize with a ComBat-based model that preserves the target.
 
@@ -84,8 +76,8 @@ class TargetHarmonizer:
 
     """
 
-    def __init__(self, harm_model: ComBatModel, argument: str, n_classes: int | None, categorical_argument: bool) -> None:
-        self.harm_model = cast("ComBatModel", clone(harm_model))
+    def __init__(self, harm_model: ComBatModels, argument: str, n_classes: int | None, categorical_argument: bool) -> None:
+        self.harm_model = cast("ComBatModels", clone(harm_model))
         self.argument = argument
         self.n_classes = n_classes
         self.categorical_argument = categorical_argument
@@ -156,11 +148,14 @@ class TargetHarmonizer:
         array, shape (n_samples, n_features)
             The harmonized data.
 
+        Notes
+        -----
+        With :class:`~uniharmony.combat.ComBatGAM`, smooth covariates (and a
+        smooth target) outside the range seen during fit are clipped to it, so
+        their effect is extrapolated as a constant, and a warning is logged.
+
         """
-        try:
-            return self.harm_model.transform(X, sites=sites, **self._arguments(y, covariates))
-        except NotImplementedError as error:  # statsmodels splines outside their knots
-            raise _outside_knots_error(error) from error
+        return self.harm_model.transform(X, sites=sites, **self._arguments(y, covariates))
 
     def iter_pretend(
         self, X: npt.NDArray, sites: npt.NDArray, targets: Iterable[Any], covariates: dict[str, Any]
