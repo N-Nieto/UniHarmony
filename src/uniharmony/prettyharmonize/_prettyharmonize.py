@@ -121,13 +121,14 @@ class TargetHarmonizer:
         covariates : dict
             Additional covariates of ``harm_model``.
         options : dict
-            Other arguments of ``harm_model.fit`` (e.g., spline bounds).
+            Parameters of ``harm_model`` set before fitting (e.g., spline bounds).
 
         """
         # The ComBat models warn that preserving the ML target leaks it. Here the
         # target of the data to predict is never used, so the warning does not apply.
         with verbosity_context("error"):
-            self.harm_model.fit(X, sites=sites, **self._arguments(y, covariates), **options)
+            self.harm_model.set_params(**options)
+            self.harm_model.fit(X, sites=sites, **self._arguments(y, covariates))
 
     def transform(self, X: npt.NDArray, y: npt.NDArray, sites: npt.NDArray, covariates: dict[str, Any]) -> npt.NDArray:
         """Harmonize data with a given (true or pretended) target.
