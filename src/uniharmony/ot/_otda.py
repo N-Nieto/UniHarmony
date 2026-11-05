@@ -1,6 +1,6 @@
 """Optimal Transport for Domain Adaptation (OTDA) implementation."""
 
-from typing import Any, Literal
+from typing import Any, Literal, Self
 
 import numpy as np
 import numpy.typing as npt
@@ -9,7 +9,7 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils import Tags
 from sklearn.utils.validation import FLOAT_DTYPES, check_array, check_consistent_length, check_is_fitted
 
-from uniharmony._data import HarmonizationInputMixin, MetadataSpec, check_sites_seen
+from uniharmony._data import HarmonizationInputMixin, HarmonizationOutputMixin, MetadataSpec, TransformOutput, check_sites_seen
 from uniharmony._utils import validate_sites
 from uniharmony._verbose import get_logger
 from uniharmony.ot._utils import create_ot_object, data_consistency_check
@@ -45,7 +45,9 @@ MetricType = Literal[
 NormalizationType = Literal["median", "max", "log", "loglog"] | None
 
 
-class OptimalTransportDomainAdaptation(HarmonizationInputMixin, BaseTransport, TransformerMixin, BaseEstimator):
+class OptimalTransportDomainAdaptation(
+    HarmonizationInputMixin, HarmonizationOutputMixin, BaseTransport, TransformerMixin, BaseEstimator
+):
     """Optimal Transport for Domain Adaptation with reference site handling.
 
     This class extends POT's BaseTransport to provide a harmonization interface
@@ -190,7 +192,7 @@ class OptimalTransportDomainAdaptation(HarmonizationInputMixin, BaseTransport, T
         y: npt.ArrayLike | None = None,
         *,
         sites: npt.ArrayLike | None = None,
-    ) -> "OptimalTransportDomainAdaptation":
+    ) -> Self:
         """Fit optimal transport from non-reference sites to reference site(s).
 
         This method separates the data into reference (target) and non-reference
@@ -266,7 +268,7 @@ class OptimalTransportDomainAdaptation(HarmonizationInputMixin, BaseTransport, T
         logger.debug(f"Fitted cost matrix with shape: {self.cost_.shape}")
         return self
 
-    def transform(self, X: npt.ArrayLike, *, sites: npt.ArrayLike | None = None) -> npt.NDArray:
+    def transform(self, X: npt.ArrayLike, *, sites: npt.ArrayLike | None = None) -> TransformOutput:
         """Transform data using the fitted OT plan.
 
         Transports samples from the source domain (non-reference sites) to the
@@ -321,7 +323,7 @@ class OptimalTransportDomainAdaptation(HarmonizationInputMixin, BaseTransport, T
         y: npt.ArrayLike | None = None,
         *,
         sites: npt.ArrayLike | None = None,
-    ) -> npt.NDArray:
+    ) -> TransformOutput:
         """Fit and transform in one step.
 
         Parameters
@@ -337,7 +339,7 @@ class OptimalTransportDomainAdaptation(HarmonizationInputMixin, BaseTransport, T
         """
         return self.fit(X, y, sites=sites).transform(X, sites=sites)
 
-    def inverse_transform(self, X: npt.ArrayLike, *, sites: npt.ArrayLike | None = None) -> npt.NDArray:
+    def inverse_transform(self, X: npt.ArrayLike, *, sites: npt.ArrayLike | None = None) -> TransformOutput:
         """Map harmonized data back from the reference domain to the source domain.
 
         This is the inverse of :meth:`transform`: samples of non-reference

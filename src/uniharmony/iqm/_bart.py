@@ -9,6 +9,7 @@
 
 from dataclasses import dataclass
 from numbers import Integral, Real
+from typing import Self
 
 import numpy as np
 import numpy.typing as npt
@@ -18,7 +19,7 @@ from sklearn.utils import Tags, check_random_state
 from sklearn.utils._param_validation import Interval, StrOptions
 from sklearn.utils.validation import check_is_fitted
 
-from uniharmony._data import HarmonizationInputMixin, MetadataSpec, check_sites_seen
+from uniharmony._data import HarmonizationInputMixin, HarmonizationOutputMixin, MetadataSpec, TransformOutput, check_sites_seen
 from uniharmony._verbose import get_logger
 
 from ._softbart import ForestSnapshot, SoftBARTForest, quantile_normalize_bart
@@ -36,7 +37,7 @@ _PRIOR_RATE = 0.01
 _MIN_VARIANCE = 1e-12
 
 
-class BARTharm(HarmonizationInputMixin, TransformerMixin, BaseEstimator):
+class BARTharm(HarmonizationInputMixin, HarmonizationOutputMixin, TransformerMixin, BaseEstimator):
     r"""Harmonize scanner effects using image quality metrics (IQMs).
 
     BARTharm [1]_ models every imaging-derived phenotype (feature) ``y`` as
@@ -259,7 +260,7 @@ class BARTharm(HarmonizationInputMixin, TransformerMixin, BaseEstimator):
         iqm_covariates: npt.ArrayLike | None = None,
         biological_covariates: npt.ArrayLike | None = None,
         sites: npt.ArrayLike | None = None,
-    ) -> "BARTharm":
+    ) -> Self:
         """Fit the BARTharm model to every feature.
 
         Parameters
@@ -301,7 +302,7 @@ optional (default None)
         iqm_covariates: npt.ArrayLike | None = None,
         biological_covariates: npt.ArrayLike | None = None,
         sites: npt.ArrayLike | None = None,
-    ) -> npt.NDArray:
+    ) -> TransformOutput:
         """Fit the model and harmonize the training data.
 
         The harmonized data are summarized over all kept posterior draws, as in
@@ -327,7 +328,7 @@ optional (default None)
         iqm_covariates: npt.ArrayLike | None = None,
         biological_covariates: npt.ArrayLike | None = None,
         sites: npt.ArrayLike | None = None,
-    ) -> npt.NDArray:
+    ) -> TransformOutput:
         """Harmonize (new) data with the stored posterior draws.
 
         Parameters
@@ -580,11 +581,11 @@ class _QuantileNormalizer:
     and clipped to [0, 1].
     """
 
-    def fit(self, X: npt.NDArray) -> "_QuantileNormalizer":
+    def fit(self, X: npt.NDArray) -> Self:
         self.unique_values_ = [np.unique(column) for column in X.T]
         return self
 
-    def transform(self, X: npt.NDArray) -> npt.NDArray:
+    def transform(self, X: TransformOutput) -> npt.NDArray:
         out = np.zeros_like(X, dtype=float)
         for j, unique_values in enumerate(self.unique_values_):
             if len(unique_values) > 1:

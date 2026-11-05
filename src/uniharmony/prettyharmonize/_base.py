@@ -7,7 +7,7 @@
 import warnings
 from collections.abc import Iterable, Mapping
 from numbers import Integral
-from typing import Any, Protocol, cast, runtime_checkable
+from typing import Any, Protocol, Self, cast, runtime_checkable
 
 import numpy as np
 import numpy.typing as npt
@@ -17,7 +17,7 @@ from sklearn.model_selection import StratifiedKFold
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.utils.validation import check_consistent_length, check_is_fitted
 
-from uniharmony._data import HarmonizationInputMixin, check_sites_seen, extract_metadata
+from uniharmony._data import HarmonizationInputMixin, TransformOutput, check_sites_seen, extract_metadata
 from uniharmony._utils import minimum_samples_warning, validate_sites
 from uniharmony._verbose import get_logger
 from uniharmony.combat import NeuroComBat
@@ -42,7 +42,7 @@ _METADATA_REQUEST = {"sites": True, "categorical_covariates": True, "continuous_
 class Predictor(Protocol):
     """Model with ``fit`` and ``predict``."""
 
-    def fit(self, X: Any, y: Any) -> Any: ...
+    def fit(self, X: Self, y: Any) -> Any: ...
 
     def predict(self, X: Any) -> Any: ...
 
@@ -114,6 +114,9 @@ class BasePrettYharmonize(BaseEstimator):
 
     _categorical_target: bool = False
     classes_: npt.NDArray  # set by the classifier
+    # Set by scikit-learn's ``validate_data`` (declared for type checkers)
+    n_features_in_: int
+    feature_names_in_: npt.NDArray
 
     def __init__(
         self,
@@ -418,7 +421,7 @@ class BasePrettYharmonize(BaseEstimator):
         categorical_covariates: npt.ArrayLike | None = None,
         continuous_covariates: npt.ArrayLike | None = None,
         smooth_covariates: npt.ArrayLike | None = None,
-    ) -> "BasePrettYharmonize":
+    ) -> Self:
         """Fit the harmonization, base and stack models.
 
         The sites and covariates are read from the columns of ``X`` named in
@@ -459,7 +462,7 @@ class BasePrettYharmonize(BaseEstimator):
         categorical_covariates: npt.ArrayLike | None = None,
         continuous_covariates: npt.ArrayLike | None = None,
         smooth_covariates: npt.ArrayLike | None = None,
-    ) -> npt.NDArray:
+    ) -> TransformOutput:
         """Fit the model and return the out-of-fold harmonized training data.
 
         Each training sample is harmonized with its **true** target (legitimate
@@ -533,7 +536,7 @@ class BasePrettYharmonize(BaseEstimator):
         categorical_covariates: npt.ArrayLike | None = None,
         continuous_covariates: npt.ArrayLike | None = None,
         smooth_covariates: npt.ArrayLike | None = None,
-    ) -> npt.NDArray:
+    ) -> TransformOutput:
         """Harmonize new data with their *predicted* target.
 
         Parameters
