@@ -68,6 +68,8 @@ dev = [
     "towncrier>=25.8.0",
 ]
 docs = [
+    # julearn pipeline step in the "Pipelines" gallery
+    "julearn>=0.3.6",
     "myst-parser[linkify]>=4.0.1",
     # Reference implementation compared in the "Implementations conformance" gallery
     "neuroCombat==0.2.12",
