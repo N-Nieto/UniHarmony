@@ -8,6 +8,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import pytest
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import balanced_accuracy_score
@@ -47,6 +48,7 @@ def test_neuro_combat_ops_impl() -> None:
     assert data_combat.shape == data.shape
 
 
+@pytest.mark.network
 def test_neuro_combat_performance_mareos() -> None:
     """Test performance of NeuroComBat with MAREoS dataset."""
     # Load the MAREoS dataset, made for benchmarking harmonization methods.
