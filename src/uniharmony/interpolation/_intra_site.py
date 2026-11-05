@@ -14,6 +14,7 @@ from sklearn.utils.validation import check_array, check_consistent_length, check
 
 from uniharmony._utils import validate_sites
 from uniharmony._verbose import get_logger
+from uniharmony.interpolation._metadata import SamplerInputMixin, parent_weights
 from uniharmony.interpolation._utils import (
     allocate_proportionally,
     create_interpolator,
@@ -36,7 +37,7 @@ _ALL_NEIGHBOR_PARAMS = ("m_neighbors",)
 _SEED_MAX = np.iinfo(np.int32).max
 
 
-class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
+class IntraSiteInterpolation(SamplerInputMixin, SamplerMixin, BaseEstimator):
     """Intra-Site Interpolation (ISI).
 
     ISI removes the association between site and target in a training set by
@@ -129,13 +130,35 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
 
     n_bins_cont_cov : int or None, optional (default None)
         Number of bins used to stratify continuous covariates (required when
-        ``continuous_covariate`` is given).
+        continuous covariates are given).
 
     binning_strategy_cont_cov : {"uniform", "quantile"}, optional (default "quantile")
         How continuous covariates are binned within each site.
 
     random_state : int, RandomState instance or None, optional (default None)
         Seed of the pseudo random number generator.
+
+    site_column : str or int or None, optional (default None)
+        Column of ``X`` holding the site of every sample (name for a
+        DataFrame, position for an array). If None, the sites are passed to
+        :meth:`fit_resample` with the ``sites`` keyword. With columns, the
+        output keeps the metadata columns, filled in for the synthetic
+        samples, so that a harmonizer later in an imbalanced-learn
+        :class:`~imblearn.pipeline.Pipeline` gets them (see Notes).
+
+    categorical_columns : str or int or list or None, optional (default None)
+        Columns of ``X`` holding categorical covariates (strata of the
+        interpolation). Alternative to the ``categorical_covariates`` keyword.
+
+    continuous_columns : str or int or list or None, optional (default None)
+        Columns of ``X`` holding continuous covariates (binned into strata).
+        Alternative to the ``continuous_covariates`` keyword.
+
+    passthrough_columns : str or int or list or None, optional (default None)
+        Other columns of ``X`` that are not features (e.g., covariates of a
+        harmonizer later in the pipeline): they are not used for resampling
+        and are carried to the output, interpolated for synthetic samples if
+        floating point, else copied from the closest parent.
 
     Attributes
     ----------
@@ -144,7 +167,7 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
 
     sample_indices_ : ndarray of shape (n_samples_new,)
         Index in the input of each resampled sample, ``-1`` for samples
-        created by ISI. Use it to carry along covariates of the real samples.
+        created by ISI.
 
     is_synthetic_ : ndarray of shape (n_samples_new,)
         Whether each resampled sample was created by ISI.
@@ -182,7 +205,7 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         poorly (low ``rho``).
 
     n_features_in_ : int
-        Number of features.
+        Number of columns of ``X`` (metadata columns included).
 
     bins_ : ndarray or None
         Bin edges of the regression target, ``None`` for classification.
@@ -201,16 +224,21 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
     Notes
     -----
     Use ISI on training data only (e.g. inside an ``imblearn.pipeline.Pipeline``
-    evaluated with cross-validation). As ``sites`` is not part of ``X``, enable
-    scikit-learn metadata routing to pass it::
+    evaluated with cross-validation). Keep the sites (and covariates) as
+    columns of a DataFrame ``X`` and name them in the constructor: the folds
+    split them with ``X``, and ISI returns them for the resampled samples, so
+    a harmonizer can follow it::
 
-        import sklearn
         from imblearn.pipeline import Pipeline
 
-        sklearn.set_config(enable_metadata_routing=True)
-        isi = IntraSiteInterpolation().set_fit_resample_request(sites=True)
-        pipe = Pipeline([("isi", isi), ("clf", LogisticRegression())])
-        cross_validate(pipe, X, y, params={"sites": sites})
+        isi = IntraSiteInterpolation(site_column="site", passthrough_columns=["age"])
+        combat = NeuroComBat(site_column="site", continuous_columns=["age"])
+        pipe = Pipeline([("isi", isi), ("combat", combat), ("clf", LogisticRegression())])
+        cross_validate(pipe, df, y, scoring="roc_auc")
+
+    The ``sites`` keyword also works with scikit-learn metadata routing
+    (``sklearn.set_config(enable_metadata_routing=True)``), but a later step
+    then cannot get the sites of the synthetic samples.
 
     **Tune hyper-parameters with ISI inside the inner cross-validation.**
     Synthetic samples are interpolated between their parents, so a model
@@ -224,7 +252,7 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
 
         pipe = Pipeline([("isi", isi), ("scale", StandardScaler()), ("ridge", Ridge())])
         search = GridSearchCV(pipe, {"ridge__alpha": np.logspace(-1, 5, 13)})
-        search.fit(X, y, sites=sites)  # with metadata routing enabled
+        search.fit(df, y)
 
     **Strong imbalance with many features.** A model with more features
     than samples and moderate regularisation can fit the few real samples of
@@ -252,13 +280,17 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
     For regression, target bins with fewer samples in a site are left as
     they are, with a warning.
 
-    Covariates (``categorical_covariate``, ``continuous_covariate``) restrict
+    Covariates (``categorical_covariates``, ``continuous_covariates``) restrict
     who is interpolated with whom: synthetic samples are interpolated between
     samples of the same class, site and covariate stratum, and they are spread
     over the strata in proportion to the real samples of that class, so
     ``P(covariates | class, site)`` is preserved.
 
     Original samples are returned unchanged, with their original targets.
+    With the column path, the continuous covariates (and floating-point
+    pass-through columns) of a synthetic sample are interpolated between its
+    two parents like its target, and its other metadata are copied from the
+    closer parent.
     For regression, the target of a synthetic sample is interpolated between
     its two parent samples, ``y = y_a + lam * (y_b - y_a)``, which recovers
     SMOTE's interpolation exactly.
@@ -279,7 +311,15 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         n_bins_cont_cov: int | None = None,
         binning_strategy_cont_cov: str | Literal["uniform", "quantile"] = "quantile",
         random_state: int | np.random.RandomState | None = None,
+        site_column: str | int | None = None,
+        categorical_columns: str | int | list | None = None,
+        continuous_columns: str | int | list | None = None,
+        passthrough_columns: str | int | list | None = None,
     ) -> None:
+        self.site_column = site_column
+        self.categorical_columns = categorical_columns
+        self.continuous_columns = continuous_columns
+        self.passthrough_columns = passthrough_columns
         self.interpolator = interpolator
         self.interpolator_kwargs = interpolator_kwargs
         self.balance_strategy = balance_strategy
@@ -294,49 +334,48 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
     # ------------------------------------------------------------------ #
     # Public API
     # ------------------------------------------------------------------ #
+    # Data keywords are requested by default when metadata routing is enabled
+    __metadata_request__fit_resample = {"sites": True, "categorical_covariates": True, "continuous_covariates": True}  # noqa: RUF012
+
     def fit_resample(
         self,
         X: npt.ArrayLike,
         y: npt.ArrayLike,
-        sites: npt.ArrayLike,
         *,
-        categorical_covariate: npt.ArrayLike | None = None,
-        continuous_covariate: npt.ArrayLike | None = None,
-        n_bins_cont_cov: int | None = None,
-        binning_strategy_cont_cov: str | None = None,
-    ) -> tuple[npt.NDArray, npt.NDArray]:
+        sites: npt.ArrayLike | None = None,
+        categorical_covariates: npt.ArrayLike | None = None,
+        continuous_covariates: npt.ArrayLike | None = None,
+    ) -> tuple[npt.NDArray | pd.DataFrame, npt.NDArray]:
         """Balance the classes within every site by interpolation.
 
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_features)
-            Features.
+        X : array-like or DataFrame of shape (n_samples, n_columns)
+            Features, with the metadata columns named in the constructor, if any.
 
         y : array-like of shape (n_samples,)
             Target: class labels for classification, continuous values for
             regression.
 
-        sites : array-like of shape (n_samples,)
-            Site of each sample.
+        sites : array-like of shape (n_samples,) or None, default=None
+            Site of each sample. Required unless ``site_column`` is set.
 
-        categorical_covariate : array-like of shape (n_samples,) or (n_samples, n_categorical), default=None
+        categorical_covariates : array-like of shape (n_samples,) or (n_samples, n_categorical), default=None
             Categorical covariates. Synthetic samples are only interpolated
-            between samples with the same values.
+            between samples with the same values. Alternative to
+            ``categorical_columns``.
 
-        continuous_covariate : array-like of shape (n_samples,) or (n_samples, n_continuous), default=None
+        continuous_covariates : array-like of shape (n_samples,) or (n_samples, n_continuous), default=None
             Continuous covariates, binned within each site into
-            ``n_bins_cont_cov`` bins that act as strata.
-
-        n_bins_cont_cov : int or None, default=None
-            Deprecated, set it in the constructor instead.
-
-        binning_strategy_cont_cov : {"uniform", "quantile"} or None, default=None
-            Deprecated, set it in the constructor instead.
+            ``n_bins_cont_cov`` bins that act as strata. Alternative to
+            ``continuous_columns``.
 
         Returns
         -------
-        X_resampled : numpy.ndarray of shape (n_samples_new, n_features)
-            Resampled features, grouped by site.
+        X_resampled : ndarray or DataFrame of shape (n_samples_new, n_columns)
+            Resampled data, grouped by site: the features only (keyword path),
+            or all the columns of ``X`` with the metadata of the synthetic
+            samples filled in (column path).
 
         y_resampled : numpy.ndarray of shape (n_samples_new,)
             Resampled targets. Original samples keep their target and dtype.
@@ -354,14 +393,17 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         and its origin in ``sample_indices_`` / ``is_synthetic_``.
 
         """
-        n_bins_cc, strategy_cc = self._resolve_deprecated_covariate_params(n_bins_cont_cov, binning_strategy_cont_cov)
+        data = self._sampler_input(X, sites, categorical_covariates, continuous_covariates)
+        n_bins_cc, strategy_cc = self.n_bins_cont_cov, self.binning_strategy_cont_cov
+        X_in = X
         X, y, sites, y_cls, cat_cov, cont_cov = self._validate_input(
-            X, y, sites, categorical_covariate, continuous_covariate, n_bins_cc, strategy_cc
+            data.X, y, data.sites, data["categorical_covariates"], data["continuous_covariates"], n_bins_cc, strategy_cc
         )
         self._validate_params_values()
         rng = check_random_state(self.random_state)
         self.interpolator_ = self._resolve_interpolator()
-        self.n_features_in_ = X.shape[1]
+        track = self._needs_parents(data) or getattr(self, "_track_parents", False)
+        self._parents: list[tuple[npt.NDArray, npt.NDArray, npt.NDArray]] | None = [] if track else None
 
         unique_sites = np.unique(sites)
         counts = self._class_counts(sites, y_cls)
@@ -380,7 +422,7 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         for site in unique_sites:
             in_site = np.flatnonzero(sites == site)
             X_site, y_site = self._resample_site(
-                site, X[in_site], y[in_site], y_cls[in_site], groups[in_site], counts[site], targets[site], rng
+                site, X[in_site], y[in_site], y_cls[in_site], groups[in_site], counts[site], targets[site], rng, index=in_site
             )
             X_out.append(X_site)
             y_out.append(y_site)
@@ -396,16 +438,29 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         if self.task_ == "classification":
             y_res = y_res.astype(y.dtype, copy=False)
         logger.debug(f"[ISI] {len(X)} samples -> {len(X_res)} ({int(self.is_synthetic_.sum())} synthetic)")
-        return X_res, y_res
+        weights = self._parent_weights(len(X))
+        return self._resampled_output(X_in, data, X_res, self.sites_resampled_, self.sample_indices_, weights), y_res
+
+    def _parent_weights(self, n_samples: int) -> Any:
+        """Return the parent weights of the synthetic samples recorded during resampling, or None."""
+        if not getattr(self, "_parents", None):
+            return None
+        a = np.concatenate([p[0] for p in self._parents])
+        b = np.concatenate([p[1] for p in self._parents])
+        lam = np.concatenate([p[2] for p in self._parents])
+        rows = np.arange(len(a))
+        return parent_weights(
+            np.concatenate([rows, rows]), np.concatenate([a, b]), np.concatenate([1.0 - lam, lam]), len(a), n_samples
+        )
 
     def estimate_safe_amplification(
         self,
         X: npt.ArrayLike,
         y: npt.ArrayLike,
-        sites: npt.ArrayLike,
         *,
-        categorical_covariate: npt.ArrayLike | None = None,
-        continuous_covariate: npt.ArrayLike | None = None,
+        sites: npt.ArrayLike | None = None,
+        categorical_covariates: npt.ArrayLike | None = None,
+        continuous_covariates: npt.ArrayLike | None = None,
     ) -> pd.DataFrame:
         """Measure, without resampling, how much interpolation each class of each site can take.
 
@@ -416,17 +471,8 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
 
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_features)
-            Features.
-
-        y : array-like of shape (n_samples,)
-            Target.
-
-        sites : array-like of shape (n_samples,)
-            Site of each sample.
-
-        categorical_covariate, continuous_covariate : array-like or None, default=None
-            Covariates, as in :meth:`fit_resample`.
+        X, y, sites, categorical_covariates, continuous_covariates
+            As in :meth:`fit_resample`.
 
         Returns
         -------
@@ -435,8 +481,15 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
             and ``safe_amplification`` (``inf`` when not limited).
 
         """
+        data = self._sampler_input(X, sites, categorical_covariates, continuous_covariates)
         X, y, sites, y_cls, cat_cov, cont_cov = self._validate_input(
-            X, y, sites, categorical_covariate, continuous_covariate, self.n_bins_cont_cov, self.binning_strategy_cont_cov
+            data.X,
+            y,
+            data.sites,
+            data["categorical_covariates"],
+            data["continuous_covariates"],
+            self.n_bins_cont_cov,
+            self.binning_strategy_cont_cov,
         )
         self._validate_params_values()
         rng = check_random_state(self.random_state)
@@ -489,22 +542,6 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
     # ------------------------------------------------------------------ #
     # Validation
     # ------------------------------------------------------------------ #
-    def _resolve_deprecated_covariate_params(
-        self, n_bins_cont_cov: int | None, binning_strategy_cont_cov: str | None
-    ) -> tuple[int | None, str]:
-        """Merge the deprecated ``fit_resample`` covariate options with the constructor ones."""
-        n_bins, strategy = self.n_bins_cont_cov, self.binning_strategy_cont_cov
-        if n_bins_cont_cov is not None or binning_strategy_cont_cov is not None:
-            warnings.warn(
-                "Passing `n_bins_cont_cov` / `binning_strategy_cont_cov` to `fit_resample` is deprecated and will be "
-                "removed in uniharmony 0.1; set them in the IntraSiteInterpolation constructor.",
-                FutureWarning,
-                stacklevel=3,
-            )
-            n_bins = n_bins_cont_cov if n_bins_cont_cov is not None else n_bins
-            strategy = binning_strategy_cont_cov if binning_strategy_cont_cov is not None else strategy
-        return n_bins, strategy
-
     def _validate_params_values(self) -> None:
         """Validate the constructor parameters."""
         strategy = self.balance_strategy
@@ -518,8 +555,8 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         X: npt.ArrayLike,
         y: npt.ArrayLike,
         sites: npt.ArrayLike,
-        categorical_covariate: npt.ArrayLike | None,
-        continuous_covariate: npt.ArrayLike | None,
+        categorical_covariates: npt.ArrayLike | None,
+        continuous_covariates: npt.ArrayLike | None,
         n_bins_cont_cov: int | None,
         binning_strategy_cont_cov: str,
     ) -> tuple[npt.NDArray, npt.NDArray, npt.NDArray, npt.NDArray, npt.NDArray | None, npt.NDArray | None]:
@@ -549,11 +586,11 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
             return cov.reshape(-1, 1) if cov.ndim == 1 else cov
 
         cat_cov, cont_cov, _ = validate_covariates(
-            X.shape[0], _as_2d(categorical_covariate), _as_2d(continuous_covariate), None, allow_nan=False
+            X.shape[0], _as_2d(categorical_covariates), _as_2d(continuous_covariates), None, allow_nan=False
         )
         if cont_cov is not None:
             if n_bins_cont_cov is None or n_bins_cont_cov < 2:
-                raise ValueError("n_bins_cont_cov (>= 2) must be set when continuous_covariate is given.")
+                raise ValueError("n_bins_cont_cov (>= 2) must be set when continuous covariates are given.")
             if binning_strategy_cont_cov not in {"uniform", "quantile"}:
                 raise ValueError(f"binning_strategy_cont_cov must be 'uniform' or 'quantile', got {binning_strategy_cont_cov!r}")
 
@@ -657,8 +694,12 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         counts: dict,
         target: int,
         rng: np.random.RandomState,
+        index: np.ndarray | None = None,
     ) -> tuple[np.ndarray, np.ndarray]:
         """Bring every class of one site to ``target`` samples by interpolation and record its statistics.
+
+        ``index`` holds the positions of the site samples in the input; it is
+        used to record the parents of the synthetic samples.
 
         Returns
         -------
@@ -677,7 +718,7 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
             # safe amplification (variance rule) from all real samples of the site
             rhos[c], safe[c] = self._safe_amplification(Xs, ys_cls, groups, c, n_needed=n_needed, rng=rng)
             if n_needed > 0:
-                X_c, y_c = self._oversample(Xs, ys, ys_cls, groups, c, n_needed, rng)
+                X_c, y_c = self._oversample(Xs, ys, ys_cls, groups, c, n_needed, rng, index=index)
                 X_new.append(X_c)
                 y_new.append(y_c)
         logger.debug(f"[ISI] Site {site}: counts={counts}, rho={rhos}, safe={safe}, target={target}")
@@ -787,6 +828,7 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         c: Any,
         n_new: int,
         rng: np.random.RandomState,
+        index: np.ndarray | None = None,
     ) -> tuple[np.ndarray, np.ndarray]:
         """Create ``n_new`` synthetic samples of class ``c`` in one site.
 
@@ -821,11 +863,19 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
             anchors = g_cell == stratum
             X_syn = self._interpolate(X_cell[anchors], Xs[context], ys_cls[context], c, int(n_g), rng)
             X_parts.append(X_syn)
-            if y_cell is not None:
-                if self.task_ == "regression":
-                    y_parts.append(self._parent_targets(X_syn, X_cell[anchors], y_cell[anchors], k=self._n_neighbors()))
-                else:
-                    y_parts.append(np.full(len(X_syn), c, dtype=ys.dtype))
+            if y_cell is None:
+                continue
+            track = index is not None and getattr(self, "_parents", None) is not None
+            if self.task_ == "regression" or track:
+                a, b, lam = self._parent_segments(X_syn, X_cell[anchors], k=self._n_neighbors())
+                if track:
+                    anchor_index = index[in_cell][anchors]
+                    self._parents.append((anchor_index[a], anchor_index[b], lam))
+            if self.task_ == "regression":
+                y_anchor = y_cell[anchors].astype(float)
+                y_parts.append(y_anchor[a] + lam * (y_anchor[b] - y_anchor[a]))
+            else:
+                y_parts.append(np.full(len(X_syn), c, dtype=ys.dtype))
         X_out = np.vstack(X_parts)
         y_out = np.concatenate(y_parts) if y_parts else np.empty(0)
         return X_out, y_out
@@ -1066,17 +1116,7 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
 
     @staticmethod
     def _parent_targets(X_new: np.ndarray, X_anchor: np.ndarray, y_anchor: np.ndarray, k: int = 10) -> np.ndarray:
-        """Interpolate the continuous targets of synthetic samples from their parents.
-
-        For each synthetic sample ``x``, the parents are the two anchors
-        ``x_a``, ``x_b`` whose segment passes closest to ``x``; with ``lam``
-        the position of the projection of ``x`` on the segment, the target is
-        ``y_a + lam * (y_b - y_a)``. All segments are searched for cells of up
-        to 300 anchors; for larger cells, the candidates join the ``max(5k, 50)``
-        nearest anchors of ``x`` to their own ``2k`` nearest anchors (SMOTE joins
-        a sample to one of its ``k`` nearest neighbours). Distances
-        are computed from inner products, so the cost does not grow with the
-        number of features once the Gram matrices are formed.
+        """Interpolate the continuous targets of synthetic samples from their parents (see :meth:`_parent_segments`).
 
         Returns
         -------
@@ -1084,47 +1124,75 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
             Targets of the synthetic samples.
 
         """
+        if len(X_anchor) == 0:
+            return np.full(len(X_new), np.nan)
+        a, b, lam = IntraSiteInterpolation._parent_segments(X_new, X_anchor, k)
+        y_anchor = np.asarray(y_anchor, dtype=float)
+        return y_anchor[a] + lam * (y_anchor[b] - y_anchor[a])
+
+    @staticmethod
+    def _parent_segments(X_new: np.ndarray, X_anchor: np.ndarray, k: int = 10) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+        """Find the parents of synthetic samples.
+
+        For each synthetic sample ``x``, the parents are the two anchors
+        ``x_a``, ``x_b`` whose segment passes closest to ``x``, and ``lam`` is
+        the position of the projection of ``x`` on the segment, so that
+        ``x ~ x_a + lam * (x_b - x_a)``. All segments are searched for cells
+        of up to 300 anchors; for larger cells, the candidates join the
+        ``max(5k, 50)`` nearest anchors of ``x`` to their own ``2k`` nearest
+        anchors (SMOTE joins a sample to one of its ``k`` nearest neighbours).
+        Distances are computed from inner products, so the cost does not grow
+        with the number of features once the Gram matrices are formed.
+
+        Returns
+        -------
+        tuple of np.ndarray
+            Indices (in ``X_anchor``) of the two parents and ``lam``, each of
+            shape (n_new,).
+
+        """
         n = len(X_anchor)
-        y_anchor = y_anchor.astype(float)
-        if n == 1 or len(X_new) == 0:
-            return np.full(len(X_new), y_anchor[0] if n else np.nan)
+        n_new = len(X_new)
+        a_out, b_out, lam_out = np.zeros(n_new, dtype=int), np.zeros(n_new, dtype=int), np.zeros(n_new)
+        if n == 1 or n_new == 0:
+            return a_out, b_out, lam_out
         G = X_anchor @ X_anchor.T
         sq = np.diag(G).copy()
         H = X_new @ X_anchor.T
         xx = np.einsum("ij,ij->i", X_new, X_new)
-        y_new = np.empty(len(X_new))
         if n <= 300:
             a_all, b_all = np.triu_indices(n)  # includes a == b (duplicates)
             chunk = max(1, int(4e6 // len(a_all)))
-            for start in range(0, len(X_new), chunk):
-                rows = np.arange(start, min(start + chunk, len(X_new)))
+            for start in range(0, n_new, chunk):
+                rows = np.arange(start, min(start + chunk, n_new))
                 a = np.broadcast_to(a_all, (len(rows), len(a_all)))
                 b = np.broadcast_to(b_all, (len(rows), len(b_all)))
-                y_new[rows] = IntraSiteInterpolation._best_segment(rows, a, b, G, sq, H, xx, y_anchor)
-            return y_new
+                a_out[rows], b_out[rows], lam_out[rows], _ = IntraSiteInterpolation._best_segment(rows, a, b, G, sq, H, xx)
+            return a_out, b_out, lam_out
         n_cand = min(n, max(5 * k, 50))
         d2 = xx[:, np.newaxis] - 2.0 * H + sq[np.newaxis, :]
         cand = np.argpartition(d2, n_cand - 1, axis=1)[:, :n_cand]
         D = sq[:, np.newaxis] + sq[np.newaxis, :] - 2.0 * G
         n_nbrs = min(n, 2 * k + 1)
         nbrs = np.argpartition(D, n_nbrs - 1, axis=1)[:, :n_nbrs]
-        residual = np.empty(len(X_new))
+        residual = np.empty(n_new)
         chunk = max(1, int(4e6 // (n_cand * n_nbrs)))
-        for start in range(0, len(X_new), chunk):
-            rows = np.arange(start, min(start + chunk, len(X_new)))
+        for start in range(0, n_new, chunk):
+            rows = np.arange(start, min(start + chunk, n_new))
             a = np.repeat(cand[rows], n_nbrs, axis=1)
             b = nbrs[cand[rows]].reshape(len(rows), -1)
-            y_new[rows], residual[rows] = IntraSiteInterpolation._best_segment(rows, a, b, G, sq, H, xx, y_anchor, True)
+            a_out[rows], b_out[rows], lam_out[rows], residual[rows] = IntraSiteInterpolation._best_segment(
+                rows, a, b, G, sq, H, xx
+            )
         # exact search over all segments for the few samples whose parents were not among the candidates
         missed = np.flatnonzero(residual > 1e-9 * max(1.0, float(np.mean(sq))))
         if len(missed) and n <= 3000:
             a_all, b_all = np.triu_indices(n)
             for i in missed:
                 rows = np.array([i])
-                y_new[i] = IntraSiteInterpolation._best_segment(
-                    rows, a_all[np.newaxis], b_all[np.newaxis], G, sq, H, xx, y_anchor
-                )[0]
-        return y_new
+                found = IntraSiteInterpolation._best_segment(rows, a_all[np.newaxis], b_all[np.newaxis], G, sq, H, xx)
+                a_out[i], b_out[i], lam_out[i] = found[0][0], found[1][0], found[2][0]
+        return a_out, b_out, lam_out
 
     @staticmethod
     def _best_segment(
@@ -1135,16 +1203,15 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         sq: np.ndarray,
         H: np.ndarray,
         xx: np.ndarray,
-        y_anchor: np.ndarray,
-        return_residual: bool = False,
-    ) -> np.ndarray | tuple[np.ndarray, np.ndarray]:
-        """Target interpolated on the closest of the candidate segments ``[a, b]`` of each synthetic sample.
+    ) -> tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
+        """Closest of the candidate segments ``[a, b]`` of each synthetic sample.
 
         Returns
         -------
-        np.ndarray or tuple[np.ndarray, np.ndarray]
-            Interpolated target of each synthetic sample in ``rows`` (and the
-            squared distance to its segment if ``return_residual``).
+        tuple of np.ndarray
+            For each synthetic sample in ``rows``: the two parents, the
+            position ``lam`` of its projection on their segment and its
+            squared distance to the segment.
 
         """
         Hr = H[rows]
@@ -1159,26 +1226,17 @@ class IntraSiteInterpolation(SamplerMixin, BaseEstimator):
         res = uu - 2.0 * lam * ud + lam**2 * dd
         best = np.argmin(res, axis=1)
         idx = np.arange(len(rows))
-        a_best, b_best, lam_best = a[idx, best], b[idx, best], lam[idx, best]
-        y_best = y_anchor[a_best] + lam_best * (y_anchor[b_best] - y_anchor[a_best])
-        return (y_best, res[idx, best]) if return_residual else y_best
+        return a[idx, best], b[idx, best], lam[idx, best], res[idx, best]
 
     def _fit_resample(self, X: npt.ArrayLike, y: npt.ArrayLike, **params: Any) -> tuple[npt.NDArray, npt.NDArray]:
-        """Resample; ``sites`` must be passed as a keyword argument.
+        """Resample (see :meth:`fit_resample`).
 
         Returns
         -------
         tuple
             Output of :meth:`fit_resample`.
 
-        Raises
-        ------
-        TypeError
-            If ``sites`` is not given.
-
         """
-        if "sites" not in params:
-            raise TypeError("IntraSiteInterpolation needs `sites`: call fit_resample(X, y, sites=sites).")
         return self.fit_resample(X, y, **params)
 
     def __sklearn_tags__(self) -> Tags:

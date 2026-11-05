@@ -10,13 +10,12 @@ from numpy.typing import ArrayLike, NDArray
 from sklearn.base import BaseEstimator
 from sklearn.utils import check_random_state
 from sklearn.utils.validation import (
-    check_array,
     check_consistent_length,
     check_X_y,
 )
 
-from uniharmony._utils import validate_sites
 from uniharmony._verbose import get_logger
+from uniharmony.interpolation._metadata import SamplerInputMixin, parent_weights
 from uniharmony.interpolation._utils import (
     validate_class_representation,
     validate_covariates,
@@ -28,7 +27,7 @@ __all__ = ["InterSiteMatchedInterpolation"]
 logger = get_logger(src="InterSiteMatchedInterpolation")
 
 
-class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
+class InterSiteMatchedInterpolation(SamplerInputMixin, SamplerMixin, BaseEstimator):
     """Inter-Site Matched Interpolation (ISMI) Harmonization.
 
     This sampler performs **cross-site matched interpolation** to reduce spurious
@@ -48,6 +47,28 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
 
     Parameters
     ----------
+    site_column : str or int or None, optional (default None)
+        Column of ``X`` holding the site of every sample (name for a
+        DataFrame, position for an array). If None, the sites are passed to
+        :meth:`fit_resample` with the ``sites`` keyword. With columns, the
+        output keeps the metadata columns, filled in for the synthetic
+        samples (site of the base sample; continuous values interpolated with
+        the same ``alpha``; other values of the base sample), so that a
+        harmonizer can follow ISMI in an imbalanced-learn
+        :class:`~imblearn.pipeline.Pipeline`.
+
+    categorical_columns : str or int or list or None, optional (default None)
+        Columns of ``X`` holding categorical covariates used for matching.
+        Alternative to the ``categorical_covariates`` keyword.
+
+    continuous_columns : str or int or list or None, optional (default None)
+        Columns of ``X`` holding continuous covariates used for matching.
+        Alternative to the ``continuous_covariates`` keyword.
+
+    passthrough_columns : str or int or list or None, optional (default None)
+        Other columns of ``X`` that are not features: not used for matching,
+        carried to the output (interpolated if floating point).
+
     alpha : float or tuple[float, float], optional (default 0.3)
         Interpolation weight(s). If a float, all interpolations use this
         constant alpha value. If a tuple ``(min, max)``, alpha is sampled
@@ -93,15 +114,26 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         If ``True``, the output dataset includes both original and synthetic samples.
         If ``False``, only synthetic samples are returned.
 
+    allow_nan : bool, optional (default False)
+        Whether the covariates may contain missing values (such samples are
+        not matched on that covariate).
+
     random_state : int or np.random.RandomState or None, optional (default None)
         The seed of the pseudo random number generator for reproducibility.
 
     Attributes
     ----------
-    interpolator_ : SamplerMixin
-        The fitted interpolator instance.
+    k_ : int or {"max", "average"}
+        The number of matches used (``k`` validated; ``"average"`` in
+        ``mode="base_to_others"``).
+    alpha_min_, alpha_max_ : float
+        Range of the interpolation weight.
     sites_resampled_ : ndarray of shape (n_samples_new,)
         Site labels for the resampled dataset (original + synthetic).
+    sample_indices_ : ndarray of shape (n_samples_new,)
+        Index in the input of each resampled sample, ``-1`` for synthetic samples.
+    is_synthetic_ : ndarray of shape (n_samples_new,)
+        Whether each resampled sample was created by ISMI.
     unmatched_samples_ : dict
         Dictionary tracking unmatched samples per direction. Keys are tuples
         indicating the interpolation direction (source_site, target_site).
@@ -151,8 +183,8 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
     >>> sites = np.array(["A"] * 50 + ["B"] * 50 + ["C"] * 50)
     >>>
     >>> # Define covariates for matching
-    >>> categorical_covariate = np.array([["M"], ["F"]] * 75)  # Sex
-    >>> continuous_covariate = rng.randint(20, 80, (150, 1))  # Age
+    >>> sex = np.array([["M"], ["F"]] * 75)
+    >>> age = rng.randint(20, 80, (150, 1))
     >>> covariate_tolerance = np.array([5.0])  # ±5 years tolerance
     >>>
     >>> # Create interpolator with pairwise mode and k=2 matches
@@ -168,8 +200,8 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
     >>> X_res, y_res = ismi.fit_resample(
     ...     X, y,
     ...     sites=sites,
-    ...     categorical_covariate=categorical_covariate,
-    ...     continuous_covariate=continuous_covariate,
+    ...     categorical_covariates=sex,
+    ...     continuous_covariates=age,
     ... )
     >>>
     >>> # Check unmatched samples
@@ -194,9 +226,19 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         k: int | Literal["max", "average"] = 1,
         mode: Literal["pairwise", "base_to_others"] = "pairwise",
         *,
+        site_column: str | int | None = None,
+        categorical_columns: str | int | list | None = None,
+        continuous_columns: str | int | list | None = None,
+        passthrough_columns: str | int | list | None = None,
         concatenate: bool = True,
+        allow_nan: bool = False,
         random_state: int | np.random.RandomState | None = None,
     ) -> None:
+        self.site_column = site_column
+        self.categorical_columns = categorical_columns
+        self.continuous_columns = continuous_columns
+        self.passthrough_columns = passthrough_columns
+        self.allow_nan = allow_nan
         self.alpha = alpha
         self.target_tolerance = target_tolerance
         self.covariate_tolerance = covariate_tolerance
@@ -227,60 +269,62 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         else:
             raise ValueError(f"alpha must be float or tuple (min, max), got {self.alpha}")
 
-        # Validate k
+        # Validate k; the resolved value is stored in k_ (the parameter is not modified)
         if isinstance(self.k, str):
             k_lower = self.k.lower()
             if k_lower not in ("max", "average"):
                 raise ValueError(f"k must be int >= 1, 'max', or 'average', got '{self.k}'")
-            self.k = k_lower
+            self.k_ = k_lower
         else:
             if int(self.k) < 1:
                 raise ValueError(f"k must be >= 1, got {self.k}")
-            self.k = int(self.k)
+            self.k_ = int(self.k)
 
         # Force average mode for base_to_others
-        if self.mode == "base_to_others" and self.k != "average":
+        if self.mode == "base_to_others" and self.k_ != "average":
             logger.warning("mode='base_to_others' requires k='average', overriding")
-            self.k = "average"
+            self.k_ = "average"
+
+    # Data keywords are requested by default when metadata routing is enabled
+    __metadata_request__fit_resample = {"sites": True, "categorical_covariates": True, "continuous_covariates": True}  # noqa: RUF012
 
     def fit_resample(
         self,
         X: ArrayLike,
         y: ArrayLike,
-        sites: ArrayLike,
         *,
-        categorical_covariate: ArrayLike | None = None,
-        continuous_covariate: ArrayLike | None = None,
-        allow_nan=False,
-    ) -> tuple[NDArray[np.float64], NDArray[Any]]:
+        sites: ArrayLike | None = None,
+        categorical_covariates: ArrayLike | None = None,
+        continuous_covariates: ArrayLike | None = None,
+    ) -> tuple[Any, NDArray[Any]]:
         """Fit and resample using cross-site matched interpolation.
 
         Parameters
         ----------
-        X : array-like of shape (n_samples, n_features)
-            Feature matrix containing input samples.
+        X : array-like or DataFrame of shape (n_samples, n_columns)
+            Features, with the metadata columns named in the constructor, if any.
         y : array-like of shape (n_samples,)
             Target values. Can be integer labels (classification) or
             continuous values (regression).
-        sites : array-like of shape (n_samples,)
+        sites : array-like of shape (n_samples,) or None, default=None
             Site or domain identifiers for each sample. Resampling is
-            performed between different sites.
-        categorical_covariate : array-like of shape (n_samples, n_categorical), default=None
+            performed between different sites. Required unless
+            ``site_column`` is set.
+        categorical_covariates : array-like of shape (n_samples, n_categorical), default=None
             Categorical covariates used for hierarchical matching (e.g., sex,
             diagnosis group). Matching proceeds in column order: the first
             column must match exactly, then the second, etc.
-        continuous_covariate : array-like of shape (n_samples, n_continuous), default=None
+        continuous_covariates : array-like of shape (n_samples, n_continuous), default=None
             Continuous covariates used for matching after categorical
             matching (e.g., age, education years). Matches must be within
-            ``tolerance`` for each column.
-        allow_nan : bool, default=False
-            If allow continuos and categorical covariates to present NaN or not
+            ``covariate_tolerance`` for each column.
 
         Returns
         -------
-        X_resampled : ndarray of shape (n_samples_new, n_features)
-            The feature matrix after cross-site interpolation, containing both
-            original and synthetic samples.
+        X_resampled : ndarray or DataFrame of shape (n_samples_new, n_columns)
+            The resampled data: the features only (keyword path), or all the
+            columns of ``X`` with the metadata of the synthetic samples
+            filled in (column path).
         y_resampled : ndarray of shape (n_samples_new,)
             The corresponding targets after resampling.
 
@@ -294,16 +338,19 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
             parameters are inconsistent.
 
         """
-        X, y = check_X_y(X, y, estimator=self)
-        sites = check_array(sites, dtype=None, ensure_2d=False, estimator=self)
+        X_in = X
+        data = self._sampler_input(X, sites, categorical_covariates, continuous_covariates, allow_nan=self.allow_nan)
+        X, y = check_X_y(data.X, y, estimator=self)
+        sites = data.sites
         check_consistent_length(X, y, sites)
-        validate_sites(sites)
         validate_class_representation(y, sites)
 
         # Validate parameters immediately (sklearn convention allows basic validation)
         self._validate_init_params()
         # Validate inputs
-        cat_cov, cont_cov = self._validate_inputs(X, y, categorical_covariate, continuous_covariate, allow_nan)
+        cat_cov, cont_cov = self._validate_inputs(
+            X, y, data["categorical_covariates"], data["continuous_covariates"], self.allow_nan
+        )
 
         # Initialize tracking
         self.unmatched_samples_: dict[tuple[Any, Any], int] = {}
@@ -316,9 +363,11 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         self._log_configuration(cat_cov, cont_cov)
 
         # Generate samples
+        self._parent_entries: list[tuple[NDArray, NDArray, NDArray]] = []
         synthetic_X, synthetic_y, synthetic_sites = self._generate_samples(X, y, sites, cat_cov, cont_cov)
 
         # Combine results
+        n_synthetic = sum(len(part) for part in synthetic_y)
         if synthetic_X:
             if self.concatenate:
                 X_out = np.vstack([X, *synthetic_X])
@@ -332,10 +381,20 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
             X_out, y_out, sites_out = X, y, sites
 
         self.sites_resampled_ = sites_out
+        n_real = len(X_out) - n_synthetic
+        self.sample_indices_ = np.concatenate([np.arange(n_real), np.full(n_synthetic, -1)])
+        self.is_synthetic_ = self.sample_indices_ < 0
 
         self._log_completion(y, synthetic_y)
 
-        return X_out, y_out
+        weights = None
+        if n_synthetic and self._needs_parents(data):
+            offset = np.cumsum([0] + [len(part) for part in synthetic_y])
+            rows = np.concatenate([e[0] + offset[i] for i, e in enumerate(self._parent_entries)])
+            parents = np.concatenate([e[1] for e in self._parent_entries])
+            values = np.concatenate([e[2] for e in self._parent_entries])
+            weights = parent_weights(rows, parents, values, n_synthetic, len(X))
+        return self._resampled_output(X_in, data, X_out, sites_out, self.sample_indices_, weights), y_out
 
     def _validate_inputs(
         self,
@@ -386,12 +445,12 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         logger.info(f"[ISMI] Sites: {self._unique_sites} ({self._n_sites} sites, {n_pairs} pairs)")
         logger.info(f"[ISMI] Alpha: {alpha_str}")
 
-        if self.k == "average":
+        if self.k_ == "average":
             logger.info("[ISMI] Behavior: average across all matches")
-        elif self.k == "max":
+        elif self.k_ == "max":
             logger.info("[ISMI] Behavior: use all matches")
         else:
-            logger.info(f"[ISMI] Behavior: k={self.k} matches per sample")
+            logger.info(f"[ISMI] Behavior: k={self.k_} matches per sample")
 
         logger.info(f"[ISMI] Target tolerance: {self.target_tolerance_}")
         if cat_cov is not None:
@@ -466,13 +525,16 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
 
             # Forward: s1 → s2
             matches_1to2 = _find_matches(y1, y2, c1, c2, v1, v2, self.target_tolerance_, self.covariate_tolerance_)
-            X_synth_1, y_synth_1, n_un_1 = self._interpolate(X1, y1, X2, y2, matches_1to2, self.alpha_min_, self.alpha_max_)
+            idx1, idx2 = np.flatnonzero(m1), np.flatnonzero(m2)
+            X_synth_1, y_synth_1, n_un_1 = self._interpolate(
+                X1, y1, X2, y2, matches_1to2, self.alpha_min_, self.alpha_max_, index=(idx1, idx2)
+            )
             self.unmatched_samples_[(s1, s2)] = n_un_1
 
             # Reverse: s2 → s1 (with reversed alpha)
             matches_2to1 = _reverse_matches(matches_1to2, len(X2))
             rev_min, rev_max = 1.0 - self.alpha_max_, 1.0 - self.alpha_min_
-            X_synth_2, y_synth_2, n_un_2 = self._interpolate(X2, y2, X1, y1, matches_2to1, rev_min, rev_max)
+            X_synth_2, y_synth_2, n_un_2 = self._interpolate(X2, y2, X1, y1, matches_2to1, rev_min, rev_max, index=(idx2, idx1))
             self.unmatched_samples_[(s2, s1)] = n_un_2
 
             # Collect
@@ -522,7 +584,14 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
                 y_base, y_other, c_base, c_other, v_base, v_other, self.target_tolerance_, self.covariate_tolerance_
             )
             X_synth, y_synth, n_un = self._interpolate(
-                X_base, y_base, X_other, y_other, matches, self.alpha_min_, self.alpha_max_
+                X_base,
+                y_base,
+                X_other,
+                y_other,
+                matches,
+                self.alpha_min_,
+                self.alpha_max_,
+                index=(np.flatnonzero(base_mask), np.flatnonzero(other_mask)),
             )
             self.unmatched_samples_[(base_site, "others")] = n_un
 
@@ -544,8 +613,14 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         matches: list[list[int]],
         alpha_min: float,
         alpha_max: float,
+        index: tuple[NDArray[np.int64], NDArray[np.int64]] | None = None,
     ) -> tuple[NDArray[np.float64], NDArray[Any], int]:
-        """Generate synthetic samples from matches."""
+        """Generate synthetic samples from matches.
+
+        ``index`` holds the positions in the input of the source and
+        destination samples; the parent weights of the synthetic samples are
+        then recorded in ``_parent_entries``.
+        """
         n_src = len(X_src)
 
         if n_src == 0 or len(X_dst) == 0:
@@ -567,16 +642,27 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
             alphas = self.random_state_.uniform(alpha_min, alpha_max, n_matched)
 
         # Dispatch to appropriate method
-        if self.k == "average":
+        if self.k_ == "average":
             X_synth, y_synth = self._interp_average(X_src, y_src, X_dst, y_dst, matches, matched_idx, alphas)
 
-        elif self.k == "max":
+        elif self.k_ == "max":
             X_synth, y_synth = self._interp_max(X_src, y_src, X_dst, y_dst, matches, matched_idx, alphas)
 
         else:
-            X_synth, y_synth = self._interp_k(X_src, y_src, X_dst, y_dst, matches, matched_idx, alphas, int(self.k))
+            X_synth, y_synth = self._interp_k(X_src, y_src, X_dst, y_dst, matches, matched_idx, alphas, int(self.k_))
 
+        if index is not None and len(X_synth):
+            self._record_parents(index)
         return X_synth, y_synth, n_unmatched
+
+    def _record_parents(self, index: tuple[NDArray[np.int64], NDArray[np.int64]]) -> None:
+        """Store the parent weights of the last synthetic samples (``1 - alpha`` on the source, ``alpha`` on the destinations)."""
+        src, dsts, alphas = self._last_parents
+        src_index, dst_index = index
+        rows = [np.arange(len(src)), np.repeat(np.arange(len(src)), [len(d) for d in dsts])]
+        parents = [src_index[src], dst_index[np.concatenate(dsts).astype(int)]]
+        weights = [1.0 - alphas, np.concatenate([np.full(len(d), a / len(d)) for d, a in zip(dsts, alphas, strict=True)])]
+        self._parent_entries.append((np.concatenate(rows), np.concatenate(parents), np.concatenate(weights)))
 
     def _interp_average(
         self,
@@ -596,6 +682,7 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         X_avg = np.array([np.mean(X_dst[matches[i]], axis=0) for i in matched_idx])
 
         X_synth = X_m + alphas[:, np.newaxis] * (X_avg - X_m)
+        self._last_parents = (np.asarray(matched_idx), [np.asarray(matches[i]) for i in matched_idx], np.asarray(alphas))
 
         if self._problem_type == "classification":
             y_synth = y_m
@@ -633,6 +720,7 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         X_s = X_src[src_arr]
         X_d = X_dst[dst_arr]
         X_synth = X_s + alpha_arr[:, np.newaxis] * (X_d - X_s)
+        self._last_parents = (src_arr, [np.array([d]) for d in dst_arr], alpha_arr)
 
         if self._problem_type == "classification":
             y_synth = y_src[src_arr]
@@ -682,6 +770,7 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
         X_s = X_src[src_arr]
         X_d = X_dst[dst_arr]
         X_synth = X_s + alpha_arr[:, np.newaxis] * (X_d - X_s)
+        self._last_parents = (src_arr, [np.array([d]) for d in dst_arr], alpha_arr)
 
         if self._problem_type == "classification":
             y_synth = y_src[src_arr]
@@ -692,9 +781,9 @@ class InterSiteMatchedInterpolation(SamplerMixin, BaseEstimator):
 
         return X_synth, y_synth
 
-    def _fit_resample(self, X: ArrayLike, y: ArrayLike, **params: Any) -> None:
-        """For SamplerMixin compatibility."""
-        pass
+    def _fit_resample(self, X: ArrayLike, y: ArrayLike, **params: Any) -> tuple[Any, NDArray[Any]]:
+        """Resample (see :meth:`fit_resample`)."""
+        return self.fit_resample(X, y, **params)
 
 
 def _find_matches(
