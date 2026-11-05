@@ -32,6 +32,13 @@ tight (``RTOL``, relative to the data standard deviation). The frozen
 outputs (default modes) also match R ``sva::ComBat`` 3.50.0 to 1e-13. The two
 implementations solve the same equations with different but equivalent
 linear algebra; their rounding differences are below 1e-10 of the data scale.
+
+``neurocombat_0.2.12_ref_batch_reference.npz`` (same script) holds the
+neuroCombat output with a reference batch (``ref_batch``, UniHarmony's
+``ref_site``) for three of the designs. neuroCombat divides the reference
+residual sum of squares by ``n_ref`` and UniHarmony by ``n_ref - 1``; with
+that choice restored the outputs are equal, and the reference site is left
+unchanged by both.
 """
 
 from pathlib import Path
@@ -43,6 +50,8 @@ from uniharmony.combat import NeuroComBat
 
 
 REFERENCE = Path(__file__).parent / "neurocombat_0.2.12_reference.npz"
+REF_BATCH_REFERENCE = Path(__file__).parent / "neurocombat_0.2.12_ref_batch_reference.npz"
+REF_BATCH_DESIGNS = ["one_categorical_one_continuous", "several_covariates", "imbalanced_sites"]
 
 DESIGNS = [
     "one_categorical_one_continuous",
@@ -76,11 +85,16 @@ class _Converged(NeuroComBat):
 
 
 class _ReferenceChoices(_Converged):
-    """Converged NeuroComBat with the R sva / neuroCombat choices 1 and 2 restored (pooled variance over n, mean_only n = 1)."""
+    """Converged NeuroComBat with the R sva / neuroCombat choices 1 and 2 restored.
+
+    The pooled variance is divided by the number of samples it is computed on
+    (``n``, or ``n_ref`` with a reference site) instead of the degrees of
+    freedom (``n - S``, ``n_ref - S_ref``), and mean_only uses n = 1.
+    """
 
     def fit_standardize(self, X, design, n_samples, n_samples_per_site, *args, **kwargs):
         super().fit_standardize(X, design, n_samples, n_samples_per_site, *args, **kwargs)
-        self._var_pooled = self._var_pooled * (n_samples - len(n_samples_per_site)) / n_samples
+        self._var_pooled = self._var_pooled * self._var_pooled_dof / self._var_pooled_n
         return self.transform_standardize(X=X, design=design, n_samples=n_samples)[0]
 
     def _postmean(self, gamma_hat, gamma_bar, n, delta_star, tau_2):
@@ -99,10 +113,22 @@ def reference() -> dict[str, dict[str, np.ndarray]]:
     return designs
 
 
+@pytest.fixture(scope="module")
+def ref_batch_reference() -> dict[str, dict[str, np.ndarray]]:
+    """Frozen neuroCombat 0.2.12 output with a reference batch, by design."""
+    designs: dict[str, dict[str, np.ndarray]] = {}
+    with np.load(REF_BATCH_REFERENCE) as data:
+        for key in data.files:
+            design, name = key.split("__")
+            designs.setdefault(design, {})[name] = data[key]
+    assert sorted(designs) == sorted(REF_BATCH_DESIGNS)
+    return designs
+
+
 def _harmonize(design: dict[str, np.ndarray], estimator: type = NeuroComBat, **params) -> np.ndarray:
     return estimator(**params).fit_transform(
         design["X"],
-        design["sites"],
+        sites=design["sites"],
         categorical_covariates=design.get("categorical"),
         continuous_covariates=design.get("continuous"),
     )
@@ -199,14 +225,14 @@ def test_no_eb_closed_form(small_data) -> None:
     """Without empirical Bayes the output follows the model equations with var_pooled = RSS / (n - S)."""
     X, sites = small_data
     np.testing.assert_allclose(
-        NeuroComBat(empirical_bayes=False).fit_transform(X, sites), _closed_form(X, sites, None), atol=1e-10
+        NeuroComBat(empirical_bayes=False).fit_transform(X, sites=sites), _closed_form(X, sites, None), atol=1e-10
     )
 
 
 def test_mean_only_uses_site_sample_size(small_data) -> None:
     """mean_only shrinks with n_i, not with n = 1 as R sva / neuroCombat do."""
     X, sites = small_data
-    harmonized = NeuroComBat(mean_only=True).fit_transform(X, sites)
+    harmonized = NeuroComBat(mean_only=True).fit_transform(X, sites=sites)
     np.testing.assert_allclose(harmonized, _closed_form(X, sites, "n_i"), atol=1e-10)
     # The test is discriminative: the reference rule gives a clearly different result
     assert np.abs(harmonized - _closed_form(X, sites, "1")).max() > 0.1
@@ -219,7 +245,7 @@ def test_pooled_variance_has_no_switch_at_30() -> None:
         sites = np.repeat([0, 1, 2], n_per_site)
         X = rng.normal(size=(len(sites), 4)) + sites[:, None]
         np.testing.assert_allclose(
-            NeuroComBat(empirical_bayes=False).fit_transform(X, sites), _closed_form(X, sites, None), atol=1e-10
+            NeuroComBat(empirical_bayes=False).fit_transform(X, sites=sites), _closed_form(X, sites, None), atol=1e-10
         )
 
 
@@ -232,8 +258,43 @@ def test_harmonized_variance_is_unbiased() -> None:
         scale = np.array([0.7, 1.0, 1.4])[sites][:, None]
         X = rng.normal(size=(15, 10)) * scale + sites[:, None]
         true_var = np.mean([0.7**2, 1.0**2, 1.4**2])
-        out = NeuroComBat(empirical_bayes=False).fit_transform(X, sites)
+        out = NeuroComBat(empirical_bayes=False).fit_transform(X, sites=sites)
         residuals = out - np.array([out[sites == s].mean(axis=0) for s in range(3)])[sites]
         ratios.append(((residuals**2).sum(axis=0) / (15 - 3) / true_var).mean())
     assert abs(np.mean(ratios) - 1) < 0.03
     # The reference denominator n would give (n - S) / n = 0.8 here
+
+
+# ---------------------------------------------------------------------------
+# Reference site (neuroCombat ref_batch)
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("mode", list(MODES))
+@pytest.mark.parametrize("design_name", REF_BATCH_DESIGNS)
+def test_ref_site_reproduces_reference_with_reference_choices(ref_batch_reference, design_name: str, mode: str) -> None:
+    """With a reference site and the documented choices restored, the output equals neuroCombat's ref_batch output."""
+    design = ref_batch_reference[design_name]
+    ref_site = str(design["ref_site"])
+    _assert_close(_harmonize(design, _ReferenceChoices, ref_site=ref_site, **MODES[mode]), design[mode])
+
+
+@pytest.mark.parametrize("mode", ["eb_parametric_converged", "eb_non_parametric", "no_eb", "mean_only"])
+@pytest.mark.parametrize("design_name", REF_BATCH_DESIGNS)
+def test_ref_site_matches_reference_up_to_variance_correction(ref_batch_reference, design_name: str, mode: str) -> None:
+    """The reference site is unchanged; the other sites differ from neuroCombat by the factor sqrt(n_ref / (n_ref - 1)).
+
+    In mean_only the scale is fixed, so the rescaling also changes the
+    empirical Bayes shrinkage: only the reference site is compared there.
+    """
+    design = ref_batch_reference[design_name]
+    ref_site = str(design["ref_site"])
+    in_ref = design["sites"] == ref_site
+    harmonized = _harmonize(design, _Converged, ref_site=ref_site, **MODES[mode])
+    np.testing.assert_array_equal(harmonized[in_ref], design["X"][in_ref])
+    np.testing.assert_array_equal(design[mode][in_ref], design["X"][in_ref])
+    if mode == "mean_only":
+        return
+    n_ref = in_ref.sum()
+    expected = design["mean"] + (design[mode] - design["mean"]) * np.sqrt(n_ref / (n_ref - 1))
+    _assert_close(harmonized[~in_ref], expected[~in_ref])

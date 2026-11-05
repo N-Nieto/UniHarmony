@@ -28,7 +28,7 @@ def test_neuro_combat_ops_original() -> None:
     genders = np.array([1, 2, 1, 2, 1, 2, 1, 2, 1, 2])
     data_combat = NeuroComBat().fit_transform(
         data.T,
-        batches,
+        sites=batches,
         categorical_covariates=genders,
     )
     assert data_combat.shape == data.T.shape
@@ -40,7 +40,7 @@ def test_neuro_combat_ops_impl() -> None:
     covars = pd.read_csv(Path(__file__).parent / "bladder-pheno.txt", delimiter="\t")
     data_combat = NeuroComBat().fit_transform(
         data,
-        covars[["batch"]].to_numpy(),
+        sites=covars[["batch"]].to_numpy(),
         categorical_covariates=covars[["cancer"]].to_numpy(),
         continuous_covariates=covars[["age"]].to_numpy(),
     )
@@ -136,12 +136,12 @@ def test_neuro_combat_several_covariates() -> None:
     )
     cont = np.column_stack([age, age**2 / 100])
     cat = np.column_stack([sex, group])
-    combat = NeuroComBat().fit(X, sites, categorical_covariates=cat, continuous_covariates=cont)
-    Xh = combat.transform(X, sites, categorical_covariates=cat, continuous_covariates=cont)
+    combat = NeuroComBat().fit(X, sites=sites, categorical_covariates=cat, continuous_covariates=cont)
+    Xh = combat.transform(X, sites=sites, categorical_covariates=cat, continuous_covariates=cont)
     assert Xh.shape == X.shape
     # site means removed, age and sex effects preserved
     assert np.ptp([Xh[sites == k].mean() for k in range(3)]) < 0.3
     assert np.corrcoef(Xh.mean(1), age)[0, 1] > 0.8
     # a single covariate passed as a 1-D array still works
-    Xh1 = NeuroComBat().fit(X, sites, continuous_covariates=age).transform(X, sites, continuous_covariates=age)
+    Xh1 = NeuroComBat().fit(X, sites=sites, continuous_covariates=age).transform(X, sites=sites, continuous_covariates=age)
     assert Xh1.shape == X.shape

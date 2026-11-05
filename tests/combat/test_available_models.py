@@ -17,7 +17,7 @@ def test_every_combat_model_is_registered() -> None:
 
 @pytest.mark.parametrize("model", list(COMBAT_MODELS))
 def test_registered_arguments_exist(model) -> None:
-    """The registered covariate arguments are accepted by fit and transform, the bounds option by fit."""
+    """The registered covariate arguments are accepted by fit and transform, the bounds by the constructor."""
     arguments = COMBAT_MODELS[model]
     fit_params = inspect.signature(model.fit).parameters
     transform_params = inspect.signature(model.transform).parameters
@@ -26,7 +26,7 @@ def test_registered_arguments_exist(model) -> None:
         assert name in transform_params
     assert set(arguments.required) <= set(arguments.names)
     if arguments.smooth_bounds is not None:
-        assert arguments.smooth_bounds in fit_params
+        assert arguments.smooth_bounds in inspect.signature(model.__init__).parameters
 
 
 def test_get_covariate_arguments() -> None:

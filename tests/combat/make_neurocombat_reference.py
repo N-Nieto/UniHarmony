@@ -1,6 +1,11 @@
 """Generate ``neurocombat_0.2.12_reference.npz``, the frozen neuroCombat output used by the conformance tests.
 
-Run it only to rebuild the reference (it needs ``neuroCombat==0.2.12``)::
+Also generates ``neurocombat_0.2.12_ref_batch_reference.npz``, the same
+outputs with a reference batch (``ref_batch``, UniHarmony's ``ref_site``) for
+the designs in ``REF_BATCH_DESIGNS`` (keys ``"<design>__<name>"`` with the
+input, ``ref_site``, ``mean`` and one output per mode).
+
+Run it only to rebuild the references (it needs ``neuroCombat==0.2.12``)::
 
     python tests/combat/make_neurocombat_reference.py
 
@@ -35,7 +40,19 @@ import pandas as pd
 from neuroCombat import neuroCombat
 
 
+# neuroCombat 0.2.12 uses the alias np.int (removed in NumPy 1.24) with ref_batch
+if "int" not in np.__dict__:
+    np.int = int
+
 OUTPUT = Path(__file__).parent / "neurocombat_0.2.12_reference.npz"
+OUTPUT_REF_BATCH = Path(__file__).parent / "neurocombat_0.2.12_ref_batch_reference.npz"
+
+#: Designs harmonized to a reference batch, and that batch
+REF_BATCH_DESIGNS = {
+    "one_categorical_one_continuous": "site1",
+    "several_covariates": "site2",
+    "imbalanced_sites": "site0",  # smallest site as reference
+}
 
 #: Simulated designs: subjects per site, features, categorical covariate levels, continuous covariates
 DESIGNS = {
@@ -147,9 +164,9 @@ def converged_solver():
 
 
 def main() -> None:
-    """Simulate every design, run neuroCombat in every mode and save the result."""
+    """Simulate every design, run neuroCombat in every mode and save the results."""
     rng = np.random.default_rng(20261103)
-    arrays = {}
+    arrays, ref_arrays = {}, {}
     for design, spec in DESIGNS.items():
         data = simulate(rng, **spec)
         for name, values in data.items():
@@ -160,8 +177,22 @@ def main() -> None:
         with converged_solver():
             arrays[f"{design}__eb_parametric_converged"] = run_neurocombat(data)[0]
         arrays[f"{design}__mean"] = mean
-    np.savez_compressed(OUTPUT, **arrays)
-    print(f"Saved {len(DESIGNS)} designs x {len(MODES) + 1} outputs to {OUTPUT}")
+        if design in REF_BATCH_DESIGNS:
+            ref = REF_BATCH_DESIGNS[design]
+            for name, values in data.items():
+                ref_arrays[f"{design}__{name}"] = values
+            ref_arrays[f"{design}__ref_site"] = np.array(ref)
+            for mode, options in MODES.items():
+                output, mean = run_neurocombat(data, ref_batch=ref, **options)
+                ref_arrays[f"{design}__{mode}"] = output
+            with converged_solver():
+                ref_arrays[f"{design}__eb_parametric_converged"] = run_neurocombat(data, ref_batch=ref)[0]
+            ref_arrays[f"{design}__mean"] = mean
+    if "--ref-batch-only" not in sys.argv:
+        np.savez_compressed(OUTPUT, **arrays)
+        print(f"Saved {len(DESIGNS)} designs x {len(MODES) + 1} outputs to {OUTPUT}")
+    np.savez_compressed(OUTPUT_REF_BATCH, **ref_arrays)
+    print(f"Saved {len(REF_BATCH_DESIGNS)} designs x {len(MODES) + 1} outputs with a reference batch to {OUTPUT_REF_BATCH}")
 
 
 if __name__ == "__main__":
