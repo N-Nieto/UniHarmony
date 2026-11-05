@@ -7,6 +7,7 @@ sampler runs with few iterations and trees to keep the tests fast.
 from collections.abc import Callable
 
 import numpy as np
+import pandas as pd
 import pytest
 from sklearn.utils.estimator_checks import parametrize_with_checks
 
@@ -31,35 +32,31 @@ def _between_site_variance(values: np.ndarray, sites: np.ndarray) -> float:
 # sklearn compatibility
 # ---------------------------------------------------------------------------
 
-_IQMS_INSTEAD_OF_Y = "fit and transform require iqm_covariates instead of y"
 
-_EXPECTED_FAILED_CHECKS = {
-    "check_transformer_data_not_an_array": _IQMS_INSTEAD_OF_Y,
-    "check_transformer_general": _IQMS_INSTEAD_OF_Y,
-    "check_transformer_preserve_dtypes": _IQMS_INSTEAD_OF_Y,
-    "check_methods_sample_order_invariance": _IQMS_INSTEAD_OF_Y,
-    "check_methods_subset_invariance": _IQMS_INSTEAD_OF_Y,
-    "check_dict_unchanged": _IQMS_INSTEAD_OF_Y,
-    "check_fit_idempotent": _IQMS_INSTEAD_OF_Y,
-    "check_fit2d_predict1d": _IQMS_INSTEAD_OF_Y,
-    "check_n_features_in_after_fitting": _IQMS_INSTEAD_OF_Y,
-    "check_estimators_dtypes": _IQMS_INSTEAD_OF_Y,
-    "check_dtype_object": _IQMS_INSTEAD_OF_Y,
-    "check_estimators_nan_inf": _IQMS_INSTEAD_OF_Y,
-    "check_estimators_pickle": _IQMS_INSTEAD_OF_Y,
-    "check_f_contiguous_array_estimator": _IQMS_INSTEAD_OF_Y,
-    "check_transformers_unfitted": _IQMS_INSTEAD_OF_Y,
-    "check_requires_y_none": "iqm_covariates cannot be None",
-    "check_fit_score_takes_y": "fit takes iqm_covariates, not y",
-}
+class _CheckedBARTharm(BARTharm):
+    """Test adapter: derive one IQM per sample from its row of X for scikit-learn's generic checks.
+
+    The checks call ``fit(X, y)`` and ``transform(X)`` without the IQMs; a
+    sample keeps its IQM in any subset or order of the data.
+    """
+
+    def _validate_harmonization_input(self, X, reset, required=(), copy=False, allow_nan_metadata=False, **values):
+        try:
+            rows = np.nan_to_num(np.asarray(X, dtype=float), nan=0.0, posinf=0.0, neginf=0.0)
+        except (TypeError, ValueError):
+            rows = None
+        if rows is not None and rows.ndim == 2 and values.get("iqm_covariates") is None:
+            values["iqm_covariates"] = (np.abs(np.sin(rows @ (np.arange(rows.shape[1]) + 1.0) * 12.9898) * 43758.5453) % 1.0)[
+                :, None
+            ]
+        return super()._validate_harmonization_input(X, reset, required, copy, allow_nan_metadata, **values)
 
 
 @parametrize_with_checks(
-    [BARTharm(n_iter=6, burn_in=2, n_trees_mu=3, n_trees_tau=2, n_stored_draws=2, random_state=0)],
-    expected_failed_checks=lambda _: _EXPECTED_FAILED_CHECKS,
+    [_CheckedBARTharm(n_iter=6, burn_in=2, n_trees_mu=3, n_trees_tau=2, n_stored_draws=2, random_state=0)],
 )
 def test_bartharm_compat_sklearn(estimator: BARTharm, check: Callable) -> None:
-    """Test sklearn compatibility."""
+    """Test sklearn compatibility (IQMs derived from the rows, see ``_CheckedBARTharm``)."""
     check(estimator)
 
 
@@ -73,7 +70,9 @@ def test_removes_iqm_driven_scanner_effect(iqm_data, var_scaling: bool) -> None:
     """The harmonized outcome recovers the scanner-free outcome."""
     d = iqm_data
     harmonizer = BARTharm(n_iter=300, burn_in=100, n_trees_mu=30, n_trees_tau=20, var_scaling=var_scaling, random_state=0)
-    X_harmonized = harmonizer.fit_transform(d.X, d.iqms, d.biological_covariates, sites=d.sites)
+    X_harmonized = harmonizer.fit_transform(
+        d.X, iqm_covariates=d.iqms, biological_covariates=d.biological_covariates, sites=d.sites
+    )
 
     raw_corr = np.corrcoef(d.X[:, 0], d.X_clean[:, 0])[0, 1]
     harmonized_corr = np.corrcoef(X_harmonized[:, 0], d.X_clean[:, 0])[0, 1]
@@ -91,7 +90,7 @@ def test_nonlinear_effects(iqm_data_nonlinear) -> None:
     """Nonlinear scanner and biological effects are separated too."""
     d = iqm_data_nonlinear
     harmonizer = BARTharm(n_iter=300, burn_in=100, n_trees_mu=30, n_trees_tau=20, random_state=0)
-    X_harmonized = harmonizer.fit_transform(d.X, d.iqms, d.biological_covariates)
+    X_harmonized = harmonizer.fit_transform(d.X, iqm_covariates=d.iqms, biological_covariates=d.biological_covariates)
     assert np.corrcoef(X_harmonized[:, 0], d.X_clean[:, 0])[0, 1] > 0.99
     raw_site_variance = _between_site_variance((d.X - d.X_clean)[:, 0], d.sites)
     assert _between_site_variance((X_harmonized - d.X_clean)[:, 0], d.sites) < raw_site_variance / 10
@@ -101,7 +100,9 @@ def test_multiple_features(iqm_data) -> None:
     """Every feature is harmonized independently, with its own scale."""
     d = iqm_data
     X = np.column_stack([d.X[:, 0], 0.01 * d.X[:, 0] + 3.0, d.X_clean[:, 0]])
-    X_harmonized = BARTharm(**FAST, random_state=0).fit_transform(X, d.iqms, d.biological_covariates)
+    X_harmonized = BARTharm(**FAST, random_state=0).fit_transform(
+        X, iqm_covariates=d.iqms, biological_covariates=d.biological_covariates
+    )
     assert X_harmonized.shape == X.shape
     assert np.all(np.isfinite(X_harmonized))
     # Feature 1 is a rescaled feature 0
@@ -115,24 +116,28 @@ def test_transform_matches_fit_transform_with_all_draws(iqm_data, posterior_summ
     d = iqm_data
     params = {**FAST, "posterior_summary": posterior_summary, "n_stored_draws": N_KEPT, "random_state": 0}
     harmonizer = BARTharm(**params)
-    X_fit_transform = harmonizer.fit_transform(d.X, d.iqms, d.biological_covariates)
-    np.testing.assert_allclose(harmonizer.transform(d.X, d.iqms), X_fit_transform, rtol=1e-10, atol=1e-8)
+    X_fit_transform = harmonizer.fit_transform(d.X, iqm_covariates=d.iqms, biological_covariates=d.biological_covariates)
+    np.testing.assert_allclose(harmonizer.transform(d.X, iqm_covariates=d.iqms), X_fit_transform, rtol=1e-10, atol=1e-8)
 
 
 def test_transform_var_scaling_matches_fit_transform(iqm_data) -> None:
     """With variance scaling, transform also needs sites and biological covariates."""
     d = iqm_data
     harmonizer = BARTharm(**FAST, var_scaling=True, n_stored_draws=N_KEPT, random_state=0)
-    X_fit_transform = harmonizer.fit_transform(d.X, d.iqms, d.biological_covariates, sites=d.sites)
-    X_transform = harmonizer.transform(d.X, d.iqms, d.biological_covariates, sites=d.sites)
+    X_fit_transform = harmonizer.fit_transform(
+        d.X, iqm_covariates=d.iqms, biological_covariates=d.biological_covariates, sites=d.sites
+    )
+    X_transform = harmonizer.transform(d.X, iqm_covariates=d.iqms, biological_covariates=d.biological_covariates, sites=d.sites)
     np.testing.assert_allclose(X_transform, X_fit_transform, rtol=1e-10, atol=1e-8)
 
-    with pytest.raises(ValueError, match="sites are required"):
-        harmonizer.transform(d.X, d.iqms, d.biological_covariates)
+    with pytest.raises(ValueError, match="needs sites"):
+        harmonizer.transform(d.X, iqm_covariates=d.iqms, biological_covariates=d.biological_covariates)
     with pytest.raises(ValueError, match="biological_covariates were used in fit"):
-        harmonizer.transform(d.X, d.iqms, sites=d.sites)
-    with pytest.raises(ValueError, match="not seen in fit"):
-        harmonizer.transform(d.X, d.iqms, d.biological_covariates, sites=np.full(d.X.shape[0], 99))
+        harmonizer.transform(d.X, iqm_covariates=d.iqms, sites=d.sites)
+    with pytest.raises(ValueError, match="not seen during fit"):
+        harmonizer.transform(
+            d.X, iqm_covariates=d.iqms, biological_covariates=d.biological_covariates, sites=np.full(d.X.shape[0], 99)
+        )
 
 
 def test_transform_new_data(iqm_data) -> None:
@@ -140,13 +145,13 @@ def test_transform_new_data(iqm_data) -> None:
     d = iqm_data
     train, test = slice(0, 200), slice(200, None)
     harmonizer = BARTharm(**FAST, n_stored_draws=10, random_state=0)
-    harmonizer.fit(d.X[train], d.iqms[train], d.biological_covariates[train])
+    harmonizer.fit(d.X[train], iqm_covariates=d.iqms[train], biological_covariates=d.biological_covariates[train])
     assert len(harmonizer._mu_snapshots[0]) == 10
 
-    X_test = harmonizer.transform(d.X[test], d.iqms[test])
+    X_test = harmonizer.transform(d.X[test], iqm_covariates=d.iqms[test])
     assert X_test.shape == d.X[test].shape
     assert np.all(np.isfinite(X_test))
-    X_out_of_range = harmonizer.transform(d.X[test], d.iqms[test] * 10.0)
+    X_out_of_range = harmonizer.transform(d.X[test], iqm_covariates=d.iqms[test] * 10.0)
     assert np.all(np.isfinite(X_out_of_range))
 
 
@@ -154,7 +159,7 @@ def test_site_scales(iqm_data) -> None:
     """Site scales have one value per fitted site and geometric mean 1."""
     d = iqm_data
     harmonizer = BARTharm(**FAST, var_scaling=True, random_state=0)
-    harmonizer.fit(d.X, d.iqms, d.biological_covariates, sites=d.sites)
+    harmonizer.fit(d.X, iqm_covariates=d.iqms, biological_covariates=d.biological_covariates, sites=d.sites)
     np.testing.assert_array_equal(harmonizer.sites_, np.unique(d.sites))
     assert harmonizer.site_scales_.shape == (1, len(np.unique(d.sites)))
     assert np.all(harmonizer.site_scales_ > 0)
@@ -167,17 +172,17 @@ def test_without_biological_covariates(iqm_data) -> None:
     """The model runs with the scanner forest only."""
     d = iqm_data
     harmonizer = BARTharm(**FAST, random_state=0)
-    X_harmonized = harmonizer.fit_transform(d.X, d.iqms)
+    X_harmonized = harmonizer.fit_transform(d.X, iqm_covariates=d.iqms)
     assert harmonizer.n_biological_covariates_ == 0
     assert np.all(np.isfinite(X_harmonized))
-    np.testing.assert_allclose(harmonizer.transform(d.X, d.iqms).shape, d.X.shape)
+    np.testing.assert_allclose(harmonizer.transform(d.X, iqm_covariates=d.iqms).shape, d.X.shape)
 
 
 def test_one_dimensional_covariates(iqm_data) -> None:
     """A single IQM and a single biological covariate can be passed as 1D arrays."""
     d = iqm_data
     harmonizer = BARTharm(**FAST, random_state=0)
-    X_harmonized = harmonizer.fit_transform(d.X, d.iqms[:, 2], d.biological_covariates[:, 0])
+    X_harmonized = harmonizer.fit_transform(d.X, iqm_covariates=d.iqms[:, 2], biological_covariates=d.biological_covariates[:, 0])
     assert harmonizer.n_iqm_covariates_ == 1
     assert harmonizer.n_biological_covariates_ == 1
     assert X_harmonized.shape == d.X.shape
@@ -188,9 +193,9 @@ def test_constant_feature_unchanged(iqm_data) -> None:
     d = iqm_data
     X = np.column_stack([d.X[:, 0], np.full(d.X.shape[0], 5.0)])
     harmonizer = BARTharm(**FAST, random_state=0)
-    X_harmonized = harmonizer.fit_transform(X, d.iqms, d.biological_covariates)
+    X_harmonized = harmonizer.fit_transform(X, iqm_covariates=d.iqms, biological_covariates=d.biological_covariates)
     np.testing.assert_array_equal(X_harmonized[:, 1], 5.0)
-    np.testing.assert_array_equal(harmonizer.transform(X, d.iqms)[:, 1], 5.0)
+    np.testing.assert_array_equal(harmonizer.transform(X, iqm_covariates=d.iqms)[:, 1], 5.0)
     assert not np.allclose(X_harmonized[:, 0], X[:, 0])
 
 
@@ -203,9 +208,15 @@ def test_random_state_reproducible(iqm_data) -> None:
     """The same random_state gives the same result, independently of n_jobs."""
     d = iqm_data
     X = np.column_stack([d.X[:, 0], d.X_clean[:, 0]])
-    first = BARTharm(**FAST, random_state=0, n_jobs=1).fit_transform(X, d.iqms, d.biological_covariates)
-    second = BARTharm(**FAST, random_state=0, n_jobs=2).fit_transform(X, d.iqms, d.biological_covariates)
-    third = BARTharm(**FAST, random_state=1).fit_transform(X, d.iqms, d.biological_covariates)
+    first = BARTharm(**FAST, random_state=0, n_jobs=1).fit_transform(
+        X, iqm_covariates=d.iqms, biological_covariates=d.biological_covariates
+    )
+    second = BARTharm(**FAST, random_state=0, n_jobs=2).fit_transform(
+        X, iqm_covariates=d.iqms, biological_covariates=d.biological_covariates
+    )
+    third = BARTharm(**FAST, random_state=1).fit_transform(
+        X, iqm_covariates=d.iqms, biological_covariates=d.biological_covariates
+    )
     np.testing.assert_array_equal(first, second)
     assert not np.allclose(first, third)
 
@@ -228,26 +239,26 @@ def test_invalid_params(iqm_data, params: dict, match: str) -> None:
     """Invalid sampler settings raise errors."""
     d = iqm_data
     with pytest.raises(ValueError, match=match):
-        BARTharm(**{**FAST, **params}).fit(d.X, d.iqms, d.biological_covariates)
+        BARTharm(**{**FAST, **params}).fit(d.X, iqm_covariates=d.iqms, biological_covariates=d.biological_covariates)
 
 
 def test_invalid_inputs(iqm_data) -> None:
     """Invalid data raise errors."""
     d = iqm_data
-    with pytest.raises(ValueError, match="sites are required"):
-        BARTharm(**FAST, var_scaling=True).fit(d.X, d.iqms, d.biological_covariates)
+    with pytest.raises(ValueError, match="needs sites"):
+        BARTharm(**FAST, var_scaling=True).fit(d.X, iqm_covariates=d.iqms, biological_covariates=d.biological_covariates)
     with pytest.raises(ValueError, match="inconsistent numbers of samples"):
-        BARTharm(**FAST).fit(d.X, d.iqms[:-1])
+        BARTharm(**FAST).fit(d.X, iqm_covariates=d.iqms[:-1])
     X_nan = d.X.copy()
     X_nan[0, 0] = np.nan
     with pytest.raises(ValueError, match="NaN"):
-        BARTharm(**FAST).fit(X_nan, d.iqms)
+        BARTharm(**FAST).fit(X_nan, iqm_covariates=d.iqms)
 
-    harmonizer = BARTharm(**FAST, random_state=0).fit(d.X, d.iqms, d.biological_covariates)
+    harmonizer = BARTharm(**FAST, random_state=0).fit(d.X, iqm_covariates=d.iqms, biological_covariates=d.biological_covariates)
     with pytest.raises(ValueError, match="iqm_covariates has 3 columns"):
-        harmonizer.transform(d.X, d.iqms[:, :3])
+        harmonizer.transform(d.X, iqm_covariates=d.iqms[:, :3])
     with pytest.raises(ValueError, match="features"):
-        harmonizer.transform(np.hstack([d.X, d.X]), d.iqms)
+        harmonizer.transform(np.hstack([d.X, d.X]), iqm_covariates=d.iqms)
 
 
 # ---------------------------------------------------------------------------
@@ -262,3 +273,22 @@ def test_quantile_normalizer_matches_trank_and_extrapolates() -> None:
     np.testing.assert_allclose(normalizer.transform(X)[:, 0], [2 / 3, 0, 1 / 3, 1 / 3, 1])
     np.testing.assert_array_equal(normalizer.transform(X)[:, 1], 0.0)  # constant column
     np.testing.assert_allclose(normalizer.transform(np.array([[0.0, 7.0], [4.0, 1.0], [9.0, 1.0]]))[:, 0], [0, 5 / 6, 1])
+
+
+def test_columns_equal_keywords(iqm_data) -> None:
+    """IQMs, biological covariates and sites as DataFrame columns give the keyword result."""
+    d = iqm_data
+    df = pd.DataFrame(d.X, columns=[f"f{j}" for j in range(d.X.shape[1])])
+    iqm_names = [f"iqm{j}" for j in range(d.iqms.shape[1])]
+    bio_names = [f"bio{j}" for j in range(d.biological_covariates.shape[1])]
+    df[iqm_names] = d.iqms
+    df[bio_names] = d.biological_covariates
+    df["site"] = d.sites
+    params = {**FAST, "random_state": 0, "var_scaling": True}
+    by_keyword = BARTharm(**params).fit(d.X, iqm_covariates=d.iqms, biological_covariates=d.biological_covariates, sites=d.sites)
+    by_column = BARTharm(**params, iqm_columns=iqm_names, biological_columns=bio_names, site_column="site").fit(df)
+    np.testing.assert_allclose(
+        by_column.transform(df),
+        by_keyword.transform(d.X, iqm_covariates=d.iqms, biological_covariates=d.biological_covariates, sites=d.sites),
+    )
+    np.testing.assert_array_equal(by_column.get_feature_names_out(), df.columns[: d.X.shape[1]])
