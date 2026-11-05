@@ -7,8 +7,9 @@ import numpy.typing as npt
 from ot.da import BaseTransport
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils import Tags
-from sklearn.utils.validation import FLOAT_DTYPES, check_array, check_consistent_length, check_is_fitted, validate_data
+from sklearn.utils.validation import FLOAT_DTYPES, check_array, check_consistent_length, check_is_fitted
 
+from uniharmony._data import HarmonizationInputMixin, MetadataSpec, check_sites_seen
 from uniharmony._utils import validate_sites
 from uniharmony._verbose import get_logger
 from uniharmony.ot._utils import create_ot_object, data_consistency_check
@@ -44,7 +45,7 @@ MetricType = Literal[
 NormalizationType = Literal["median", "max", "log", "loglog"] | None
 
 
-class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEstimator):
+class OptimalTransportDomainAdaptation(HarmonizationInputMixin, BaseTransport, TransformerMixin, BaseEstimator):
     """Optimal Transport for Domain Adaptation with reference site handling.
 
     This class extends POT's BaseTransport to provide a harmonization interface
@@ -54,6 +55,20 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
 
     Parameters
     ----------
+    ref_site : str, int or list of str or int, optional (default None)
+        Site(s) used as reference (target domain). If a list, the sites are
+        pooled into one reference distribution. Required to fit.
+    site_column : str or int or None, optional (default None)
+        Column of ``X`` holding the site of every sample (name for a
+        DataFrame, position for an array). If None, the sites are passed to
+        :meth:`fit` and :meth:`transform` with the ``sites`` keyword. Read the
+        sites from a column to use the transformer in a scikit-learn
+        :class:`~sklearn.pipeline.Pipeline`.
+    use_labels : bool, optional (default False)
+        Whether to use ``y`` in :meth:`fit` for supervised transport (the cost
+        between samples of different classes is raised, see ``limit_max``).
+        Off by default: in a pipeline, ``y`` is the target of the model, and
+        using it in the harmonization is a deliberate choice.
     ot_method : str or BaseTransport instance, optional (default "emd")
         Optimal transport method to use. Can be either:
 
@@ -80,6 +95,9 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
         Semi-supervised mode control. Sets infinite cost (10 * max(cost))
         for transport between different classes.
 
+    batch_size : int, optional (default 128)
+        Batch size for the out-of-sample mapping in :meth:`transform` and
+        :meth:`inverse_transform`.
     copy : bool, optional (default True)
         Whether to copy the input arrays during validation.
 
@@ -97,35 +115,41 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
     n_features_in_ : int
         Number of features seen during fit.
 
-    feature_names_in_ : ndarray of str, shape (n_features_in_,)
+    feature_names_in_ : ndarray of str
         Names of the features seen during fit. Only defined if ``X`` was a
         DataFrame with string column names.
 
     coupling_ : array, shape (n_source_samples, n_target_samples)
-        The optimal coupling matrix (forwarded from ot_obj_).
+        The optimal coupling matrix (forwarded from ``ot_obj_``).
 
     cost_ : array
-        The computed cost matrix (forwarded from ot_obj_).
+        The computed cost matrix (forwarded from ``ot_obj_``).
 
     Examples
     --------
-    >>> # Using string-based method selection
-    >>> otda = OptimalTransportDomainAdaptation(ot_method="sinkhorn", reg=0.1, metric="sqeuclidean")
-    >>> otda.fit(X_train, sites_train, ref_site="site_A", y=labels)
-    >>> X_aligned = otda.transform(X_test, sites_test)
+    >>> # Sites as a column of a DataFrame (works in a scikit-learn Pipeline)
+    >>> otda = OptimalTransportDomainAdaptation(ref_site="site_A", site_column="site", ot_method="sinkhorn", reg=0.1)
+    >>> X_aligned = otda.fit(df_train).transform(df_test)  # doctest: +SKIP
 
-    >>> # Using pre-configured OT instance
+    >>> # Sites as keywords; supervised transport with the labels
+    >>> otda = OptimalTransportDomainAdaptation(ref_site="site_A", use_labels=True)
+    >>> otda = otda.fit(X_train, labels, sites=sites_train)  # doctest: +SKIP
+    >>> X_aligned = otda.transform(X_test, sites=sites_test)  # doctest: +SKIP
+
+    >>> # Using a pre-configured OT instance
     >>> from ot.da import SinkhornTransport
-    >>> ot_solver = SinkhornTransport(reg_e=0.5, norm="median")
-    >>> otda = OptimalTransportDomainAdaptation(ot_method=ot_solver)
-    >>> otda.fit(X_train, sites_train, ref_site="site_A")
-    >>> X_aligned = otda.transform(X_test, sites_test)
+    >>> otda = OptimalTransportDomainAdaptation(ref_site="site_A", ot_method=SinkhornTransport(reg_e=0.5, norm="median"))
 
 
     """
 
+    _metadata_specs = (MetadataSpec("sites", "site_column", single=True, description="the site of every sample"),)
+
     def __init__(
         self,
+        ref_site: str | int | list[str] | list[int] | None = None,
+        site_column: str | int | None = None,
+        use_labels: bool = False,
         ot_method: str | BaseTransport = "emd",
         metric: MetricType = "euclidean",
         reg: float | None = 1.0,
@@ -133,8 +157,12 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
         max_iter: int | None = 10,
         cost_norm: NormalizationType = None,
         limit_max: int | None = 10,
+        batch_size: int = 128,
         copy: bool = True,
     ) -> None:
+        self.ref_site = ref_site
+        self.site_column = site_column
+        self.use_labels = use_labels
         self.ot_method = ot_method
         self.metric = metric
         self.reg = reg
@@ -142,20 +170,26 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
         self.max_iter = max_iter
         self.cost_norm = cost_norm
         self.limit_max = limit_max
+        self.batch_size = batch_size
         self.copy = copy
 
-        self._ot_method_aliases: dict[str, str] = {
-            "s": "sinkhorn",
-            "s_gl": "sinkhorn_gl",
-            "emd_l": "emd_laplace",
-        }
+    _ot_method_aliases: dict[str, str] = {  # noqa: RUF012
+        "s": "sinkhorn",
+        "s_gl": "sinkhorn_gl",
+        "emd_l": "emd_laplace",
+    }
+
+    # The sites are requested by default when metadata routing is enabled
+    __metadata_request__fit = {"sites": True}  # noqa: RUF012
+    __metadata_request__transform = {"sites": True}  # noqa: RUF012
+    __metadata_request__inverse_transform = {"sites": True}  # noqa: RUF012
 
     def fit(
         self,
         X: npt.ArrayLike,
-        sites: npt.ArrayLike,
-        ref_site: str | list[str] | int | list[int],
         y: npt.ArrayLike | None = None,
+        *,
+        sites: npt.ArrayLike | None = None,
     ) -> "OptimalTransportDomainAdaptation":
         """Fit optimal transport from non-reference sites to reference site(s).
 
@@ -165,40 +199,45 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
 
         Parameters
         ----------
-        X : array-like, shape (n_samples, n_features)
-            Input data from all sites.
-
-        sites : array-like, shape (n_samples,)
-            Site labels for each sample. Must align with X.
-
-        ref_site : str, int or list of str or list of int
-            Site identifier(s) to use as reference (target domain).
-            If list, combines all specified sites as the reference distribution.
-
-        y : array-like, shape (n_samples,) or (n_samples, n_classes), optional (default None)
-            Labels for supervised/semi-supervised transport. Used for cost
-            matrix computation. Must align with X if provided.
+        X : array-like or DataFrame, shape (n_samples, n_columns)
+            Input data from all sites, with the site column if ``site_column``
+            is set.
+        y : array-like, shape (n_samples,) or None, optional (default None)
+            Labels. Used for supervised transport only if ``use_labels=True``
+            (then required); ignored otherwise.
+        sites : array-like, shape (n_samples,) or None, optional (default None)
+            Site labels for each sample. Required unless ``site_column`` is set.
 
         Returns
         -------
         self : OptimalTransportDomainAdaptation
             Fitted instance.
 
+        Raises
+        ------
+        ValueError
+            If ``ref_site`` is not set or not among the sites, or
+            ``use_labels=True`` and ``y`` is None.
+
         """
-        X = validate_data(self, X, reset=True, copy=self.copy, dtype=FLOAT_DTYPES)
-
-        if y is not None:
-            logger.debug("Validating labels for supervised transport")
-            y = check_array(y, copy=self.copy, ensure_2d=False, estimator=self)
-            check_consistent_length(X, y)
-
-        sites = check_array(sites, copy=self.copy, dtype=None, ensure_2d=False, estimator=self)
-        check_consistent_length(X, sites)
+        if self.ref_site is None:
+            raise ValueError("ref_site must be set in the constructor: the site(s) the data are mapped onto.")
+        data = self._validate_harmonization_input(X, reset=True, required=("sites",), copy=self.copy, sites=sites)
+        X, sites = data.X, data.sites
         validate_sites(sites)
+        labels = None
+        if self.use_labels:
+            if y is None:
+                raise ValueError("use_labels=True needs y in fit (supervised transport).")
+            logger.debug("Validating labels for supervised transport")
+            labels = check_array(y, copy=self.copy, ensure_2d=False, estimator=self, input_name="y")
+            check_consistent_length(X, labels)
+        elif y is not None:
+            logger.debug("y is ignored (use_labels=False).")
 
         # Store reference site info
-        logger.info(f"Using reference site(s): {ref_site}")
-        self.ref_site_ = ref_site
+        logger.info(f"Using reference site(s): {self.ref_site}")
+        self.ref_site_ = self.ref_site
         self.sites_ = np.unique(sites)
 
         # Initialize OT object (string or instance)
@@ -208,10 +247,8 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
         # Split reference vs. harmonization data
         # Data from the reference site(s) is the target distribution
         # data from other sites (harmonization) is the source distribution to be aligned to the reference.
-        X_ref, X_harm, y_ref, y_harm = self._split_ref_harm_data(X, sites, ref_site, y)
+        X_ref, X_harm, y_ref, y_harm = self._split_ref_harm_data(X, sites, self.ref_site, labels)
 
-        # Determine if we should use labels for fitting
-        # POT's fit method handles weight initialization and cost matrix internally
         if y_ref is not None and y_harm is not None:
             # Semi-supervised or supervised domain adaptation
             # Labels are used to guide transport (same class -> lower cost)
@@ -227,44 +264,31 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
         logger.debug(f"Fitted coupling matrix with shape: {self.coupling_.shape}")
         self.cost_ = self.ot_obj_.cost_
         logger.debug(f"Fitted cost matrix with shape: {self.cost_.shape}")
-
         return self
 
-    def transform(
-        self,
-        X: npt.ArrayLike,
-        sites: npt.ArrayLike | None = None,
-        y: npt.ArrayLike | None = None,
-        batch_size: int = 128,
-    ) -> npt.NDArray:
+    def transform(self, X: npt.ArrayLike, *, sites: npt.ArrayLike | None = None) -> npt.NDArray:
         """Transform data using the fitted OT plan.
 
         Transports samples from the source domain (non-reference sites) to the
-        target domain (reference site). If sites are provided, only transforms
-        non-reference samples; reference samples are returned unchanged.
+        target domain (reference site). If the sites are known, only samples of
+        non-reference sites are transformed; reference samples are returned
+        unchanged.
 
         Parameters
         ----------
-        X : array-like, shape (n_samples, n_features)
-            Input data to transform.
-
-        sites : array-like, shape (n_samples,), optional (default None)
+        X : array-like or DataFrame, shape (n_samples, n_columns)
+            Input data to transform, with the same columns as in :meth:`fit`.
+        sites : array-like, shape (n_samples,) or None, optional (default None)
             Site labels for X, all seen during fit (any subset of them; the
-            reference site does not need to be present). If provided, only
-            samples of non-reference sites are transformed; reference site
-            samples are returned as-is. If None, all samples are transformed.
-
-        y : array-like, shape (n_samples,) or (n_samples, n_classes), optional (default None)
-            Labels for supervised transport. Must align with X if provided.
-             Used to ensure consistent handling of supervised transformations.
-
-        batch_size : int, optional (default 128)
-            Batch size for out-of-sample transformation.
+            reference site does not need to be present). Ignored if
+            ``site_column`` is set. If no sites are given, all samples are
+            transformed.
 
         Returns
         -------
         X_transformed : ndarray, shape (n_samples, n_features)
-            Transformed data aligned to reference distribution.
+            Transformed data aligned to reference distribution (without the
+            site column).
 
         Raises
         ------
@@ -273,19 +297,20 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
 
         """
         check_is_fitted(self)
-        X, y, harm_mask = self._check_transform_input(X, sites, y)
+        data = self._validate_harmonization_input(X, reset=False, copy=self.copy, sites=sites)
+        X, harm_mask = data.X, self._harmonization_mask(data.sites)
+
         if harm_mask is None:
             # Transform all samples assuming they are from source domain
             logger.info(
                 "Transforming all samples without site-based masking, some of which may be from reference site."
                 "Ensure this is intended."
             )
-            return self.ot_obj_.transform(Xs=X, ys=y, batch_size=batch_size)
+            return self.ot_obj_.transform(Xs=X, batch_size=self.batch_size)
 
         X_transformed = X.copy()
         if np.any(harm_mask):
-            y_harm = y[harm_mask] if y is not None else None
-            X_transformed[harm_mask] = self.ot_obj_.transform(Xs=X[harm_mask], ys=y_harm, batch_size=batch_size)
+            X_transformed[harm_mask] = self.ot_obj_.transform(Xs=X[harm_mask], batch_size=self.batch_size)
         else:
             logger.info("All samples are from the reference site(s): they are returned unchanged.")
         return X_transformed
@@ -293,45 +318,26 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
     def fit_transform(
         self,
         X: npt.ArrayLike,
-        sites: npt.ArrayLike,
-        ref_site: str | list[str] | int | list[int],
         y: npt.ArrayLike | None = None,
-        batch_size: int = 128,
+        *,
+        sites: npt.ArrayLike | None = None,
     ) -> npt.NDArray:
         """Fit and transform in one step.
 
         Parameters
         ----------
-        X : array-like, shape (n_samples, n_features)
-            Input data.
-
-        sites : array-like, shape (n_samples,)
-            Site labels.
-
-        ref_site : str or list of str
-            Reference site(s).
-
-        y : array-like, optional (default None)
-            Labels for supervised transport.
-
-        batch_size : int, optional (default 128)
-            Batch size for transformation.
+        X, y, sites
+            See :meth:`fit`.
 
         Returns
         -------
-        X_transformed : ndarray
+        X_transformed : ndarray, shape (n_samples, n_features)
             Data aligned to reference distribution.
 
         """
-        return self.fit(X, sites, ref_site, y).transform(X, sites, y, batch_size)
+        return self.fit(X, y, sites=sites).transform(X, sites=sites)
 
-    def inverse_transform(
-        self,
-        X: npt.ArrayLike,
-        sites: npt.ArrayLike | None = None,
-        y: npt.ArrayLike | None = None,
-        batch_size: int = 128,
-    ) -> npt.NDArray:
+    def inverse_transform(self, X: npt.ArrayLike, *, sites: npt.ArrayLike | None = None) -> npt.NDArray:
         """Map harmonized data back from the reference domain to the source domain.
 
         This is the inverse of :meth:`transform`: samples of non-reference
@@ -342,18 +348,12 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
         Parameters
         ----------
         X : array-like, shape (n_samples, n_features)
-            Harmonized data (output of :meth:`transform`).
-        sites : array-like, shape (n_samples,), optional (default None)
+            Harmonized data (output of :meth:`transform`: the features only,
+            without the site column).
+        sites : array-like, shape (n_samples,) or None, optional (default None)
             Site labels for X, all seen during fit. If provided, only samples
             of non-reference sites are mapped back; reference samples are
             returned as-is. If None, all samples are mapped back.
-
-        y : array-like, shape (n_samples,) or (n_samples, n_classes), optional (default None)
-            Labels for supervised transport. Must align with X if provided.
-             Used to ensure consistent handling of supervised transformations.
-
-        batch_size : int, optional (default 128)
-            Batch size for transformation.
 
         Returns
         -------
@@ -371,70 +371,43 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
 
         """
         check_is_fitted(self)
-        X, y, harm_mask = self._check_transform_input(X, sites, y)
+        X = check_array(X, dtype=FLOAT_DTYPES, copy=self.copy, estimator=self)
+        n_out = len(self.get_feature_names_out())
+        if X.shape[1] != n_out:
+            raise ValueError(f"X has {X.shape[1]} features, but the harmonized data have {n_out}.")
+        if sites is not None:
+            sites = check_array(np.asarray(sites), dtype=None, ensure_2d=False, estimator=self, input_name="sites")
+            check_consistent_length(X, sites)
+        harm_mask = self._harmonization_mask(sites)
         if harm_mask is None:
             logger.info("Mapping all samples back to the source domain without site-based masking. Ensure this is intended.")
-            return self.ot_obj_.inverse_transform(Xt=X, yt=y, batch_size=batch_size)
+            return self.ot_obj_.inverse_transform(Xt=X, batch_size=self.batch_size)
 
         X_inverse = X.copy()
         if np.any(harm_mask):
-            y_harm = y[harm_mask] if y is not None else None
-            X_inverse[harm_mask] = self.ot_obj_.inverse_transform(Xt=X[harm_mask], yt=y_harm, batch_size=batch_size)
+            X_inverse[harm_mask] = self.ot_obj_.inverse_transform(Xt=X[harm_mask], batch_size=self.batch_size)
         else:
             logger.info("All samples are from the reference site(s): they are returned unchanged.")
         return X_inverse
 
-    def _check_transform_input(
-        self,
-        X: npt.ArrayLike,
-        sites: npt.ArrayLike | None,
-        y: npt.ArrayLike | None,
-    ) -> tuple[npt.NDArray, npt.NDArray | None, npt.NDArray | None]:
-        """Validate the input of (inverse) transform and find the samples to map.
+    def _harmonization_mask(self, sites: npt.NDArray | None) -> npt.NDArray | None:
+        """Return the samples of non-reference sites, or None if the sites are unknown.
 
         Unlike :meth:`fit`, any subset of the fitted sites is accepted: the
         transport plan is fixed, so neither the reference site nor a second
         site needs to be present.
 
-        Parameters
-        ----------
-        X : array-like, shape (n_samples, n_features)
-            Data.
-        sites : array-like, shape (n_samples,) or None
-            Site labels, or None to map all samples.
-        y : array-like, shape (n_samples,) or None
-            Labels.
-
-        Returns
-        -------
-        X : ndarray, shape (n_samples, n_features)
-            The validated data.
-        y : ndarray, shape (n_samples,) or None
-            The validated labels.
-        harm_mask : ndarray of bool, shape (n_samples,) or None
-            Samples of non-reference sites, or None if ``sites`` is None.
-
         Raises
         ------
         ValueError
-            If a site was not seen during fit, or X has a different number of
-            features than seen during fit.
+            If a site was not seen during fit.
 
         """
-        X = validate_data(self, X, reset=False, copy=self.copy, dtype=FLOAT_DTYPES)
-        if y is not None:
-            y = check_array(y, copy=self.copy, ensure_2d=False, estimator=self)
-            check_consistent_length(X, y)
         if sites is None:
-            return X, y, None
-        sites = check_array(sites, copy=self.copy, dtype=None, ensure_2d=False, estimator=self)
-        check_consistent_length(X, sites)
-        sites_str = sites.astype(str)
-        unseen = sorted(set(sites_str) - set(self.sites_.astype(str)))
-        if unseen:
-            raise ValueError(f"Sites {unseen} were not seen during fit.")
-        ref_mask = np.isin(sites_str, self._reference_sites_as_str(self.ref_site_))
-        return X, y, ~ref_mask
+            return None
+        check_sites_seen(sites, self.sites_, type(self).__name__)
+        ref_mask = np.isin(sites.astype(str), self._reference_sites_as_str(self.ref_site_))
+        return ~ref_mask
 
     @staticmethod
     def _reference_sites_as_str(ref_site: str | int | list[str] | list[int]) -> list[str]:
@@ -584,8 +557,9 @@ class OptimalTransportDomainAdaptation(BaseTransport, TransformerMixin, BaseEsti
     def __sklearn_tags__(self) -> Tags:
         tags = super().__sklearn_tags__()
         tags.estimator_type = "transformer"
-        # ``sites`` takes the place of ``y``: required, one label per sample (1D), any values
-        tags.target_tags.required = True
+        # y is only used with use_labels=True
+        tags.target_tags.required = False
+        tags.input_tags.string = True
         tags.input_tags.two_d_array = True
         # Missing and infinite values are rejected by the input validation
         tags.input_tags.allow_nan = False
