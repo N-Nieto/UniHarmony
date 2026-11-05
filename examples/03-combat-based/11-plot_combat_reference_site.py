@@ -173,8 +173,8 @@ for name, harmonizer in {
 def scores(data: np.ndarray, mask: np.ndarray) -> tuple[float, float]:
     """AUC (ranking) and balanced accuracy (decisions at the trained threshold) of the model."""
     return (
-        roc_auc_score(y[test][mask], model.predict_proba(data[mask])[:, 1]),
-        balanced_accuracy_score(y[test][mask], model.predict(data[mask])),
+        float(roc_auc_score(y[test][mask], model.predict_proba(data[mask])[:, 1])),
+        float(balanced_accuracy_score(y[test][mask], model.predict(data[mask]))),
     )
 
 
