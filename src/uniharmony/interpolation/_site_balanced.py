@@ -12,6 +12,7 @@ from sklearn.base import BaseEstimator, clone
 from sklearn.utils import Tags, check_random_state
 from sklearn.utils.validation import check_is_fitted
 
+from uniharmony._data import TransformOutput
 from uniharmony._verbose import get_logger
 from uniharmony.interpolation._intra_site import IntraSiteInterpolation
 from uniharmony.interpolation._metadata import SamplerInputMixin, parent_weights
@@ -223,7 +224,7 @@ class SiteBalancedResampler(SamplerInputMixin, SamplerMixin, BaseEstimator):
         sites: npt.ArrayLike | None = None,
         categorical_covariates: npt.ArrayLike | None = None,
         continuous_covariates: npt.ArrayLike | None = None,
-    ) -> tuple[npt.NDArray | pd.DataFrame, npt.NDArray]:
+    ) -> tuple[TransformOutput, npt.NDArray]:
         """Balance the classes within every site.
 
         Parameters
