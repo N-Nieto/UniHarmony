@@ -73,10 +73,10 @@ clf = PrettYharmonizeClassifier(
     stack_model=LogisticRegression(),
     random_state=0,
 )
-clf.fit(X_train, y_train, sites_train)  # training labels are used, as usual
-proba = clf.predict_proba(X_test, sites_test)  # the test labels are never used
+clf.fit(X_train, y_train, sites=sites_train)  # training labels are used, as usual
+proba = clf.predict_proba(X_test, sites=sites_test)  # the test labels are never used
 print(f"PrettYharmonize test AUC: {roc_auc_score(y_test, proba[:, 1]):.3f}")
-print(f"PrettYharmonize test balanced accuracy: {clf.score(X_test, y_test, sites_test):.3f}")
+print(f"PrettYharmonize test balanced accuracy: {clf.score(X_test, y_test, sites=sites_test):.3f}")
 
 # %%
 # The stack model was trained on the out-of-fold *score matrix*: one column per
@@ -86,8 +86,8 @@ print(clf.score_matrix_[:5].round(2))
 # %%
 # Any ComBat-based model can be used, for example CovBat, which also
 # harmonizes the covariance of the features across sites.
-covbat = PrettYharmonizeClassifier(harm_model=CovBat(), random_state=0).fit(X_train, y_train, sites_train)
-print(f"PrettYharmonize + CovBat test AUC: {roc_auc_score(y_test, covbat.predict_proba(X_test, sites_test)[:, 1]):.3f}")
+covbat = PrettYharmonizeClassifier(harm_model=CovBat(), random_state=0).fit(X_train, y_train, sites=sites_train)
+print(f"PrettYharmonize + CovBat test AUC: {roc_auc_score(y_test, covbat.predict_proba(X_test, sites=sites_test)[:, 1]):.3f}")
 
 
 # %%
@@ -105,18 +105,18 @@ def evaluate(X, y, sites, seed):
     )
     proba = {"Unharmonized": model().fit(X_tr, y_tr).predict_proba(X_te)}
 
-    combat = NeuroComBat().fit(X_tr, s_tr)
-    proba["No target"] = model().fit(combat.transform(X_tr, s_tr), y_tr).predict_proba(combat.transform(X_te, s_te))
+    combat = NeuroComBat().fit(X_tr, sites=s_tr)
+    proba["No target"] = model().fit(combat.transform(X_tr, sites=s_tr), y_tr).predict_proba(combat.transform(X_te, sites=s_te))
 
-    combat = NeuroComBat().fit(np.r_[X_tr, X_te], np.r_[s_tr, s_te], categorical_covariates=np.r_[y_tr, y_te])
-    m = model().fit(combat.transform(X_tr, s_tr, categorical_covariates=y_tr), y_tr)
-    proba["WDH (leaky)"] = m.predict_proba(combat.transform(X_te, s_te, categorical_covariates=y_te))
+    combat = NeuroComBat().fit(np.r_[X_tr, X_te], sites=np.r_[s_tr, s_te], categorical_covariates=np.r_[y_tr, y_te])
+    m = model().fit(combat.transform(X_tr, sites=s_tr, categorical_covariates=y_tr), y_tr)
+    proba["WDH (leaky)"] = m.predict_proba(combat.transform(X_te, sites=s_te, categorical_covariates=y_te))
 
-    combat = NeuroComBat().fit(X_tr, s_tr, categorical_covariates=y_tr)
-    m = model().fit(combat.transform(X_tr, s_tr, categorical_covariates=y_tr), y_tr)
-    proba["TTL (leaky)"] = m.predict_proba(combat.transform(X_te, s_te, categorical_covariates=y_te))
+    combat = NeuroComBat().fit(X_tr, sites=s_tr, categorical_covariates=y_tr)
+    m = model().fit(combat.transform(X_tr, sites=s_tr, categorical_covariates=y_tr), y_tr)
+    proba["TTL (leaky)"] = m.predict_proba(combat.transform(X_te, sites=s_te, categorical_covariates=y_te))
 
-    proba["PrettYharmonize"] = PrettYharmonizeClassifier(random_state=seed).fit(X_tr, y_tr, s_tr).predict_proba(X_te, s_te)
+    proba["PrettYharmonize"] = PrettYharmonizeClassifier(random_state=seed).fit(X_tr, y_tr, sites=s_tr).predict_proba(X_te, sites=s_te)
     return {scheme: roc_auc_score(y_te, p[:, 1]) for scheme, p in proba.items()}
 
 

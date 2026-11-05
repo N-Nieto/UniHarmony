@@ -68,8 +68,8 @@ plt.grid(axis="y", color="black", alpha=0.5, linestyle="--")
 combat_gam = ComBatGAM()
 # This is the key line: we need to include the target variable as a covariate
 # to preserve its relationship with the features during harmonization.
-combat_gam.fit(X, sites, smooth_covariates=y)
-X_harmonized = combat_gam.transform(X, sites, smooth_covariates=y)
+combat_gam.fit(X, sites=sites, smooth_covariates=y)
+X_harmonized = combat_gam.transform(X, sites=sites, smooth_covariates=y)
 
 df = pd.DataFrame({"Class": y, "Site": sites, "Age": age,
                    "Feature1":X_harmonized[:,0], "sex": sex})

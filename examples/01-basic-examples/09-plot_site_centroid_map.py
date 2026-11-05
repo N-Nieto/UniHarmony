@@ -89,10 +89,10 @@ def classical_mds(distance: pd.DataFrame) -> np.ndarray:
 
 
 X_train, X_test, sites_train, sites_test = train_test_split(X, sites, test_size=0.5, stratify=sites, random_state=random_state)
-combat = NeuroComBat().fit(X_train, sites_train)
+combat = NeuroComBat().fit(X_train, sites=sites_train)
 results = {
     "Raw": site_centroid_distance(X_test, sites_test),
-    "NeuroComBat": site_centroid_distance(combat.transform(X_test, sites_test), sites_test),
+    "NeuroComBat": site_centroid_distance(combat.transform(X_test, sites=sites_test), sites_test),
 }
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 5), sharex=True, sharey=True)

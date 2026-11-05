@@ -93,8 +93,7 @@ metric_s1 = report_metrics_by_site(
 )
 
 # %%
-###############################################################################
-### Let's take a look at what is returned from the `report_metrics_by_site`.
+# Let's take a look at what is returned from the `report_metrics_by_site`.
 
 # The result is a dictionary containing the metrics as the first key, and then the overall performance followed by the performance obtained in each site.
 
@@ -133,7 +132,7 @@ y_pred_s2 = clf.predict(X_test)
 metric_s2 = report_metrics_by_site(y_test, y_pred_s2, sites_test, metrics_to_use)
 
 # %%
-### Let's analyze the global performance obtained in each Scenario for the metric that we decided to plot.
+# Let's analyze the global performance obtained in each Scenario for the metric that we decided to plot.
 
 # Extract global performance for both scenarios
 metric_global_s1 = metric_s1[metric_to_plot].pop("overall")
@@ -142,7 +141,7 @@ print("=="*40)
 print(f" Overall performance for Scenario 1: {metric_global_s1:0.4f} \n Overall performance for Scenario 2: {metric_global_s2:0.4f}")
 
 # %%
-# ## Now, let's explore the performance obtained in each of the sites.
+# Now, let's explore the performance obtained in each of the sites.
 
 sites_unique = np.unique(sites)
 

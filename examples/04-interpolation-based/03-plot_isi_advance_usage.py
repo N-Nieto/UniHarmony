@@ -54,7 +54,7 @@ isi.summary().round(2)
 # %%
 # The same diagnostic is available without resampling, to check a data set before choosing a method.
 
-isi.estimate_safe_amplification(X, y, sites).round(2)
+isi.estimate_safe_amplification(X, y, sites=sites).round(2)
 
 # %%
 # Combining interpolation with under-sampling
@@ -117,7 +117,7 @@ rng = np.random.default_rng(54)
 sex = rng.integers(0, 2, len(y))
 age = rng.normal(50, 10, len(y))
 isi_cov = IntraSiteInterpolation(n_bins_cont_cov=3, random_state=42)
-X_cov, y_cov = isi_cov.fit_resample(X, y, sites=sites, categorical_covariate=sex, continuous_covariate=age)
+X_cov, y_cov = isi_cov.fit_resample(X, y, sites=sites, categorical_covariates=sex, continuous_covariates=age)
 
 # The covariates of the real samples kept can be recovered with ``sample_indices_``
 real = ~isi_cov.is_synthetic_
@@ -127,15 +127,33 @@ sex_kept = sex[isi_cov.sample_indices_[real]]
 # Use on training data only
 # -------------------------
 #
-# ISI must only see the training folds. Put it in an ``imblearn`` pipeline and route ``sites`` with scikit-learn
-# metadata routing.
+# ISI must only see the training folds. Put it in an ``imblearn`` pipeline, with the sites as a column of a DataFrame
+# named by ``site_column``: the folds split the sites with the features, and ISI returns the site column of the
+# resampled data (synthetic samples included), so a harmonizer could follow it (see "Using UniHarmony in pipelines").
+# The classifier must not see the site column, so a ``ColumnTransformer`` drops it here.
+
+from sklearn.compose import make_column_transformer
+
+df = pd.DataFrame(X, columns=[f"feature_{j}" for j in range(X.shape[1])]).assign(site=sites)
+pipe = Pipeline(
+    [
+        ("isi", IntraSiteInterpolation(site_column="site", random_state=0)),
+        ("drop_site", make_column_transformer(("drop", ["site"]), remainder="passthrough")),
+        ("clf", LogisticRegression()),
+    ]
+)
+cv = StratifiedKFold(5, shuffle=True, random_state=0)
+scores = cross_validate(pipe, df, y, cv=cv, scoring="roc_auc")
+print(f"CV AUC with ISI inside the folds: {scores['test_score'].mean():.3f}")
+
+# %%
+# The ``sites`` keyword also works with scikit-learn metadata routing, as long as no later step needs the sites of
+# the synthetic samples:
 
 with sklearn.config_context(enable_metadata_routing=True):
-    isi_cv = IntraSiteInterpolation(random_state=0).set_fit_resample_request(sites=True)
-    pipe = Pipeline([("isi", isi_cv), ("clf", LogisticRegression())])
-    cv = StratifiedKFold(5, shuffle=True, random_state=0)
+    pipe = Pipeline([("isi", IntraSiteInterpolation(random_state=0)), ("clf", LogisticRegression())])
     scores = cross_validate(pipe, X, y, cv=cv, params={"sites": sites}, scoring="roc_auc")
-print(f"CV AUC with ISI inside the folds: {scores['test_score'].mean():.3f}")
+print(f"CV AUC (metadata routing): {scores['test_score'].mean():.3f}")
 
 ###############################################################################
 # .. admonition:: Take-home message

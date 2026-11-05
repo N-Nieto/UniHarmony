@@ -47,8 +47,8 @@ plt.grid(axis="y", color="black", alpha=0.5, linestyle="--")
 # -------------
 X_harmonized = X.copy()
 combat = NeuroComBat()
-combat.fit(X_harmonized, sites)
-X_harmonized = combat.transform(X_harmonized, sites)
+combat.fit(X_harmonized, sites=sites)
+X_harmonized = combat.transform(X_harmonized, sites=sites)
 
 # %%
 # Plotting
@@ -94,8 +94,8 @@ combat = NeuroComBat()
 # This is the key line: we need to include the target variable as a covariate
 # to preserve its relationship with the features during harmonization.
 
-combat.fit(X, sites, categorical_covariates=y)
-X_harmonized = combat.transform(X, sites, categorical_covariates=y)
+combat.fit(X, sites=sites, categorical_covariates=y)
+X_harmonized = combat.transform(X, sites=sites, categorical_covariates=y)
 
 df_orig = pd.DataFrame(X, columns=["Feature1", "Feature2"])
 df_orig["Site"] = sites

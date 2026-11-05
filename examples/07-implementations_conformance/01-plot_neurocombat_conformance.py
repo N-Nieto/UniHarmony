@@ -224,7 +224,7 @@ def run_uniharmony(data, estimator=NeuroComBat, **options):
     """Harmonize with UniHarmony."""
     return estimator(**options).fit_transform(
         data["X"],
-        data["sites"],
+        sites=data["sites"],
         categorical_covariates=data["sex"][:, None],
         continuous_covariates=data["age"][:, None],
     )
@@ -596,9 +596,9 @@ def site_leakage(sim, estimator):
     if estimator is None:
         X_train, X_test = sim["X"][train], sim["X"][test]
     else:
-        harmonizer = estimator(mean_only=True).fit(sim["X"][train], sim["sites"][train], **subset(train))
-        X_train = harmonizer.transform(sim["X"][train], sim["sites"][train], **subset(train))
-        X_test = harmonizer.transform(sim["X"][test], sim["sites"][test], **subset(test))
+        harmonizer = estimator(mean_only=True).fit(sim["X"][train], sites=sim["sites"][train], **subset(train))
+        X_train = harmonizer.transform(sim["X"][train], sites=sim["sites"][train], **subset(train))
+        X_test = harmonizer.transform(sim["X"][test], sites=sim["sites"][test], **subset(test))
     mean, sd = X_train.mean(axis=0), X_train.std(axis=0)
     classifier = LogisticRegression(max_iter=5000).fit((X_train - mean) / sd, sim["sites"][train])
     return balanced_accuracy_score(sim["sites"][test], classifier.predict((X_test - mean) / sd))
@@ -770,13 +770,13 @@ X_new_reference = (z_new - estimates["gamma.star"][site_rows]) / np.sqrt(
 
 harmonizer = NeuroComBat().fit(
     data["X"][train],
-    data["sites"][train],
+    sites=data["sites"][train],
     categorical_covariates=data["sex"][train, None],
     continuous_covariates=data["age"][train, None],
 )
 X_new_uniharmony = harmonizer.transform(
     data["X"][test],
-    data["sites"][test],
+    sites=data["sites"][test],
     categorical_covariates=data["sex"][test, None],
     continuous_covariates=data["age"][test, None],
 )

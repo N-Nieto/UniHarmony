@@ -42,7 +42,7 @@ plt.grid(axis="y", color="black", alpha=0.5, linestyle="--")
 # -------------
 
 combat = NeuroComBat()
-X_harmonized = combat.fit_transform(X, sites)
+X_harmonized = combat.fit_transform(X, sites=sites)
 df_orig = pd.DataFrame(X, columns=["Feature1", "Feature2"])
 df_orig["Site"] = sites
 df_orig["Phase"] = "Original"

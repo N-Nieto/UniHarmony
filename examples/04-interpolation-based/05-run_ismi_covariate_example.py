@@ -26,9 +26,9 @@ ismi = InterSiteMatchedInterpolation(alpha=(0.2, 0.4),
                                      random_state=42)
 
 # Generate harmonized dataset
-X_res, y_res = ismi.fit_resample(X, y, sites,
-                                 categorical_covariate=categorical_covariate,
-                                 continuous_covariate=continuous_covariate)
+X_res, y_res = ismi.fit_resample(X, y, sites=sites,
+                                 categorical_covariates=categorical_covariate,
+                                 continuous_covariates=continuous_covariate)
 
 # Check unmatched samples
 print(ismi.unmatched_samples_)

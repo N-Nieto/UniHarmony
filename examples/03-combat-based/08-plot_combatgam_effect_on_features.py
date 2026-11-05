@@ -44,7 +44,7 @@ plt.grid(axis="y", color="black", alpha=0.5, linestyle="--")
 # -------------
 
 combat = ComBatGAM()
-X_harmonized = combat.fit_transform(X, sites, smooth_covariates=age)
+X_harmonized = combat.fit_transform(X, sites=sites, smooth_covariates=age)
 
 df_orig = pd.DataFrame(X, columns=["Feature1", "Feature2"])
 df_orig["Site"] = sites

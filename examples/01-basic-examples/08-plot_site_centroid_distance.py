@@ -51,8 +51,8 @@ X_train, X_test, y_train, y_test, sites_train, sites_test = train_test_split(
     X, y, sites, test_size=0.5, stratify=sites, random_state=random_state
 )
 
-combat = NeuroComBat().fit(X_train, sites_train)
-data = {"Raw": X_test, "NeuroComBat": combat.transform(X_test, sites_test)}
+combat = NeuroComBat().fit(X_train, sites=sites_train)
+data = {"Raw": X_test, "NeuroComBat": combat.transform(X_test, sites=sites_test)}
 
 # %%
 # Site centroid distance
