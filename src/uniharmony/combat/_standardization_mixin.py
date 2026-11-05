@@ -142,29 +142,38 @@ class StandardizationMixin:
         else:
             # Fit OLS model
             self._beta_hat = solve_ordinary_least_squares(X, design)
-        # Compute weighted grand mean across sites to create reference mean
+        # Target of the harmonization: the grand mean and the pooled variance of
+        # the reference sites (``ref_site``), or of all sites (default).
         minimum_samples_warning(n_samples_per_site)
-        site_weights = np.array(n_samples_per_site) / float(n_samples)
-        self._grand_mean = site_weights.T @ self._beta_hat[: self._n_sites, :]
+        n_samples_per_site = np.asarray(n_samples_per_site, dtype=float)
+        reference = getattr(self, "_ref_site_idx", None)
+        if reference is None:
+            reference = np.arange(len(n_samples_per_site))
+        # Grand mean: site intercepts weighted by the site sizes, over the reference sites
+        site_weights = np.zeros(len(n_samples_per_site))
+        site_weights[reference] = n_samples_per_site[reference] / n_samples_per_site[reference].sum()
+        self._grand_mean = site_weights @ self._beta_hat[: self._n_sites, :]
 
-        # Compute pooled residual variance to estimate variance after removing
-        # site / covariate effects
-        X_predicted = (design @ self._beta_hat).T
-        residuals = X - X_predicted
-        # Pooled residual variance with denominator n - S (S = number of sites).
+        # Pooled residual variance of the reference samples, with denominator
+        # n_ref - S_ref (samples and sites of the reference; all of them by default).
         #
         # ComBat later rescales every site to unit variance with per-site variances
         # computed with ddof=1 (delta_hat), so the harmonized data keep n - S residual
         # degrees of freedom and their pooled residual variance is var_pooled * (n - S) / (n - p).
         # Dividing the residual sum of squares by n - S makes that expected value equal
-        # to the true pooled variance. R sva::ComBat and neuroCombat divide by n, which
-        # shrinks the harmonized variance by a factor (n - S) / n (0.90 with 30 subjects
-        # in 3 sites, 0.95 with 20 sites of 20 subjects). The same denominator is used for
-        # every sample size (a former switch to n - 1 below 30 samples was removed).
+        # to the true pooled variance. R sva::ComBat and neuroCombat divide by n (n_ref with
+        # a reference batch), which shrinks the harmonized variance by a factor (n - S) / n
+        # (0.90 with 30 subjects in 3 sites, 0.95 with 20 sites of 20 subjects). The same
+        # denominator is used for every sample size (a former switch to n - 1 below 30
+        # samples was removed). With a single reference site the denominator is n_ref - 1,
+        # its sample variance, so that site keeps its own mean and variance exactly.
         # See the "Implementations conformance" gallery example for the derivation.
-        n_sites = len(n_samples_per_site)
-        dof = max(n_samples - n_sites, 1)
-        self._var_pooled = np.sum(residuals**2, axis=1, keepdims=True) / dof
+        X_predicted = (design @ self._beta_hat).T
+        residuals = X - X_predicted
+        in_reference = design[:, reference].sum(axis=1) > 0
+        self._var_pooled_n = int(in_reference.sum())
+        self._var_pooled_dof = max(self._var_pooled_n - len(reference), 1)
+        self._var_pooled = np.sum(residuals[:, in_reference] ** 2, axis=1, keepdims=True) / self._var_pooled_dof
 
         # Handle near-zero variance features
         # Features with ~0 variance cause division by zero in standardization
@@ -216,8 +225,8 @@ class StandardizationMixin:
 
         # Standardize data to common scale
         # Make sure the variance is not negative due to numerical issues before taking sqrt
-        self._var_pooled = handle_negative_variance(self._var_pooled)
-        pooled_std = np.sqrt(self._var_pooled)
+        # (local copy: transform must not change the fitted state)
+        pooled_std = np.sqrt(handle_negative_variance(self._var_pooled))
         standardized_data = (X - standardized_mean) / (pooled_std @ np.ones((1, n_samples)))
 
         logger.debug("Standardization stats:")

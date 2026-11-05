@@ -55,6 +55,8 @@ class LocationAndScaleMixin:
 
         """
         logger.debug("Fitting L/S model")
+        # Iterations of the parametric empirical Bayes solver (0 if it is not used)
+        self.n_iter_ = 0
 
         # Extract site-only design matrix (remove covariate columns)
         # The first _n_sites columns of design are site indicator variables (one-hot encoded)
@@ -131,6 +133,18 @@ class LocationAndScaleMixin:
             tau_2_epsilon=tau_2_epsilon,
             max_iter=max_iter,
         )
+
+        # A single reference site is the target of the harmonization: its location and
+        # scale relative to the target are known exactly (0 and 1, as R sva::ComBat and
+        # neuroCombat with ``ref.batch``), not shrunk by the empirical Bayes priors, so its
+        # data are left unchanged. Several reference sites are harmonized to their pooled
+        # distribution like the other sites.
+        reference = getattr(self, "_ref_site_idx", None)
+        if reference is not None and len(reference) == 1:
+            self._gamma_star = np.array(self._gamma_star, dtype=float)
+            self._delta_star = np.array(self._delta_star, dtype=float)
+            self._gamma_star[reference[0]] = 0.0
+            self._delta_star[reference[0]] = 1.0
 
     def _find_ls_adjustments(
         self,
@@ -695,6 +709,7 @@ class LocationAndScaleMixin:
             count += 1
 
         logger.debug(f"_iteration_solver converged in {count} iterations (change={change:.6f})")
+        self.n_iter_ = max(getattr(self, "n_iter_", 0), count)
         # Final validation of outputs
         gamma_hat_new = np.asarray(gamma_hat_new, dtype=np.float64)
         delta_hat_new = np.asarray(delta_hat_new, dtype=np.float64)
