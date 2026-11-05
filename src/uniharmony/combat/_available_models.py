@@ -2,7 +2,7 @@
 
 Other modules (e.g., :mod:`uniharmony.prettyharmonize`) use this registry to
 type and validate a ComBat-based model and to know which covariate arguments
-its ``fit`` and ``transform`` methods accept. A new ComBat-based model must be
+its ``fit`` and ``transform`` methods accept as keywords. A new ComBat-based model must be
 registered in :data:`COMBAT_MODELS`; a test checks that every model exported
 by :mod:`uniharmony.combat` is.
 """
@@ -39,7 +39,7 @@ class CovariateArguments:
     required : tuple of str
         Arguments that must always be given.
     smooth_bounds : str or None
-        Option of ``fit`` setting the range ``(min, max)`` covered by the
+        Constructor parameter setting the range ``(min, max)`` covered by the
         splines of a single smooth covariate.
 
     """

@@ -194,8 +194,10 @@ def validate_sites(sites: npt.NDArray) -> None:
     Raises
     ------
     ValueError
-        If single site is provided.
+        If fewer than 2 samples or a single site is provided.
 
     """
+    if len(sites) < 2:
+        raise ValueError(f"At least 2 samples required, got n_samples = {len(sites)}.")
     if len(np.unique(sites)) < 2:
         raise ValueError("At least 2 sites required")
