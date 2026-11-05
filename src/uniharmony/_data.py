@@ -20,7 +20,7 @@ it for estimators whose constructor holds the column parameters.
 
 from collections.abc import Hashable, Mapping, Sequence
 from dataclasses import dataclass, field
-from typing import Any, ClassVar
+from typing import Any, ClassVar, Literal, Self, TypeAlias
 
 import numpy as np
 import numpy.typing as npt
@@ -38,7 +38,9 @@ __all__ = [
     "JULEARN_TYPE_SEPARATOR",
     "HarmonizationData",
     "HarmonizationInputMixin",
+    "HarmonizationOutputMixin",
     "MetadataSpec",
+    "TransformOutput",
     "check_sites_seen",
     "extract_metadata",
     "resolve_column",
@@ -48,6 +50,13 @@ __all__ = [
 JULEARN_TYPE_SEPARATOR = "__:type:__"
 
 ColumnSpec = Hashable | Sequence[Hashable] | None
+
+#: Data returned by ``transform``, ``fit_transform`` and ``fit_resample``: a NumPy
+#: array by default, a pandas DataFrame with ``set_output(transform="pandas")``
+#: (harmonizers) or with the column path (samplers). It depends on run-time
+#: settings, so it is typed as ``Any`` to let type checkers accept the methods of
+#: either container.
+TransformOutput: TypeAlias = Any
 
 
 @dataclass(frozen=True)
@@ -420,6 +429,10 @@ class HarmonizationInputMixin:
 
     _metadata_specs: ClassVar[tuple[MetadataSpec, ...]] = ()
 
+    # Fitted attributes set by scikit-learn's ``validate_data`` (declared for type checkers)
+    n_features_in_: int
+    feature_names_in_: npt.NDArray
+
     def _metadata_columns(self) -> dict[str, ColumnSpec]:
         """Return the column specification of each kind of metadata, from the constructor."""
         return {spec.keyword: getattr(self, spec.column_param, None) for spec in self._metadata_specs}
@@ -537,3 +550,34 @@ class HarmonizationInputMixin:
         keep = np.ones(len(names), dtype=bool)
         keep[list(getattr(self, "_metadata_positions", ()))] = False
         return np.asarray(names[keep], dtype=object)
+
+
+class HarmonizationOutputMixin:
+    """``set_output`` typed to return the estimator itself.
+
+    scikit-learn's ``set_output`` is untyped, and the scikit-learn stubs bundled
+    with Pylance annotate it as returning ``BaseEstimator``, so editors flag
+    ``NeuroComBat(...).set_output(transform="pandas").fit_transform(...)``.
+    This override only adds the return type. Place it before
+    :class:`~sklearn.base.TransformerMixin` in the bases.
+    """
+
+    def set_output(self, *, transform: Literal["default", "pandas", "polars"] | None = None) -> Self:
+        """Set the output container of ``transform`` and ``fit_transform``.
+
+        Parameters
+        ----------
+        transform : {"default", "pandas", "polars"} or None, optional (default None)
+            ``"pandas"`` returns a DataFrame with the harmonized feature names
+            (``get_feature_names_out()``) and the index of ``X``;
+            ``"default"`` returns a NumPy array; None leaves the setting
+            unchanged.
+
+        Returns
+        -------
+        self
+            The estimator.
+
+        """
+        super().set_output(transform=transform)  # type: ignore[misc]
+        return self
