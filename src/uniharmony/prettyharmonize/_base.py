@@ -15,8 +15,9 @@ from joblib import Parallel, delayed
 from sklearn.base import BaseEstimator, clone
 from sklearn.model_selection import StratifiedKFold
 from sklearn.preprocessing import OneHotEncoder
-from sklearn.utils.validation import FLOAT_DTYPES, check_array, check_consistent_length, check_is_fitted
+from sklearn.utils.validation import check_consistent_length, check_is_fitted
 
+from uniharmony._data import HarmonizationInputMixin, check_sites_seen, extract_metadata
 from uniharmony._utils import minimum_samples_warning, validate_sites
 from uniharmony._verbose import get_logger
 from uniharmony.combat import NeuroComBat
@@ -30,6 +31,9 @@ __all__ = ["BasePrettYharmonize"]
 logger = get_logger(src="PrettYharmonize")
 
 Split = tuple[npt.NDArray, npt.NDArray]
+
+#: Data keywords, requested by default when metadata routing is enabled
+_METADATA_REQUEST = {"sites": True, "categorical_covariates": True, "continuous_covariates": True, "smooth_covariates": True}
 
 
 # Structural types, used to check the models and to let type checkers narrow
@@ -55,19 +59,6 @@ class DecisionPredictor(Protocol):
     """Model with ``decision_function``."""
 
     def decision_function(self, X: Any) -> npt.NDArray: ...
-
-
-def _check_samples(X: npt.ArrayLike, sites: npt.ArrayLike | None, estimator: BaseEstimator) -> tuple[npt.NDArray, npt.NDArray]:
-    """Validate ``X`` (2-D, float) and ``sites`` (1-D, one per sample)."""
-    if sites is None:
-        raise ValueError("sites must be provided (one label per sample).")
-    # scikit-learn annotates ``dtype`` as str only.
-    X_checked = np.asarray(check_array(X, dtype=FLOAT_DTYPES, estimator=estimator))  # pyright: ignore[reportArgumentType]
-    sites_checked = np.asarray(check_array(sites, dtype=None, ensure_2d=False, estimator=estimator))  # pyright: ignore[reportArgumentType]
-    if sites_checked.ndim == 2 and sites_checked.shape[1] == 1:
-        sites_checked = sites_checked.ravel()
-    check_consistent_length(X_checked, sites_checked)
-    return X_checked, sites_checked
 
 
 def _unfitted(model: Any) -> Any:
@@ -186,6 +177,10 @@ class BasePrettYharmonize(BaseEstimator):
         """Return unfitted copies of the harmonization, base and stack models."""
         harm_model = NeuroComBat() if self.harm_model is None else cast("ComBatModels", clone(self.harm_model))
         get_covariate_arguments(harm_model)  # raises TypeError if not a ComBat-based model
+        # The columns of X named in harm_model are read here; the internal copies get the data as keywords
+        self._harm_specs = type(harm_model)._metadata_specs
+        self._harm_columns = harm_model._metadata_columns()
+        harm_model.set_params(**{spec.column_param: None for spec in self._harm_specs})
         models = []
         for name, model, default in (
             ("base_model", self.base_model, self._default_base_model),
@@ -200,59 +195,40 @@ class BasePrettYharmonize(BaseEstimator):
         return harm_model, models[0], models[1]
 
     def _check_inputs(
-        self, X: npt.ArrayLike, sites: npt.ArrayLike | None, additional_covariates: Mapping[str, Any] | None, reset: bool
+        self, X: npt.ArrayLike, metadata: Mapping[str, Any], reset: bool
     ) -> tuple[npt.NDArray, npt.NDArray, dict[str, npt.NDArray]]:
-        """Validate ``X``, ``sites`` and ``additional_covariates``."""
-        X_checked, sites_checked = _check_samples(X, sites, self)
-        covariates = self._check_covariates(additional_covariates, X_checked.shape[0], reset)
-        if reset:
-            self.n_features_in_ = X_checked.shape[1]
-            return X_checked, sites_checked, covariates
-        if X_checked.shape[1] != self.n_features_in_:
-            raise ValueError(
-                f"X has {X_checked.shape[1]} features, but {type(self).__name__} was fitted with {self.n_features_in_}."
-            )
-        unseen = np.setdiff1d(sites_checked, self.sites_)
-        if unseen.size:
-            raise ValueError(f"Sites unseen during fit cannot be harmonized: {unseen.tolist()}.")
-        return X_checked, sites_checked, covariates
+        """Validate ``X``, the sites and the covariates.
 
-    def _check_covariates(
-        self, additional_covariates: Mapping[str, Any] | None, n_samples: int, reset: bool
-    ) -> dict[str, npt.NDArray]:
-        """Validate the additional covariates against the arguments of ``harm_model``.
-
-        At fit, their names are stored in ``_covariate_names`` so that the same
-        covariates are required to predict.
+        The sites and covariates are read from the columns of ``X`` named in
+        ``harm_model`` (``site_column``, ``*_columns``) or from the keywords
+        ``metadata``. At fit, the names of the covariates are stored in
+        ``_covariate_names`` so that the same covariates are required to predict.
         """
-        if additional_covariates is None:
-            additional_covariates = {}
-        if not isinstance(additional_covariates, Mapping):
-            raise TypeError(
-                "additional_covariates must be a dict mapping covariate arguments of harm_model to arrays, "
-                f"e.g. {{'continuous_covariates': age}}; got {type(additional_covariates).__name__}."
-            )
-        # Covariates are passed as 2-D columns: some models (e.g., CovBat) do not accept 1-D arrays.
-        covariates = {name: _as_columns(value) for name, value in additional_covariates.items() if value is not None}
-        if reset:
-            accepted = self._covariate_arguments.names
-            unknown = sorted(set(covariates) - set(accepted))
-            if unknown:
-                raise ValueError(
-                    f"{type(self._harm_model).__name__} does not accept the covariate argument(s) {unknown}; "
-                    f"accepted: {list(accepted)}."
-                )
-            self._covariate_names = sorted(covariates)
-        elif sorted(covariates) != self._covariate_names:
+        accepted = {spec.keyword for spec in self._harm_specs}
+        unknown = sorted(name for name, value in metadata.items() if value is not None and name not in accepted)
+        if unknown:
             raise ValueError(
-                f"The model was fitted with additional covariates {self._covariate_names}; got {sorted(covariates)}."
+                f"{type(self._harm_model).__name__} does not accept the covariate argument(s) {unknown}; "
+                f"accepted: {list(self._covariate_arguments.names)}."
             )
-        for name, value in covariates.items():
-            if value.ndim != 2 or value.shape[0] != n_samples:
+        values = {name: value for name, value in metadata.items() if name in accepted}
+        data = extract_metadata(self, X, self._harm_specs, self._harm_columns, values, reset=reset)
+        if data.sites is None:
+            raise ValueError(
+                "sites must be provided (one label per sample): set site_column in harm_model to read them from a "
+                "DataFrame X, or pass sites=... ."
+            )
+        covariates = {name: value for name, value in data.metadata.items() if name != "sites" and value is not None}
+        if reset:
+            self._metadata_positions = data.metadata_positions
+            self._covariate_names = sorted(covariates)
+        else:
+            if sorted(covariates) != self._covariate_names:
                 raise ValueError(
-                    f"additional_covariates['{name}'] must have one row per sample ({n_samples}), got shape {value.shape}."
+                    f"The model was fitted with additional covariates {self._covariate_names}; got {sorted(covariates)}."
                 )
-        return covariates
+            check_sites_seen(data.sites, self.sites_, type(self).__name__)
+        return data.X, data.sites, covariates
 
     def _check_required_covariates(self, covariates: dict[str, npt.NDArray]) -> None:
         missing = [
@@ -261,7 +237,7 @@ class BasePrettYharmonize(BaseEstimator):
         if missing:
             raise ValueError(
                 f"{type(self._harm_model).__name__} requires the covariate argument(s) {missing} "
-                "in additional_covariates (e.g., age as smooth covariate)."
+                "(e.g., age as smooth covariate): pass it as keyword or name its columns in harm_model."
             )
 
     def _check_target_identifiable(self, y_encoded: npt.NDArray, sites: npt.NDArray) -> None:
@@ -290,8 +266,8 @@ class BasePrettYharmonize(BaseEstimator):
             return {}
         values = y_encoded if self._target_argument == arguments.smooth else covariates[arguments.smooth]
         values = _as_columns(values).astype(float)
-        if values.shape[1] != 1:
-            return {}  # bounds are only supported for a single smooth covariate
+        if values.shape[1] != 1 or getattr(self._harm_model, arguments.smooth_bounds, None) is not None:
+            return {}  # bounds are only supported for a single smooth covariate; user bounds are kept
         return {arguments.smooth_bounds: (float(values.min()), float(values.max()))}
 
     # ------------------------------------------------------------------ #
@@ -363,14 +339,14 @@ class BasePrettYharmonize(BaseEstimator):
     # ------------------------------------------------------------------ #
     # Fitting
     # ------------------------------------------------------------------ #
-    def _fit(self, X, y, sites, additional_covariates) -> npt.NDArray:
+    def _fit(self, X, y, metadata) -> npt.NDArray:
         # Forget the attributes of a previous fit with other settings.
         for name in ("harm_model_", "base_model_", "fold_harm_models_", "fold_base_models_", "harmonized_data_"):
             self.__dict__.pop(name, None)
         harm_model, base_model, stack_model = self._resolve_models()
         self._harm_model = harm_model
         self._covariate_arguments: CovariateArguments = get_covariate_arguments(harm_model)
-        X, sites, covariates = self._check_inputs(X, sites, additional_covariates, reset=True)
+        X, sites, covariates = self._check_inputs(X, metadata, reset=True)
         y = self._check_y(X, y)
         validate_sites(sites)
         self.sites_, n_samples_per_site = np.unique(sites, return_counts=True)
@@ -427,29 +403,43 @@ class BasePrettYharmonize(BaseEstimator):
         check_consistent_length(X, y)
         return y
 
+    # Data keywords are requested by default when metadata routing is enabled
+    __metadata_request__fit = _METADATA_REQUEST
+    __metadata_request__predict = _METADATA_REQUEST
+    __metadata_request__transform = _METADATA_REQUEST
+    __metadata_request__score = _METADATA_REQUEST
+
     def fit(
         self,
         X: npt.ArrayLike,
         y: npt.ArrayLike,
-        sites: npt.ArrayLike,
-        additional_covariates: Mapping[str, npt.ArrayLike] | None = None,
+        *,
+        sites: npt.ArrayLike | None = None,
+        categorical_covariates: npt.ArrayLike | None = None,
+        continuous_covariates: npt.ArrayLike | None = None,
+        smooth_covariates: npt.ArrayLike | None = None,
     ) -> "BasePrettYharmonize":
         """Fit the harmonization, base and stack models.
 
+        The sites and covariates are read from the columns of ``X`` named in
+        ``harm_model`` (e.g., ``NeuroComBat(site_column="site")``), or passed
+        as keywords. Use the columns to use the estimator in a scikit-learn
+        :class:`~sklearn.pipeline.Pipeline` or with cross-validation.
+
         Parameters
         ----------
-        X : array-like, shape (n_samples, n_features)
-            The training input samples.
+        X : array-like or DataFrame, shape (n_samples, n_columns)
+            The training input samples, with the metadata columns named in
+            ``harm_model``, if any.
         y : array-like, shape (n_samples,)
             The training target. It is always preserved by ``harm_model``.
-        sites : array-like, shape (n_samples,)
-            Sites.
-        additional_covariates : dict or None, optional (default None)
-            Other covariates preserved by ``harm_model``, keyed by its
-            covariate argument, e.g., ``{"categorical_covariates": sex,
-            "continuous_covariates": age}`` or ``{"smooth_covariates": age}``
-            (:class:`~uniharmony.combat.ComBatGAM`). Each value has one row per
-            sample. They must be known for the data to predict too.
+        sites : array-like, shape (n_samples,) or None, optional (default None)
+            Sites. Required unless ``harm_model`` has a ``site_column``.
+        categorical_covariates, continuous_covariates, smooth_covariates : array-like or None, optional (default None)
+            Other covariates preserved by ``harm_model``, if it accepts them
+            (e.g., ``smooth_covariates`` for :class:`~uniharmony.combat.ComBatGAM`).
+            Each has one row per sample. They must be known for the data to
+            predict too.
 
         Returns
         -------
@@ -457,15 +447,18 @@ class BasePrettYharmonize(BaseEstimator):
             The fitted estimator.
 
         """
-        self._fit(X, y, sites, additional_covariates)
+        self._fit(X, y, _metadata(sites, categorical_covariates, continuous_covariates, smooth_covariates))
         return self
 
     def fit_transform(
         self,
         X: npt.ArrayLike,
         y: npt.ArrayLike,
-        sites: npt.ArrayLike,
-        additional_covariates: Mapping[str, npt.ArrayLike] | None = None,
+        *,
+        sites: npt.ArrayLike | None = None,
+        categorical_covariates: npt.ArrayLike | None = None,
+        continuous_covariates: npt.ArrayLike | None = None,
+        smooth_covariates: npt.ArrayLike | None = None,
     ) -> npt.NDArray:
         """Fit the model and return the out-of-fold harmonized training data.
 
@@ -476,7 +469,7 @@ class BasePrettYharmonize(BaseEstimator):
 
         Parameters
         ----------
-        X, y, sites, additional_covariates
+        X, y, sites, categorical_covariates, continuous_covariates, smooth_covariates
             See :meth:`fit`.
 
         Returns
@@ -485,17 +478,17 @@ class BasePrettYharmonize(BaseEstimator):
             The out-of-fold harmonized training data.
 
         """
-        return self._fit(X, y, sites, additional_covariates)
+        return self._fit(X, y, _metadata(sites, categorical_covariates, continuous_covariates, smooth_covariates))
 
     # ------------------------------------------------------------------ #
     # Prediction
     # ------------------------------------------------------------------ #
     def _scores(
-        self, X: npt.ArrayLike, sites: npt.ArrayLike | None, additional_covariates: Mapping[str, Any] | None
+        self, X: npt.ArrayLike, metadata: Mapping[str, Any]
     ) -> tuple[npt.NDArray, npt.NDArray, dict[str, npt.NDArray], npt.NDArray]:
         """Validate the inputs and return them with their score matrix (averaged over the kept models)."""
         check_is_fitted(self, "stack_model_")
-        X, sites, covariates = self._check_inputs(X, sites, additional_covariates, reset=False)
+        X, sites, covariates = self._check_inputs(X, metadata, reset=False)
         matrices = [
             self._get_predictions(harmonizer, model, X, sites, covariates)
             for harmonizer, model in zip(self._harmonizers, self._base_models, strict=True)
@@ -505,19 +498,23 @@ class BasePrettYharmonize(BaseEstimator):
     def predict(
         self,
         X: npt.ArrayLike,
-        sites: npt.ArrayLike,
-        additional_covariates: Mapping[str, npt.ArrayLike] | None = None,
+        *,
+        sites: npt.ArrayLike | None = None,
+        categorical_covariates: npt.ArrayLike | None = None,
+        continuous_covariates: npt.ArrayLike | None = None,
+        smooth_covariates: npt.ArrayLike | None = None,
     ) -> npt.NDArray:
         """Predict the target without using it for harmonization.
 
         Parameters
         ----------
-        X : array-like, shape (n_samples, n_features)
-            The input samples.
-        sites : array-like, shape (n_samples,)
-            Sites (must have been seen during fit).
-        additional_covariates : dict or None, optional (default None)
-            The same additional covariates as in :meth:`fit`, for these samples.
+        X : array-like or DataFrame, shape (n_samples, n_columns)
+            The input samples, with the same columns as in :meth:`fit`.
+        sites : array-like, shape (n_samples,) or None, optional (default None)
+            Sites (must have been seen during fit), if given as keyword to :meth:`fit`.
+        categorical_covariates, continuous_covariates, smooth_covariates : array-like or None, optional (default None)
+            The same covariates as in :meth:`fit`, for these samples, if given
+            as keywords to :meth:`fit`.
 
         Returns
         -------
@@ -525,20 +522,23 @@ class BasePrettYharmonize(BaseEstimator):
             The predictions.
 
         """
-        *_, scores = self._scores(X, sites, additional_covariates)
+        *_, scores = self._scores(X, _metadata(sites, categorical_covariates, continuous_covariates, smooth_covariates))
         return self._decode(self.stack_model_.predict(scores))
 
     def transform(
         self,
         X: npt.ArrayLike,
-        sites: npt.ArrayLike,
-        additional_covariates: Mapping[str, npt.ArrayLike] | None = None,
+        *,
+        sites: npt.ArrayLike | None = None,
+        categorical_covariates: npt.ArrayLike | None = None,
+        continuous_covariates: npt.ArrayLike | None = None,
+        smooth_covariates: npt.ArrayLike | None = None,
     ) -> npt.NDArray:
         """Harmonize new data with their *predicted* target.
 
         Parameters
         ----------
-        X, sites, additional_covariates
+        X, sites, categorical_covariates, continuous_covariates, smooth_covariates
             See :meth:`predict`.
 
         Returns
@@ -548,6 +548,33 @@ class BasePrettYharmonize(BaseEstimator):
             models if ``fit_final_model=False``).
 
         """
-        X, sites, covariates, scores = self._scores(X, sites, additional_covariates)
+        metadata = _metadata(sites, categorical_covariates, continuous_covariates, smooth_covariates)
+        X, sites, covariates, scores = self._scores(X, metadata)
         y_pred = self.stack_model_.predict(scores)
         return np.mean([harmonizer.transform(X, y_pred, sites, covariates) for harmonizer in self._harmonizers], axis=0)
+
+    def get_feature_names_out(self, input_features: npt.ArrayLike | None = None) -> npt.NDArray:
+        """Get the names of the harmonized features (the metadata columns are not part of the output).
+
+        Parameters
+        ----------
+        input_features : array-like of str or None, optional (default None)
+            Names of the input columns. If None, ``feature_names_in_`` is used.
+
+        Returns
+        -------
+        ndarray of str
+            Names of the output features.
+
+        """
+        return HarmonizationInputMixin.get_feature_names_out(self, input_features)  # type: ignore[arg-type]
+
+
+def _metadata(sites: Any, categorical_covariates: Any, continuous_covariates: Any, smooth_covariates: Any) -> dict[str, Any]:
+    """Collect the data keywords."""
+    return {
+        "sites": sites,
+        "categorical_covariates": categorical_covariates,
+        "continuous_covariates": continuous_covariates,
+        "smooth_covariates": smooth_covariates,
+    }
