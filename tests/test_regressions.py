@@ -211,3 +211,42 @@ def test_docstring_types_do_not_reference_attributes() -> None:
         doc = cls.__doc__
         assert "(n_features_in_,)" not in doc, cls.__name__
         assert "from ot_obj_)" not in doc, cls.__name__
+
+
+# ---------------------------------------------------------------------------
+# Typing of the public API (editors / type checkers)
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("make", [NeuroComBat, CovBat, ComBatGAM])
+def test_set_output_returns_the_estimator_and_is_typed(make, data) -> None:
+    """Bug: Pylance typed ``set_output`` as returning ``BaseEstimator`` (bundled scikit-learn stubs).
+
+    ``NeuroComBat(...).set_output(transform="pandas").fit_transform(df)`` was
+    flagged ("Cannot access attribute fit_transform for class BaseEstimator").
+    ``set_output`` is now annotated to return ``Self`` and returns the estimator.
+    """
+    import typing
+
+    import pandas as pd
+
+    X, sites, age = data
+    estimator = make()
+    assert estimator.set_output(transform="pandas") is estimator
+    assert typing.get_type_hints(type(estimator).set_output)["return"] is typing.Self
+    df = pd.DataFrame(X, columns=[f"f{j}" for j in range(X.shape[1])], index=[f"s{i}" for i in range(len(X))])
+    covariates = {"smooth_covariates": age} if make is ComBatGAM else {}
+    out = estimator.fit_transform(df, sites=sites, **covariates)
+    assert isinstance(out, pd.DataFrame)
+    assert list(out.columns) == list(df.columns)
+    assert out.index.equals(df.index)
+
+
+@pytest.mark.parametrize("estimator_cls", [NeuroComBat, CovBat, ComBatGAM])
+def test_fitted_input_attributes_are_declared(estimator_cls) -> None:
+    """``n_features_in_`` and ``feature_names_in_`` are declared for type checkers, not set before fit."""
+    import typing
+
+    hints = typing.get_type_hints(estimator_cls)
+    assert {"n_features_in_", "feature_names_in_"} <= set(hints)
+    assert not hasattr(estimator_cls(), "n_features_in_")
