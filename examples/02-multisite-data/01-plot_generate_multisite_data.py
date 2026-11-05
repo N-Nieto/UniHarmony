@@ -218,6 +218,37 @@ plt.tight_layout()
 
 
 # %%
+# Location and scale strengths
+# ----------------------------
+#
+# With ``site_effect_type="location+scale"``, each site's features are first
+# multiplied around the global mean by a factor exp(U(-0.1 s, 0.1 s)) (scale)
+# and then shifted by an offset drawn from U(0, s) (location).
+# ``site_effect_strength`` sets the location part and ``site_scale_strength``
+# the scale part, so a strong shift can be combined with a mild change of
+# spread, or the reverse. Without ``site_scale_strength``, both parts use
+# ``site_effect_strength``.
+
+fig, axes = plt.subplots(1, 3, figsize=[15, 5], sharex=True, sharey=True)
+
+for idx, (location, scale) in enumerate([(4, 0), (0, 10), (4, 3)]):
+    X, y, sites = make_multisite_classification(
+        n_sites=3,
+        n_features=2,
+        noise_strength=0,
+        signal_type="circles",
+        site_effect_type="location+scale",
+        site_effect_strength=location,
+        site_scale_strength=scale,
+    )
+    df_plot = pd.DataFrame({"Site": sites, "Feature 1": X[:, 0], "Feature 2": X[:, 1]})
+    sns.scatterplot(df_plot, x="Feature 1", y="Feature 2", hue="Site", ax=axes[idx], s=10)
+    axes[idx].set_title(f"location strength {location}, scale strength {scale}")
+
+plt.tight_layout()
+
+
+# %%
 # Site effect homogeneous
 # -----------------------
 
