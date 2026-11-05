@@ -1,0 +1,8 @@
+**Breaking:** every harmonizer and sampler follows the scikit-learn calling convention, so they work in scikit-learn and imbalanced-learn pipelines, with every model selection tool and scorer, and as julearn steps (see "Using UniHarmony in pipelines"):
+
+- `fit(X, y=None, *, sites=None, ...)` and `transform(X, *, sites=None, ...)`: `y` is the second argument; sites and covariates are keyword-only, or read from columns of a DataFrame `X` named in the constructor (`site_column`, `categorical_columns`, `continuous_columns`, `smooth_columns`, `iqm_columns`, `biological_columns`, `passthrough_columns`).
+- Numerical options moved from `fit` to the constructor: `var_epsilon`, `delta_epsilon`, `tau_2_epsilon`, `max_iter` (ComBat family), `df`, `degree`, `smooth_covariates_bounds` (ComBatGAM), `ref_site`, `batch_size` (OTDA), `allow_nan` (InterSiteMatchedInterpolation); `n_bins_cont_cov` / `binning_strategy_cont_cov` are no longer accepted by `IntraSiteInterpolation.fit_resample`.
+- `OptimalTransportDomainAdaptation` ignores `y` unless the new `use_labels=True`; `transform` and `inverse_transform` no longer take `y`.
+- `PrettYharmonize*`: covariates are keywords (`categorical_covariates=`, ...) instead of the `additional_covariates` dict; `score(X, y, sample_weight=None, *, sites=None, ...)`.
+- Samplers: `categorical_covariate` / `continuous_covariate` renamed to `categorical_covariates` / `continuous_covariates`; with the column path they return a DataFrame with the metadata columns filled in for the synthetic samples.
+- `n_features_in_` / `feature_names_in_` describe the full input (metadata columns included); `get_feature_names_out()` lists the harmonized features.
