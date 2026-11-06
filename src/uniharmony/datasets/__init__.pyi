@@ -9,6 +9,8 @@ __all__ = [
     "list_available_possibilities_onharmony",
     "load_MAREoS",
     "make_multisite_classification",
+    "make_multisite_regression",
+    "make_traveling_subjects",
     "print_statistics_summary",
 ]
 
@@ -21,4 +23,6 @@ from ._download_onharmony import download_ONharmony, list_available_possibilitie
 from ._load_mareos import load_MAREoS
 from ._make_covariates import Covariate, CovariateSiteDistribution
 from ._make_multisite_classification import make_multisite_classification
+from ._make_multisite_regression import make_multisite_regression
+from ._make_traveling_subjects import make_traveling_subjects
 from ._multisite_data_characterization import get_multisite_data_statistics, print_statistics_summary
