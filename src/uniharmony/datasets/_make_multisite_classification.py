@@ -1,26 +1,37 @@
-"""Data simulation module for multi-site data generation."""
+"""Simulation of multi-site classification data."""
 
 import numbers
 import warnings
 from collections.abc import Mapping, Sequence
 from dataclasses import dataclass
-from typing import Any, Literal, get_args, overload
+from typing import Any, Literal, cast, get_args, overload
 
 import numpy as np
 import numpy.typing as npt
-import pandas as pd
 from sklearn.datasets import make_blobs, make_circles, make_classification, make_gaussian_quantiles, make_moons
-from sklearn.utils import check_random_state
 
 from uniharmony._verbose import get_logger
 
-from ._make_covariates import (
+from ._make_covariates import Covariate
+from ._simulation_constants import (
+    CLASSIFICATION_SIGNAL_TYPES,
+    DEFAULT_CLASSIFICATION_SIGNAL,
+    FEW_SAMPLES,
     PRESET_COVARIATES,
-    Covariate,
-    _covariate_effects,
-    _make_covariate,
-    _resolve_covariates,
-    _resolve_feature_subset,
+    SiteEffect,
+)
+from ._simulation_core import (
+    RandomStateLike,
+    _apply_site_effects,
+    _check_integers,
+    _draw_noise,
+    _format_outputs,
+    _ground_truth,
+    _samples_per_site,
+    _SharedParams,
+    _signal_type_and_strength,
+    _simulate_covariates,
+    _validate_shared,
 )
 
 
@@ -28,18 +39,7 @@ __all__ = [
     "make_multisite_classification",
 ]
 
-# Generators of the base problem
-SIGNAL_TYPES = Literal["linear", "circles", "moons", "blobs", "gaussian_quantiles"]
-# Types of Effect of Site (EoS); several can be combined
-SITE_EFFECT_TYPES = Literal["location", "scale", "variance", "nonlinear", "dropout", "combat", "class_interaction"]
-_DEFAULT_SIGNAL = {"linear": 1.0}
-_DEFAULT_SITE_EFFECT = {"location": 3.0}
-# Samplers such as SMOTE need k_neighbors + 1 samples of a class in a site (6 by default). Only used for warning.
-_FEW_SAMPLES = 6
-
 logger = get_logger(src="make_multisite_classification")
-
-SiteEffect = Mapping[str, float | Sequence[float]]
 
 
 @overload
@@ -58,7 +58,7 @@ def make_multisite_classification(
     site_names: Sequence | None = None,
     as_frame: bool = False,
     return_ground_truth: Literal[False] = False,
-    random_state: int | np.random.RandomState | np.random.Generator | None = 42,
+    random_state: RandomStateLike = 42,
     **kwargs,
 ) -> tuple[Any, Any, Any]: ...
 
@@ -80,7 +80,7 @@ def make_multisite_classification(
     as_frame: bool = False,
     *,
     return_ground_truth: Literal[True],
-    random_state: int | np.random.RandomState | np.random.Generator | None = 42,
+    random_state: RandomStateLike = 42,
     **kwargs,
 ) -> tuple[Any, Any, Any, dict[str, Any]]: ...
 
@@ -100,7 +100,7 @@ def make_multisite_classification(
     site_names: Sequence | None = None,
     as_frame: bool = False,
     return_ground_truth: bool = False,
-    random_state: int | np.random.RandomState | np.random.Generator | None = 42,
+    random_state: RandomStateLike = 42,
     **kwargs,
 ) -> tuple[Any, ...]:
     """Simulate multi-site classification data with signal, covariates, noise and site effects.
@@ -117,7 +117,7 @@ def make_multisite_classification(
        differ between sites) and their effects, the same in every site, are
        added to the signal.
     4. Independent Gaussian noise is added. Signal, covariate effects and
-       noise form the data without site effect is obtained (``site_free``).
+       noise form the data without site effect (``site_free``).
     5. The Effect of Site (EoS) of ``site_effect`` is applied.
 
     **Units.** All strengths (site effects, noise, covariate effects) are in
@@ -190,8 +190,11 @@ def make_multisite_classification(
           deviation drawn from U(0, s) reference SDs.
         - ``"nonlinear"``: adds ``w * (X - c)**2 / sd`` with ``w`` drawn
           from U(0, 0.1 s).
-        - ``"dropout"``: sets values to 0 with probability ``min(0.1 s, 1)``
-          (whole features of a site).
+        - ``"dropout"``: replaces values, e.g. by ``np.nan`` to simulate
+          missing values. It takes a dict ``{"value": v, "prob": p}``: in
+          each site, every affected feature is replaced by ``v`` with
+          probability ``p`` (a float or one per site). With ``"per":
+          "value"``, single values are replaced instead of whole features.
         - ``"combat"``: the generative model of ComBat, location and scale
           with the priors of its empirical Bayes step: offsets
           ``gamma ~ N(g, (s/4)**2)`` with a site mean ``g`` drawn from
@@ -262,6 +265,9 @@ def make_multisite_classification(
           the offsets of ``"class_interaction"``;
         - ``"intensity"``: the per-sample intensity of the site effect
           (``site_effect_heterogeneity``; all 1 when it is 0);
+        - ``"dropout_mask"``: True where ``"dropout"`` replaced a value
+          (``site_effect`` is then not ``X - site_free`` but
+          ``value - site_free`` there, NaN for a NaN value);
         - ``"site_effect_features"``: indices of the affected features;
         - ``"feature_scale"``: the reference SD of each feature.
 
@@ -332,7 +338,8 @@ def make_multisite_classification(
         random_state=random_state,
         kwargs=kwargs,
     )
-    rng = s_params.random_state
+    shared = s_params.shared
+    rng = shared.random_state
 
     # Steps 1-2: a pool with exactly the class counts the sites need, split without replacement.
     X_pool, y_pool = _generate_base_samples(
@@ -353,63 +360,37 @@ def make_multisite_classification(
 
     # Step 3: covariates, drawn per site, and their effects, the same in every site
     covariate_values, covariate_effect, covariate_coefficients = _simulate_covariates(
-        s_params.covariates, site_rows, s_params.n_features, feature_scale, rng
+        shared.covariates, site_rows, s_params.n_features, feature_scale, rng
     )
 
     # Step 4: noise; signal + covariate effects + noise is the data without site effect
-    noise = np.zeros_like(signal_samples)
-    for site, rows in enumerate(site_rows):
-        noise[rows] = rng.normal(size=(len(rows), s_params.n_features)) * s_params.noise_strength[site] * feature_scale
+    noise = _draw_noise(site_rows, s_params.n_features, shared.noise_strength, feature_scale, rng)
     site_free = signal_samples + covariate_effect + noise
     center = (signal_samples + noise).mean(axis=0) + covariate_effect  # expected value of each sample without site effect
 
     # Step 5: site effects
-    X, site_location, site_scale, site_class_location, intensity = _apply_site_effects(
-        site_free, center, y, site_rows, feature_scale, s_params, rng
+    effects = _apply_site_effects(
+        site_free, center, site_rows, feature_scale, shared.site_effect, rng, classes=y, n_classes=s_params.n_classes
     )
 
-    logger.info(f"Generated {len(X)} samples across {s_params.n_sites} sites")
+    logger.info(f"Generated {len(y)} samples across {s_params.n_sites} sites")
     logger.debug(f"Class counts per site: {s_params.class_counts.tolist()}")
 
     truth = None
     if return_ground_truth:
-        truth = {
-            "signal": signal_samples,
-            "covariates": covariate_values,
-            "covariate_effect": covariate_effect,
-            "covariate_coefficients": covariate_coefficients,
-            "noise": noise,
-            "site_free": site_free,
-            "site_effect": X - site_free,
-            "site_location": site_location,
-            "site_scale": site_scale,
-            "site_class_location": site_class_location,
-            "intensity": intensity,
-            "site_effect_features": s_params.affected_features,
-            "feature_scale": feature_scale,
-        }
-    return _format_outputs(X, y, site_codes, s_params.site_names, as_frame, truth)
-
-
-def _format_outputs(
-    X: npt.NDArray,
-    y: npt.NDArray,
-    site_codes: npt.NDArray,
-    site_names: npt.NDArray,
-    as_frame: bool,
-    truth: dict[str, Any] | None,
-) -> tuple:
-    """Label the sites with ``site_names``; return arrays, or DataFrames and Series when ``as_frame``."""
-    sites = site_names[site_codes]
-    if as_frame:
-        features = [f"feature_{j}" for j in range(X.shape[1])]
-        index = pd.Index(site_names, name="site")
-        X, y, sites = pd.DataFrame(X, columns=features), pd.Series(y, name="target"), pd.Series(sites, name="site")
-        if truth is not None:
-            truth["covariates"] = pd.DataFrame(truth["covariates"])
-            truth["site_location"] = pd.DataFrame(truth["site_location"], index=index, columns=features)
-            truth["site_scale"] = pd.DataFrame(truth["site_scale"], index=index, columns=features)
-    return (X, y, sites) if truth is None else (X, y, sites, truth)
+        truth = _ground_truth(
+            signal=signal_samples,
+            site_free=site_free,
+            effects=effects,
+            covariate_values=covariate_values,
+            covariate_effect=covariate_effect,
+            covariate_coefficients=covariate_coefficients,
+            noise=noise,
+            params=shared.site_effect,
+            feature_scale=feature_scale,
+        )
+    labels = {"target": y, "site": shared.site_names[site_codes]}
+    return _format_outputs(effects.X, labels, shared.site_names, as_frame, truth)
 
 
 ##########################################################################################################
@@ -417,21 +398,15 @@ def _format_outputs(
 ##########################################################################################################
 @dataclass
 class _SimParams:
-    """Validated and resolved simulation parameters."""
+    """Validated and resolved parameters of ``make_multisite_classification``."""
 
-    random_state: np.random.RandomState
     n_sites: int
     n_features: int
     n_classes: int
     class_counts: npt.NDArray  # (n_sites, n_classes)
     signal_type: str
     signal_strength: float
-    noise_strength: npt.NDArray  # (n_sites,)
-    site_effect: dict[str, npt.NDArray]  # type -> strength per site, (n_sites,)
-    affected_features: npt.NDArray
-    heterogeneity: float
-    covariates: list[Covariate] | None
-    site_names: npt.NDArray
+    shared: _SharedParams
 
 
 def _validate_inputs(**params: Any) -> _SimParams:
@@ -439,105 +414,47 @@ def _validate_inputs(**params: Any) -> _SimParams:
     n_sites, n_features, n_classes = _check_integers(
         n_sites=params["n_sites"], n_features=params["n_features"], n_classes=params["n_classes"]
     )
-    samples_per_site = _validate_sizes(n_sites, params["n_samples"], n_features, n_classes)
+    if n_features <= 0:
+        raise ValueError(f"n_features must be positive, got {n_features}")
+    if n_classes < 2:
+        raise ValueError(f"n_classes must be at least 2, got {n_classes}")
+    samples_per_site = _samples_per_site(params["n_samples"], n_sites)
     signal_type, signal_strength, n_classes, n_features = _validate_signal(
         params["signal"], n_classes, n_features, params["kwargs"]
     )
     balance = _validate_balance_per_site(params["balance_per_site"], n_sites, n_classes)
     class_counts = np.array([_allocate(n, proportions) for n, proportions in zip(samples_per_site, balance, strict=True)])
     _check_class_counts(class_counts)
+    shared = _validate_shared(
+        n_sites=n_sites,
+        n_features=n_features,
+        noise_strength=params["noise_strength"],
+        site_effect=params["site_effect"],
+        site_effect_features=params["site_effect_features"],
+        site_effect_heterogeneity=params["site_effect_heterogeneity"],
+        covariates=params["covariates"],
+        site_names=params["site_names"],
+        random_state=params["random_state"],
+        with_classes=True,
+    )
     return _SimParams(
-        random_state=_check_random_state(params["random_state"]),
         n_sites=n_sites,
         n_features=n_features,
         n_classes=n_classes,
         class_counts=class_counts,
         signal_type=signal_type,
         signal_strength=signal_strength,
-        noise_strength=_per_site(params["noise_strength"], n_sites, "noise_strength"),
-        site_effect=_validate_site_effect(params["site_effect"], n_sites),
-        affected_features=_resolve_feature_subset(params["site_effect_features"], n_features, "site_effect_features"),
-        heterogeneity=_check_strength(params["site_effect_heterogeneity"], "site_effect_heterogeneity"),
-        covariates=_resolve_covariates(params["covariates"], n_sites),
-        site_names=_validate_site_names(params["site_names"], n_sites),
+        shared=shared,
     )
-
-
-def _check_random_state(seed: int | np.random.RandomState | np.random.Generator | None) -> np.random.RandomState:
-    """Return a RandomState; a NumPy Generator seeds a new RandomState."""
-    if isinstance(seed, np.random.Generator):
-        return np.random.RandomState(int(seed.integers(0, 2**32 - 1)))
-    return check_random_state(seed)
-
-
-def _check_integers(**values: object) -> tuple[int, ...]:
-    """Check that the size parameters are integers (not booleans, not floats)."""
-    for name, value in values.items():
-        if isinstance(value, bool) or not isinstance(value, numbers.Integral):
-            raise TypeError(f"{name} must be an int, got {value!r} ({type(value).__name__}).")
-    return tuple(int(value) for value in values.values())  # type: ignore[call-overload]
-
-
-def _check_strength(value: object, name: str) -> float:
-    """Check a single non-negative, finite number."""
-    if isinstance(value, bool) or not isinstance(value, numbers.Real):
-        raise TypeError(f"Invalid type for {name}: must be a float, got {value!r} ({type(value).__name__}).")
-    if not (np.isfinite(value) and value >= 0):
-        raise ValueError(f"{name} must be non-negative and finite, got {value}")
-    return float(value)
-
-
-def _per_site(value: object, n_sites: int, name: str) -> npt.NDArray:
-    """Broadcast a non-negative strength to all sites, or validate one strength per site."""
-    if isinstance(value, numbers.Real) and not isinstance(value, bool):
-        return np.full(n_sites, _check_strength(value, name))
-    if not isinstance(value, (list, tuple, np.ndarray)):
-        raise TypeError(f"Invalid type for {name}: must be a float or list[float], got {type(value)}")
-    if len(value) != n_sites:
-        raise ValueError(f"{name} must have length n_sites ({n_sites}), got {len(value)}")
-    return np.array([_check_strength(v, f"{name}[{i}]") for i, v in enumerate(value)])
-
-
-def _validate_sizes(n_sites: int, n_samples: int | Sequence[int], n_features: int, n_classes: int) -> npt.NDArray:
-    """Validate the problem size and return the number of samples of each site."""
-    if n_sites < 1:
-        raise ValueError(f"n_sites must be at least 1, got {n_sites}")
-    if n_sites == 1:
-        logger.warning("n_sites is 1, which may not be suitable for testing multi-site methods.")
-    if n_features <= 0:
-        raise ValueError(f"n_features must be positive, got {n_features}")
-    if n_classes < 2:
-        raise ValueError(f"n_classes must be at least 2, got {n_classes}")
-
-    if isinstance(n_samples, numbers.Integral) and not isinstance(n_samples, bool):
-        if n_samples < n_sites:
-            raise ValueError(f"n_samples ({n_samples}) is less than n_sites ({n_sites}). Some sites will have 0 samples.")
-        samples_per_site = np.full(n_sites, n_samples // n_sites, dtype=int)
-        samples_per_site[: n_samples % n_sites] += 1
-        return samples_per_site
-
-    samples_per_site = np.asarray(n_samples)
-    if samples_per_site.ndim != 1 or not np.issubdtype(samples_per_site.dtype, np.integer):
-        raise TypeError(f"n_samples must be int or list[int], got {type(n_samples)}.")
-    if len(samples_per_site) != n_sites:
-        raise ValueError(f"n_samples has len {len(samples_per_site)} and does not match with n_sites={n_sites}")
-    if samples_per_site.min() < 1:
-        raise ValueError(f"Every site needs at least 1 sample, got n_samples={samples_per_site.tolist()}")
-    return samples_per_site.astype(int)
 
 
 def _validate_signal(
     signal: Mapping[str, float] | None, n_classes: int, n_features: int, kwargs: dict
 ) -> tuple[str, float, int, int]:
     """Return the signal type and strength, and the number of classes and features the generator produces."""
-    signal = _DEFAULT_SIGNAL if signal is None else signal
-    if not isinstance(signal, Mapping) or len(signal) != 1:
-        error = ValueError if isinstance(signal, Mapping) else TypeError
-        raise error(f"signal must be a dict with one type and its strength, e.g. {{'linear': 1.0}}, got {signal!r}.")
-    ((signal_type, strength),) = signal.items()
-    if signal_type not in get_args(SIGNAL_TYPES):
-        raise ValueError(f"Unsupported signal type: {signal_type!r}. Choose from {get_args(SIGNAL_TYPES)}.")
-    strength = _check_strength(strength, f"signal['{signal_type}']")
+    signal_type, strength = _signal_type_and_strength(
+        signal, DEFAULT_CLASSIFICATION_SIGNAL, get_args(CLASSIFICATION_SIGNAL_TYPES)
+    )
 
     if signal_type in {"moons", "circles"}:
         if n_features != 2:
@@ -566,31 +483,6 @@ def _validate_signal(
     return signal_type, strength, n_classes, n_features
 
 
-def _validate_site_effect(site_effect: SiteEffect | None, n_sites: int) -> dict[str, npt.NDArray]:
-    """Return the strength of every site effect type in every site, shape (n_sites,) per type."""
-    site_effect = _DEFAULT_SITE_EFFECT if site_effect is None else site_effect
-    if not isinstance(site_effect, Mapping):
-        raise TypeError(f"site_effect must be a dict {{type: strength}}, e.g. {{'location': 3.0}}, got {site_effect!r}.")
-    strengths = {}
-    for name, strength in site_effect.items():
-        if name not in get_args(SITE_EFFECT_TYPES):
-            raise ValueError(f"Unsupported site effect type: {name!r}. Choose from {get_args(SITE_EFFECT_TYPES)}.")
-        strengths[name] = _per_site(strength, n_sites, f"site_effect['{name}']")
-    return strengths
-
-
-def _validate_site_names(site_names: Sequence | None, n_sites: int) -> npt.NDArray:
-    """Return the site labels (default 0 to n_sites - 1), checking their number and uniqueness."""
-    if site_names is None:
-        return np.arange(n_sites)
-    labels = np.asarray(site_names)
-    if labels.ndim != 1 or len(labels) != n_sites:
-        raise ValueError(f"site_names must have one label per site ({n_sites}), got {list(site_names)}.")
-    if len(set(labels.tolist())) != n_sites:
-        raise ValueError(f"site_names must be distinct, got {labels.tolist()}.")
-    return labels
-
-
 ##########################################################################################################
 ################################################# BALANCE ################################################
 ##########################################################################################################
@@ -606,7 +498,7 @@ def _validate_balance_per_site(
         raise TypeError(f"balance_per_site must be a list, got {type(balance_per_site)}")
 
     nested = len(balance_per_site) > 0 and isinstance(balance_per_site[0], (list, tuple, np.ndarray))
-    rows = balance_per_site if nested else [balance_per_site] * n_sites
+    rows: list[Any] = list(balance_per_site) if nested else [balance_per_site] * n_sites
     if len(rows) != n_sites:
         raise ValueError(f"balance_per_site must have length n_sites ({n_sites}), got {len(rows)}")
     for i, row in enumerate(rows):
@@ -653,11 +545,11 @@ def _check_class_counts(class_counts: npt.NDArray) -> None:
             f"Class(es) {empty.tolist()} have proportion 0 in every site of balance_per_site; "
             "every class must be present in at least one site."
         )
-    few = np.argwhere((class_counts > 0) & (class_counts < _FEW_SAMPLES))
+    few = np.argwhere((class_counts > 0) & (class_counts < FEW_SAMPLES))
     if len(few) > 0:
         cells = ", ".join(f"site {s} class {c}: {class_counts[s, c]}" for s, c in few[:5])
         logger.warning(
-            f"Some classes have fewer than {_FEW_SAMPLES} samples in a site ({cells}); many methods need more "
+            f"Some classes have fewer than {FEW_SAMPLES} samples in a site ({cells}); many methods need more "
             "(e.g. SMOTE-based samplers need k_neighbors + 1)."
         )
 
@@ -685,7 +577,7 @@ def _generate_base_samples(
     n_classes : int
         Number of classes.
     signal_type : str
-        One of ``SIGNAL_TYPES``.
+        One of ``CLASSIFICATION_SIGNAL_TYPES``.
     signal_strength : float
         Strength of the signal separating the classes.
     random_state : RandomState instance
@@ -726,17 +618,18 @@ def _generate_base_samples(
                 break
             n_pool = int(1.2 * n_pool) + n_classes
     elif signal_type == "circles":
-        X, y = make_circles(n_samples=tuple(class_counts), random_state=random_state, **kwargs)
+        X, y = make_circles(n_samples=cast("Any", tuple(class_counts)), random_state=random_state, **kwargs)
     elif signal_type == "moons":
-        X, y = make_moons(n_samples=tuple(class_counts), random_state=random_state, **kwargs)
+        X, y = make_moons(n_samples=cast("Any", tuple(class_counts)), random_state=random_state, **kwargs)
     elif signal_type == "blobs":
-        X, y = make_blobs(
-            n_samples=list(class_counts),
+        blobs = make_blobs(
+            n_samples=cast("Any", list(class_counts)),
             n_features=n_features,
             center_box=(-signal_strength, signal_strength),
             random_state=random_state,
             **kwargs,
         )
+        X, y = blobs[0], blobs[1]
     else:  # gaussian_quantiles: classes are equal-sized quantile shells
         X, y = make_gaussian_quantiles(
             cov=signal_strength,
@@ -747,7 +640,7 @@ def _generate_base_samples(
             **kwargs,
         )
 
-    return X.astype(float), y
+    return np.asarray(X, dtype=float), np.asarray(y)
 
 
 def _split_pool_by_site(y: npt.NDArray, class_counts: npt.NDArray, random_state: np.random.RandomState) -> list[npt.NDArray]:
@@ -774,126 +667,3 @@ def _within_class_sd(X: npt.NDArray, y: npt.NDArray) -> npt.NDArray:
     sd = np.sqrt((residuals**2).sum(axis=0) / dof)
     sd[~(sd > 0)] = 1.0
     return sd
-
-
-def _simulate_covariates(
-    specs: list[Covariate] | None,
-    site_rows: list[npt.NDArray],
-    n_features: int,
-    feature_scale: npt.NDArray,
-    random_state: np.random.RandomState,
-) -> tuple[dict[str, npt.NDArray], npt.NDArray, dict[str, npt.NDArray]]:
-    """Draw the covariates of every site and compute their effects on the features (the same in every site)."""
-    n_total = sum(len(rows) for rows in site_rows)
-    if specs is None:
-        return {}, np.zeros((n_total, n_features)), {}
-    parts: dict[str, list[npt.NDArray]] = {spec.name: [] for spec in specs}
-    for site, rows in enumerate(site_rows):
-        for name, values in _make_covariate(specs, site, len(rows), random_state).items():
-            parts[name].append(values)
-    values = {name: np.concatenate(chunks) for name, chunks in parts.items()}
-    effect, coefficients = _covariate_effects(specs, values, n_features, feature_scale, random_state)
-    return values, effect, coefficients
-
-
-##########################################################################################################
-############################################# EoS ########################################################
-##########################################################################################################
-def _apply_site_effects(
-    site_free: npt.NDArray,
-    center: npt.NDArray,
-    y: npt.NDArray,
-    site_rows: list[npt.NDArray],
-    feature_scale: npt.NDArray,
-    s_params: _SimParams,
-    random_state: np.random.RandomState,
-) -> tuple[npt.NDArray, npt.NDArray, npt.NDArray, npt.NDArray, npt.NDArray]:
-    """Apply the site effects of every site.
-
-    Returns
-    -------
-    X : np.ndarray of shape (n_samples, n_features)
-        Data with site effects.
-    site_location, site_scale : np.ndarray of shape (n_sites, n_features)
-        Offset (data units) and factor of each site.
-    site_class_location : np.ndarray of shape (n_sites, n_classes, n_features)
-        Offsets of the site-by-class interaction (data units).
-    intensity : np.ndarray of shape (n_samples,)
-        Per-sample intensity of the site effect.
-
-    """
-    n_features = site_free.shape[1]
-    affected = np.zeros(n_features, dtype=bool)
-    affected[s_params.affected_features] = True
-    h = s_params.heterogeneity
-    # Always drawn, so that changing the heterogeneity keeps the site parameters (same random sequence)
-    intensity = np.exp(h * random_state.normal(size=len(site_free)) - h**2 / 2)
-
-    X = site_free.copy()
-    site_location = np.zeros((s_params.n_sites, n_features))
-    site_scale = np.ones((s_params.n_sites, n_features))
-    site_class_location = np.zeros((s_params.n_sites, s_params.n_classes, n_features))
-    for site, rows in enumerate(site_rows):
-        strength = {name: s[site] for name, s in s_params.site_effect.items()}
-        log_factor, offset = _site_parameters(strength, n_features, random_state)
-        k = strength.get("class_interaction", 0.0)
-        class_offset = random_state.uniform(-k / 2, k / 2, size=(s_params.n_classes, n_features))
-        log_factor[~affected], offset[~affected], class_offset[:, ~affected] = 0.0, 0.0, 0.0
-        site_scale[site] = np.exp(log_factor)
-        site_location[site] = offset * feature_scale
-        site_class_location[site] = class_offset * feature_scale
-
-        a = intensity[rows, None]
-        deviation = site_free[rows] - center[rows]
-        # Written as increments of site_free, so that a site without effect is left exactly unchanged
-        Xs = site_free[rows] + deviation * np.expm1(a * log_factor) + a * (offset + class_offset[y[rows]]) * feature_scale
-        Xs = _apply_other_effects(Xs, deviation, a, strength, affected, feature_scale, random_state)
-        X[rows] = Xs
-        logger.debug(f"Site {site}: EoS strengths {strength}")
-    return X, site_location, site_scale, site_class_location, intensity
-
-
-def _site_parameters(
-    strength: dict[str, float], n_features: int, random_state: np.random.RandomState
-) -> tuple[npt.NDArray, npt.NDArray]:
-    """Per-feature log-factor and offset (reference-SD units) of one site, from the scale, location and combat types."""
-    log_factor = np.zeros(n_features)
-    offset = np.zeros(n_features)
-    if "combat" in strength:
-        s = strength["combat"]
-        # Inverse gamma of shape 6 (CV 0.5) with mean m = exp(U(-0.2 s, 0.2 s)): 1 / Gamma(6, scale=1 / (5 m))
-        mean_variance = np.exp(random_state.uniform(-0.2 * s, 0.2 * s))
-        variance_factor = 1.0 / random_state.gamma(6.0, 1.0 / (5.0 * mean_variance), size=n_features)
-        log_factor += 0.5 * np.log(variance_factor) if s > 0 else 0.0
-        offset += random_state.uniform(-s / 2, s / 2) + random_state.normal(0.0, s / 4, size=n_features)
-    if "scale" in strength:
-        s = strength["scale"]
-        log_factor += random_state.uniform(-0.1 * s, 0.1 * s, size=n_features)
-    if "location" in strength:
-        s = strength["location"]
-        offset += random_state.uniform(-s / 2, s / 2, size=n_features)
-    return log_factor, offset
-
-
-def _apply_other_effects(
-    X: npt.NDArray,
-    deviation: npt.NDArray,
-    intensity: npt.NDArray,
-    strength: dict[str, float],
-    affected: npt.NDArray,
-    feature_scale: npt.NDArray,
-    random_state: np.random.RandomState,
-) -> npt.NDArray:
-    """Apply the variance, nonlinear and dropout site effects of one site (to the affected features)."""
-    n_features = X.shape[1]
-    if "variance" in strength:
-        sd = random_state.uniform(0.0, strength["variance"], size=n_features) * affected
-        X = X + random_state.normal(size=X.shape) * sd * intensity * feature_scale
-    if "nonlinear" in strength:
-        weight = random_state.uniform(0.0, 0.1 * strength["nonlinear"], size=n_features) * affected
-        X = X + intensity * weight * np.square(deviation) / feature_scale
-    if "dropout" in strength:
-        keep_probability = float(np.clip(1.0 - 0.1 * strength["dropout"], 0.0, 1.0))
-        keep = random_state.binomial(1, keep_probability, size=n_features).astype(bool) | ~affected
-        X = X * keep
-    return X
