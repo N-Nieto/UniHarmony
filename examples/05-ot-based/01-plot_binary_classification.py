@@ -25,7 +25,7 @@ verbosity("warning")
 # Data generation
 # ---------------
 
-X, y, sites = make_multisite_classification(n_sites=3, n_features=2, site_effect_strength=10)
+X, y, sites = make_multisite_classification(n_sites=3, n_features=2, site_effect={"location": 10})
 
 X_train, X_val, y_train, y_val, sites_train, sites_val = train_test_split(X, y, sites, test_size=0.5, random_state=42)
 

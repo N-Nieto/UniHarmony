@@ -27,7 +27,7 @@ clf = LogisticRegression()
 # Data generation
 # ---------------
 
-X, y, sites = make_multisite_classification(n_sites=10, signal_strength=0.5)
+X, y, sites = make_multisite_classification(n_sites=10, signal={"linear": 0.5})
 
 X_train, X_test, y_train, y_test, sites_train, sites_test = train_test_split(X, y, sites)
 

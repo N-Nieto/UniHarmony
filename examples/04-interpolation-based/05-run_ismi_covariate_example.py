@@ -11,7 +11,8 @@ from uniharmony.interpolation import InterSiteMatchedInterpolation
 from uniharmony.datasets import make_multisite_classification
 
 # Generate sample data with 3 sites
-X, y, sites, covars = make_multisite_classification(n_samples=3000, n_sites=3, covariates=["age", "sex"])
+X, y, sites, truth = make_multisite_classification(n_samples=3000, n_sites=3, covariates=["age", "sex"], return_ground_truth=True)
+covars = truth["covariates"]
 
 # Define covariates for matching
 categorical_covariate = covars["sex"].reshape(-1,1)

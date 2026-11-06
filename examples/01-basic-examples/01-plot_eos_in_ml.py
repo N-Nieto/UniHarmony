@@ -37,7 +37,7 @@ cv = StratifiedKFold(n_splits=10, shuffle=True, random_state=random_state)
 
 # First, lets create an example without EoS and classes balanced across site.
 X, y, sites = make_multisite_classification(
-    n_sites=3, n_features=2, signal_strength=1, site_effect_strength=0, signal_type="blobs", random_state=random_state
+    n_sites=3, n_features=2, signal={"blobs": 1}, site_effect={"location": 0}, random_state=random_state
 )
 # Create DataFrame for easier plotting
 df = pd.DataFrame(
@@ -63,7 +63,7 @@ plot_decision_boundary_2d(ax, clf)
 
 
 X, y, sites = make_multisite_classification(
-    n_sites=3, n_features=2, signal_strength=1, site_effect_strength=4, signal_type="blobs", random_state=random_state
+    n_sites=3, n_features=2, signal={"blobs": 1}, site_effect={"location": 4}, random_state=random_state
 )
 
 # Create DataFrame for easier plotting
@@ -89,7 +89,7 @@ plot_decision_boundary_2d(ax, clf)
 # %%
 
 X, y, sites = make_multisite_classification(
-    n_sites=3, n_features=2, signal_strength=0.01, site_effect_strength=4, signal_type="blobs", random_state=random_state
+    n_sites=3, n_features=2, signal={"blobs": 0.01}, site_effect={"location": 4}, random_state=random_state
 )
 
 # Create DataFrame for easier plotting
@@ -119,9 +119,8 @@ print(f"Mean accuracy: {scores.mean():.4f}")
 X, y, sites = make_multisite_classification(
     n_sites=3,
     n_features=2,
-    signal_strength=0.01,
-    site_effect_strength=4,
-    signal_type="blobs",
+    signal={"blobs": 0.01},
+    site_effect={"location": 4},
     random_state=random_state,
     balance_per_site=[[0.1, 0.9], [0.5, 0.5], [0.9, 0.1]],
 )
@@ -154,9 +153,8 @@ print(f"Mean accuracy: {scores.mean():.4f}")
 X, y, sites = make_multisite_classification(
     n_sites=3,
     n_features=2,
-    signal_strength=0.01,
-    site_effect_strength=0,
-    signal_type="blobs",
+    signal={"blobs": 0.01},
+    site_effect={"location": 0},
     random_state=23,
     balance_per_site=[[0.1, 0.9], [0.5, 0.5], [0.9, 0.1]],
 )

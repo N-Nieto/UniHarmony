@@ -27,8 +27,8 @@ sns.set_theme(style="whitegrid")
 # ---------------
 X, y, sites = make_multisite_classification(
     n_features=2,
-    signal_strength=0.5,
-    site_effect_strength=4,
+    signal={"linear": 0.5},
+    site_effect={"location": 4},
 )
 random_state = 42
 clf = LogisticRegression(random_state=random_state)

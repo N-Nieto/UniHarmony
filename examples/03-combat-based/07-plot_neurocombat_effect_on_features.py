@@ -27,7 +27,7 @@ sns.set_theme(style="whitegrid")
 
 X, y, sites = make_multisite_classification(
     n_features=2,
-    site_effect_strength=4,
+    site_effect={"location": 4},
 )
 df = pd.DataFrame({"Target": y, "Site": sites})
 

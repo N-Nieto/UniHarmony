@@ -32,13 +32,13 @@ verbosity("warning")
 # ---------------
 # Let's simulate data with only Effects of Site (EoS) or only real signal, and see how tSNE groups the target and Eos.
 
-X, y, sites = make_multisite_classification(n_sites=5, signal_strength=10, site_effect_strength=0)
+X, y, sites = make_multisite_classification(n_sites=5, signal={"linear": 10}, site_effect={"location": 0})
 # Using the function as default. The function will use t-SNE as default dimensionality reductor.
 plot_2d_projection(X, sites, y)
 
 # %%
 
-X, y, sites = make_multisite_classification(n_sites=5, signal_strength=0, site_effect_strength=10, random_state=23)
+X, y, sites = make_multisite_classification(n_sites=5, signal={"linear": 0}, site_effect={"location": 10}, random_state=23)
 plot_2d_projection(X, sites, y)
 plt.show()
 
@@ -53,13 +53,13 @@ plt.show()
 
 # %%
 
-X, y, sites = make_multisite_classification(n_classes=2, n_sites=5, n_features=1200, signal_strength=10, site_effect_strength=0)
+X, y, sites = make_multisite_classification(n_classes=2, n_sites=5, n_features=1200, signal={"linear": 10}, site_effect={"location": 0})
 # We can also pass the method as string. Only a few methods are available to pass as string in "method"
 plot_2d_projection(X, sites, y, method="pca")
 
 # %%
 
-X, y, sites = make_multisite_classification(n_classes=2, n_sites=5, n_features=120, signal_strength=0, site_effect_strength=10)
+X, y, sites = make_multisite_classification(n_classes=2, n_sites=5, n_features=120, signal={"linear": 0}, site_effect={"location": 10})
 fig, axes = plot_2d_projection(X, sites, y, method="pca")
 plt.show()
 
@@ -69,13 +69,13 @@ plt.show()
 # ------------------------
 
 dim_reductor = FastICA(n_components=2)
-X, y, sites = make_multisite_classification(n_classes=2, n_sites=5, n_features=1200, signal_strength=10, site_effect_strength=0)
+X, y, sites = make_multisite_classification(n_classes=2, n_sites=5, n_features=1200, signal={"linear": 10}, site_effect={"location": 0})
 # We can also pass directly an instance of the dimensionality reductor that we want to use.
 plot_2d_projection(X, sites, y, dim_reductor=dim_reductor)
 
 # %%
 
-X, y, sites = make_multisite_classification(n_classes=2, n_sites=5, n_features=120, signal_strength=0, site_effect_strength=10)
+X, y, sites = make_multisite_classification(n_classes=2, n_sites=5, n_features=120, signal={"linear": 0}, site_effect={"location": 10})
 fig, axes = plot_2d_projection(X, sites, y, dim_reductor=dim_reductor)
 plt.show()
 

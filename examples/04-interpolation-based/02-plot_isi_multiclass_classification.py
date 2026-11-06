@@ -31,7 +31,7 @@ X, y, sites = make_multisite_classification(
     n_features=2,
     # one value per class, one list per site.
     balance_per_site=[[0.3, 0.1, 0.6], [0.6, 0.1, 0.3]],
-    signal_strength=0,
+    signal={"linear": 0},
     random_state=23,
 )
 df = pd.DataFrame({"Target": y, "Site": sites})

@@ -49,14 +49,16 @@ snr = Covariate(
     ],
 )
 
-X, y, sites, covars = make_multisite_classification(
+X, y, sites, truth = make_multisite_classification(
     n_sites=3,
     n_samples=600,
     n_features=2,
-    site_effect_strength=6,
+    site_effect={"location": 6},
     covariates=["age", "sex", "quality", snr],
     random_state=42,
+    return_ground_truth=True,
 )
+covars = truth["covariates"]
 
 iqms = np.column_stack([covars["quality"], covars["snr"]])
 biological_covariates = np.column_stack([covars["age"], covars["sex"]])

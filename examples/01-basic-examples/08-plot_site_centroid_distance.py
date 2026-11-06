@@ -44,7 +44,7 @@ X, y, sites = make_multisite_classification(
     n_sites=4,
     n_samples=1200,
     n_features=20,
-    site_effect_strength=1.5,
+    site_effect={"location": 1.5},
     random_state=random_state,
 )
 X_train, X_test, y_train, y_test, sites_train, sites_test = train_test_split(

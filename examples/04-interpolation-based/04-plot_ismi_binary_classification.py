@@ -29,13 +29,16 @@ sns.set_theme(style="whitegrid")
 # Data generation
 # ---------------
 # Generate Synthetic Multisite Data
-X, y, sites, covars = make_multisite_classification(n_samples=600,
+X, y, sites, truth = make_multisite_classification(n_samples=600,
                                             n_features=2,
                                             n_classes=2,
                                             n_sites=3,
                                             balance_per_site=[[0.2, 0.8],[0.5, 0.5],[0.8, 0.2]],
-                                            signal_type="blobs",
-                                            covariates=["Age", "sex"])
+                                            signal={"blobs": 1.0},
+                                            covariates=["Age", "sex"],
+    return_ground_truth=True,
+)
+covars = truth["covariates"]
 
 
 # Reshape for the interpolator
