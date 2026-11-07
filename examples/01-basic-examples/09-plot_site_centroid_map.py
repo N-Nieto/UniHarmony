@@ -44,7 +44,7 @@ X, y, sites = make_multisite_classification(
     n_sites=5,
     n_samples=[600, 500, 400, 300, 40],
     n_features=50,
-    site_effect_strength=[1e-3, 0.5, 1, 1.5, 1e-3],  # 1e-3: (practically) no EoS
+    site_effect={"location": [1e-3, 0.5, 1, 1.5, 1e-3]},  # 1e-3: (practically) no EoS
     random_state=random_state,
 )
 
@@ -124,7 +124,7 @@ X, y, sites = make_multisite_classification(
     n_samples=600,
     n_features=20,
     balance_per_site=[[0.8, 0.2], [0.2, 0.8]],
-    site_effect_strength=0,
+    site_effect={"location": 0},
     random_state=random_state,
 )
 for label, target in {"Ignoring diagnosis": None, "Within diagnosis (y=y)": y}.items():

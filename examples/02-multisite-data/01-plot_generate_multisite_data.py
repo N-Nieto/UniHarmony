@@ -135,9 +135,9 @@ fig, axes = plt.subplots(1, 5, figsize=[20, 7])
 for idx, signal_type in enumerate(["linear", "moons", "circles", "blobs", "gaussian_quantiles"]):
     X, y, sites = make_multisite_classification(
         n_features=2,
-        signal_type=signal_type,
+        signal={signal_type: 1.0},
+        site_effect={"location": 0},
         noise_strength=0.1,
-        site_effect_strength=0,
     )
 
     df_plot = pd.DataFrame(
@@ -163,9 +163,9 @@ fig, axes = plt.subplots(1, 3, figsize=[15, 5])
 for idx, signal_st in enumerate([0, 1, 5]):
     X, y, sites = make_multisite_classification(
         n_features=2,
-        signal_strength=signal_st,
+        signal={"linear": signal_st},
+        site_effect={"location": 0},
         noise_strength=0.1,
-        site_effect_strength=0,
     )
 
     df_plot = pd.DataFrame(
@@ -194,11 +194,9 @@ for idx, site_st in enumerate([0, 1, 5]):
     X, y, sites = make_multisite_classification(
         n_sites=4,
         n_features=2,
-        signal_strength=0.001,
         noise_strength=0,
-        site_effect_strength=site_st,
-        signal_type="circles",
-        site_effect_homogeneous=True,
+        signal={"circles": 1.0},
+        site_effect={"location": site_st},
     )
 
     df_plot = pd.DataFrame(
@@ -218,16 +216,14 @@ plt.tight_layout()
 
 
 # %%
-# Location and scale strengths
-# ----------------------------
+# Combining site effects
+# ----------------------
 #
-# With ``site_effect_type="location+scale"``, each site's features are first
-# multiplied around the global mean by a factor exp(U(-0.1 s, 0.1 s)) (scale)
-# and then shifted by an offset drawn from U(0, s) (location).
-# ``site_effect_strength`` sets the location part and ``site_scale_strength``
-# the scale part, so a strong shift can be combined with a mild change of
-# spread, or the reverse. Without ``site_scale_strength``, both parts use
-# ``site_effect_strength``.
+# ``site_effect`` is a dict with the strength of each type. With
+# ``{"location": ..., "scale": ...}``, each site's features are multiplied around the global mean by a factor
+# exp(U(-0.1 s, 0.1 s)) (scale) and shifted by an offset drawn from
+# U(-s/2, s/2) within-class SDs (location), so a strong shift can be combined
+# with a mild change of spread, or the reverse.
 
 fig, axes = plt.subplots(1, 3, figsize=[15, 5], sharex=True, sharey=True)
 
@@ -236,10 +232,8 @@ for idx, (location, scale) in enumerate([(4, 0), (0, 10), (4, 3)]):
         n_sites=3,
         n_features=2,
         noise_strength=0,
-        signal_type="circles",
-        site_effect_type="location+scale",
-        site_effect_strength=location,
-        site_scale_strength=scale,
+        signal={"circles": 1.0},
+        site_effect={"location": location, "scale": scale},
     )
     df_plot = pd.DataFrame({"Site": sites, "Feature 1": X[:, 0], "Feature 2": X[:, 1]})
     sns.scatterplot(df_plot, x="Feature 1", y="Feature 2", hue="Site", ax=axes[idx], s=10)
@@ -249,63 +243,56 @@ plt.tight_layout()
 
 
 # %%
-# Site effect homogeneous
-# -----------------------
+# Heterogeneous site effects
+# --------------------------
+#
+# With ``site_effect_heterogeneity=h``, the site effect of every sample is
+# multiplied by its own intensity exp(h z - h^2/2) (mean 1, ``z`` drawn per
+# sample and shared by its features): a sample is moved further or less far
+# in the direction of its site's offset. The sites stretch along their offset,
+# a site-specific covariance that a per-feature mean and variance correction
+# does not remove.
 
-fig, axes = plt.subplots(1, 3, figsize=[15, 5])
+fig, axes = plt.subplots(1, 3, figsize=[15, 5], sharex=True, sharey=True)
 
-for idx, site_st in enumerate([0, 1, 5]):
+for idx, heterogeneity in enumerate([0, 0.3, 0.8]):
     X, y, sites = make_multisite_classification(
-        n_sites=10,
+        n_sites=3,
         n_features=2,
-        signal_strength=0.001,
         noise_strength=0,
-        site_effect_strength=site_st,
-        signal_type="circles",
-        noise=0.1,
-        site_effect_homogeneous=True,
+        signal={"blobs": 0.1},
+        site_effect={"location": 8},
+        site_effect_heterogeneity=heterogeneity,
     )
-
-    df_plot = pd.DataFrame(
-        {
-            "Class": y,
-            "Site": sites,
-            "Feature 1": X[:, 0],
-            "Feature 2": X[:, 1],
-        }
-    )
-
-    sns.scatterplot(df_plot, x="Feature 1", y="Feature 2", hue="Class", ax=axes[idx])
-    axes[idx].set_title(f"Effect of Site Strength: {site_st}")
-    axes[idx].grid(axis="y", color="black", alpha=0.5, linestyle="--")
+    df_plot = pd.DataFrame({"Site": sites, "Feature 1": X[:, 0], "Feature 2": X[:, 1]})
+    sns.scatterplot(df_plot, x="Feature 1", y="Feature 2", hue="Site", ax=axes[idx], s=10)
+    axes[idx].set_title(f"Heterogeneity {heterogeneity}")
 
 plt.tight_layout()
-fig, axes = plt.subplots(1, 3, figsize=[15, 5])
 
-for idx, site_st in enumerate([0, 1, 5]):
+
+# %%
+# Site-by-class interaction
+# -------------------------
+#
+# The ``"class_interaction"`` type gives each class of each site its own extra
+# offset: the site effect differs between classes, so the class signal itself
+# differs between sites.
+
+fig, axes = plt.subplots(1, 2, figsize=[10, 5], sharex=True, sharey=True)
+
+for idx, interaction in enumerate([0, 3]):
     X, y, sites = make_multisite_classification(
-        n_sites=10,
+        n_sites=2,
         n_features=2,
-        signal_strength=0.001,
         noise_strength=0,
-        site_effect_strength=site_st,
-        signal_type="circles",
-        noise=0.1,
-        site_effect_homogeneous=False,
+        signal={"blobs": 2},
+        site_effect={"location": 3, "class_interaction": interaction},
     )
+    df_plot = pd.DataFrame({"Site": sites, "Class": y, "Feature 1": X[:, 0], "Feature 2": X[:, 1]})
+    sns.scatterplot(df_plot, x="Feature 1", y="Feature 2", hue="Site", style="Class", ax=axes[idx], s=10)
+    axes[idx].set_title(f"Site-by-class interaction {interaction}")
 
-    df_plot = pd.DataFrame(
-        {
-            "Class": y,
-            "Site": sites,
-            "Feature 1": X[:, 0],
-            "Feature 2": X[:, 1],
-        }
-    )
-
-    sns.scatterplot(df_plot, x="Feature 1", y="Feature 2", hue="Class", ax=axes[idx])
-    axes[idx].set_title(f"Effect of Site Strength: {site_st}")
-    axes[idx].grid(axis="y", color="black", alpha=0.5, linestyle="--")
 plt.tight_layout()
 
 
@@ -320,9 +307,9 @@ fig, axes = plt.subplots(1, 3, figsize=[15, 5])
 for idx, noise_st in enumerate([0.01, 0.1, 0.5]):
     X, y, sites = make_multisite_classification(
         n_features=2,
-        signal_strength=1,
+        signal={"linear": 1},
+        site_effect={"location": 0},
         noise_strength=noise_st,
-        site_effect_strength=0,
     )
 
     df_plot = pd.DataFrame(
@@ -349,7 +336,7 @@ fig, axes = plt.subplots(1, 3, figsize=[15, 5])
 
 for idx, strength in enumerate([0, 1, 50]):
     X, y, sites = make_multisite_classification(
-        n_sites=3, n_features=2, signal_strength=4, site_effect_strength=strength, signal_type="blobs", random_state=23
+        n_sites=3, n_features=2, signal={"blobs": 4}, site_effect={"location": strength}, random_state=23
     )
 
     df_plot = pd.DataFrame(

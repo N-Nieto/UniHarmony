@@ -9,13 +9,13 @@ from uniharmony.datasets import make_multisite_classification
 
 @pytest.fixture
 def clf_data() -> tuple[npt.NDArray, npt.NDArray, npt.NDArray]:
-    """Binary data, 3 sites with different class balance and location+scale effects."""
+    """Binary data, 3 sites with different class balance and location and scale effects."""
     return make_multisite_classification(
         n_sites=3,
         n_samples=300,
         n_features=6,
         balance_per_site=[[0.7, 0.3], [0.3, 0.7], [0.5, 0.5]],
-        site_effect_type="location+scale",
+        site_effect={"location": 3.0, "scale": 3.0},
         random_state=0,
     )
 

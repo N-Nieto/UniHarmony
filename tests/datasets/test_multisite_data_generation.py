@@ -101,8 +101,8 @@ def test_multiclass_balance() -> None:
 def test_signal_strength() -> None:
     """Test that signal strength affects class separation."""
     # Generate data with different signal strengths
-    X_weak, y_weak, _ = make_multisite_classification(n_sites=2, n_samples=100, signal_strength=0.5, random_state=42)
-    X_strong, y_strong, _ = make_multisite_classification(n_sites=2, n_samples=100, signal_strength=2.0, random_state=42)
+    X_weak, y_weak, _ = make_multisite_classification(n_sites=2, n_samples=100, signal={"linear": 0.5}, random_state=42)
+    X_strong, y_strong, _ = make_multisite_classification(n_sites=2, n_samples=100, signal={"linear": 2.0}, random_state=42)
 
     # Calculate mean difference between classes for each feature
     def class_separation(X, y):
@@ -119,7 +119,7 @@ def test_signal_strength() -> None:
 
 def test_site_effect() -> None:
     """Test that site effect creates differences between sites."""
-    X, _, sites = make_multisite_classification(n_sites=2, n_samples=100, site_effect_strength=5.0, random_state=42)
+    X, _, sites = make_multisite_classification(n_sites=2, n_samples=100, site_effect={"location": 5.0}, random_state=42)
 
     # Calculate mean difference between sites for each feature
     mean_site0 = X[sites == 0].mean(axis=0)
@@ -169,11 +169,11 @@ def test_edge_cases() -> None:
     with pytest.raises(ValueError):
         make_multisite_classification(n_features=0)  # Wrong number of features
     with pytest.raises(ValueError):
-        make_multisite_classification(signal_strength=-1)  # Wrong signal strength
+        make_multisite_classification(signal={"linear": -1})  # Wrong signal strength
     with pytest.raises(ValueError):
         make_multisite_classification(noise_strength=-1)  # Wrong noise strength
     with pytest.raises(ValueError):
-        make_multisite_classification(site_effect_strength=-1)  # Wrong Effect of Site strength
+        make_multisite_classification(site_effect={"location": -1})  # Wrong Effect of Site strength
     with pytest.raises(ValueError):
         make_multisite_classification(n_samples=2, n_sites=4)  # Wrong site-samples
 
@@ -322,63 +322,53 @@ def test_balance_combinations_binary() -> None:
 
 
 def test_heterogeneous_site_effect() -> None:
-    """Test the heterogeneous site effect functionality."""
-    # Just ensure it runs without errors
-    make_multisite_classification(
-        n_features=2,
-        n_samples=20,
-        site_effect_homogeneous=True,
-        random_state=42,
-    )
-    make_multisite_classification(
-        n_features=2,
-        n_samples=20,
-        site_effect_homogeneous=False,
-        random_state=42,
-    )
+    """Heterogeneous site effects run with few samples."""
+    for heterogeneity in (0.0, 0.5):
+        X, _, _ = make_multisite_classification(n_features=2, n_samples=20, site_effect_heterogeneity=heterogeneity)
+        assert np.isfinite(X).all()
 
 
 @pytest.mark.parametrize(
     "n_sites, n_samples, n_features, n_classes, signal_type, site_effect_type, "
-    "site_effect_homogeneous, balance_per_site, noise_strength, signal_strength, "
+    "site_effect_heterogeneity, balance_per_site, noise_strength, signal_strength, "
     "site_effect_strength",
     [
         # Binary classification tests
-        (2, 200, 10, 2, "linear", "location", True, None, 0.1, 1.0, 1.0),
-        (3, 300, 2, 2, "circles", "scale", False, None, 0.0, 1.0, 2.0),
-        (2, 150, 2, 2, "moons", "location+scale", True, [0.3, 0.7], 0.2, 1.5, 1.5),
-        (4, 400, 12, 2, "blobs", "location", False, [0.2, 0.8], 0.15, 1.0, 2.0),
-        (2, 250, 8, 2, "make_gaussian_quantiles", "scale", True, None, 0.05, 0.8, 3.0),
+        (2, 200, 10, 2, "linear", "location", 0.0, None, 0.1, 1.0, 1.0),
+        (3, 300, 2, 2, "circles", "scale", 0.5, None, 0.0, 1.0, 2.0),
+        (2, 150, 2, 2, "moons", "combat", 0.0, [0.3, 0.7], 0.2, 1.0, 1.5),
+        (4, 400, 12, 2, "blobs", "location", 0.5, [0.2, 0.8], 0.15, 1.0, 2.0),
+        (2, 250, 8, 2, "gaussian_quantiles", "scale", 0.0, None, 0.05, 0.8, 3.0),
         # Multi-class classification tests
-        (2, 300, 15, 3, "linear", "location", True, None, 0.1, 1.0, 1.0),
-        (3, 450, 20, 4, "blobs", "scale", False, None, 0.0, 1.2, 2.5),
+        (2, 300, 15, 3, "linear", "location", 0.0, None, 0.1, 1.0, 1.0),
+        (3, 450, 20, 4, "blobs", "scale", 0.5, None, 0.0, 1.2, 2.5),
         (
             2,
             200,
             10,
             5,
             "linear",
-            "location+scale",
-            True,
+            "combat",
+            0.0,
             [[0.3, 0.2, 0.2, 0.15, 0.15], [0.1, 0.3, 0.3, 0.15, 0.15]],
             0.2,
             1.0,
             1.0,
         ),
-        (3, 600, 25, 6, "make_gaussian_quantiles", "location", False, None, 0.1, 1.5, 2.0),
+        (3, 600, 25, 6, "gaussian_quantiles", "location", 0.5, None, 0.1, 1.5, 2.0),
         # Edge cases
-        (2, 100, 5, 2, "linear", "location", True, [0.5, 0.5], 0.0, 0.0, 0.0),  # No signal, no site effect
-        (5, 500, 20, 3, "blobs", "scale", True, None, 0.2, 1.0, 0.0),  # No site effect
+        (2, 100, 5, 2, "linear", "location", 0.0, [0.5, 0.5], 0.0, 0.0, 0.0),  # No signal, no site effect
+        (5, 500, 20, 3, "blobs", "scale", 0.0, None, 0.2, 1.0, 0.0),  # No site effect
     ],
     ids=[
         "binary_linear_location_homogeneous_default_balance",
         "binary_circles_scale_heterogeneous_default_balance_no_noise",
-        "binary_moons_location+scale_homogeneous_custom_balance",
+        "binary_moons_combat_homogeneous_custom_balance",
         "binary_blobs_location_heterogeneous_custom_balance",
         "binary_gaussian_quantiles_scale_homogeneous_default_balance",
         "multiclass_linear_location_homogeneous_default_balance",
         "multiclass_blobs_scale_heterogeneous_default_balance_no_noise",
-        "multiclass_linear_location+scale_homogeneous_custom_balance",
+        "multiclass_linear_combat_homogeneous_custom_balance",
         "multiclass_gaussian_quantiles_location_heterogeneous_default_balance",
         "edge_no_signal_no_site_effect",
         "edge_no_site_effect",
@@ -391,7 +381,7 @@ def test_make_multisite_classification_parametrized(
     n_classes,
     signal_type,
     site_effect_type,
-    site_effect_homogeneous,
+    site_effect_heterogeneity,
     balance_per_site,
     noise_strength,
     signal_strength,
@@ -405,12 +395,10 @@ def test_make_multisite_classification_parametrized(
         n_features=n_features,
         n_classes=n_classes,
         balance_per_site=balance_per_site,
-        signal_type=signal_type,
-        signal_strength=signal_strength,
+        signal={signal_type: signal_strength},
+        site_effect={site_effect_type: site_effect_strength},
         noise_strength=noise_strength,
-        site_effect_strength=site_effect_strength,
-        site_effect_homogeneous=site_effect_homogeneous,
-        site_effect_type=site_effect_type,
+        site_effect_heterogeneity=site_effect_heterogeneity,
         random_state=42,
     )
 
@@ -483,7 +471,7 @@ def test_make_multisite_classification_parametrized(
                 )
 
 
-@pytest.mark.parametrize("signal_type", ["linear", "circles", "moons", "blobs", "make_gaussian_quantiles"])
+@pytest.mark.parametrize("signal_type", ["linear", "circles", "moons", "blobs", "gaussian_quantiles"])
 def test_all_signal_types(signal_type):
     """Test that all signal types work without errors."""
     if signal_type in ["moons", "circles"]:
@@ -492,7 +480,7 @@ def test_all_signal_types(signal_type):
             n_samples=200,
             n_features=2,
             n_classes=2,
-            signal_type=signal_type,
+            signal={signal_type: 1.0},
             random_state=42,
         )
 
@@ -505,7 +493,7 @@ def test_all_signal_types(signal_type):
             n_samples=200,
             n_features=10,
             n_classes=2,
-            signal_type=signal_type,
+            signal={signal_type: 1.0},
             random_state=42,
         )
 
@@ -514,7 +502,9 @@ def test_all_signal_types(signal_type):
         assert sites.shape == (200,)
 
 
-@pytest.mark.parametrize("site_effect_type", ["location", "scale", "location+scale"])
+@pytest.mark.parametrize(
+    "site_effect_type", ["location", "scale", "variance", "nonlinear", "dropout", "combat", "class_interaction"]
+)
 def test_all_site_effect_types(site_effect_type):
     """Test that all site effect types work without errors."""
     X, y, sites = make_multisite_classification(
@@ -522,8 +512,7 @@ def test_all_site_effect_types(site_effect_type):
         n_samples=200,
         n_features=10,
         n_classes=2,
-        site_effect_type=site_effect_type,
-        site_effect_strength=2.0,
+        site_effect={site_effect_type: {"value": 0.0, "prob": 0.2} if site_effect_type == "dropout" else 2.0},
         random_state=42,
     )
 
@@ -606,17 +595,17 @@ def test_invalid_parameters():
     with pytest.raises(ValueError, match="n_classes must be at least 2"):
         make_multisite_classification(n_sites=2, n_samples=100, n_classes=1)
 
-    with pytest.raises(ValueError, match="signal_strength must be non-negative"):
-        make_multisite_classification(n_sites=2, n_samples=100, signal_strength=-1.0)
+    with pytest.raises(ValueError, match=r"signal\['linear'\] must be non-negative"):
+        make_multisite_classification(n_sites=2, n_samples=100, signal={"linear": -1.0})
 
-    with pytest.raises(ValueError, match="site_effect_strength must be non-negative"):
-        make_multisite_classification(n_sites=2, n_samples=100, site_effect_strength=-1.0)
+    with pytest.raises(ValueError, match=r"site_effect\['location'\] must be non-negative"):
+        make_multisite_classification(n_sites=2, n_samples=100, site_effect={"location": -1.0})
 
-    with pytest.raises(ValueError, match="Unsupported signal_type: invalid"):
-        make_multisite_classification(n_sites=2, n_samples=100, signal_type="invalid")
+    with pytest.raises(ValueError, match="Unsupported signal type: 'invalid'"):
+        make_multisite_classification(n_sites=2, n_samples=100, signal={"invalid": 1.0})
 
-    with pytest.raises(ValueError, match="Unsupported site_effect_type: invalid"):
-        make_multisite_classification(n_sites=2, n_samples=100, site_effect_type="invalid")
+    with pytest.raises(ValueError, match="Unsupported site effect type: 'invalid'"):
+        make_multisite_classification(n_sites=2, n_samples=100, site_effect={"invalid": 3.0})
 
 
 def test_noise_strength_zero():
@@ -649,32 +638,12 @@ def test_noise_strength_zero():
 
 
 def test_site_effect_homogeneous_vs_heterogeneous():
-    """Test difference between homogeneous and heterogeneous site effects."""
-    X_homo, _, _ = make_multisite_classification(
-        n_sites=2,
-        n_samples=20,
-        n_features=10,
-        n_classes=2,
-        site_effect_homogeneous=True,
-        site_effect_strength=2.0,
-        random_state=42,
-    )
-
-    X_hetero, _, _ = make_multisite_classification(
-        n_sites=2,
-        n_samples=20,
-        n_features=10,
-        n_classes=2,
-        site_effect_homogeneous=False,
-        site_effect_strength=2.0,
-        random_state=42,
-    )
-
-    # Both should produce valid data
-    assert X_homo.shape == X_hetero.shape
-
-    # The feature distributions should differ
-    assert not np.allclose(X_homo, X_hetero)
+    """Heterogeneity changes the data; without it every sample of a site gets the same offset."""
+    params = {"n_sites": 2, "n_samples": 200, "noise_strength": 0, "site_effect": {"location": 2.0}, "return_ground_truth": True}
+    *_, homogeneous = make_multisite_classification(**params)
+    *_, heterogeneous = make_multisite_classification(site_effect_heterogeneity=0.5, **params)
+    np.testing.assert_array_equal(homogeneous["intensity"], 1.0)
+    assert not np.allclose(homogeneous["site_effect"], heterogeneous["site_effect"])
 
 
 @pytest.mark.parametrize(
@@ -689,7 +658,7 @@ def test_site_effect_strength_validation(site_effect_strength, n_sites):
         n_samples=200,
         n_features=10,
         n_classes=2,
-        site_effect_strength=site_effect_strength,
+        site_effect={"location": site_effect_strength},
         random_state=42,
     )
 
@@ -716,23 +685,23 @@ def test_noise_strength_invalid():
 
 def test_site_effect_strength_invalid():
     """Test site_effect_strength invalid options."""
-    with pytest.raises(TypeError, match="Invalid type for site_effect_strength"):
-        _, _, _ = make_multisite_classification(n_sites=2, n_samples=20, site_effect_strength="invalid")
-    with pytest.raises(TypeError, match="Invalid type for site_effect_strength"):
-        _, _, _ = make_multisite_classification(n_sites=2, n_samples=20, site_effect_strength=["invalid", "invalid"])
-    with pytest.raises(ValueError, match="site_effect_strength must have length n_sites"):
-        _, _, _ = make_multisite_classification(n_sites=2, n_samples=20, site_effect_strength=[1, 2, 3])
-    with pytest.raises(ValueError, match=r"site_effect_strength\[0\] must be non-negative"):
-        _, _, _ = make_multisite_classification(n_sites=2, n_samples=20, site_effect_strength=[-1, 2])
+    with pytest.raises(TypeError, match=r"Invalid type for site_effect\['location'\]"):
+        _, _, _ = make_multisite_classification(n_sites=2, n_samples=20, site_effect={"location": "invalid"})
+    with pytest.raises(TypeError, match=r"Invalid type for site_effect\['location'\]"):
+        _, _, _ = make_multisite_classification(n_sites=2, n_samples=20, site_effect={"location": ["invalid", "invalid"]})
+    with pytest.raises(ValueError, match=r"site_effect\['location'\] must have length n_sites"):
+        _, _, _ = make_multisite_classification(n_sites=2, n_samples=20, site_effect={"location": [1, 2, 3]})
+    with pytest.raises(ValueError, match=r"site_effect\['location'\]\[0\] must be non-negative"):
+        _, _, _ = make_multisite_classification(n_sites=2, n_samples=20, site_effect={"location": [-1, 2]})
 
 
 def test_invalid_moons():
     """Test moons with invalid options."""
-    X, _, _ = make_multisite_classification(n_features=10, signal_type="moons")
+    X, _, _ = make_multisite_classification(n_features=10, signal={"moons": 1.0})
 
     assert X.shape[1] == 2
 
-    _, _, _ = make_multisite_classification(n_classes=3, signal_type="moons")
+    _, _, _ = make_multisite_classification(n_classes=3, signal={"moons": 1.0})
 
     assert X.shape[1] == 2
 
@@ -742,34 +711,33 @@ def test_invalid_moons():
 # --------------------------------------------------------------------------- #
 
 
-def test_gaussian_quantiles_name_and_deprecated_alias():
-    """The documented name works; the old one still works with a FutureWarning."""
-    X, _, _ = make_multisite_classification(n_samples=100, signal_type="gaussian_quantiles")
-    with pytest.warns(FutureWarning, match="gaussian_quantiles"):
-        X_old, _, _ = make_multisite_classification(n_samples=100, signal_type="make_gaussian_quantiles")
-    np.testing.assert_array_equal(X, X_old)
+def test_old_gaussian_quantiles_name_is_rejected():
+    """Only the documented name is accepted (no deprecated alias before 0.1)."""
+    X, _, _ = make_multisite_classification(n_samples=100, signal={"gaussian_quantiles": 1.0})
+    assert X.shape == (100, 10)
+    with pytest.raises(ValueError, match="Unsupported signal type"):
+        make_multisite_classification(n_samples=100, signal={"make_gaussian_quantiles": 1.0})
 
 
-def test_base_data_is_row_aligned():
-    """X - X_base is exactly the EoS of each sample's site (no noise here)."""
-    X, _, sites, X_base = make_multisite_classification(n_sites=3, n_samples=300, noise_strength=0, return_base_data=True)
-    assert X_base.shape == X.shape
+def _truth(**kwargs):
+    *out, truth = make_multisite_classification(return_ground_truth=True, **kwargs)
+    return (*out, truth)
+
+
+def test_signal_is_row_aligned():
+    """X - signal is exactly the EoS of each sample's site (no noise here)."""
+    X, _, sites, truth = _truth(n_sites=3, n_samples=300, noise_strength=0)
+    assert truth["signal"].shape == X.shape
     for site in range(3):
-        offsets = X[sites == site] - X_base[sites == site]
+        offsets = X[sites == site] - truth["signal"][sites == site]
         np.testing.assert_allclose(offsets, offsets[[0]].repeat(len(offsets), axis=0))
 
 
 @pytest.mark.parametrize("signal_type", ["linear", "blobs", "gaussian_quantiles", "moons", "circles"])
 def test_no_base_sample_is_used_twice(signal_type):
     """Strong class imbalance and unequal site sizes never reuse a base sample."""
-    _, y, _, X_base = make_multisite_classification(
-        n_sites=2,
-        n_samples=[100, 900],
-        balance_per_site=[[0.0, 1.0], [1.0, 0.0]],
-        signal_type=signal_type,
-        return_base_data=True,
-    )
-    assert len(np.unique(X_base, axis=0)) == len(X_base)
+    _, y, _, truth = _truth(n_sites=2, n_samples=[100, 900], balance_per_site=[[0.0, 1.0], [1.0, 0.0]], signal={signal_type: 1.0})
+    assert len(np.unique(truth["signal"], axis=0)) == len(truth["signal"])
     np.testing.assert_array_equal(np.bincount(y), [900, 100])
 
 
@@ -782,13 +750,23 @@ def test_class_counts_use_largest_remainder():
     np.testing.assert_array_equal(np.bincount(y[sites == 1], minlength=3), [3, 2, 2])  # 3.5, 1.75, 1.75
 
 
+def test_requested_class_is_never_rounded_away():
+    """A class with a small non-zero proportion gets at least one sample in that site."""
+    _, y, sites = make_multisite_classification(n_sites=2, n_samples=[50, 50], balance_per_site=[[0.995, 0.005], [0.5, 0.5]])
+    np.testing.assert_array_equal(np.bincount(y[sites == 0], minlength=2), [49, 1])
+
+
+def test_site_cannot_hold_its_classes():
+    """A site with fewer samples than requested classes raises."""
+    with pytest.raises(ValueError, match="cannot hold the 3 classes"):
+        make_multisite_classification(n_sites=2, n_samples=[2, 50], n_classes=3, n_features=4)
+
+
 def test_zero_strength_inside_lists():
     """A site can have no EoS and no noise when strengths are given per site."""
-    X, _, sites, X_base = make_multisite_classification(
-        n_samples=100, site_effect_strength=[0, 2], noise_strength=[0, 0.1], return_base_data=True
-    )
-    np.testing.assert_array_equal(X[sites == 0], X_base[sites == 0])
-    assert not np.allclose(X[sites == 1], X_base[sites == 1])
+    X, _, sites, truth = _truth(n_samples=100, site_effect={"location": [0, 2]}, noise_strength=[0, 0.1])
+    np.testing.assert_array_equal(X[sites == 0], truth["signal"][sites == 0])
+    assert not np.allclose(X[sites == 1], truth["signal"][sites == 1])
 
 
 @pytest.mark.parametrize("n_samples", [np.array([30, 70]), np.int64(100), (30, 70)])
@@ -804,7 +782,7 @@ def test_site_without_samples_raises():
         make_multisite_classification(n_samples=[100, 0])
 
 
-@pytest.mark.parametrize("balance", [[1, 0], np.array([0.5, 0.5]), [[1, 0], [0, 1]]])
+@pytest.mark.parametrize("balance", [np.array([[1, 0], [0, 1]]), np.array([0.5, 0.5]), [[1, 0], [0, 1]]])
 def test_integer_and_array_balance(balance):
     """Integer proportions and arrays are accepted."""
     _, y, _ = make_multisite_classification(n_samples=100, balance_per_site=balance)
@@ -814,31 +792,19 @@ def test_integer_and_array_balance(balance):
 def test_scale_effect_keeps_means_and_is_centred():
     """The scale EoS multiplies deviations from the global mean by exp(U(-0.1 s, 0.1 s))."""
     strength = 5.0
-    X, _, sites, X_base = make_multisite_classification(
-        n_samples=4000, site_effect_type="scale", site_effect_strength=strength, noise_strength=0, return_base_data=True
-    )
-    center = X_base.mean(axis=0)
+    X, _, sites, truth = _truth(n_samples=4000, site_effect={"scale": strength}, noise_strength=0)
+    signal = truth["signal"]
+    center = signal.mean(axis=0)
     for site in (0, 1):
-        ratio = (X[sites == site] - center) / (X_base[sites == site] - center)
+        ratio = (X[sites == site] - center) / (signal[sites == site] - center)
         factor = np.median(ratio, axis=0)
         np.testing.assert_allclose(ratio, np.broadcast_to(factor, ratio.shape), rtol=1e-8)
         assert ((factor >= np.exp(-0.1 * strength)) & (factor <= np.exp(0.1 * strength))).all()
-    np.testing.assert_allclose(X.mean(axis=0), X_base.mean(axis=0), atol=0.2)
-
-
-def test_heterogeneous_effect_keeps_sites_distinct():
-    """Heterogeneous EoS varies around a site offset, so sites with the same strength still differ."""
-    X, _, sites, X_base = make_multisite_classification(
-        n_samples=4000, site_effect_homogeneous=False, site_effect_strength=3, noise_strength=0, return_base_data=True
-    )
-    offsets = X - X_base
-    mean_difference = np.abs(offsets[sites == 0].mean(axis=0) - offsets[sites == 1].mean(axis=0))
-    assert mean_difference.max() > 0.5
-    assert offsets[sites == 0].std(axis=0).min() > 0.5  # per-sample jitter
+    np.testing.assert_allclose(X.mean(axis=0), signal.mean(axis=0), atol=0.2)
 
 
 # ---------------------------------------------------------------------------
-# site_scale_strength: location and scale strengths set independently (#75)
+# Location and scale strengths set independently (#75), with a dict of strengths
 # ---------------------------------------------------------------------------
 
 
@@ -853,42 +819,47 @@ def _affine_site_effect(X: np.ndarray, X_base: np.ndarray, center: np.ndarray) -
     return factor, offset
 
 
-@pytest.mark.parametrize("site_effect_type", ["scale", "location+scale"])
-@pytest.mark.parametrize("homogeneous", [True, False])
-def test_scale_strength_defaults_to_site_effect_strength(site_effect_type, homogeneous):
-    """site_scale_strength=None gives the same data as site_scale_strength=site_effect_strength (and as before #75)."""
-    params = {"n_sites": 3, "n_samples": 300, "site_effect_type": site_effect_type, "site_effect_homogeneous": homogeneous}
-    default = make_multisite_classification(site_effect_strength=[1.0, 2.0, 4.0], **params)
-    explicit = make_multisite_classification(site_effect_strength=[1.0, 2.0, 4.0], site_scale_strength=[1.0, 2.0, 4.0], **params)
-    for a, b in zip(default, explicit, strict=True):
+def test_site_effect_order_and_per_site_list_are_equivalent():
+    """The order of the dict does not matter, and a list of equal strengths equals the scalar."""
+    params = {"n_sites": 3, "n_samples": 300}
+    reference = make_multisite_classification(site_effect={"location": 2.0, "scale": 2.0}, **params)
+    reordered = make_multisite_classification(site_effect={"scale": 2.0, "location": 2.0}, **params)
+    per_site = make_multisite_classification(site_effect={"location": [2.0] * 3, "scale": 2.0}, **params)
+    for a, b, c in zip(reference, reordered, per_site, strict=True):
         np.testing.assert_array_equal(a, b)
+        np.testing.assert_array_equal(a, c)
+
+
+def test_empty_site_effect_means_no_site_effect():
+    """site_effect={} (or all strengths 0) gives the site-free data."""
+    X, _, _, truth = _truth(n_sites=3, n_samples=300, site_effect={})
+    np.testing.assert_array_equal(X, truth["site_free"])
+    np.testing.assert_array_equal(truth["site_effect"], 0.0)
+    X0, *_ = _truth(n_sites=3, n_samples=300, site_effect={"location": 0, "scale": 0})
+    np.testing.assert_array_equal(X, X0)
 
 
 @pytest.mark.parametrize(("location", "scale"), [(5.0, 0.0), (0.0, 5.0), (6.0, 1.0), (1.0, 6.0)])
 def test_location_and_scale_strengths_are_independent(location, scale):
-    """With location+scale, the offsets follow site_effect_strength and the factors site_scale_strength."""
-    X, _, sites, X_base = make_multisite_classification(
+    """The offsets follow the location strength and the factors the scale strength."""
+    X, _, sites, truth = _truth(
         n_sites=3,
         n_samples=1500,
         n_features=8,
-        site_effect_type="location+scale",
-        site_effect_strength=location,
-        site_scale_strength=scale,
+        site_effect={"location": location, "scale": scale},
         noise_strength=0,
-        return_base_data=True,
     )
-    center = X_base.mean(axis=0)
-    factors, offsets = [], []
+    signal = truth["signal"]
+    center = signal.mean(axis=0)
     for site in range(3):
-        factor, offset = _affine_site_effect(X[sites == site], X_base[sites == site], center)
-        factors.append(factor)
-        offsets.append(offset)
-    factors, offsets = np.array(factors), np.array(offsets)
+        factor, offset = _affine_site_effect(X[sites == site], signal[sites == site], center)
+        np.testing.assert_allclose(factor, truth["site_scale"][site], rtol=1e-9)  # the ground truth is exact
+        np.testing.assert_allclose(offset, truth["site_location"][site], atol=1e-9)
+    factors = truth["site_scale"]
+    offsets = truth["site_location"] / truth["feature_scale"]  # in reference-SD units
     tol = 1e-9
-    assert (factors >= np.exp(-0.1 * scale) - tol).all()
-    assert (factors <= np.exp(0.1 * scale) + tol).all()
-    assert (offsets >= -tol).all()
-    assert (offsets <= location + tol).all()
+    assert (np.abs(np.log(factors)) <= 0.1 * scale + tol).all()
+    assert (np.abs(offsets) <= location / 2 + tol).all()  # centred offsets, U(-s/2, s/2)
     if scale == 0:
         np.testing.assert_allclose(factors, 1.0, atol=1e-9)
     else:
@@ -896,63 +867,41 @@ def test_location_and_scale_strengths_are_independent(location, scale):
     if location == 0:
         np.testing.assert_allclose(offsets, 0.0, atol=1e-9)
     else:
-        assert offsets.max() > 0.5 * location
+        assert np.abs(offsets).max() > 0.25 * location
+        assert offsets.min() < 0 < offsets.max()
 
 
-def test_scale_strength_per_site():
-    """A list gives one scale strength per site; a site with 0 keeps its spread."""
-    X, _, sites, X_base = make_multisite_classification(
+def test_strength_per_type_and_per_site():
+    """A dict value can be a list: one strength per site for that type."""
+    *_, truth = _truth(
         n_sites=2,
         n_samples=800,
-        site_effect_type="scale",
-        site_effect_strength=3.0,
-        site_scale_strength=[0.0, 8.0],
+        site_effect={"location": 3.0, "scale": [0.0, 8.0]},
         noise_strength=0,
-        return_base_data=True,
     )
-    center = X_base.mean(axis=0)
-    factor_0, _ = _affine_site_effect(X[sites == 0], X_base[sites == 0], center)
-    factor_1, _ = _affine_site_effect(X[sites == 1], X_base[sites == 1], center)
-    np.testing.assert_allclose(factor_0, 1.0, atol=1e-9)
-    assert np.abs(np.log(factor_1)).max() > 0.2
-
-
-def test_heterogeneous_scale_strength_zero_is_pure_location():
-    """With site_scale_strength=0, the heterogeneous location+scale EoS only shifts the samples."""
-    X, _, _, X_base = make_multisite_classification(
-        n_samples=400,
-        site_effect_type="location+scale",
-        site_effect_homogeneous=False,
-        site_effect_strength=3.0,
-        site_scale_strength=0.0,
-        noise_strength=0,
-        return_base_data=True,
-    )
-    shift = X - X_base
-    assert shift.min() >= -1.5 - 1e-9  # site offset in [0, 3] plus jitter in [-1.5, 1.5]
-    assert shift.max() <= 4.5 + 1e-9
-
-
-@pytest.mark.parametrize("site_effect_type", ["location", "variance", "nonlinear", "dropout"])
-def test_scale_strength_ignored_with_a_warning(site_effect_type):
-    """site_scale_strength has no effect, and warns, with the site effect types without a scale part."""
-    params = {"n_samples": 200, "site_effect_type": site_effect_type, "site_effect_strength": 2.0}
-    with pytest.warns(UserWarning, match="site_scale_strength is ignored"):
-        with_scale = make_multisite_classification(site_scale_strength=7.0, **params)
-    for a, b in zip(with_scale, make_multisite_classification(**params), strict=True):
-        np.testing.assert_array_equal(a, b)
+    np.testing.assert_allclose(truth["site_scale"][0], 1.0)
+    assert np.abs(np.log(truth["site_scale"][1])).max() > 0.2
+    assert (np.abs(truth["site_location"]) > 0).all()
 
 
 @pytest.mark.parametrize(
-    ("site_scale_strength", "error", "match"),
+    ("kwargs", "error", "match"),
     [
-        (-1.0, ValueError, "site_scale_strength must be non-negative"),
-        ([1.0, -0.5], ValueError, r"site_scale_strength\[1\] must be non-negative"),
-        ([1.0, 2.0, 3.0], ValueError, "site_scale_strength must have length n_sites"),
-        ("strong", TypeError, "Invalid type for site_scale_strength"),
+        ({"site_effect": {"location": -1.0}}, ValueError, r"site_effect\['location'\] must be non-neg"),
+        ({"site_effect": {"location": [1.0, 2.0, 3.0]}}, ValueError, "must have length n_sites"),
+        ({"site_effect": {"location": "strong"}}, TypeError, "Invalid type"),
+        ({"site_effect": {"rotate": 1.0}}, ValueError, "Unsupported site effect type: 'rotate'"),
+        ({"site_effect": {"location+scale": 1.0}}, ValueError, "Unsupported site effect type"),
+        ({"site_effect": "location"}, TypeError, "site_effect must be a dict"),
+        ({"site_effect": 3.0}, TypeError, "site_effect must be a dict"),
+        ({"signal": "linear"}, TypeError, "signal must be a dict with one type"),
+        ({"signal": {}}, ValueError, "signal must be a dict with one type"),
+        ({"signal": {"linear": 1.0, "blobs": 1.0}}, ValueError, "signal must be a dict with one type"),
+        ({"signal": {"spiral": 1.0}}, ValueError, "Unsupported signal type: 'spiral'"),
+        ({"signal": {"linear": [1.0, 2.0]}}, TypeError, r"Invalid type for signal\['linear'\]"),
     ],
 )
-def test_scale_strength_validation(site_scale_strength, error, match):
-    """Negative values, wrong lengths and wrong types are rejected like site_effect_strength."""
+def test_signal_and_site_effect_validation(kwargs, error, match):
+    """The signal is one {type: strength}; site_effect maps known types to a strength or one per site."""
     with pytest.raises(error, match=match):
-        make_multisite_classification(n_sites=2, site_effect_type="scale", site_scale_strength=site_scale_strength)
+        make_multisite_classification(n_sites=2, **kwargs)

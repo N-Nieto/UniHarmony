@@ -59,7 +59,7 @@ def test_string_labels(clf_data) -> None:
 def test_multiclass() -> None:
     """Multi-class problems use all class probabilities per pretended class."""
     X, y, sites = make_multisite_classification(
-        n_sites=3, n_samples=450, n_features=8, n_classes=3, site_effect_type="location+scale", random_state=0
+        n_sites=3, n_samples=450, n_features=8, n_classes=3, site_effect={"location": 3.0, "scale": 3.0}, random_state=0
     )
     clf = PrettYharmonizeClassifier(random_state=0).fit(X, y, sites=sites)
     assert clf._target_argument == "categorical_covariates"
@@ -323,8 +323,8 @@ def test_keeps_signal_under_site_target_dependence() -> None:
         n_samples=600,
         n_features=10,
         balance_per_site=[[0.9, 0.1], [0.1, 0.9]],
-        signal_strength=0.5,
-        site_effect_type="location",
+        signal={"linear": 0.5},
+        site_effect={"location": 3.0},
         random_state=0,
     )
     X_train, X_test, y_train, y_test, s_train, s_test = train_test_split(

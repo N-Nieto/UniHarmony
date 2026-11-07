@@ -57,8 +57,9 @@ metric_to_plot = str(metrics_to_use[0].__name__)
 n_bad_sites = 1
 X_bad, y_bad, sites_bad = make_multisite_classification(
     n_sites=n_bad_sites,
-    signal_strength=0.001,
-    site_effect_strength=0,  # No EoS
+    signal={"linear": 0.001},
+    site_effect={"location": 0},
+    # No EoS
     random_state=random_state,
 )
 
@@ -67,8 +68,9 @@ n_good_sites = 3
 signal_strength = 1
 X_good, y_good, sites_good = make_multisite_classification(
     n_sites=n_good_sites,
-    signal_strength=signal_strength,
-    site_effect_strength=0,  # No EoS
+    signal={"linear": signal_strength},
+    site_effect={"location": 0},
+    # No EoS
 )
 # Increase site labels for good sites to avoid overlap with bad sites
 sites_good = sites_good + n_bad_sites
@@ -104,8 +106,9 @@ print(metric_s1)
 n_bad_sites = 3
 X_bad, y_bad, sites_bad = make_multisite_classification(
     n_sites=n_bad_sites,
-    signal_strength=0.001,
-    site_effect_strength=0,  # No EoS
+    signal={"linear": 0.001},
+    site_effect={"location": 0},
+    # No EoS
     random_state=random_state,
 )
 
@@ -113,8 +116,9 @@ X_bad, y_bad, sites_bad = make_multisite_classification(
 signal_strength = 1
 X_good, y_good, sites_good = make_multisite_classification(
     n_sites=1,
-    signal_strength=signal_strength,
-    site_effect_strength=0,  # No EoS
+    signal={"linear": signal_strength},
+    site_effect={"location": 0},
+    # No EoS
     random_state=random_state,
 )
 # Increase site labels for good sites to avoid overlap with bad sites

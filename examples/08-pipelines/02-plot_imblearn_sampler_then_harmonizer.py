@@ -58,15 +58,17 @@ sns.set_theme(style="whitegrid")
 # Data
 # ----
 
-X, y, sites, covariates = make_multisite_classification(
+X, y, sites, truth = make_multisite_classification(
     n_sites=3,
     n_samples=300,
     n_features=5,
     balance_per_site=[[0.8, 0.2], [0.5, 0.5], [0.2, 0.8]],
-    site_effect_type="location+scale",
+    site_effect={"location": 3.0, "scale": 3.0},
     covariates=["age"],
     random_state=1,
+    return_ground_truth=True,
 )
+covariates = truth["covariates"]
 features = [f"feature_{j}" for j in range(X.shape[1])]
 df = pd.DataFrame(X, columns=features).assign(site=sites, age=covariates["age"])
 pd.crosstab(df["site"], y, margins=True)

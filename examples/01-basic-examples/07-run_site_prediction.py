@@ -29,7 +29,7 @@ random_state = 42
 X, _, sites = make_multisite_classification(
     n_sites=5,
     n_classes=2,                # irrelevant for this example
-    site_effect_strength=2,
+    site_effect={"location": 2},
     random_state=random_state,
 )
 

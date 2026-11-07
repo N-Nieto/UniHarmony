@@ -24,12 +24,14 @@ verbosity("warning")
 # Data generation
 # ---------------
 
-X, y, sites, covars = make_multisite_classification(
+X, y, sites, truth = make_multisite_classification(
     n_features=2,
-    site_effect_strength=10,
-    signal_strength=0.01,
-    covariates=["age"]
+    signal={"linear": 0.01},
+    site_effect={"location": 10},
+    covariates=["age"],
+    return_ground_truth=True,
 )
+covars = truth["covariates"]
 age = covars["age"]
 df = pd.DataFrame({"Target": y, "Site": sites})
 

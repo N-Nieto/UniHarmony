@@ -23,7 +23,12 @@ from uniharmony.datasets._make_covariates import (
     _validate_covariates,
     make_covariate_site_distributions,
 )
-from uniharmony.datasets._make_multisite_classification import _apply_noise, _apply_site_effect
+
+
+def _make_with_covariates(**kwargs):
+    """Simulate and return X, y, sites and the covariates (from the ground truth)."""
+    X, y, sites, truth = make_multisite_classification(return_ground_truth=True, **kwargs)
+    return X, y, sites, truth["covariates"]
 
 
 if TYPE_CHECKING:
@@ -276,8 +281,7 @@ def test_make_covariates_continuous_shape():
     """Test."""
     cov = _age_cov()
     _validate_covariates([cov], n_sites=1)
-    X = np.random.randn(50, 5)
-    result = _make_covariate([cov], site_idx=0, n_samples_site=50, X=X, random_state=_rng(0))
+    result = _make_covariate([cov], site_idx=0, n_samples_site=50, random_state=_rng(0))
     assert result["age"].shape == (50,)
 
 
@@ -285,8 +289,7 @@ def test_make_covariates_continuous_clip_respected():
     """Test."""
     cov = _age_cov()
     _validate_covariates([cov], n_sites=1)
-    X = np.random.randn(500, 5)
-    result = _make_covariate([cov], site_idx=0, n_samples_site=500, X=X, random_state=_rng(0))
+    result = _make_covariate([cov], site_idx=0, n_samples_site=500, random_state=_rng(0))
     assert result["age"].min() >= 18.0
     assert result["age"].max() <= 90.0
 
@@ -295,8 +298,7 @@ def test_make_covariates_categorical_values():
     """Test."""
     cov = _sex_cov()
     _validate_covariates([cov], n_sites=1)
-    X = np.random.randn(200, 5)
-    result = _make_covariate([cov], site_idx=0, n_samples_site=200, X=X, random_state=_rng(0))
+    result = _make_covariate([cov], site_idx=0, n_samples_site=200, random_state=_rng(0))
     assert set(np.unique(result["sex"])).issubset({0, 1})
 
 
@@ -304,8 +306,7 @@ def test_make_covariates_categorical_shape():
     """Test."""
     cov = _sex_cov()
     _validate_covariates([cov], n_sites=1)
-    X = np.random.randn(100, 5)
-    result = _make_covariate([cov], site_idx=0, n_samples_site=100, X=X, random_state=_rng(0))
+    result = _make_covariate([cov], site_idx=0, n_samples_site=100, random_state=_rng(0))
     assert result["sex"].shape == (100,)
 
 
@@ -313,23 +314,8 @@ def test_make_covariates_multiple_keys():
     """Test."""
     covs = [_age_cov(), _sex_cov()]
     _validate_covariates(covs, n_sites=1)
-    X = np.random.randn(100, 5)
-    result = _make_covariate(covs, site_idx=0, n_samples_site=100, X=X, random_state=_rng(0))
+    result = _make_covariate(covs, site_idx=0, n_samples_site=100, random_state=_rng(0))
     assert set(result.keys()) == {"age", "sex"}
-
-
-@pytest.mark.parametrize("x_correlation", [0.0, 0.5, 1.0])
-def test_make_covariates_x_correlation_produces_finite(x_correlation):
-    """Test."""
-    cov = Covariate(
-        name="age",
-        site_distributions=[CovariateSiteDistribution(loc=45.0, scale=10.0)],
-        x_correlation=x_correlation,
-    )
-    _validate_covariates([cov], n_sites=1)
-    X = np.random.randn(100, 5)
-    result = _make_covariate([cov], site_idx=0, n_samples_site=100, X=X, random_state=_rng(0))
-    assert np.all(np.isfinite(result["age"]))
 
 
 def test_make_covariates_site_idx_selects_correct_distribution():
@@ -341,270 +327,42 @@ def test_make_covariates_site_idx_selects_correct_distribution():
             CovariateSiteDistribution(loc=80.0, scale=1.0),  # site 1: old
         ],
     )
-    X = np.random.randn(500, 5)
-    r0 = _make_covariate([cov], site_idx=0, n_samples_site=500, X=X, random_state=_rng(0))
-    r1 = _make_covariate([cov], site_idx=1, n_samples_site=500, X=X, random_state=_rng(1))
+    r0 = _make_covariate([cov], site_idx=0, n_samples_site=500, random_state=_rng(0))
+    r1 = _make_covariate([cov], site_idx=1, n_samples_site=500, random_state=_rng(1))
     assert r0["age"].mean() < r1["age"].mean()
 
 
 # ===========================================================================
-# _apply_site_effect
+# Noise (in reference-SD units)
 # ===========================================================================
 
 
-@pytest.mark.parametrize("effect_type", ["location", "scale", "location+scale"])
-def test_apply_site_effect_shape_preserved(effect_type):
-    """Test."""
-    X = np.ones((50, 8))
-    X_out = _apply_site_effect(
-        X=X,
-        site_effect_type=effect_type,
-        site_effect_strength=1.0,
-        site_effect_homogeneous=True,
-        random_state=_rng(0),
+def _noise(noise_strength, **kwargs):
+    *_, truth = make_multisite_classification(n_samples=4000, noise_strength=noise_strength, return_ground_truth=True, **kwargs)
+    return truth
+
+
+def test_noise_zero_strength_adds_nothing():
+    """noise_strength=0 adds no noise."""
+    np.testing.assert_array_equal(_noise(0.0)["noise"], 0.0)
+
+
+@pytest.mark.parametrize("strength", [0.1, 1.0, 5.0])
+@pytest.mark.parametrize("signal_type", ["linear", "moons"])
+def test_noise_sd_is_strength_times_feature_scale(strength, signal_type):
+    """The noise SD of each feature is noise_strength times its reference SD."""
+    truth = _noise(strength, signal={signal_type: 1.0})
+    ratio = truth["noise"].std(axis=0) / (strength * truth["feature_scale"])
+    np.testing.assert_allclose(ratio, 1.0, atol=0.06)
+
+
+def test_noise_per_site():
+    """A list gives one noise strength per site."""
+    _, _, sites, truth = make_multisite_classification(
+        n_sites=2, n_samples=4000, noise_strength=[0.0, 1.0], return_ground_truth=True
     )
-    assert X_out.shape == X.shape
-
-
-@pytest.mark.parametrize("effect_type", ["location", "scale", "location+scale"])
-def test_apply_site_effect_modifies_data(effect_type):
-    """Test."""
-    X = _rng(1).normal(size=(50, 8))  # not constant: "scale" multiplies the deviations from the mean
-    X_out = _apply_site_effect(
-        X=X,
-        site_effect_type=effect_type,
-        site_effect_strength=5.0,
-        site_effect_homogeneous=True,
-        random_state=_rng(0),
-    )
-    assert not np.allclose(X, X_out)
-
-
-def test_apply_site_effect_location_shifts_mean():
-    """Test."""
-    X = np.zeros((200, 5))
-    X_out = _apply_site_effect(
-        X=X,
-        site_effect_type="location",
-        site_effect_strength=3.0,
-        site_effect_homogeneous=True,
-        random_state=_rng(0),
-    )
-    # All samples get the same offset, so std across samples should be ~0
-    assert X_out.std(axis=0).mean() < 1e-8
-
-
-def test_apply_site_effect_heterogeneous_has_within_site_variance():
-    """Test."""
-    X = np.zeros((500, 5))
-
-    X_out = _apply_site_effect(
-        X=X,
-        site_effect_type="location",
-        site_effect_strength=3.0,
-        site_effect_homogeneous=False,
-        random_state=_rng(0),
-    )
-    # Per-sample draws → samples differ from each other
-    assert X_out.std(axis=0).mean() > 0.1
-
-
-def test_apply_site_effect_unknown_type_raises():
-    """Test."""
-    with pytest.raises(ValueError, match="Unsupported site_effect_type"):
-        _apply_site_effect(
-            X=np.ones((10, 4)),
-            site_effect_type="rotate",
-            site_effect_strength=1.0,
-            site_effect_homogeneous=True,
-            random_state=_rng(0),
-        )
-
-
-def test_apply_site_effect_does_not_mutate_input() -> None:
-    """Test."""
-    X = np.ones((50, 8))
-    X_copy = X.copy()
-    _apply_site_effect(
-        X=X,
-        site_effect_type="location",
-        site_effect_strength=3.0,
-        site_effect_homogeneous=True,
-        random_state=_rng(0),
-    )
-    np.testing.assert_array_equal(X, X_copy)
-
-
-# ===========================================================================
-# _apply_noise
-# ===========================================================================
-
-
-def test_apply_noise_shape_preserved():
-    """Test."""
-    X = np.zeros((50, 8))
-    X_out = _apply_noise(X, noise_strength=0.5, random_state=_rng(0))
-    assert X_out.shape == X.shape
-
-
-def test_apply_noise_modifies_data():
-    """Test."""
-    X = np.zeros((50, 8))
-    X_out = _apply_noise(X, noise_strength=1.0, random_state=_rng(0))
-    assert not np.allclose(X, X_out)
-
-
-def test_apply_noise_zero_strength_is_identity():
-    """Test."""
-    X = np.random.randn(50, 8)
-    X_out = _apply_noise(X, noise_strength=0.0, random_state=_rng(0))
-    np.testing.assert_array_equal(X, X_out)
-
-
-def test_apply_noise_does_not_mutate_input():
-    """Test."""
-    X = np.ones((50, 8))
-    X_copy = X.copy()
-    _apply_noise(X, noise_strength=1.0, random_state=_rng(0))
-    np.testing.assert_array_equal(X, X_copy)
-
-
-@pytest.mark.parametrize("strength", [0.01, 0.1, 1.0, 5.0])
-def test_apply_noise_std_scales_with_strength(strength):
-    """Test."""
-    X = np.zeros((5000, 1))
-    X_out = _apply_noise(X, noise_strength=strength, random_state=_rng(0))
-    observed_std = X_out.std()
-    assert abs(observed_std - strength) / strength < 0.1  # within 10 %
-
-
-# ===========================================================================
-# make_multisite_classification — output shapes and types
-# ===========================================================================
-
-
-@pytest.mark.parametrize(
-    "n_sites,n_samples,n_features,n_classes",
-    [
-        (2, 200, 10, 2),
-        (3, 300, 20, 3),
-        (5, 500, 5, 2),
-        (1, 100, 10, 2),
-    ],
-)
-def test_output_shapes(n_sites, n_samples, n_features, n_classes):
-    """Test."""
-    X, y, sites = make_multisite_classification(
-        n_sites=n_sites,
-        n_samples=n_samples,
-        n_features=n_features,
-        n_classes=n_classes,
-        random_state=0,
-    )
-    assert X.shape == (n_samples, n_features)
-    assert y.shape == (n_samples,)
-    assert sites.shape == (n_samples,)
-
-
-def test_output_dtypes():
-    """Test."""
-    X, y, sites = make_multisite_classification(n_sites=2, n_samples=100, random_state=0)
-    assert X.dtype == float
-    assert y.dtype in (np.int32, np.int64)
-    assert sites.dtype in (np.int32, np.int64)
-
-
-def test_sites_labels_range():
-    """Test."""
-    n_sites = 4
-    _, _, sites = make_multisite_classification(n_sites=n_sites, n_samples=400, random_state=0)
-    assert set(np.unique(sites)) == set(range(n_sites))
-
-
-def test_y_labels_range():
-    """Test."""
-    n_classes = 3
-    _, y, _ = make_multisite_classification(n_sites=2, n_samples=300, n_classes=n_classes, random_state=0)
-    assert set(np.unique(y)) == set(range(n_classes))
-
-
-# ===========================================================================
-# make_multisite_classification — n_samples distribution
-# ===========================================================================
-
-
-def test_n_samples_integer_total_is_exact():
-    """Test."""
-    X, _, _ = make_multisite_classification(n_sites=3, n_samples=300, random_state=0)
-    assert len(X) == 300
-
-
-def test_n_samples_list():
-    """Test."""
-    X, _, sites = make_multisite_classification(n_sites=3, n_samples=[100, 200, 150], random_state=0)
-    assert X.shape[0] == 450
-    for site_idx, expected in enumerate([100, 200, 150]):
-        assert np.sum(sites == site_idx) == expected
-
-
-def test_n_samples_list_wrong_length_raises():
-    """Test."""
-    with pytest.raises(ValueError, match="n_samples"):
-        make_multisite_classification(n_sites=3, n_samples=[100, 200], random_state=0)
-
-
-def test_n_samples_uneven_split_distributes_remainder():
-    """301 samples over 3 sites → at least one site gets an extra sample."""
-    X, _, sites = make_multisite_classification(n_sites=3, n_samples=301, random_state=0)
-    assert len(X) == 301
-    counts = [np.sum(sites == i) for i in range(3)]
-    assert sorted(counts) == [100, 100, 101]
-
-
-def test_class_weights_valid():
-    """Test."""
-    _, y, _ = make_multisite_classification(
-        n_sites=2,
-        n_samples=1000,
-        balance_per_site=[0.8, 0.2],
-        random_state=0,
-    )
-    counts = np.bincount(y)
-    # Minority class should be noticeably smaller
-    assert counts[1] < counts[0]
-
-
-def test_class_weights_wrong_length_raises():
-    """Test."""
-    with pytest.raises(ValueError, match="balance_per_site"):
-        make_multisite_classification(
-            n_sites=2,
-            n_samples=200,
-            n_classes=2,
-            balance_per_site=[0.5, 0.3, 0.2],
-            random_state=0,
-        )
-
-
-# ===========================================================================
-# make_multisite_classification — reproducibility
-# ===========================================================================
-
-
-def test_same_random_state_reproduces_output():
-    """Test."""
-    X1, y1, s1 = make_multisite_classification(n_sites=2, n_samples=100, random_state=42)
-    X2, y2, s2 = make_multisite_classification(n_sites=2, n_samples=100, random_state=42)
-    np.testing.assert_array_equal(X1, X2)
-    np.testing.assert_array_equal(y1, y2)
-    np.testing.assert_array_equal(s1, s2)
-
-
-def test_different_random_state_produces_different_output():
-    """Test."""
-    X1, _, _ = make_multisite_classification(n_sites=2, n_samples=100, random_state=0)
-    X2, _, _ = make_multisite_classification(n_sites=2, n_samples=100, random_state=99)
-    assert not np.allclose(X1, X2)
+    np.testing.assert_array_equal(truth["noise"][sites == 0], 0.0)
+    assert truth["noise"][sites == 1].std() > 0.5
 
 
 @pytest.mark.parametrize(
@@ -613,6 +371,7 @@ def test_different_random_state_produces_different_output():
         0,
         42,
         np.random.RandomState(7),
+        np.random.default_rng(7),
         None,
     ],
 )
@@ -627,7 +386,7 @@ def test_random_state_types_accepted(random_state):
 
 
 # ===========================================================================
-# make_multisite_classification — backward compatibility (3-tuple return)
+# make_multisite_classification — outputs
 # ===========================================================================
 
 
@@ -637,15 +396,14 @@ def test_no_covariates_returns_3_tuple():
     assert len(result) == 3
 
 
-def test_with_covariates_returns_4_tuple():
-    """Test."""
-    result = make_multisite_classification(
-        n_sites=2,
-        n_samples=100,
-        covariates=[_age_cov()],
-        random_state=0,
+def test_with_covariates_returns_3_tuple():
+    """Covariates do not change the outputs; their values are in the ground truth."""
+    result = make_multisite_classification(n_sites=2, n_samples=100, covariates=[_age_cov()], random_state=0)
+    assert len(result) == 3
+    *_, truth = make_multisite_classification(
+        n_sites=2, n_samples=100, covariates=[_age_cov()], random_state=0, return_ground_truth=True
     )
-    assert len(result) == 4
+    assert truth["covariates"]["age"].shape == (100,)
 
 
 # ===========================================================================
@@ -655,7 +413,7 @@ def test_with_covariates_returns_4_tuple():
 
 def test_covariates_dict_keys():
     """Test."""
-    _, _, _, covs = make_multisite_classification(
+    _, _, _, covs = _make_with_covariates(
         n_sites=2,
         n_samples=200,
         covariates=[_age_cov(), _sex_cov()],
@@ -666,7 +424,7 @@ def test_covariates_dict_keys():
 
 def test_covariates_array_lengths_match_x():
     """Test."""
-    X, _, _, covs = make_multisite_classification(
+    X, _, _, covs = _make_with_covariates(
         n_sites=2,
         n_samples=200,
         covariates=[_age_cov()],
@@ -677,7 +435,7 @@ def test_covariates_array_lengths_match_x():
 
 def test_covariate_continuous_clip_in_full_output():
     """Test."""
-    _, _, _, covs = make_multisite_classification(
+    _, _, _, covs = _make_with_covariates(
         n_sites=2,
         n_samples=1000,
         covariates=[_age_cov()],
@@ -689,7 +447,7 @@ def test_covariate_continuous_clip_in_full_output():
 
 def test_covariate_categorical_values_in_full_output():
     """Test."""
-    _, _, _, covs = make_multisite_classification(
+    _, _, _, covs = _make_with_covariates(
         n_sites=2,
         n_samples=500,
         covariates=[_sex_cov()],
@@ -707,7 +465,7 @@ def test_covariate_per_site_distribution_different_means():
             CovariateSiteDistribution(loc=70.0, scale=1.0, clip=None),
         ],
     )
-    _, _, sites, covs = make_multisite_classification(
+    _, _, sites, covs = _make_with_covariates(
         n_sites=2,
         n_samples=1000,
         covariates=[cov],
@@ -726,7 +484,7 @@ def test_covariate_broadcast_single_distribution():
         name="age",
         site_distributions=[CovariateSiteDistribution(loc=45.0, scale=10.0)],
     )
-    _, _, sites, covs = make_multisite_classification(
+    _, _, sites, covs = _make_with_covariates(
         n_sites=3,
         n_samples=3000,
         covariates=[cov],
@@ -740,14 +498,7 @@ def test_covariate_broadcast_single_distribution():
 @pytest.mark.parametrize("preset", ["age", "sex", "quality"])
 def test_preset_string_covariates(preset):
     """Test."""
-    result = make_multisite_classification(
-        n_sites=2,
-        n_samples=200,
-        covariates=[preset],
-        random_state=0,
-    )
-    assert len(result) == 4
-    _, _, _, covs = result
+    *_, covs = _make_with_covariates(n_sites=2, n_samples=200, covariates=[preset], random_state=0)
     assert preset in covs
 
 
@@ -814,26 +565,16 @@ def test_site_effect_does_not_alter_y():
     _, y1, _ = make_multisite_classification(
         n_sites=2,
         n_samples=11,
-        site_effect_strength=1,
+        site_effect={"location": 1},
         random_state=0,
     )
     _, y2, _ = make_multisite_classification(
         n_sites=2,
         n_samples=11,
-        site_effect_strength=0,
+        site_effect={"location": 0},
         random_state=0,
     )
     np.testing.assert_array_equal(y1, y2)
-
-
-@pytest.mark.parametrize("rho", [-0.5, 0.0, 0.3, 0.8])
-def test_x_correlation_is_the_pearson_correlation(rho):
-    """The covariate has correlation x_correlation with the first feature and keeps its scale."""
-    cov = Covariate(name="age", site_distributions=[CovariateSiteDistribution(loc=50.0, scale=10.0)], x_correlation=rho)
-    X = _rng(0).normal(size=(20000, 3))
-    age = _make_covariate([cov], site_idx=0, n_samples_site=20000, X=X, random_state=_rng(1))["age"]
-    assert np.corrcoef(age, X[:, 0])[0, 1] == pytest.approx(rho, abs=0.02)
-    assert age.std() == pytest.approx(10.0, rel=0.03)
 
 
 def test_covariate_is_not_modified_and_can_be_reused():
@@ -841,5 +582,5 @@ def test_covariate_is_not_modified_and_can_be_reused():
     cov = _age_cov()
     make_multisite_classification(n_sites=2, n_samples=100, covariates=[cov])
     assert len(cov.site_distributions) == 1
-    _, _, _, covariates = make_multisite_classification(n_sites=3, n_samples=90, covariates=[cov])
+    _, _, _, covariates = _make_with_covariates(n_sites=3, n_samples=90, covariates=[cov])
     assert covariates["age"].shape == (90,)

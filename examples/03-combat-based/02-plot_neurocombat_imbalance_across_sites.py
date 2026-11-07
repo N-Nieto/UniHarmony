@@ -24,10 +24,10 @@ sns.set_theme(style="whitegrid")
 
 X, y, sites = make_multisite_classification(
     n_features=2,
-    signal_strength=3,
-    site_effect_strength=0,  # NO site effect
+    signal={"blobs": 3},
+    site_effect={"location": 0},
+    # NO site effect
     balance_per_site=[[0.1, 0.9],[0.9, 0.1]],
-    signal_type="blobs",
 )
 df = pd.DataFrame({"Target": y, "Site": sites})
 
