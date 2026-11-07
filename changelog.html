@@ -1,0 +1,850 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>📂 CHANGELOG &#8212; uniharmony 0.0.6.dev68 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="_static/documentation_options.js?v=216df1ae"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'changelog';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="DeepHarmony" href="api/dl_based/deepharmony.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">uniharmony 0.0.6.dev68 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">▶️ Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pipelines.html">🔗 Using UniHarmony in pipelines</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="utilities/index.html">🛠️ Utilities</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="utilities/simulate_multisite_data.html">Multisite Data Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities/load_mareos_datasets.html">MAREoS Benchmark Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities/download_onharmony_dataset.html">Download ON-Harmony Dataset</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="utilities/datalad_integration.html">Datalad Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities/report_metric_by_site.html">Site-Stratified Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities/site_centroid_distance.html">Site Centroid Distance</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="methods/index.html">🧮 Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="methods/combat_based/index.html">🤺 ComBat-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="methods/combat_based/combat.html">ComBat and neuroComBat</a></li>
+
+
+
+<li class="toctree-l3"><a class="reference internal" href="methods/combat_based/combat_gam.html">ComBat-GAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="methods/combat_based/covbat.html">CovBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="methods/combat_based/neuroharmony.html">Neuroharmony</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="methods/combat_based/longcombat.html">Longitudinal ComBat (LongComBat)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="methods/combat_based/deepcombat.html">DeepComBat</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="methods/combat_based/prettyharmony.html">PrettYharmonize</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="methods/interpolation_based/index.html">📈 Interpolation-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="methods/interpolation_based/inter_site_matched_interpolation.html">Inter-Site Matched Interpolation (ISMI)</a></li>
+
+
+<li class="toctree-l3"><a class="reference internal" href="methods/interpolation_based/intra_site_interpolation.html">Intra-Site Interpolation (ISI)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="methods/iqm_based/index.html">🔬 IQM-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="methods/iqm_based/bartharm.html">BARTharm</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="methods/ot_based/index.html">🚄 Optimal Transport for Domain Adaptation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="methods/ot_based/otda.html">Optimal Transport Domain Adaptation (OTDA)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="methods/dl_based/index.html">🧠 Deep learning based</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="methods/dl_based/deepharmony.html">DeepHarmony</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="examples/index.html">🎛️ Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="examples/basic/index.html">Basic examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/05-plot_multisite_data_characterization.html">Characterize a multisite problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/07-run_site_prediction.html">Evaluate site predictability</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/04-plot_eos_with_dimensionality_reduction.html">Explore EoS with dimensionality reduction techniques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/02-run_metrics_by_site.html">Compute metrics by site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/06-mareos_with_tsne.html">Characterise a multisite problem with MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/08-plot_site_centroid_distance.html">Measure the Effect of Site with centroid distances</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/09-plot_site_centroid_map.html">Map the distances between site centroids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/03-plot_biases_in_metrics_by_site.html">Discover biases in metrics by site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/01-plot_eos_in_ml.html">Impact of Effects of Site in ML</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="examples/multisite_data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/02-multisite-data/04-download_on_harmony.html">Download ON-Harmony dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/02-multisite-data/05-plot_simulate_multisite_data_with_covariates.html">Multisite data generation with covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/02-multisite-data/02-load_mareos.html">Load MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/02-multisite-data/08-plot_traveling_subjects.html">Traveling subjects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/02-multisite-data/06-plot_simulate_multisite_data_with_costume_covariates.html">Multisite data generation with custom covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/02-multisite-data/07-plot_generate_multisite_regression.html">Multisite regression data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/02-multisite-data/03-plot_generate_imbalance_multisite_data.html">Generate imbalance multisite data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/02-multisite-data/01-plot_generate_multisite_data.html">Multisite data generation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="examples/combat/index.html">ComBat Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/01-plot_neurocombat_binary_classification.html">Binary classification with NeuroComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/05-plot_combatgam_imbalance_across_sites.html">ComBatGAM with covariates imbalanced across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/04-plot_combatgam_age_preservation.html">ComBatGAM preserves a nonlinear age effect</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/10-plot_prettyharmonize_regression.html">PrettYharmonize for regression</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/07-plot_neurocombat_effect_on_features.html">NeuroComBat effect in features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/02-plot_neurocombat_imbalance_across_sites.html">Analyzing NeuroComBat behavior with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/08-plot_combatgam_effect_on_features.html">ComBatGAM effect on features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/03-neurocombat_with_mareos.html">Using NeuroComBat with MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/06-combatgam_with_mareos.html">Using ComBatGAM with MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/11-plot_combat_reference_site.html">ComBat with a reference site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/09-plot_prettyharmonize_imbalance_across_sites.html">PrettYharmonize: leakage-free ComBat with class imbalance across sites</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="examples/interpolation/index.html">Interpolation Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/04-interpolation-based/01-plot_isi_binary_classification.html">Binary classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/04-interpolation-based/05-run_ismi_covariate_example.html">Using Inter-Site Matched Interpolation (ISMI) with matching covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/04-interpolation-based/02-plot_isi_multiclass_classification.html">Multiclass classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/04-interpolation-based/04-plot_ismi_binary_classification.html">Multisite Harmonization using Inter-Site Matched Interpolation (ISMI)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/04-interpolation-based/03-plot_isi_advance_usage.html">IntraSiteInterpolation advance usage</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="examples/ot/index.html">Optimal Transport based Domain Adaptation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/05-ot-based/01-plot_binary_classification.html">Binary classification using OTDA</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="examples/iqm/index.html">IQM-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/06-iqm-based/01-plot_bartharm_binary_classification.html">Binary classification with BARTharm</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="examples/conformance/index.html">Implementations conformance</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/07-implementations_conformance/01-plot_neurocombat_conformance.html">NeuroComBat: conformance with R sva and neuroCombat</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="examples/pipelines/index.html">Pipelines</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/08-pipelines/03-plot_julearn_harmonization.html">Harmonization as a julearn pipeline step</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/08-pipelines/02-plot_imblearn_sampler_then_harmonizer.html">Sampler followed by a harmonizer (imbalanced-learn)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/08-pipelines/01-plot_sklearn_pipeline.html">Harmonization in scikit-learn pipelines</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api/index.html">🗺️ API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/utils/index.html">uniharmony</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/utils/verbosity.html">verbosity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/utils/verbosity_context.html">verbosity_context</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/datasets/index.html">uniharmony.datasets</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/datasets/make_multisite_classification.html">make_multisite_classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/datasets/make_multisite_regression.html">make_multisite_regression</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/datasets/make_traveling_subjects.html">make_traveling_subjects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/datasets/covariate.html">Covariate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/datasets/load_mareos.html">load_MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/datasets/load_on_harmony.html">load_ONharmony</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/datasets/download_bids_dataset.html">download_bids_dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/datasets/clean_tmp.html">clean_tmp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/datasets/list_available_files.html">list_available_files</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/metrics/index.html">uniharmony.metrics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/metrics/report_metrics_by_site.html">report_metrics_by_site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/metrics/site_centroid_distance.html">site_centroid_distance</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/combat_based/index.html">uniharmony.combat</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/combat_based/combat.html">NeuroComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/combat_based/combat_gam.html">ComBatGAM</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/prettyharmonize/index.html">uniharmony.prettyharmonize</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/prettyharmonize/prettyharmonize_classifier.html">PrettYharmonizeClassifier</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/prettyharmonize/prettyharmonize_regressor.html">PrettYharmonizeRegressor</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/interpolation_based/index.html">uniharmony.interpolation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/interpolation_based/inter_site_matched_interpolation.html">InterSiteMatchedInterpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/interpolation_based/intra_site_interpolation.html">IntraSiteInterpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/interpolation_based/site_balanced_resampler.html">SiteBalancedResampler</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/iqm_based/index.html">uniharmony.iqm</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/iqm_based/bartharm.html">BARTharm</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/ot_based/index.html">uniharmony.ot</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/ot_based/otda.html">OptimalTransportDomainAdaptation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/dl_based/index.html">uniharmony.dl</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/dl_based/deepharmony.html">DeepHarmony</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">📂 CHANGELOG</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/N-Nieto/uniharmony" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/changelog.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>📂 CHANGELOG</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">0.0.5 - 2026-11-03</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#removed">Removed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deprecated">Deprecated</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#added">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#changed">Changed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed">Fixed</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">0.0.4 - 2026-06-10</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Changed</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">0.0.3 - 2026-05-08</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Changed</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">0.0.2 - 2026-04-16</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Changed</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">0.0.1 - 2026-03-26</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">Added</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">0.0.0 - 2026-01-15</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">Added</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="changelog">
+<h1>📂 CHANGELOG<a class="headerlink" href="#changelog" title="Link to this heading">#</a></h1>
+<section id="id1">
+<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.5">0.0.5</a> - 2026-11-03<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<section id="removed">
+<h3>Removed<a class="headerlink" href="#removed" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Remove <code class="docutils literal notranslate"><span class="pre">uniharmony.datasets.load_onharmony_structural_features</span></code>, features not longer available</p></li>
+<li><p>Remove the <code class="docutils literal notranslate"><span class="pre">uniharmony.prettyharmonize.prettyharmonize</span></code> placeholder function, superseded by the PrettYharmonize estimators.</p></li>
+</ul>
+</section>
+<section id="deprecated">
+<h3>Deprecated<a class="headerlink" href="#deprecated" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Passing <code class="docutils literal notranslate"><span class="pre">n_bins_cont_cov</span></code> / <code class="docutils literal notranslate"><span class="pre">binning_strategy_cont_cov</span></code> to <code class="docutils literal notranslate"><span class="pre">IntraSiteInterpolation.fit_resample</span></code> is deprecated; set them in the constructor.</p></li>
+</ul>
+</section>
+<section id="added">
+<h3>Added<a class="headerlink" href="#added" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">SiteBalancedResampler</span></code>, which combines within-site over-sampling with <code class="docutils literal notranslate"><span class="pre">IntraSiteInterpolation</span></code> (any interpolator, including random duplication) and within-site under-sampling: the amplification of every class is limited to <code class="docutils literal notranslate"><span class="pre">max_amplification</span></code> (<code class="docutils literal notranslate"><span class="pre">&quot;auto&quot;</span></code>, the safe amplification of ISI’s variance rule, by default; a number, a callable or <code class="docutils literal notranslate"><span class="pre">None</span></code>) and the larger classes of the site are under-sampled to meet the smaller ones with any count-controlled imblearn under-sampler that selects real samples (default <code class="docutils literal notranslate"><span class="pre">ClusterCentroids(voting=&quot;hard&quot;)</span></code>). <code class="docutils literal notranslate"><span class="pre">max_amplification=0</span></code> gives pure within-site under-sampling and <code class="docutils literal notranslate"><span class="pre">None</span></code> ISI alone. It reports <code class="docutils literal notranslate"><span class="pre">samples_removed_</span></code>, <code class="docutils literal notranslate"><span class="pre">samples_created_</span></code>, <code class="docutils literal notranslate"><span class="pre">amplification_cap_</span></code> and <code class="docutils literal notranslate"><span class="pre">summary()</span></code>, and warns when most samples of a site are removed.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">random_state</span></code> to <code class="docutils literal notranslate"><span class="pre">ComBatGAM</span></code> to make the k-fold selection of GAM penalty weights reproducible.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">uniharmony.dl.DeepHarmony</span></code> (Dewey et al., 2019), a U-Net based contrast harmonization method for multi-contrast MR images trained on an overlap cohort, with 2.5D prediction and optional harmonization of target-protocol images</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">uniharmony.iqm.BARTharm</span></code> (Prevot et al., 2025), which harmonizes scanner effects using image quality metrics instead of site labels, with Bayesian additive regression trees. Translated from the BARTharm R code, including the SoftBART forests (Linero &amp; Yang, 2018), with optional site-specific variance scaling and harmonization of new subjects.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">uniharmony.metrics.site_centroid_distance</span></code>, which quantifies the Effect of Site as the spread of the site centroids relative to the within-site spread (a pseudo-F with Euclidean, standardized or Mahalanobis geometry), with a permutation test, the share of variance explained by site, bias-corrected pairwise distances between site centroids, and optional conditioning on a categorical biological variable.</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">uniharmony.prettyharmonize</span></code> with <code class="docutils literal notranslate"><span class="pre">PrettYharmonizeClassifier</span></code> and <code class="docutils literal notranslate"><span class="pre">PrettYharmonizeRegressor</span></code> (Nieto et al., 2026). They wrap a ComBat-based model (<code class="docutils literal notranslate"><span class="pre">harm_model</span></code>: e.g. <code class="docutils literal notranslate"><span class="pre">NeuroComBat</span></code>), a <code class="docutils literal notranslate"><span class="pre">base_model</span></code> and a <code class="docutils literal notranslate"><span class="pre">stack_model</span></code> (ML models): the target is preserved when fitting the harmonization model and pretended for the data to predict, and the stack model, makes the prediction. Other covariates are passed as <code class="docutils literal notranslate"><span class="pre">additional_covariates</span></code>. Also add a registry of the ComBat-based models (<code class="docutils literal notranslate"><span class="pre">uniharmony.combat._available_models</span></code>) listing their covariate arguments.</p></li>
+<li><p>Add a variance diagnostic to <code class="docutils literal notranslate"><span class="pre">IntraSiteInterpolation</span></code>: for every class it over-samples, it measures how much of the class variance the interpolated samples keep (<code class="docutils literal notranslate"><span class="pre">variance_ratio_</span></code>) and derives the safe amplification (<code class="docutils literal notranslate"><span class="pre">safe_amplification_</span></code>, controlled by <code class="docutils literal notranslate"><span class="pre">variance_tolerance</span></code>, default 0.2), warning clearly when balancing needs more synthetic samples than that; <code class="docutils literal notranslate"><span class="pre">estimate_safe_amplification()</span></code> reports the same without resampling. <code class="docutils literal notranslate"><span class="pre">balance_strategy</span></code> also accepts a target count per site, and <code class="docutils literal notranslate"><span class="pre">n_bins</span></code> explicit bin edges. Add <code class="docutils literal notranslate"><span class="pre">summary()</span></code> and the attributes <code class="docutils literal notranslate"><span class="pre">sample_indices_</span></code>, <code class="docutils literal notranslate"><span class="pre">is_synthetic_</span></code>, <code class="docutils literal notranslate"><span class="pre">class_counts_</span></code>, <code class="docutils literal notranslate"><span class="pre">target_counts_</span></code>, <code class="docutils literal notranslate"><span class="pre">amplification_</span></code> and <code class="docutils literal notranslate"><span class="pre">effective_dim_</span></code>. ISI only interpolates and never removes a sample.</p></li>
+<li><p>Add optional <code class="docutils literal notranslate"><span class="pre">dl</span></code> dependency group (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">uniharmony[dl]</span></code>) providing PyTorch for the deep learning methods in <code class="docutils literal notranslate"><span class="pre">uniharmony.dl</span></code></p></li>
+<li><p>New “Implementations conformance” gallery. Its first example compares <code class="docutils literal notranslate"><span class="pre">NeuroComBat</span></code> with <code class="docutils literal notranslate"><span class="pre">neuroCombat</span></code> 0.2.12 (and, offline, R <code class="docutils literal notranslate"><span class="pre">sva</span></code> 3.50.0): the ComBat model, where the implementations agree, the equations and lines of code where they differ, simulations with a known ground truth, harmonization of new subjects, and runtime and memory. Added <code class="docutils literal notranslate"><span class="pre">tests/combat/test_reference_conformance.py</span></code> with a frozen <code class="docutils literal notranslate"><span class="pre">neuroCombat</span></code> 0.2.12 reference.</p></li>
+<li><p>Stronger conformance tests for <code class="docutils literal notranslate"><span class="pre">NeuroComBat</span></code>: a frozen neuroCombat 0.2.12 reference (identical to R <code class="docutils literal notranslate"><span class="pre">sva::ComBat</span></code> 3.50.0 to 1e-13) over six designs (several covariates, no covariates, imbalanced sites, large-scale covariates, a covariate confounded with site) and all four modes, with float32-exact inputs so the tolerance is 1e-8 of the data scale instead of 1e-6. The reference is rebuilt with <code class="docutils literal notranslate"><span class="pre">tests/combat/make_neurocombat_reference.py</span></code>.</p></li>
+</ul>
+</section>
+<section id="changed">
+<h3>Changed<a class="headerlink" href="#changed" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Documented a third difference with R <code class="docutils literal notranslate"><span class="pre">sva::ComBat</span></code> and <code class="docutils literal notranslate"><span class="pre">neuroCombat</span></code>: their parametric empirical Bayes solver measures the relative change against the signed previous estimate, so features with a negative location effect never block the stop and the output is not converged to the stated tolerance (up to about 1e-5 of the data scale). UniHarmony uses the absolute value; run to convergence, both give the same solution. The “Implementations conformance” example explains it, and its pooled-variance figure now separates the effect of the denominator (exactly <code class="docutils literal notranslate"><span class="pre">(n</span> <span class="pre">-</span> <span class="pre">S)</span> <span class="pre">/</span> <span class="pre">n</span></code>) from the comparison with the truth, with confidence intervals and with and without empirical Bayes.</p></li>
+<li><p>Install the <code class="docutils literal notranslate"><span class="pre">dl</span></code> extra with the CPU build of PyTorch in the tox test environments, so the deep learning methods are tested in CI</p></li>
+<li><p>Replace the regex-based <code class="docutils literal notranslate"><span class="pre">python-no-eval</span></code> pre-commit hook with ruff rule <code class="docutils literal notranslate"><span class="pre">S307</span></code>, which flags only the builtin <code class="docutils literal notranslate"><span class="pre">eval()</span></code> and allows method calls such as PyTorch’s <code class="docutils literal notranslate"><span class="pre">model.eval()</span></code></p></li>
+<li><p>The type alias of the registered ComBat-based models in <code class="docutils literal notranslate"><span class="pre">uniharmony.combat._available_models</span></code> is renamed from <code class="docutils literal notranslate"><span class="pre">ComBatModel</span></code> to <code class="docutils literal notranslate"><span class="pre">ComBatModels</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IntraSiteInterpolation</span></code> covariates now only restrict which samples are interpolated together and preserve the covariate distribution of each class and site, instead of balancing classes inside every stratum; <code class="docutils literal notranslate"><span class="pre">global_max</span></code> with covariates no longer fills every stratum up to the global maximum. Every class that needs over-sampling must have at least two samples in its site (one for random over-sampling), otherwise an error is raised; regression bins with too few samples in a site are left as they are, with a warning. Each site and stratum gets its own random stream, and the constructor parameters are no longer modified by <code class="docutils literal notranslate"><span class="pre">fit_resample</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">IntraSiteInterpolation</span></code>: the parent search that assigns interpolated targets in regression is vectorised (one Gram matrix per cell instead of a nearest-neighbour search per synthetic sample); <code class="docutils literal notranslate"><span class="pre">effective_dimension</span></code> uses the trace and Frobenius norm of the Gram matrix instead of an eigendecomposition and estimates the participation ratio from at most 2000 samples (<code class="docutils literal notranslate"><span class="pre">max_samples</span></code>), which keeps it cheap for voxel-wise data. The warnings for unsafe amplification and for regression bins that cannot be balanced now explain that part of the site-target association remains, and the documentation describes how to tune hyper-parameters with ISI nested in the inner cross-validation, the limits of ISI (strong imbalance with many features, local models, missing target ranges) and the within-site permutation probe. The documentation also describes two further uses of ISI: as a sanity check of how much of a cross-validated score comes from the site (score without minus score with ISI), and as a pre-processing step that lets ComBat-type harmonisers estimate site effects without the target as a covariate.</p></li>
+</ul>
+</section>
+<section id="fixed">
+<h3>Fixed<a class="headerlink" href="#fixed" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Fix ComBat-based methods (<code class="docutils literal notranslate"><span class="pre">NeuroComBat</span></code>, <code class="docutils literal notranslate"><span class="pre">CovBat</span></code>, <code class="docutils literal notranslate"><span class="pre">ComBatGAM</span></code>) when more than one categorical, continuous or smooth covariate column is given; columns were previously flattened into a single column. <code class="docutils literal notranslate"><span class="pre">CovBat.transform</span></code> now also accepts 1D covariates.</p></li>
+<li><p>Fix <code class="docutils literal notranslate"><span class="pre">IntraSiteInterpolation</span></code> crashing on small covariate strata or small classes (neighbour counts are adapted and strata that are too small are skipped), interpolators that produce approximately the requested number of samples (SVM-SMOTE, ADASYN), and upper-case interpolator names in <code class="docutils literal notranslate"><span class="pre">create_interpolator</span></code>. When an interpolator fails, the error now suggests SMOTE.</p></li>
+<li><p>Fix <code class="docutils literal notranslate"><span class="pre">IntraSiteInterpolation</span></code> overwriting targets: original samples now keep their original <code class="docutils literal notranslate"><span class="pre">y</span></code> (it was replaced for every row, also for classification), classification labels keep their dtype (they were returned as floats; string labels crashed), synthetic regression targets are interpolated between the targets of the samples they were generated from (they were random values from their bin), <code class="docutils literal notranslate"><span class="pre">samples_created_</span></code> uses the fitted bins for regression, and <code class="docutils literal notranslate"><span class="pre">random_state</span></code> is no longer overwritten in <code class="docutils literal notranslate"><span class="pre">fit_resample</span></code> and also seeds the bootstrap fill-up. Interpolators must return the original samples first, as imblearn over-samplers do.</p></li>
+<li><p>Fix <code class="docutils literal notranslate"><span class="pre">NeuroComBat</span></code>, <code class="docutils literal notranslate"><span class="pre">CovBat</span></code> and <code class="docutils literal notranslate"><span class="pre">ComBatGAM</span></code> with more than one categorical or continuous covariate: a 2-D covariate array was flattened into a single column, so fitting failed. A 1-D array is still treated as a single covariate.</p></li>
+<li><p>Fix <code class="docutils literal notranslate"><span class="pre">OptimalTransportDomainAdaptation.transform</span></code> and <code class="docutils literal notranslate"><span class="pre">inverse_transform</span></code> on new data: any subset of the fitted sites is accepted (a single site, or a batch without the reference site), rows are selected by site instead of by value (duplicate rows no longer crash), DataFrames are supported, unseen sites raise a clear error, and <code class="docutils literal notranslate"><span class="pre">inverse_transform</span></code> maps the non-reference rows back as the inverse of <code class="docutils literal notranslate"><span class="pre">transform</span></code> (it crashed on the output of <code class="docutils literal notranslate"><span class="pre">transform</span></code>).</p></li>
+<li><p>Fix <code class="docutils literal notranslate"><span class="pre">fit_transform</span></code> of <code class="docutils literal notranslate"><span class="pre">NeuroComBat</span></code> and <code class="docutils literal notranslate"><span class="pre">ComBatGAM</span></code> forwarding fit-only options (<code class="docutils literal notranslate"><span class="pre">var_epsilon</span></code>, <code class="docutils literal notranslate"><span class="pre">delta_epsilon</span></code>, <code class="docutils literal notranslate"><span class="pre">tau_2_epsilon</span></code>, <code class="docutils literal notranslate"><span class="pre">max_iter</span></code>, <code class="docutils literal notranslate"><span class="pre">df</span></code>, <code class="docutils literal notranslate"><span class="pre">degree</span></code>, <code class="docutils literal notranslate"><span class="pre">smooth_covariates_bounds</span></code>) to <code class="docutils literal notranslate"><span class="pre">transform</span></code>, which raised a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code>. Every ComBat variant now declares <code class="docutils literal notranslate"><span class="pre">fit_transform</span></code> with the same typed, documented signature as its <code class="docutils literal notranslate"><span class="pre">fit</span></code> and delegates to a shared helper that passes to <code class="docutils literal notranslate"><span class="pre">transform</span></code> only the arguments it accepts.</p></li>
+<li><p>Fix <code class="docutils literal notranslate"><span class="pre">uniharmony.verbosity</span></code> having no effect on the ComBat-based harmonizers when it was called after importing them: their loggers were bound at import time. The <code class="docutils literal notranslate"><span class="pre">src</span></code> field is now also added to the logs of <code class="docutils literal notranslate"><span class="pre">NeuroComBat</span></code>, <code class="docutils literal notranslate"><span class="pre">CovBat</span></code> and <code class="docutils literal notranslate"><span class="pre">ComBatGAM</span></code>.</p></li>
+<li><p>Fix the return type annotation of <code class="docutils literal notranslate"><span class="pre">uniharmony._verbose.verbosity_context</span></code>, so that type checkers accept it in <code class="docutils literal notranslate"><span class="pre">with</span></code> statements.</p></li>
+<li><p>Small numerical and code fixes: the ComBat regression is solved with an SVD-based least-squares solver instead of an explicit matrix inverse (stable for nearly collinear covariates, minimum-norm solution with a warning for a rank-deficient design); the inverse-gamma priors are kept in float64 (they were cast to float32); <code class="docutils literal notranslate"><span class="pre">MetricType</span></code> of <code class="docutils literal notranslate"><span class="pre">OptimalTransportDomainAdaptation</span></code> no longer lists metrics removed from SciPy (<code class="docutils literal notranslate"><span class="pre">kulsinski</span></code>, <code class="docutils literal notranslate"><span class="pre">wminkowski</span></code>, <code class="docutils literal notranslate"><span class="pre">sokalmichener</span></code>) and lists <code class="docutils literal notranslate"><span class="pre">sqeuclidean</span></code>; a duplicated line was removed from <code class="docutils literal notranslate"><span class="pre">minimum_samples_warning</span></code>.</p></li>
+<li><p>The scikit-learn tags of the ComBat variants and <code class="docutils literal notranslate"><span class="pre">OptimalTransportDomainAdaptation</span></code> now describe them correctly: missing values are not allowed (<code class="docutils literal notranslate"><span class="pre">allow_nan=False</span></code>, they are rejected at fit), and <code class="docutils literal notranslate"><span class="pre">sites</span></code>, which takes the place of <code class="docutils literal notranslate"><span class="pre">y</span></code>, is a required 1D label of any value (<code class="docutils literal notranslate"><span class="pre">two_d_labels</span></code> and <code class="docutils literal notranslate"><span class="pre">positive_only</span></code> are no longer set). <code class="docutils literal notranslate"><span class="pre">ComBatGAM</span></code> is tagged non-deterministic unless <code class="docutils literal notranslate"><span class="pre">random_state</span></code> is fixed.</p></li>
+<li><p>UniHarmony prints only warnings and errors by default (it printed every debug line before). <code class="docutils literal notranslate"><span class="pre">uniharmony.verbosity</span></code> and <code class="docutils literal notranslate"><span class="pre">uniharmony.verbosity_context</span></code> now set UniHarmony’s own level without changing structlog’s global configuration, so applications that configure structlog keep their settings, and the default argument of both functions is <code class="docutils literal notranslate"><span class="pre">&quot;warning&quot;</span></code>. Transforming samples from only some of the fitted sites no longer logs a warning for each missing site.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ComBatGAM.transform</span></code> no longer fails when smooth covariates fall outside the fitted range: values are clipped to the range boundary (constant extrapolation) and a warning is logged.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NeuroComBat</span></code>, <code class="docutils literal notranslate"><span class="pre">ComBatGAM</span></code> and <code class="docutils literal notranslate"><span class="pre">CovBat</span></code> divide the pooled residual sum of squares by <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">-</span> <span class="pre">S</span></code> (<code class="docutils literal notranslate"><span class="pre">S</span></code> sites) for every sample size, so that the harmonized variance is unbiased. The former switch to <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">-</span> <span class="pre">1</span></code> below 30 samples, which had no statistical basis and made the output scale jump at <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">30</span></code>, was removed. R <code class="docutils literal notranslate"><span class="pre">sva::ComBat</span></code> and <code class="docutils literal notranslate"><span class="pre">neuroCombat</span></code> divide by <code class="docutils literal notranslate"><span class="pre">n</span></code>, which shrinks the harmonized variance by <code class="docutils literal notranslate"><span class="pre">(n</span> <span class="pre">-</span> <span class="pre">S)</span> <span class="pre">/</span> <span class="pre">n</span></code>; outside <code class="docutils literal notranslate"><span class="pre">mean_only</span></code>, UniHarmony’s output equals theirs with the deviations from the fitted biology scaled by <code class="docutils literal notranslate"><span class="pre">sqrt(n</span> <span class="pre">/</span> <span class="pre">(n</span> <span class="pre">-</span> <span class="pre">S))</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">NeuroComBat</span></code>, <code class="docutils literal notranslate"><span class="pre">CovBat</span></code>, <code class="docutils literal notranslate"><span class="pre">ComBatGAM</span></code> and <code class="docutils literal notranslate"><span class="pre">OptimalTransportDomainAdaptation</span></code> store <code class="docutils literal notranslate"><span class="pre">n_features_in_</span></code> (and <code class="docutils literal notranslate"><span class="pre">feature_names_in_</span></code> for DataFrames) at fit, and <code class="docutils literal notranslate"><span class="pre">transform</span></code> raises a clear error when the number or names of the features differ, instead of a NumPy broadcasting error.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">mean_only=True</span></code> in <code class="docutils literal notranslate"><span class="pre">NeuroComBat</span></code> and <code class="docutils literal notranslate"><span class="pre">ComBatGAM</span></code> is documented and flagged (an info log at fit) as a deliberate correction of R <code class="docutils literal notranslate"><span class="pre">sva::ComBat</span></code> and <code class="docutils literal notranslate"><span class="pre">neuroCombat</span></code>: the empirical Bayes posterior of the site effect uses the site sample size, while the references use <code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">1</span></code>, which leaves most of the feature-specific site effect in the data.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">transform</span></code> of the ComBat variants raises a clear <code class="docutils literal notranslate"><span class="pre">ValueError</span></code> when a covariate given to <code class="docutils literal notranslate"><span class="pre">fit</span></code> is missing, or a covariate not given to <code class="docutils literal notranslate"><span class="pre">fit</span></code> is passed (it previously failed with a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code>, an <code class="docutils literal notranslate"><span class="pre">AttributeError</span></code>, or “Input contains NaN”, or ignored the covariate). <code class="docutils literal notranslate"><span class="pre">ComBatGAM</span></code> reports missing <code class="docutils literal notranslate"><span class="pre">smooth_covariates</span></code> explicitly in <code class="docutils literal notranslate"><span class="pre">fit</span></code> and <code class="docutils literal notranslate"><span class="pre">transform</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">uniharmony.ot</span></code> is exported by the top-level package, like the other modules.</p></li>
+</ul>
+</section>
+</section>
+<section id="id2">
+<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.4">0.0.4</a> - 2026-06-10<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<section id="id3">
+<h3>Added<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Expose <code class="docutils literal notranslate"><span class="pre">__version__</span></code> as package-level attribute (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/73">#73</a>)</p></li>
+</ul>
+</section>
+<section id="id4">
+<h3>Changed<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Remove <code class="docutils literal notranslate"><span class="pre">copy</span></code> parameter from ComBat-based methods and change its default from True to False (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/65">#65</a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="id5">
+<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.3">0.0.3</a> - 2026-05-08<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
+<section id="id6">
+<h3>Added<a class="headerlink" href="#id6" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Add ComBatGAM harmonisation method (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/15">#15</a>)</p></li>
+<li><p>Add support for fetching BIDS-compatible datasets using DataLad and use ON-Harmony dataset as an example (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/58">#58</a>)</p></li>
+<li><p>Export <code class="docutils literal notranslate"><span class="pre">uniharmony.metrics</span></code> and allow for multiple metrics in <code class="docutils literal notranslate"><span class="pre">uniharmony.metrics.report_metrics_by_site</span></code> (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/59">#59</a>)</p></li>
+<li><p>Add global and per site functionality to IntraSiteInterpolation class.
+Add covariate match interpolation to IntraSiteInterpolation class for better preserve biological plausibility. (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/61">#61</a>)</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">BaseComBat</span></code>, <code class="docutils literal notranslate"><span class="pre">DesignMatrixMixin</span></code>, <code class="docutils literal notranslate"><span class="pre">StandardizationMixin</span></code> and <code class="docutils literal notranslate"><span class="pre">LocationAndScaleMixin</span></code> for ComBat-based methods (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/64">#64</a>)</p></li>
+</ul>
+</section>
+<section id="id7">
+<h3>Changed<a class="headerlink" href="#id7" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Refactor <code class="docutils literal notranslate"><span class="pre">make_multisite_classification</span></code> to use <code class="docutils literal notranslate"><span class="pre">sklearn</span></code> functions to generate base samples (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/54">#54</a>)</p></li>
+<li><p>Expose <code class="docutils literal notranslate"><span class="pre">uniharmony.datasets</span></code> and hide previously exposed functions from it (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/58">#58</a>)</p></li>
+<li><p>Fix <code class="docutils literal notranslate"><span class="pre">uniharmony.metrics.report_metrics_by_site</span></code> when requested metric requires <code class="docutils literal notranslate"><span class="pre">y_score</span></code> instead of <code class="docutils literal notranslate"><span class="pre">y_pred</span></code> (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/59">#59</a>)</p></li>
+<li><p>Change basic to IntraSiteInterpolation class structure to allow for classification and regression problems. (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/61">#61</a>)</p></li>
+<li><p>Refactor ComBat-based method implementations to use mixin classes (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/64">#64</a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="id8">
+<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.2">0.0.2</a> - 2026-04-16<a class="headerlink" href="#id8" title="Link to this heading">#</a></h2>
+<section id="id9">
+<h3>Added<a class="headerlink" href="#id9" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Introduce <code class="docutils literal notranslate"><span class="pre">uniharmony.verbosity</span></code> and <code class="docutils literal notranslate"><span class="pre">uniharmony.verbosity_context</span></code> to manage logging levels (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/10">#10</a>)</p></li>
+<li><p>Add InterSiteMatchedInterpolation harmonisation method (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/16">#16</a>)</p></li>
+<li><p>Add <code class="docutils literal notranslate"><span class="pre">plot</span></code> sub-package for providing plotting helpers (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/26">#26</a>)</p></li>
+</ul>
+</section>
+<section id="id10">
+<h3>Changed<a class="headerlink" href="#id10" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Improve <code class="docutils literal notranslate"><span class="pre">sites</span></code> validation, handling and storage across transformers (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/17">#17</a>)</p></li>
+<li><p>Split up API reference in docs (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/19">#19</a>)</p></li>
+<li><p>Fix IntraSiteInterpolation logic and improve test coverage (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/25">#25</a>)</p></li>
+<li><p>Improve multi-site data generation and move it to <code class="docutils literal notranslate"><span class="pre">datasets</span></code> (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/27">#27</a>)</p></li>
+<li><p>Improve NeuroComBat tests (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/29">#29</a>)</p></li>
+<li><p>Add Optimal Transport for Domain Adaptation wrapper that allows for harmonizing data to a reference site(s) (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/30">#30</a>)</p></li>
+<li><p>Replace <code class="docutils literal notranslate"><span class="pre">zensical</span></code> with <code class="docutils literal notranslate"><span class="pre">sphinx</span></code> for documentation (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/35">#35</a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="id11">
+<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.1">0.0.1</a> - 2026-03-26<a class="headerlink" href="#id11" title="Link to this heading">#</a></h2>
+<section id="id12">
+<h3>Added<a class="headerlink" href="#id12" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Setup documentation and add initial info (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/2">#2</a>)</p></li>
+<li><p>Add IntraSiteInterpolation harmonisation method, MAREoS dataset loading and multisite data generation functions (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/4">#4</a>)</p></li>
+<li><p>Add NeuroComBat harmonisation method (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/5">#5</a>)</p></li>
+</ul>
+</section>
+</section>
+<section id="id13">
+<h2><a class="reference external" href="https://github.com/N-Nieto/UniHarmony/tree/0.0.0">0.0.0</a> - 2026-01-15<a class="headerlink" href="#id13" title="Link to this heading">#</a></h2>
+<section id="id14">
+<h3>Added<a class="headerlink" href="#id14" title="Link to this heading">#</a></h3>
+<ul class="simple">
+<li><p>Clean up repository and publish package (<a class="reference external" href="https://github.com/N-Nieto/UniHarmony/issues/1">#1</a>)</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="api/dl_based/deepharmony.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">DeepHarmony</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">0.0.5 - 2026-11-03</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#removed">Removed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#deprecated">Deprecated</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#added">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#changed">Changed</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#fixed">Fixed</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">0.0.4 - 2026-06-10</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Changed</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id5">0.0.3 - 2026-05-08</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7">Changed</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id8">0.0.2 - 2026-04-16</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9">Added</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10">Changed</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id11">0.0.1 - 2026-03-26</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id12">Added</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id13">0.0.0 - 2026-01-15</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id14">Added</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By uniharmony Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026, uniharmony Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

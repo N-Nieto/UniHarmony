@@ -1,0 +1,979 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Multisite Data Simulation &#8212; uniharmony 0.0.6.dev68 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="../_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="../_static/documentation_options.js?v=216df1ae"></script>
+    <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'utilities/simulate_multisite_data';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="MAREoS Benchmark Datasets" href="load_mareos_datasets.html" />
+    <link rel="prev" title="🛠️ Utilities" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="../_static/searchtools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script src="../searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">uniharmony 0.0.6.dev68 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../getting_started.html">▶️ Getting Started</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pipelines.html">🔗 Using UniHarmony in pipelines</a></li>
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">🛠️ Utilities</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">Multisite Data Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="load_mareos_datasets.html">MAREoS Benchmark Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="download_onharmony_dataset.html">Download ON-Harmony Dataset</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="datalad_integration.html">Datalad Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="report_metric_by_site.html">Site-Stratified Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="site_centroid_distance.html">Site Centroid Distance</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../methods/index.html">🧮 Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../methods/combat_based/index.html">🤺 ComBat-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../methods/combat_based/combat.html">ComBat and neuroComBat</a></li>
+
+
+
+<li class="toctree-l3"><a class="reference internal" href="../methods/combat_based/combat_gam.html">ComBat-GAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../methods/combat_based/covbat.html">CovBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../methods/combat_based/neuroharmony.html">Neuroharmony</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../methods/combat_based/longcombat.html">Longitudinal ComBat (LongComBat)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../methods/combat_based/deepcombat.html">DeepComBat</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="../methods/combat_based/prettyharmony.html">PrettYharmonize</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../methods/interpolation_based/index.html">📈 Interpolation-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../methods/interpolation_based/inter_site_matched_interpolation.html">Inter-Site Matched Interpolation (ISMI)</a></li>
+
+
+<li class="toctree-l3"><a class="reference internal" href="../methods/interpolation_based/intra_site_interpolation.html">Intra-Site Interpolation (ISI)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../methods/iqm_based/index.html">🔬 IQM-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../methods/iqm_based/bartharm.html">BARTharm</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../methods/ot_based/index.html">🚄 Optimal Transport for Domain Adaptation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../methods/ot_based/otda.html">Optimal Transport Domain Adaptation (OTDA)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../methods/dl_based/index.html">🧠 Deep learning based</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../methods/dl_based/deepharmony.html">DeepHarmony</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../examples/index.html">🎛️ Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../examples/basic/index.html">Basic examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/01-basic-examples/05-plot_multisite_data_characterization.html">Characterize a multisite problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/01-basic-examples/07-run_site_prediction.html">Evaluate site predictability</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/01-basic-examples/04-plot_eos_with_dimensionality_reduction.html">Explore EoS with dimensionality reduction techniques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/01-basic-examples/02-run_metrics_by_site.html">Compute metrics by site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/01-basic-examples/06-mareos_with_tsne.html">Characterise a multisite problem with MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/01-basic-examples/08-plot_site_centroid_distance.html">Measure the Effect of Site with centroid distances</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/01-basic-examples/09-plot_site_centroid_map.html">Map the distances between site centroids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/01-basic-examples/03-plot_biases_in_metrics_by_site.html">Discover biases in metrics by site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/01-basic-examples/01-plot_eos_in_ml.html">Impact of Effects of Site in ML</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../examples/multisite_data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/04-download_on_harmony.html">Download ON-Harmony dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/05-plot_simulate_multisite_data_with_covariates.html">Multisite data generation with covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/02-load_mareos.html">Load MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/08-plot_traveling_subjects.html">Traveling subjects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/06-plot_simulate_multisite_data_with_costume_covariates.html">Multisite data generation with custom covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/07-plot_generate_multisite_regression.html">Multisite regression data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/03-plot_generate_imbalance_multisite_data.html">Generate imbalance multisite data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/02-multisite-data/01-plot_generate_multisite_data.html">Multisite data generation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../examples/combat/index.html">ComBat Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/03-combat-based/01-plot_neurocombat_binary_classification.html">Binary classification with NeuroComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/03-combat-based/05-plot_combatgam_imbalance_across_sites.html">ComBatGAM with covariates imbalanced across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/03-combat-based/04-plot_combatgam_age_preservation.html">ComBatGAM preserves a nonlinear age effect</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/03-combat-based/10-plot_prettyharmonize_regression.html">PrettYharmonize for regression</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/03-combat-based/07-plot_neurocombat_effect_on_features.html">NeuroComBat effect in features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/03-combat-based/02-plot_neurocombat_imbalance_across_sites.html">Analyzing NeuroComBat behavior with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/03-combat-based/08-plot_combatgam_effect_on_features.html">ComBatGAM effect on features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/03-combat-based/03-neurocombat_with_mareos.html">Using NeuroComBat with MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/03-combat-based/06-combatgam_with_mareos.html">Using ComBatGAM with MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/03-combat-based/11-plot_combat_reference_site.html">ComBat with a reference site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/03-combat-based/09-plot_prettyharmonize_imbalance_across_sites.html">PrettYharmonize: leakage-free ComBat with class imbalance across sites</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../examples/interpolation/index.html">Interpolation Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/04-interpolation-based/01-plot_isi_binary_classification.html">Binary classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/04-interpolation-based/05-run_ismi_covariate_example.html">Using Inter-Site Matched Interpolation (ISMI) with matching covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/04-interpolation-based/02-plot_isi_multiclass_classification.html">Multiclass classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/04-interpolation-based/04-plot_ismi_binary_classification.html">Multisite Harmonization using Inter-Site Matched Interpolation (ISMI)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/04-interpolation-based/03-plot_isi_advance_usage.html">IntraSiteInterpolation advance usage</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../examples/ot/index.html">Optimal Transport based Domain Adaptation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/05-ot-based/01-plot_binary_classification.html">Binary classification using OTDA</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../examples/iqm/index.html">IQM-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/06-iqm-based/01-plot_bartharm_binary_classification.html">Binary classification with BARTharm</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../examples/conformance/index.html">Implementations conformance</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/07-implementations_conformance/01-plot_neurocombat_conformance.html">NeuroComBat: conformance with R sva and neuroCombat</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../examples/pipelines/index.html">Pipelines</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/08-pipelines/03-plot_julearn_harmonization.html">Harmonization as a julearn pipeline step</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/08-pipelines/02-plot_imblearn_sampler_then_harmonizer.html">Sampler followed by a harmonizer (imbalanced-learn)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../auto_examples/08-pipelines/01-plot_sklearn_pipeline.html">Harmonization in scikit-learn pipelines</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../api/index.html">🗺️ API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/utils/index.html">uniharmony</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/utils/verbosity.html">verbosity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/utils/verbosity_context.html">verbosity_context</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/datasets/index.html">uniharmony.datasets</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/make_multisite_classification.html">make_multisite_classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/make_multisite_regression.html">make_multisite_regression</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/make_traveling_subjects.html">make_traveling_subjects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/covariate.html">Covariate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/load_mareos.html">load_MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/load_on_harmony.html">load_ONharmony</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/download_bids_dataset.html">download_bids_dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/clean_tmp.html">clean_tmp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/datasets/list_available_files.html">list_available_files</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/metrics/index.html">uniharmony.metrics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/metrics/report_metrics_by_site.html">report_metrics_by_site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/metrics/site_centroid_distance.html">site_centroid_distance</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/combat_based/index.html">uniharmony.combat</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/combat_based/combat.html">NeuroComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/combat_based/combat_gam.html">ComBatGAM</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/prettyharmonize/index.html">uniharmony.prettyharmonize</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/prettyharmonize/prettyharmonize_classifier.html">PrettYharmonizeClassifier</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/prettyharmonize/prettyharmonize_regressor.html">PrettYharmonizeRegressor</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/interpolation_based/index.html">uniharmony.interpolation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/interpolation_based/inter_site_matched_interpolation.html">InterSiteMatchedInterpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/interpolation_based/intra_site_interpolation.html">IntraSiteInterpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../api/interpolation_based/site_balanced_resampler.html">SiteBalancedResampler</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/iqm_based/index.html">uniharmony.iqm</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/iqm_based/bartharm.html">BARTharm</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/ot_based/index.html">uniharmony.ot</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/ot_based/otda.html">OptimalTransportDomainAdaptation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../api/dl_based/index.html">uniharmony.dl</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../api/dl_based/deepharmony.html">DeepHarmony</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">📂 CHANGELOG</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/N-Nieto/uniharmony" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/utilities/simulate_multisite_data.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Multisite Data Simulation</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#behind-the-scenes">Behind the Scenes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#units">Units</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#site-effects">Site effects</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combining-types-and-choosing-strengths">Combining types and choosing strengths</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#which-features-which-samples-which-classes">Which features, which samples, which classes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covariates">Covariates</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outputs-and-ground-truth">Outputs and ground truth</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression">Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#traveling-subjects">Traveling subjects</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#not-simulated-yet">Not simulated yet</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="multisite-data-simulation">
+<span id="simulate-multisite-data"></span><h1>Multisite Data Simulation<a class="headerlink" href="#multisite-data-simulation" title="Link to this heading">#</a></h1>
+<section id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">#</a></h2>
+<p>Three functions of <code class="docutils literal notranslate"><span class="pre">uniharmony.datasets</span></code> generate synthetic datasets that mimic multi-center studies, with a known
+signal, a known Effect of Site (EoS) and noise. They are used to test harmonization methods and to teach how site
+effects bias machine learning:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Function</p></th>
+<th class="head"><p>Design</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">make_multisite_classification</span></code></p></td>
+<td><p>Different subjects in every site, with class labels.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">make_multisite_regression</span></code></p></td>
+<td><p>Different subjects in every site, with a continuous target (e.g. brain age); each site can cover its own range of the target.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">make_traveling_subjects</span></code></p></td>
+<td><p>The same subjects measured in every site, the gold-standard design to check a harmonization.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The three share the covariates, the noise and the site effects described below; the sections at the end describe what
+is specific to regression and traveling subjects.</p>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_multisite_classification</span>
+
+<span class="c1"># 3 sites, 500 samples in total</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span>
+    <span class="n">n_sites</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">n_samples</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
+    <span class="n">n_features</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">signal</span><span class="o">=</span><span class="p">{</span><span class="s2">"linear"</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">},</span>        <span class="c1"># generator and class separation (the default)</span>
+    <span class="n">site_effect</span><span class="o">=</span><span class="p">{</span><span class="s2">"location"</span><span class="p">:</span> <span class="mf">3.0</span><span class="p">},</span>  <span class="c1"># type and strength of the site effect (the default)</span>
+    <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span>               <span class="c1"># for reproducibility</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="behind-the-scenes">
+<h2>Behind the Scenes<a class="headerlink" href="#behind-the-scenes" title="Link to this heading">#</a></h2>
+<p>Each sample combines four components:</p>
+<p>Feature = SiteEffect(Signal + Covariate effects + Noise)</p>
+<ol class="arabic simple">
+<li><p>A pool of base samples (the signal) is generated with a scikit-learn generator, given as <code class="docutils literal notranslate"><span class="pre">signal={type:</span> <span class="pre">strength}</span></code>
+with type <code class="docutils literal notranslate"><span class="pre">&quot;linear&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;blobs&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;gaussian_quantiles&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;moons&quot;</span></code> or <code class="docutils literal notranslate"><span class="pre">&quot;circles&quot;</span></code> (the strength sets the class
+separation; moons and circles have none), with exactly the number of samples of each class
+that the sites need.</p></li>
+<li><p>Each site draws its samples from the pool <strong>without replacement</strong>, following its class proportions
+(<code class="docutils literal notranslate"><span class="pre">balance_per_site</span></code>). No sample appears twice, whatever the imbalance or the site sizes. A proportion of 0 leaves
+a class out of a site; a non-zero proportion always gives the class at least one sample there.</p></li>
+<li><p>Optional covariates (<code class="docutils literal notranslate"><span class="pre">covariates</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">&quot;age&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;sex&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;tiv&quot;</span></code>) are drawn per site, and their effects on the features
+are added to the signal. The effects are the <strong>same in every site</strong>, so when a covariate’s distribution differs
+between sites (an older site, say), the sites also differ through it: the covariate is a confounder of the site, as
+in real multi-site data.</p></li>
+<li><p>Gaussian noise (<code class="docutils literal notranslate"><span class="pre">noise_strength</span></code>) is added. Signal, covariate effects and noise form the data <strong>without site
+effect</strong>.</p></li>
+<li><p>The site effect is applied (<code class="docutils literal notranslate"><span class="pre">site_effect={type:</span> <span class="pre">strength,</span> <span class="pre">...}</span></code>).</p></li>
+</ol>
+<section id="units">
+<h3>Units<a class="headerlink" href="#units" title="Link to this heading">#</a></h3>
+<p>All strengths are in units of a <strong>reference SD</strong> per feature: the pooled within-class standard deviation of the
+feature in the signal (about 1 for <code class="docutils literal notranslate"><span class="pre">&quot;linear&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;blobs&quot;</span></code>, 0.3–0.7 for <code class="docutils literal notranslate"><span class="pre">&quot;moons&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">&quot;circles&quot;</span></code>). A location
+offset of <code class="docutils literal notranslate"><span class="pre">s</span></code> is therefore a standardized mean difference (Cohen’s d) of <code class="docutils literal notranslate"><span class="pre">s</span></code>, whatever the generator and the class
+separation, and the same strength means the same thing for every signal. For regression and traveling subjects, the
+reference SD is the SD of the feature in the population of the signal (see their sections).</p>
+</section>
+</section>
+<section id="site-effects">
+<h2>Site effects<a class="headerlink" href="#site-effects" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Type</p></th>
+<th class="head"><p>Effect for a site with strength <code class="docutils literal notranslate"><span class="pre">s</span></code> (<code class="docutils literal notranslate"><span class="pre">sd</span></code>: reference SD, <code class="docutils literal notranslate"><span class="pre">c</span></code>: expected value without site effect)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;location&quot;</span></code></p></td>
+<td><p>adds a per-feature offset <code class="docutils literal notranslate"><span class="pre">o</span> <span class="pre">*</span> <span class="pre">sd</span></code>, with <code class="docutils literal notranslate"><span class="pre">o</span></code> drawn from U(-s/2, s/2)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;scale&quot;</span></code></p></td>
+<td><p>multiplies the deviations from <code class="docutils literal notranslate"><span class="pre">c</span></code> by a per-feature factor exp(U(-0.1 s, 0.1 s))</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;variance&quot;</span></code></p></td>
+<td><p>adds Gaussian noise with a per-feature SD drawn from U(0, s) reference SDs</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;nonlinear&quot;</span></code></p></td>
+<td><p>adds <code class="docutils literal notranslate"><span class="pre">w</span> <span class="pre">*</span> <span class="pre">(X</span> <span class="pre">-</span> <span class="pre">c)**2</span> <span class="pre">/</span> <span class="pre">sd</span></code>, with <code class="docutils literal notranslate"><span class="pre">w</span></code> drawn from U(0, 0.1 s)</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;dropout&quot;</span></code></p></td>
+<td><p>replaces values: takes <code class="docutils literal notranslate"><span class="pre">{&quot;value&quot;:</span> <span class="pre">v,</span> <span class="pre">&quot;prob&quot;:</span> <span class="pre">p}</span></code> (with <code class="docutils literal notranslate"><span class="pre">p</span></code> a probability, a float or one per site); in each site, every affected feature is replaced by <code class="docutils literal notranslate"><span class="pre">v</span></code> with probability <code class="docutils literal notranslate"><span class="pre">p</span></code>, e.g. <code class="docutils literal notranslate"><span class="pre">np.nan</span></code> for missing values. With <code class="docutils literal notranslate"><span class="pre">&quot;per&quot;:</span> <span class="pre">&quot;value&quot;</span></code>, single values are replaced instead of whole features.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;combat&quot;</span></code></p></td>
+<td><p>ComBat’s generative model: offsets <code class="docutils literal notranslate"><span class="pre">gamma</span> <span class="pre">~</span> <span class="pre">N(g,</span> <span class="pre">(s/4)**2)</span></code> with a site mean <code class="docutils literal notranslate"><span class="pre">g</span></code> from U(-s/2, s/2), and factors <code class="docutils literal notranslate"><span class="pre">delta</span> <span class="pre">=</span> <span class="pre">sqrt(d)</span></code> with <code class="docutils literal notranslate"><span class="pre">d</span></code> from an inverse gamma distribution (shape 6, mean exp(U(-0.2 s, 0.2 s))): the priors that ComBat’s empirical Bayes step assumes</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;class_interaction&quot;</span></code></p></td>
+<td><p>every class of every site gets an extra offset from U(-s/2, s/2) reference SDs: the site effect differs between classes, so the class signal differs between sites</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">c</span></code> is the global mean plus the sample’s covariate effects: the scale effect multiplies the signal and the noise of a
+sample, but not its covariate effects, as in ComBat’s model <code class="docutils literal notranslate"><span class="pre">y</span> <span class="pre">=</span> <span class="pre">alpha</span> <span class="pre">+</span> <span class="pre">X</span> <span class="pre">beta</span> <span class="pre">+</span> <span class="pre">gamma</span> <span class="pre">+</span> <span class="pre">delta</span> <span class="pre">*</span> <span class="pre">epsilon</span></code>. The
+location offsets are centred: the pooled mean does not drift, and two sites differ by up to <code class="docutils literal notranslate"><span class="pre">s</span></code> reference SDs on each
+feature.</p>
+<section id="combining-types-and-choosing-strengths">
+<h3>Combining types and choosing strengths<a class="headerlink" href="#combining-types-and-choosing-strengths" title="Link to this heading">#</a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">site_effect</span></code> is a dict with the strength of each type, a float (every site) or a list (one value per site). The
+types are applied in a fixed order (scale and location, then variance, nonlinear and dropout), whatever the order
+of the dict:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span>
+    <span class="n">site_effect</span><span class="o">=</span><span class="p">{</span><span class="s2">"location"</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span> <span class="s2">"scale"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">3</span><span class="p">]},</span>  <span class="c1"># per site for the scale</span>
+    <span class="n">n_sites</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>A strength of 0 means no site effect of that type in that site, and <code class="docutils literal notranslate"><span class="pre">site_effect={}</span></code> gives data without site
+effect.</p>
+</section>
+<section id="which-features-which-samples-which-classes">
+<h3>Which features, which samples, which classes<a class="headerlink" href="#which-features-which-samples-which-classes" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Effect</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">site_effect_features</span></code></p></td>
+<td><p>Only these features have a site effect: the first <code class="docutils literal notranslate"><span class="pre">k</span></code>, a fraction, or a list of indices (default: all).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">site_effect_heterogeneity</span></code></p></td>
+<td><p>Each sample’s site effect is multiplied by its own intensity exp(h z - h²/2) (mean 1), <code class="docutils literal notranslate"><span class="pre">z</span></code> drawn per sample and shared by its features, e.g. a scanner effect that depends on head size or motion. Samples move further or less far along their site’s offset, which adds a site-specific covariance that a per-feature mean and variance correction does not remove (the case CovBat addresses).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="covariates">
+<h2>Covariates<a class="headerlink" href="#covariates" title="Link to this heading">#</a></h2>
+<p>A <a class="reference internal" href="../api/datasets/covariate.html#uniharmony.datasets.Covariate" title="uniharmony.datasets.Covariate"><code class="xref py py-class docutils literal notranslate"><span class="pre">Covariate</span></code></a> describes the distribution of a covariate in every site and its effect on
+the features:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">Covariate</span><span class="p">,</span> <span class="n">CovariateSiteDistribution</span><span class="p">,</span> <span class="n">make_multisite_classification</span>
+
+<span class="n">age</span> <span class="o">=</span> <span class="n">Covariate</span><span class="p">(</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">"age"</span><span class="p">,</span>
+    <span class="n">site_distributions</span><span class="o">=</span><span class="p">[</span>  <span class="c1"># a young and an old site</span>
+        <span class="n">CovariateSiteDistribution</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">clip</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">90</span><span class="p">)),</span>
+        <span class="n">CovariateSiteDistribution</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="mi">65</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">clip</span><span class="o">=</span><span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">90</span><span class="p">)),</span>
+    <span class="p">],</span>
+    <span class="n">effect</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span>               <span class="c1"># -0.5 reference SD per SD of age (on average over the features)</span>
+    <span class="n">effect_shape</span><span class="o">=</span><span class="s2">"quadratic"</span><span class="p">,</span>  <span class="c1"># or "linear", "sigmoid", or a function of the raw values</span>
+    <span class="n">effect_features</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>         <span class="c1"># only the first 5 features</span>
+<span class="p">)</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span><span class="p">,</span> <span class="n">truth</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span><span class="n">n_sites</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">covariates</span><span class="o">=</span><span class="p">[</span><span class="n">age</span><span class="p">,</span> <span class="s2">"sex"</span><span class="p">],</span> <span class="n">return_ground_truth</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">age_values</span><span class="p">,</span> <span class="n">sex_values</span> <span class="o">=</span> <span class="n">truth</span><span class="p">[</span><span class="s2">"covariates"</span><span class="p">][</span><span class="s2">"age"</span><span class="p">],</span> <span class="n">truth</span><span class="p">[</span><span class="s2">"covariates"</span><span class="p">][</span><span class="s2">"sex"</span><span class="p">]</span>
+</pre></div>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter</p></th>
+<th class="head"><p>Meaning</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">effect</span></code></p></td>
+<td><p>Continuous covariate: SD of its contribution to a feature (with <code class="docutils literal notranslate"><span class="pre">&quot;linear&quot;</span></code>, the change per SD of the covariate). Categorical: mean difference between each category and the first one. A scalar is multiplied by a per-feature weight from U(0.5, 1.5); an array gives the effect on every feature exactly.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">effect_shape</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">&quot;linear&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;quadratic&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;sigmoid&quot;</span></code> or a callable, applied to the standardized covariate and standardized again, so that <code class="docutils literal notranslate"><span class="pre">effect</span></code> keeps its meaning.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">effect_features</span></code></p></td>
+<td><p>All features (<code class="docutils literal notranslate"><span class="pre">None</span></code>), the first <code class="docutils literal notranslate"><span class="pre">k</span></code>, a fraction, or a list of indices.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">depends_on</span></code></p></td>
+<td><p>Makes a continuous covariate depend on a categorical one: <code class="docutils literal notranslate"><span class="pre">{&quot;sex&quot;:</span> <span class="pre">[0,</span> <span class="pre">-160]}</span></code> adds the shift of each sample’s category to its value.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The presets <code class="docutils literal notranslate"><span class="pre">&quot;age&quot;</span></code> (linear effect 0.5 on every feature), <code class="docutils literal notranslate"><span class="pre">&quot;sex&quot;</span></code> (category 1 is 0.3 SD higher) and <code class="docutils literal notranslate"><span class="pre">&quot;tiv&quot;</span></code> (total
+intracranial volume, linear effect 0.5) have effects; <code class="docutils literal notranslate"><span class="pre">&quot;quality&quot;</span></code> has none. <code class="docutils literal notranslate"><span class="pre">&quot;tiv&quot;</span></code> depends on sex: it is drawn
+from N(1520, 120²) cm³ for sex 0 and N(1360, 120²) for sex 1 (approximate adult values), so it correlates about
+-0.55 with sex when the sexes are balanced, and <code class="docutils literal notranslate"><span class="pre">&quot;sex&quot;</span></code> must also be in the covariates:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span><span class="p">,</span> <span class="n">truth</span> <span class="o">=</span> <span class="n">make_multisite_classification</span><span class="p">(</span><span class="n">covariates</span><span class="o">=</span><span class="p">[</span><span class="s2">"sex"</span><span class="p">,</span> <span class="s2">"tiv"</span><span class="p">],</span> <span class="n">return_ground_truth</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="outputs-and-ground-truth">
+<h2>Outputs and ground truth<a class="headerlink" href="#outputs-and-ground-truth" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">make_multisite_classification</span></code> returns <code class="docutils literal notranslate"><span class="pre">X,</span> <span class="pre">y,</span> <span class="pre">sites</span></code>. With <code class="docutils literal notranslate"><span class="pre">site_names=[...]</span></code> the sites get these labels; with
+<code class="docutils literal notranslate"><span class="pre">as_frame=True</span></code>, <code class="docutils literal notranslate"><span class="pre">X</span></code> is a DataFrame (<code class="docutils literal notranslate"><span class="pre">feature_0</span></code>, …), <code class="docutils literal notranslate"><span class="pre">y</span></code> and <code class="docutils literal notranslate"><span class="pre">sites</span></code> are Series, and in the ground truth the
+covariates are a DataFrame and <code class="docutils literal notranslate"><span class="pre">site_location</span></code> and <code class="docutils literal notranslate"><span class="pre">site_scale</span></code> DataFrames indexed by the site names.</p>
+<p>With <code class="docutils literal notranslate"><span class="pre">return_ground_truth=True</span></code>, a dict with every component of the data is returned as a fourth output, row-aligned
+with <code class="docutils literal notranslate"><span class="pre">X</span></code>:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Key</p></th>
+<th class="head"><p>Content</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;covariates&quot;</span></code></p></td>
+<td><p>The covariate values (a DataFrame with <code class="docutils literal notranslate"><span class="pre">as_frame=True</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;signal&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;covariate_effect&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;noise&quot;</span></code></p></td>
+<td><p>The three components of the data without site effect.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;site_free&quot;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">signal</span> <span class="pre">+</span> <span class="pre">covariate_effect</span> <span class="pre">+</span> <span class="pre">noise</span></code>: the data without site effect, the target of a perfect harmonization.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;site_effect&quot;</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">X</span> <span class="pre">-</span> <span class="pre">site_free</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;site_location&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;site_scale&quot;</span></code></p></td>
+<td><p>Offset (data units) and factor of every site and feature.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;site_class_location&quot;</span></code></p></td>
+<td><p>Offsets of the site-by-class interaction, per site, class and feature (classification only).</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;intensity&quot;</span></code></p></td>
+<td><p>The per-sample intensity of the site effect (all 1 without heterogeneity).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;dropout_mask&quot;</span></code></p></td>
+<td><p>True where <code class="docutils literal notranslate"><span class="pre">&quot;dropout&quot;</span></code> replaced a value.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">&quot;covariate_coefficients&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;feature_scale&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;site_effect_features&quot;</span></code></p></td>
+<td><p>Covariate effects per feature (reference-SD units), the reference SD of every feature, the affected features.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>This allows harmonization methods to be scored exactly, e.g. by the error between harmonized data and <code class="docutils literal notranslate"><span class="pre">site_free</span></code>,
+or by how much of the covariate effect they keep.</p>
+</section>
+<section id="regression">
+<h2>Regression<a class="headerlink" href="#regression" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">make_multisite_regression</span></code> uses the same model for the features, and a target</p>
+<p>y = s · f(Signal) + e, e ~ N(0, 1),</p>
+<p>where <code class="docutils literal notranslate"><span class="pre">f</span></code> is standardized in the population, so the strength <code class="docutils literal notranslate"><span class="pre">s</span></code> of <code class="docutils literal notranslate"><span class="pre">signal={type:</span> <span class="pre">s}</span></code> sets the explained variance:
+R² = s² / (1 + s²) (0.8 for the default <code class="docutils literal notranslate"><span class="pre">s</span> <span class="pre">=</span> <span class="pre">2</span></code>). <code class="docutils literal notranslate"><span class="pre">&quot;linear&quot;</span></code> draws the features from N(0, 1) and combines
+<code class="docutils literal notranslate"><span class="pre">n_informative</span></code> of them; <code class="docutils literal notranslate"><span class="pre">&quot;friedman1&quot;</span></code> draws them from U(0, 1) and uses the nonlinear Friedman #1 function of the first
+five. The site effect changes the features, never the target.</p>
+<p><code class="docutils literal notranslate"><span class="pre">target_range_per_site</span></code> gives each site a range of the population target, as quantiles: with
+<code class="docutils literal notranslate"><span class="pre">[(0,</span> <span class="pre">0.5),</span> <span class="pre">(0.5,</span> <span class="pre">1)]</span></code>, one site has the lower half of the targets and the other the upper half (a young and an old
+cohort, say). The signal follows the target, so the sites differ even without site effect: a harmonization that
+removes every difference between sites also removes part of the target signal.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_multisite_regression</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">sites</span><span class="p">,</span> <span class="n">truth</span> <span class="o">=</span> <span class="n">make_multisite_regression</span><span class="p">(</span>
+    <span class="n">n_sites</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+    <span class="n">target_range_per_site</span><span class="o">=</span><span class="p">[(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">),</span> <span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="mi">1</span><span class="p">)],</span>  <span class="c1"># overlapping ranges</span>
+    <span class="n">signal</span><span class="o">=</span><span class="p">{</span><span class="s2">"linear"</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">},</span>
+    <span class="n">site_effect</span><span class="o">=</span><span class="p">{</span><span class="s2">"location"</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">},</span>
+    <span class="n">return_ground_truth</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The ground truth adds <code class="docutils literal notranslate"><span class="pre">&quot;target_signal&quot;</span></code> (<code class="docutils literal notranslate"><span class="pre">s</span> <span class="pre">·</span> <span class="pre">f</span></code>, the explained part of <code class="docutils literal notranslate"><span class="pre">y</span></code>) and, for <code class="docutils literal notranslate"><span class="pre">&quot;linear&quot;</span></code>,
+<code class="docutils literal notranslate"><span class="pre">&quot;target_coefficients&quot;</span></code> (<code class="docutils literal notranslate"><span class="pre">target_signal</span> <span class="pre">=</span> <span class="pre">signal</span> <span class="pre">&#64;</span> <span class="pre">target_coefficients</span></code>).</p>
+</section>
+<section id="traveling-subjects">
+<h2>Traveling subjects<a class="headerlink" href="#traveling-subjects" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">make_traveling_subjects</span></code> measures the same <code class="docutils literal notranslate"><span class="pre">n_subjects</span></code> in every site, <code class="docutils literal notranslate"><span class="pre">n_repeats</span></code> times. A subject has a trait
+(N(0, 1) per feature) and covariates drawn from one population, the same in every site; each measurement adds its own
+noise (<code class="docutils literal notranslate"><span class="pre">noise_strength</span></code>, in units of the between-subject SD, so the reliability within a site is 1 / (1 + r²)) and
+the site effect. The differences between the measurements of a subject are therefore noise and site effects only: after
+a perfect harmonization, the measurements of a subject agree across sites as well as within a site.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.datasets</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_traveling_subjects</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">sites</span><span class="p">,</span> <span class="n">subjects</span><span class="p">,</span> <span class="n">truth</span> <span class="o">=</span> <span class="n">make_traveling_subjects</span><span class="p">(</span>
+    <span class="n">n_subjects</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">n_sites</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_repeats</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">site_effect</span><span class="o">=</span><span class="p">{</span><span class="s2">"location"</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">,</span> <span class="s2">"scale"</span><span class="p">:</span> <span class="mf">2.0</span><span class="p">},</span> <span class="n">return_ground_truth</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>With <code class="docutils literal notranslate"><span class="pre">site_effect_heterogeneity</span></code>, the intensity of the site effect is a property of the subject (e.g. head size): the
+same in every site.</p>
+</section>
+<section id="not-simulated-yet">
+<h2>Not simulated yet<a class="headerlink" href="#not-simulated-yet" title="Link to this heading">#</a></h2>
+<p>Planned improvements of the simulators:</p>
+<ul class="simple">
+<li><p><strong>Site effects correlated across features.</strong> The offsets and factors are drawn independently for each feature,
+while real scanner effects are spatially smooth (correlated between neighbouring regions). Low-rank or smooth site
+effects would test methods that use the covariance (e.g. CovBat).</p></li>
+<li><p><strong>Site × covariate interactions.</strong> The covariate effects are the same in every site; a scanner effect that changes
+with age, for example, would violate ComBat’s assumption of a site effect independent of the covariates.</p></li>
+<li><p><strong>Incomplete traveling-subjects designs</strong>, where not every subject visits every site.</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">🛠️ Utilities</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="load_mareos_datasets.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">MAREoS Benchmark Datasets</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#overview">Overview</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#usage">Usage</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#behind-the-scenes">Behind the Scenes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#units">Units</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#site-effects">Site effects</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#combining-types-and-choosing-strengths">Combining types and choosing strengths</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#which-features-which-samples-which-classes">Which features, which samples, which classes</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#covariates">Covariates</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#outputs-and-ground-truth">Outputs and ground truth</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regression">Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#traveling-subjects">Traveling subjects</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#not-simulated-yet">Not simulated yet</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By uniharmony Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026, uniharmony Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

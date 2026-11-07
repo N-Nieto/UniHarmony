@@ -1,0 +1,968 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>🔗 Using UniHarmony in pipelines &#8212; uniharmony 0.0.6.dev68 documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=90905a2f556bf617f1a9" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=4418a689" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=c83e6b79" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=90905a2f556bf617f1a9"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9" />
+
+    <script src="_static/documentation_options.js?v=216df1ae"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=fab101a9"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'pipelines';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="🛠️ Utilities" href="utilities/index.html" />
+    <link rel="prev" title="▶️ Getting Started" href="getting_started.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">uniharmony 0.0.6.dev68 documentation</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="getting_started.html">▶️ Getting Started</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">🔗 Using UniHarmony in pipelines</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="utilities/index.html">🛠️ Utilities</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="utilities/simulate_multisite_data.html">Multisite Data Simulation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities/load_mareos_datasets.html">MAREoS Benchmark Datasets</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities/download_onharmony_dataset.html">Download ON-Harmony Dataset</a></li>
+
+<li class="toctree-l2"><a class="reference internal" href="utilities/datalad_integration.html">Datalad Integration</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities/report_metric_by_site.html">Site-Stratified Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utilities/site_centroid_distance.html">Site Centroid Distance</a></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="methods/index.html">🧮 Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="methods/combat_based/index.html">🤺 ComBat-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="methods/combat_based/combat.html">ComBat and neuroComBat</a></li>
+
+
+
+<li class="toctree-l3"><a class="reference internal" href="methods/combat_based/combat_gam.html">ComBat-GAM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="methods/combat_based/covbat.html">CovBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="methods/combat_based/neuroharmony.html">Neuroharmony</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="methods/combat_based/longcombat.html">Longitudinal ComBat (LongComBat)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="methods/combat_based/deepcombat.html">DeepComBat</a></li>
+
+<li class="toctree-l3"><a class="reference internal" href="methods/combat_based/prettyharmony.html">PrettYharmonize</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="methods/interpolation_based/index.html">📈 Interpolation-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="methods/interpolation_based/inter_site_matched_interpolation.html">Inter-Site Matched Interpolation (ISMI)</a></li>
+
+
+<li class="toctree-l3"><a class="reference internal" href="methods/interpolation_based/intra_site_interpolation.html">Intra-Site Interpolation (ISI)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="methods/iqm_based/index.html">🔬 IQM-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="methods/iqm_based/bartharm.html">BARTharm</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="methods/ot_based/index.html">🚄 Optimal Transport for Domain Adaptation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="methods/ot_based/otda.html">Optimal Transport Domain Adaptation (OTDA)</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="methods/dl_based/index.html">🧠 Deep learning based</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="methods/dl_based/deepharmony.html">DeepHarmony</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="examples/index.html">🎛️ Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="examples/basic/index.html">Basic examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/05-plot_multisite_data_characterization.html">Characterize a multisite problem</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/07-run_site_prediction.html">Evaluate site predictability</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/04-plot_eos_with_dimensionality_reduction.html">Explore EoS with dimensionality reduction techniques</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/02-run_metrics_by_site.html">Compute metrics by site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/06-mareos_with_tsne.html">Characterise a multisite problem with MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/08-plot_site_centroid_distance.html">Measure the Effect of Site with centroid distances</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/09-plot_site_centroid_map.html">Map the distances between site centroids</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/03-plot_biases_in_metrics_by_site.html">Discover biases in metrics by site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/01-basic-examples/01-plot_eos_in_ml.html">Impact of Effects of Site in ML</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="examples/multisite_data/index.html">Multisite Data</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/02-multisite-data/04-download_on_harmony.html">Download ON-Harmony dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/02-multisite-data/05-plot_simulate_multisite_data_with_covariates.html">Multisite data generation with covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/02-multisite-data/02-load_mareos.html">Load MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/02-multisite-data/08-plot_traveling_subjects.html">Traveling subjects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/02-multisite-data/06-plot_simulate_multisite_data_with_costume_covariates.html">Multisite data generation with custom covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/02-multisite-data/07-plot_generate_multisite_regression.html">Multisite regression data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/02-multisite-data/03-plot_generate_imbalance_multisite_data.html">Generate imbalance multisite data</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/02-multisite-data/01-plot_generate_multisite_data.html">Multisite data generation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="examples/combat/index.html">ComBat Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/01-plot_neurocombat_binary_classification.html">Binary classification with NeuroComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/05-plot_combatgam_imbalance_across_sites.html">ComBatGAM with covariates imbalanced across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/04-plot_combatgam_age_preservation.html">ComBatGAM preserves a nonlinear age effect</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/10-plot_prettyharmonize_regression.html">PrettYharmonize for regression</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/07-plot_neurocombat_effect_on_features.html">NeuroComBat effect in features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/02-plot_neurocombat_imbalance_across_sites.html">Analyzing NeuroComBat behavior with imbalance across sites</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/08-plot_combatgam_effect_on_features.html">ComBatGAM effect on features</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/03-neurocombat_with_mareos.html">Using NeuroComBat with MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/06-combatgam_with_mareos.html">Using ComBatGAM with MAREoS dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/11-plot_combat_reference_site.html">ComBat with a reference site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/03-combat-based/09-plot_prettyharmonize_imbalance_across_sites.html">PrettYharmonize: leakage-free ComBat with class imbalance across sites</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="examples/interpolation/index.html">Interpolation Methods</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/04-interpolation-based/01-plot_isi_binary_classification.html">Binary classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/04-interpolation-based/05-run_ismi_covariate_example.html">Using Inter-Site Matched Interpolation (ISMI) with matching covariates</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/04-interpolation-based/02-plot_isi_multiclass_classification.html">Multiclass classification using ISI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/04-interpolation-based/04-plot_ismi_binary_classification.html">Multisite Harmonization using Inter-Site Matched Interpolation (ISMI)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/04-interpolation-based/03-plot_isi_advance_usage.html">IntraSiteInterpolation advance usage</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="examples/ot/index.html">Optimal Transport based Domain Adaptation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/05-ot-based/01-plot_binary_classification.html">Binary classification using OTDA</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="examples/iqm/index.html">IQM-based Harmonization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/06-iqm-based/01-plot_bartharm_binary_classification.html">Binary classification with BARTharm</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="examples/conformance/index.html">Implementations conformance</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/07-implementations_conformance/01-plot_neurocombat_conformance.html">NeuroComBat: conformance with R sva and neuroCombat</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="examples/pipelines/index.html">Pipelines</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/08-pipelines/03-plot_julearn_harmonization.html">Harmonization as a julearn pipeline step</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/08-pipelines/02-plot_imblearn_sampler_then_harmonizer.html">Sampler followed by a harmonizer (imbalanced-learn)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="auto_examples/08-pipelines/01-plot_sklearn_pipeline.html">Harmonization in scikit-learn pipelines</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="api/index.html">🗺️ API Reference</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/utils/index.html">uniharmony</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/utils/verbosity.html">verbosity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/utils/verbosity_context.html">verbosity_context</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/datasets/index.html">uniharmony.datasets</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/datasets/make_multisite_classification.html">make_multisite_classification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/datasets/make_multisite_regression.html">make_multisite_regression</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/datasets/make_traveling_subjects.html">make_traveling_subjects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/datasets/covariate.html">Covariate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/datasets/load_mareos.html">load_MAREoS</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/datasets/load_on_harmony.html">load_ONharmony</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/datasets/download_bids_dataset.html">download_bids_dataset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/datasets/clean_tmp.html">clean_tmp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/datasets/list_available_files.html">list_available_files</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/metrics/index.html">uniharmony.metrics</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/metrics/report_metrics_by_site.html">report_metrics_by_site</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/metrics/site_centroid_distance.html">site_centroid_distance</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/combat_based/index.html">uniharmony.combat</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/combat_based/combat.html">NeuroComBat</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/combat_based/combat_gam.html">ComBatGAM</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/prettyharmonize/index.html">uniharmony.prettyharmonize</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/prettyharmonize/prettyharmonize_classifier.html">PrettYharmonizeClassifier</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/prettyharmonize/prettyharmonize_regressor.html">PrettYharmonizeRegressor</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/interpolation_based/index.html">uniharmony.interpolation</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/interpolation_based/inter_site_matched_interpolation.html">InterSiteMatchedInterpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/interpolation_based/intra_site_interpolation.html">IntraSiteInterpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="api/interpolation_based/site_balanced_resampler.html">SiteBalancedResampler</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/iqm_based/index.html">uniharmony.iqm</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/iqm_based/bartharm.html">BARTharm</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/ot_based/index.html">uniharmony.ot</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/ot_based/otda.html">OptimalTransportDomainAdaptation</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="api/dl_based/index.html">uniharmony.dl</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="api/dl_based/deepharmony.html">DeepHarmony</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">📂 CHANGELOG</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+<a href="https://github.com/N-Nieto/uniharmony" target="_blank"
+   class="btn btn-sm btn-source-repository-button"
+   title="Source repository"
+   data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+
+</a>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/pipelines.md" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.md</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button pst-navbar-icon"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm pst-navbar-icon" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>🔗 Using UniHarmony in pipelines</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#two-ways-to-give-the-sites-and-covariates">Two ways to give the sites and covariates</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#as-columns-of-x-recommended-in-pipelines">1. As columns of <code class="docutils literal notranslate"><span class="pre">X</span></code> (recommended in pipelines)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#as-keywords-of-fit-and-transform">2. As keywords of <code class="docutils literal notranslate"><span class="pre">fit</span></code> and <code class="docutils literal notranslate"><span class="pre">transform</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rules-shared-by-every-estimator">Rules shared by every estimator</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scikit-learn-pipelines">scikit-learn pipelines</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-not-metadata-routing">Why not metadata routing?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#samplers-followed-by-a-harmonizer-imbalanced-learn">Samplers followed by a harmonizer (imbalanced-learn)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#julearn">julearn</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-validation-and-sites">Cross-validation and sites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#migrating-from-uniharmony-0-0-5">Migrating from UniHarmony 0.0.5</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="using-uniharmony-in-pipelines">
+<h1>🔗 Using UniHarmony in pipelines<a class="headerlink" href="#using-uniharmony-in-pipelines" title="Link to this heading">#</a></h1>
+<p>A harmonizer needs per-sample <strong>metadata</strong> — the <strong>site</strong> of every sample and,
+often, <strong>covariates</strong> whose effect must be preserved — both when it is fitted
+<em>and</em> when it transforms new data: the site effect of a test subject can only
+be removed if its site is known.</p>
+<p>scikit-learn only moves <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> through a <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.pipeline.Pipeline.html#sklearn.pipeline.Pipeline" title="(in scikit-learn v1.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Pipeline</span></code></a>,
+and only <code class="docutils literal notranslate"><span class="pre">X</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are split by the folds of its model selection tools
+(<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_validate.html#sklearn.model_selection.cross_validate" title="(in scikit-learn v1.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">cross_validate()</span></code></a>,
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html#sklearn.model_selection.GridSearchCV" title="(in scikit-learn v1.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">GridSearchCV</span></code></a>,
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_predict.html#sklearn.model_selection.cross_val_predict" title="(in scikit-learn v1.9)"><code class="xref py py-func docutils literal notranslate"><span class="pre">cross_val_predict()</span></code></a>, the scorers, …).
+UniHarmony therefore accepts the metadata in two ways.</p>
+<section id="two-ways-to-give-the-sites-and-covariates">
+<h2>Two ways to give the sites and covariates<a class="headerlink" href="#two-ways-to-give-the-sites-and-covariates" title="Link to this heading">#</a></h2>
+<section id="as-columns-of-x-recommended-in-pipelines">
+<h3>1. As columns of <code class="docutils literal notranslate"><span class="pre">X</span></code> (recommended in pipelines)<a class="headerlink" href="#as-columns-of-x-recommended-in-pipelines" title="Link to this heading">#</a></h3>
+<p>Name the metadata columns in the constructor and pass a pandas DataFrame:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.combat</span><span class="w"> </span><span class="kn">import</span> <span class="n">NeuroComBat</span>
+
+<span class="n">combat</span> <span class="o">=</span> <span class="n">NeuroComBat</span><span class="p">(</span><span class="n">site_column</span><span class="o">=</span><span class="s2">"site"</span><span class="p">,</span> <span class="n">categorical_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"sex"</span><span class="p">],</span> <span class="n">continuous_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"age"</span><span class="p">])</span>
+<span class="n">X_harmonized</span> <span class="o">=</span> <span class="n">combat</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df_train</span><span class="p">)</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">df_test</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>The columns are read from <code class="docutils literal notranslate"><span class="pre">X</span></code>, checked, and <strong>removed from the output</strong>: the
+transformer returns the harmonized features only.</p></li>
+<li><p>The folds of every scikit-learn tool split the sites together with the
+features, so the test sites always reach <code class="docutils literal notranslate"><span class="pre">transform</span></code> and every scorer.</p></li>
+<li><p>The sites cannot be forgotten or misaligned at prediction time.</p></li>
+<li><p>With a NumPy array, give column <strong>positions</strong> instead of names
+(<code class="docutils literal notranslate"><span class="pre">site_column=0</span></code>).</p></li>
+</ul>
+</section>
+<section id="as-keywords-of-fit-and-transform">
+<h3>2. As keywords of <code class="docutils literal notranslate"><span class="pre">fit</span></code> and <code class="docutils literal notranslate"><span class="pre">transform</span></code><a class="headerlink" href="#as-keywords-of-fit-and-transform" title="Link to this heading">#</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">combat</span> <span class="o">=</span> <span class="n">NeuroComBat</span><span class="p">()</span>
+<span class="n">combat</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">sites</span><span class="o">=</span><span class="n">sites_train</span><span class="p">,</span> <span class="n">continuous_covariates</span><span class="o">=</span><span class="n">age_train</span><span class="p">)</span>
+<span class="n">X_harmonized</span> <span class="o">=</span> <span class="n">combat</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">sites</span><span class="o">=</span><span class="n">sites_test</span><span class="p">,</span> <span class="n">continuous_covariates</span><span class="o">=</span><span class="n">age_test</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is convenient for direct calls on NumPy arrays. The keywords are
+keyword-only: they can never land in the slot of <code class="docutils literal notranslate"><span class="pre">y</span></code>.</p>
+</section>
+<section id="rules-shared-by-every-estimator">
+<h3>Rules shared by every estimator<a class="headerlink" href="#rules-shared-by-every-estimator" title="Link to this heading">#</a></h3>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Signature</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">fit(X,</span> <span class="pre">y=None,</span> <span class="pre">*,</span> <span class="pre">sites=None,</span> <span class="pre">&lt;covariate</span> <span class="pre">keywords&gt;)</span></code>, <code class="docutils literal notranslate"><span class="pre">transform(X,</span> <span class="pre">*,</span> <span class="pre">sites=None,</span> <span class="pre">...)</span></code>. <code class="docutils literal notranslate"><span class="pre">y</span></code> is the second argument, as in scikit-learn; harmonizers that do not use it ignore it.</p></td>
+</tr>
+<tr class="row-odd"><td><p>One source per metadata</p></td>
+<td><p>Giving the same metadata as a column and as a keyword raises an error.</p></td>
+</tr>
+<tr class="row-even"><td><p>Settings</p></td>
+<td><p>All numerical options (<code class="docutils literal notranslate"><span class="pre">var_epsilon</span></code>, <code class="docutils literal notranslate"><span class="pre">max_iter</span></code>, <code class="docutils literal notranslate"><span class="pre">df</span></code>, <code class="docutils literal notranslate"><span class="pre">degree</span></code>, <code class="docutils literal notranslate"><span class="pre">smooth_covariates_bounds</span></code>, <code class="docutils literal notranslate"><span class="pre">ref_site</span></code> of the ComBat models and of OTDA, <code class="docutils literal notranslate"><span class="pre">batch_size</span></code>, …) are constructor parameters, so <code class="docutils literal notranslate"><span class="pre">GridSearchCV</span></code> can tune them and <code class="docutils literal notranslate"><span class="pre">clone</span></code> copies them.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">fit_transform</span></code></p></td>
+<td><p>Equals <code class="docutils literal notranslate"><span class="pre">fit(X,</span> <span class="pre">y,</span> <span class="pre">**metadata).transform(X,</span> <span class="pre">**metadata)</span></code>.</p></td>
+</tr>
+<tr class="row-even"><td><p>Feature names</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">n_features_in_</span></code> / <code class="docutils literal notranslate"><span class="pre">feature_names_in_</span></code> describe the full input (metadata columns included); <code class="docutils literal notranslate"><span class="pre">get_feature_names_out()</span></code> lists the harmonized features, so <code class="docutils literal notranslate"><span class="pre">set_output(transform=&quot;pandas&quot;)</span></code> returns a DataFrame with the feature names and the index of <code class="docutils literal notranslate"><span class="pre">X</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Checks</p></td>
+<td><p>Missing or infinite values, inconsistent lengths, unseen sites, and covariates given to <code class="docutils literal notranslate"><span class="pre">fit</span></code> but not to <code class="docutils literal notranslate"><span class="pre">transform</span></code> (or the reverse) raise informative errors.</p></td>
+</tr>
+<tr class="row-even"><td><p>julearn</p></td>
+<td><p>A column renamed by julearn (<code class="docutils literal notranslate"><span class="pre">site__:type:__site</span></code>) is found by its plain name (<code class="docutils literal notranslate"><span class="pre">site_column=&quot;site&quot;</span></code>).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The column and keyword parameters of each estimator:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Estimator</p></th>
+<th class="head"><p>Constructor (columns)</p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">fit</span></code> / <code class="docutils literal notranslate"><span class="pre">transform</span></code> (keywords)</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><a class="reference internal" href="api/combat_based/combat.html#uniharmony.combat.NeuroComBat" title="uniharmony.combat.NeuroComBat"><code class="xref py py-class docutils literal notranslate"><span class="pre">NeuroComBat</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">CovBat</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">site_column</span></code>, <code class="docutils literal notranslate"><span class="pre">categorical_columns</span></code>, <code class="docutils literal notranslate"><span class="pre">continuous_columns</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">sites</span></code>, <code class="docutils literal notranslate"><span class="pre">categorical_covariates</span></code>, <code class="docutils literal notranslate"><span class="pre">continuous_covariates</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/combat_based/combat_gam.html#uniharmony.combat.ComBatGAM" title="uniharmony.combat.ComBatGAM"><code class="xref py py-class docutils literal notranslate"><span class="pre">ComBatGAM</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">site_column</span></code>, <code class="docutils literal notranslate"><span class="pre">smooth_columns</span></code>, <code class="docutils literal notranslate"><span class="pre">continuous_columns</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">sites</span></code>, <code class="docutils literal notranslate"><span class="pre">smooth_covariates</span></code>, <code class="docutils literal notranslate"><span class="pre">continuous_covariates</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/ot_based/otda.html#uniharmony.ot.OptimalTransportDomainAdaptation" title="uniharmony.ot.OptimalTransportDomainAdaptation"><code class="xref py py-class docutils literal notranslate"><span class="pre">OptimalTransportDomainAdaptation</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">site_column</span></code> (and <code class="docutils literal notranslate"><span class="pre">ref_site</span></code>, <code class="docutils literal notranslate"><span class="pre">use_labels</span></code>)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">sites</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/iqm_based/bartharm.html#uniharmony.iqm.BARTharm" title="uniharmony.iqm.BARTharm"><code class="xref py py-class docutils literal notranslate"><span class="pre">BARTharm</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">iqm_columns</span></code>, <code class="docutils literal notranslate"><span class="pre">biological_columns</span></code>, <code class="docutils literal notranslate"><span class="pre">site_column</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">iqm_covariates</span></code>, <code class="docutils literal notranslate"><span class="pre">biological_covariates</span></code>, <code class="docutils literal notranslate"><span class="pre">sites</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="api/prettyharmonize/prettyharmonize_classifier.html#uniharmony.prettyharmonize.PrettYharmonizeClassifier" title="uniharmony.prettyharmonize.PrettYharmonizeClassifier"><code class="xref py py-class docutils literal notranslate"><span class="pre">PrettYharmonizeClassifier</span></code></a> / <code class="docutils literal notranslate"><span class="pre">Regressor</span></code></p></td>
+<td><p>the column parameters of its <code class="docutils literal notranslate"><span class="pre">harm_model</span></code></p></td>
+<td><p>the keywords of its <code class="docutils literal notranslate"><span class="pre">harm_model</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="api/interpolation_based/intra_site_interpolation.html#uniharmony.interpolation.IntraSiteInterpolation" title="uniharmony.interpolation.IntraSiteInterpolation"><code class="xref py py-class docutils literal notranslate"><span class="pre">IntraSiteInterpolation</span></code></a>, <a class="reference internal" href="api/interpolation_based/site_balanced_resampler.html#uniharmony.interpolation.SiteBalancedResampler" title="uniharmony.interpolation.SiteBalancedResampler"><code class="xref py py-class docutils literal notranslate"><span class="pre">SiteBalancedResampler</span></code></a>, <a class="reference internal" href="api/interpolation_based/inter_site_matched_interpolation.html#uniharmony.interpolation.InterSiteMatchedInterpolation" title="uniharmony.interpolation.InterSiteMatchedInterpolation"><code class="xref py py-class docutils literal notranslate"><span class="pre">InterSiteMatchedInterpolation</span></code></a></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">site_column</span></code>, <code class="docutils literal notranslate"><span class="pre">categorical_columns</span></code>, <code class="docutils literal notranslate"><span class="pre">continuous_columns</span></code>, <code class="docutils literal notranslate"><span class="pre">passthrough_columns</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">sites</span></code>, <code class="docutils literal notranslate"><span class="pre">categorical_covariates</span></code>, <code class="docutils literal notranslate"><span class="pre">continuous_covariates</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+<section id="scikit-learn-pipelines">
+<h2>scikit-learn pipelines<a class="headerlink" href="#scikit-learn-pipelines" title="Link to this heading">#</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.linear_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.model_selection</span><span class="w"> </span><span class="kn">import</span> <span class="n">GridSearchCV</span><span class="p">,</span> <span class="n">StratifiedKFold</span><span class="p">,</span> <span class="n">cross_validate</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_pipeline</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.preprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardScaler</span>
+
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">make_pipeline</span><span class="p">(</span><span class="n">NeuroComBat</span><span class="p">(</span><span class="n">site_column</span><span class="o">=</span><span class="s2">"site"</span><span class="p">),</span> <span class="n">StandardScaler</span><span class="p">(),</span> <span class="n">LogisticRegression</span><span class="p">())</span>
+<span class="n">cv</span> <span class="o">=</span> <span class="n">StratifiedKFold</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">cross_validate</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="p">[</span><span class="s2">"roc_auc"</span><span class="p">,</span> <span class="s2">"balanced_accuracy"</span><span class="p">])</span>
+
+<span class="n">search</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span><span class="n">pipe</span><span class="p">,</span> <span class="p">{</span><span class="s2">"neurocombat__empirical_bayes"</span><span class="p">:</span> <span class="p">[</span><span class="kc">True</span><span class="p">,</span> <span class="kc">False</span><span class="p">],</span> <span class="s2">"logisticregression__C"</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">]},</span>
+                      <span class="n">cv</span><span class="o">=</span><span class="n">cv</span><span class="p">,</span> <span class="n">scoring</span><span class="o">=</span><span class="s2">"roc_auc"</span><span class="p">)</span>
+<span class="n">search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The harmonizer must come before any step that does not know about the metadata
+columns (or those steps must skip them, e.g. with a
+<a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.compose.ColumnTransformer.html#sklearn.compose.ColumnTransformer" title="(in scikit-learn v1.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ColumnTransformer</span></code></a>).</p>
+<section id="why-not-metadata-routing">
+<h3>Why not metadata routing?<a class="headerlink" href="#why-not-metadata-routing" title="Link to this heading">#</a></h3>
+<p>scikit-learn can route extra arguments (<code class="docutils literal notranslate"><span class="pre">sklearn.set_config(enable_metadata_routing=True)</span></code>;
+UniHarmony’s estimators request their data keywords by default). Tested with
+scikit-learn 1.9, routing is not enough for model evaluation:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Tool</p></th>
+<th class="head"><p>Keywords + metadata routing</p></th>
+<th class="head"><p>Columns of <code class="docutils literal notranslate"><span class="pre">X</span></code></p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">Pipeline.fit</span></code> / <code class="docutils literal notranslate"><span class="pre">predict</span></code> with the keywords</p></td>
+<td><p>works</p></td>
+<td><p>works</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">cross_validate</span></code> with the default <code class="docutils literal notranslate"><span class="pre">score</span></code></p></td>
+<td><p>works</p></td>
+<td><p>works</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cross_validate(scoring=&quot;roc_auc&quot;)</span></code>, any scorer</p></td>
+<td><p><strong>NaN scores</strong> (scorers call <code class="docutils literal notranslate"><span class="pre">predict</span></code> without the sites; the error becomes <code class="docutils literal notranslate"><span class="pre">error_score=nan</span></code> with a warning only)</p></td>
+<td><p>works</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">GridSearchCV(scoring=...)</span></code></p></td>
+<td><p><strong><code class="docutils literal notranslate"><span class="pre">best_score_</span></code> is NaN</strong></p></td>
+<td><p>works</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">cross_val_predict</span></code></p></td>
+<td><p><strong>error</strong> (no routing to <code class="docutils literal notranslate"><span class="pre">predict</span></code>)</p></td>
+<td><p>works</p></td>
+</tr>
+<tr class="row-odd"><td><p>imbalanced-learn sampler followed by a harmonizer</p></td>
+<td><p>the harmonizer cannot get the sites of the synthetic samples</p></td>
+<td><p>works</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The column path works with every tool, so it is the recommended way to use
+UniHarmony in pipelines. The keywords remain for direct calls.</p>
+</section>
+</section>
+<section id="samplers-followed-by-a-harmonizer-imbalanced-learn">
+<h2>Samplers followed by a harmonizer (imbalanced-learn)<a class="headerlink" href="#samplers-followed-by-a-harmonizer-imbalanced-learn" title="Link to this heading">#</a></h2>
+<p>The samplers need an <code class="xref py py-class docutils literal notranslate"><span class="pre">imblearn.pipeline.Pipeline</span></code> (scikit-learn’s
+<code class="docutils literal notranslate"><span class="pre">Pipeline</span></code> has no <code class="docutils literal notranslate"><span class="pre">fit_resample</span></code>). With the column path they return <code class="docutils literal notranslate"><span class="pre">X</span></code> with
+its metadata columns, filled in for the synthetic samples, so a harmonizer can
+follow them:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">imblearn.pipeline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">uniharmony.interpolation</span><span class="w"> </span><span class="kn">import</span> <span class="n">IntraSiteInterpolation</span>
+
+<span class="n">pipe</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
+    <span class="p">(</span><span class="s2">"isi"</span><span class="p">,</span> <span class="n">IntraSiteInterpolation</span><span class="p">(</span><span class="n">site_column</span><span class="o">=</span><span class="s2">"site"</span><span class="p">,</span> <span class="n">passthrough_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"age"</span><span class="p">])),</span>
+    <span class="p">(</span><span class="s2">"combat"</span><span class="p">,</span> <span class="n">NeuroComBat</span><span class="p">(</span><span class="n">site_column</span><span class="o">=</span><span class="s2">"site"</span><span class="p">,</span> <span class="n">continuous_columns</span><span class="o">=</span><span class="p">[</span><span class="s2">"age"</span><span class="p">])),</span>
+    <span class="p">(</span><span class="s2">"scale"</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
+    <span class="p">(</span><span class="s2">"clf"</span><span class="p">,</span> <span class="n">LogisticRegression</span><span class="p">()),</span>
+<span class="p">])</span>
+</pre></div>
+</div>
+<p>For a synthetic sample:</p>
+<ul class="simple">
+<li><p>the <strong>site</strong> column holds the site it was created in;</p></li>
+<li><p><strong>continuous</strong> covariates (and floating-point <code class="docutils literal notranslate"><span class="pre">passthrough_columns</span></code>) are
+interpolated with the weights of its features: for SMOTE-type samplers the
+two parents and the position on their segment are recovered from the
+features, for <a class="reference internal" href="api/interpolation_based/inter_site_matched_interpolation.html#uniharmony.interpolation.InterSiteMatchedInterpolation" title="uniharmony.interpolation.InterSiteMatchedInterpolation"><code class="xref py py-class docutils literal notranslate"><span class="pre">InterSiteMatchedInterpolation</span></code></a>
+the matched samples and <code class="docutils literal notranslate"><span class="pre">alpha</span></code> are used directly;</p></li>
+<li><p><strong>categorical</strong> covariates (and other <code class="docutils literal notranslate"><span class="pre">passthrough_columns</span></code>) are copied from
+the parent with the largest weight.</p></li>
+</ul>
+<p><code class="docutils literal notranslate"><span class="pre">passthrough_columns</span></code> are carried to the output without being used for
+resampling, e.g. the covariates that only the harmonizer needs.</p>
+</section>
+<section id="julearn">
+<h2>julearn<a class="headerlink" href="#julearn" title="Link to this heading">#</a></h2>
+<p>A harmonizer is a step of a julearn
+<a class="reference external" href="https://juaml.github.io/julearn/"><code class="docutils literal notranslate"><span class="pre">PipelineCreator</span></code></a>; give it the column types
+it needs with <code class="docutils literal notranslate"><span class="pre">apply_to</span></code>. julearn renames the columns (<code class="docutils literal notranslate"><span class="pre">site__:type:__site</span></code>);
+the plain names given to the harmonizer are matched:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">julearn</span><span class="w"> </span><span class="kn">import</span> <span class="n">PipelineCreator</span><span class="p">,</span> <span class="n">run_cross_validation</span>
+
+<span class="n">creator</span> <span class="o">=</span> <span class="n">PipelineCreator</span><span class="p">(</span><span class="n">problem_type</span><span class="o">=</span><span class="s2">"classification"</span><span class="p">,</span> <span class="n">apply_to</span><span class="o">=</span><span class="s2">"continuous"</span><span class="p">)</span>
+<span class="n">creator</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">NeuroComBat</span><span class="p">(</span><span class="n">site_column</span><span class="o">=</span><span class="s2">"site"</span><span class="p">,</span> <span class="n">continuous_columns</span><span class="o">=</span><span class="s2">"age"</span><span class="p">),</span> <span class="n">apply_to</span><span class="o">=</span><span class="p">[</span><span class="s2">"continuous"</span><span class="p">,</span> <span class="s2">"site"</span><span class="p">,</span> <span class="s2">"confound"</span><span class="p">])</span>
+<span class="n">creator</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">"zscore"</span><span class="p">)</span>
+<span class="n">creator</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s2">"logit"</span><span class="p">)</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">run_cross_validation</span><span class="p">(</span>
+    <span class="n">X</span><span class="o">=</span><span class="p">[</span><span class="o">*</span><span class="n">features</span><span class="p">,</span> <span class="s2">"site"</span><span class="p">,</span> <span class="s2">"age"</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="s2">"target"</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">,</span>
+    <span class="n">X_types</span><span class="o">=</span><span class="p">{</span><span class="s2">"continuous"</span><span class="p">:</span> <span class="n">features</span><span class="p">,</span> <span class="s2">"site"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"site"</span><span class="p">],</span> <span class="s2">"confound"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"age"</span><span class="p">]},</span>
+    <span class="n">model</span><span class="o">=</span><span class="n">creator</span><span class="p">,</span> <span class="n">cv</span><span class="o">=</span><span class="n">StratifiedKFold</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">scoring</span><span class="o">=</span><span class="s2">"roc_auc"</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="cross-validation-and-sites">
+<h2>Cross-validation and sites<a class="headerlink" href="#cross-validation-and-sites" title="Link to this heading">#</a></h2>
+<p>A harmonizer can only harmonize sites it has seen during <code class="docutils literal notranslate"><span class="pre">fit</span></code>. Every site of a
+test fold must therefore also be in the training folds:</p>
+<ul class="simple">
+<li><p><strong>Shuffle the folds.</strong> With an integer <code class="docutils literal notranslate"><span class="pre">cv</span></code>, julearn and some scikit-learn
+tools use an unshuffled <code class="docutils literal notranslate"><span class="pre">KFold</span></code>. On data sorted by site, a whole site then
+lands in one test fold, and harmonization fails with an error that says so.
+Pass a shuffled splitter, e.g. <code class="docutils literal notranslate"><span class="pre">StratifiedKFold(5,</span> <span class="pre">shuffle=True)</span></code>.</p></li>
+<li><p><strong>Stratify on the sites</strong> (or on site × target) to keep every site in every
+training fold, e.g. <code class="docutils literal notranslate"><span class="pre">StratifiedKFold(5,</span> <span class="pre">shuffle=True).split(X,</span> <span class="pre">sites)</span></code>.</p></li>
+<li><p>To evaluate on <strong>unseen sites</strong> (leave-site-out), a site-wise harmonizer
+such as ComBat is not applicable: it has no estimate for the new site.</p></li>
+</ul>
+</section>
+<section id="migrating-from-uniharmony-0-0-5">
+<h2>Migrating from UniHarmony 0.0.5<a class="headerlink" href="#migrating-from-uniharmony-0-0-5" title="Link to this heading">#</a></h2>
+<p>Version 0.0.6 changes the calling convention of every harmonizer and sampler:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>0.0.5</p></th>
+<th class="head"><p>0.0.6</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">NeuroComBat().fit(X,</span> <span class="pre">sites,</span> <span class="pre">categorical_covariates=c)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">NeuroComBat().fit(X,</span> <span class="pre">sites=sites,</span> <span class="pre">categorical_covariates=c)</span></code> or <code class="docutils literal notranslate"><span class="pre">NeuroComBat(site_column=&quot;site&quot;,</span> <span class="pre">categorical_columns=&quot;c&quot;).fit(df)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">fit(X,</span> <span class="pre">sites,</span> <span class="pre">var_epsilon=...,</span> <span class="pre">max_iter=...)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">NeuroComBat(var_epsilon=...,</span> <span class="pre">max_iter=...)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ComBatGAM().fit(X,</span> <span class="pre">sites,</span> <span class="pre">age,</span> <span class="pre">df=5,</span> <span class="pre">smooth_covariates_bounds=(0,</span> <span class="pre">100))</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ComBatGAM(df=5,</span> <span class="pre">smooth_covariates_bounds=(0,</span> <span class="pre">100)).fit(X,</span> <span class="pre">sites=sites,</span> <span class="pre">smooth_covariates=age)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">OptimalTransportDomainAdaptation().fit(X,</span> <span class="pre">sites,</span> <span class="pre">ref_site=&quot;A&quot;,</span> <span class="pre">y=labels)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">OptimalTransportDomainAdaptation(ref_site=&quot;A&quot;,</span> <span class="pre">use_labels=True).fit(X,</span> <span class="pre">labels,</span> <span class="pre">sites=sites)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">otda.transform(X,</span> <span class="pre">sites,</span> <span class="pre">batch_size=64)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">OptimalTransportDomainAdaptation(...,</span> <span class="pre">batch_size=64)</span></code>, <code class="docutils literal notranslate"><span class="pre">otda.transform(X,</span> <span class="pre">sites=sites)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">BARTharm().fit(X,</span> <span class="pre">iqms,</span> <span class="pre">bio,</span> <span class="pre">sites)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">BARTharm().fit(X,</span> <span class="pre">iqm_covariates=iqms,</span> <span class="pre">biological_covariates=bio,</span> <span class="pre">sites=sites)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">PrettYharmonizeClassifier().fit(X,</span> <span class="pre">y,</span> <span class="pre">sites,</span> <span class="pre">{&quot;continuous_covariates&quot;:</span> <span class="pre">age})</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">PrettYharmonizeClassifier().fit(X,</span> <span class="pre">y,</span> <span class="pre">sites=sites,</span> <span class="pre">continuous_covariates=age)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">clf.score(X,</span> <span class="pre">y,</span> <span class="pre">sites)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">clf.score(X,</span> <span class="pre">y,</span> <span class="pre">sites=sites)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">isi.fit_resample(X,</span> <span class="pre">y,</span> <span class="pre">sites,</span> <span class="pre">categorical_covariate=sex)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">isi.fit_resample(X,</span> <span class="pre">y,</span> <span class="pre">sites=sites,</span> <span class="pre">categorical_covariates=sex)</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ismi.fit_resample(...,</span> <span class="pre">allow_nan=True)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">InterSiteMatchedInterpolation(allow_nan=True)</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">isi.fit_resample(...,</span> <span class="pre">n_bins_cont_cov=3)</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">IntraSiteInterpolation(n_bins_cont_cov=3)</span></code></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="getting_started.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">▶️ Getting Started</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="utilities/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">🛠️ Utilities</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item"><div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#two-ways-to-give-the-sites-and-covariates">Two ways to give the sites and covariates</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#as-columns-of-x-recommended-in-pipelines">1. As columns of <code class="docutils literal notranslate"><span class="pre">X</span></code> (recommended in pipelines)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#as-keywords-of-fit-and-transform">2. As keywords of <code class="docutils literal notranslate"><span class="pre">fit</span></code> and <code class="docutils literal notranslate"><span class="pre">transform</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rules-shared-by-every-estimator">Rules shared by every estimator</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scikit-learn-pipelines">scikit-learn pipelines</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#why-not-metadata-routing">Why not metadata routing?</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#samplers-followed-by-a-harmonizer-imbalanced-learn">Samplers followed by a harmonizer (imbalanced-learn)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#julearn">julearn</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cross-validation-and-sites">Cross-validation and sites</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#migrating-from-uniharmony-0-0-5">Migrating from UniHarmony 0.0.5</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By uniharmony Contributors
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2026, uniharmony Contributors.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=90905a2f556bf617f1a9"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=90905a2f556bf617f1a9"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
